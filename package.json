@@ -1,0 +1,17 @@
+{
+  "name": "Auphonic",
+  "version": "0.0.1",
+  "author": "Christoph Pojer <christoph.pojer@gmail.com>",
+  "devDependencies": {},
+  "engines": {
+    "node": "*"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/cpojer/auphonic.git"
+  },
+  "dependencies": {
+    "stylus": ">= 0.14.0",
+    "nib": ">= 0.1.0"
+  }
+}
