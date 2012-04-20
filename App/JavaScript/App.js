@@ -1,4 +1,10 @@
-document.addEventListener("deviceready", function() {
+(function() {
+
+var boot = function() {
+  
+  window.scrollTo(0, 1);
+  (new ActiveState()).attach();
+  
   var counter = 0;
   var isRecording = false;
   var button = document.getElementById('record');
@@ -16,12 +22,6 @@ document.addEventListener("deviceready", function() {
 
   var updateTime = function() {
     document.getElementById('counter').innerText = (++counter) + ' seconds';
-  };
-  
-  var fn = function(fileSystem) {
-    fs = fileSystem;
-    
-    var folder = fs.root.getDirectory('media', {create: true}, successFolderCreation);
   };
   
   var successFolderCreation = function(folder) {
@@ -44,7 +44,12 @@ document.addEventListener("deviceready", function() {
     record.innerText = 'stop';
       
     timer = setInterval(updateTime, 1000);
-  }
+  };
+  
+  var fn = function(fileSystem) {
+    fs = fileSystem;
+    fs.root.getDirectory('media', {create: true}, successFolderCreation);
+  };
 
   play.addEventListener('click', function(event) {
     event.preventDefault();
@@ -57,4 +62,18 @@ document.addEventListener("deviceready", function() {
     if (fs) fn(fs);
     else window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, fn, null);
   }, false);
-}, false);
+};
+
+var fired;
+var ready = function(){
+  if (fired) return;
+  fired = true;
+
+  boot();
+};
+
+
+document.addEventListener('deviceready', ready, false);
+window.addEventListener('DOMContentLoaded', ready, false);
+
+})();

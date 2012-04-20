@@ -1,0 +1,45 @@
+@import 'nib'
+@import 'UI/Core/Font'
+
+ul
+  margin 0
+  padding 0
+  font-size 1.3em
+
+  li
+    margin 0
+    display block
+
+    cursor pointer
+    list-style-type none
+
+    border-bottom 1px solid #eee
+
+    &:last-child
+      border-bottom 0
+
+    a
+      display block
+      padding 11px 10px
+      color $color
+      text-decoration none
+      text-overflow ellipsis
+      white-space nowrap
+      overflow hidden
+      font-weight bold
+
+      &.active
+        background-image linear-gradient(top, #df5d5d 0%, #9c2e2e 100%)
+        color #fff
+
+      &.arrow
+        padding-right 22px
+
+        > span
+          display inline-block
+          float right
+          width 16px
+          height 16px
+          margin-right -14px
+
+          background-repeat no-repeat

@@ -1,29 +1,23 @@
 @import 'Base/Reset'
 @import 'nib'
 
-@import 'UI/Core/Header'
 @import 'UI/Core/Font'
 @import 'UI/Core/Link'
+@import 'UI/Core/Headline'
+@import 'UI/Core/Footer'
+@import 'UI/Core/Content'
+@import 'UI/Core/Lists'
 
 body
   font-family $font
   font-weight normal
   font-size $font-size
-  color $color-font
-  background white url(../Images/background.png)
+  color $color
+  background white url(../Images/background.jpg)
   overflow auto
   -webkit-tap-highlight-color transparent
+  -webkit-touch-callout none
+  -webkit-user-drag none
+  -webkit-user-select none
 
-div.content
-  position relative
-  margin 30px auto 0
-  width 95%
-
-h1
-  font-family "Helvetica Neue", Tahoma, sans-serif
-  font-weight 400
-  font-size 3em
-  margin 0.25em 0
-  color #4791d9
-  text-shadow rgba(255, 255, 255, 0.5) 1px 1px 1px
-  letter-spacing 2px
+@import 'Sprites/Default'

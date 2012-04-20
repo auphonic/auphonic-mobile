@@ -1,0 +1,27 @@
+#!/bin/bash
+JS="../App/JavaScript/Library"
+DIR=$(cd `dirname $0` && pwd)
+
+# Class-Extras
+packager build Class-Extras/* +use-only Class-Extras > "$DIR/$JS/PowerTools/Class-Extras.js"
+
+# History
+packager build History/* +use-only History > "$DIR/$JS/PowerTools/History.js"
+
+# Custom-Event
+packager build Custom-Event/* +use-only Custom-Event > "$DIR/$JS/PowerTools/Custom-Event.js"
+
+# Mootilities
+#packager build Mootilities/Accessor Mootilities/Listener +use-only Mootilities > "$DIR/$JS/PowerTools/Mootilities.js"
+
+# Mobile
+packager build Mobile/Browser.Mobile Mobile/Click Mobile/Swipe Mobile/Mouse +use-only Mobile > "$DIR/$JS/PowerTools/Mobile.js"
+
+# EventStack
+#packager build EventStack/* +use-only EventStack > "$DIR/$JS/PowerTools/EventStack.js"
+
+# Form AutoGrow
+#packager build Form-AutoGrow/* +use-only Form-AutoGrow > "$DIR/$JS/PowerTools/Forms/Form.AutoGrow.js"
+
+## MooTools Core
+packager build Element.Delegation Class.Extras +use-only Core -blocks 1.2compat 1.3compat ltIE9 ltIE8 !ES5 ltFF4 > "$DIR/$JS/MooTools/Core.js"
