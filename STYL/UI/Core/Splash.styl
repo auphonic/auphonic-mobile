@@ -1,0 +1,12 @@
+@import 'mixin/expand'
+
+div.splash
+  z-index 20
+  expand()
+
+  transition-property transform
+  transition-duration 500ms
+  transform translate3d(0, 0, 0)
+
+  &.fade
+    transform translate3d(0, -100%, 0)

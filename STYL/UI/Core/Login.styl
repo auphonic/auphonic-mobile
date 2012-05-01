@@ -1,7 +1,23 @@
+@import 'nib'
+@import 'mixin/expand'
+
 div.login
-  z-index 20
-  position absolute
-  top 0
-  left 0
-  bottom 0
-  right 0
+  z-index 21
+  expand()
+
+  form
+    > div
+      box-shadow 0px 3px 8px #999
+      width 90%
+      margin 196px auto 0
+
+    input[type=submit]
+      margin 20px auto 0
+      width 100px
+
+  transition-property transform
+  transition-duration 500ms
+  transform translate3d(0, 0, 0)
+
+  &.fade
+    transform translate3d(0, -100%, 0)
