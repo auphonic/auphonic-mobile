@@ -37,8 +37,9 @@
 		3D026A0D154F699F001E8BB0 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 3D026A0C154F699F001E8BB0 /* AppDelegate.m */; };
 		3D026A10154F699F001E8BB0 /* MainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3D026A0F154F699F001E8BB0 /* MainViewController.m */; };
 		3D026A12154F699F001E8BB0 /* MainViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3D026A11154F699F001E8BB0 /* MainViewController.xib */; };
-		3D026A16154F699F001E8BB0 /* verify.sh in Resources */ = {isa = PBXBuildFile; fileRef = 3D026A15154F699F001E8BB0 /* verify.sh */; };
 		3D5142B5154F6AB300C613F7 /* App in Resources */ = {isa = PBXBuildFile; fileRef = 3D5142B4154F6AB300C613F7 /* App */; };
+		3D6970981550083E004363E7 /* Default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3D6970971550083E004363E7 /* Default@2x.png */; };
+		3D69709A15500848004363E7 /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = 3D69709915500848004363E7 /* Default.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -80,6 +81,8 @@
 		3D026A14154F699F001E8BB0 /* README */ = {isa = PBXFileReference; lastKnownFileType = text; name = README; path = Plugins/README; sourceTree = "<group>"; };
 		3D026A15154F699F001E8BB0 /* verify.sh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; path = verify.sh; sourceTree = "<group>"; };
 		3D5142B4154F6AB300C613F7 /* App */ = {isa = PBXFileReference; lastKnownFileType = folder; name = App; path = ../App; sourceTree = "<group>"; };
+		3D6970971550083E004363E7 /* Default@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default@2x.png"; sourceTree = "<group>"; };
+		3D69709915500848004363E7 /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Default.png; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -117,6 +120,8 @@
 		3D0269B2154F699F001E8BB0 = {
 			isa = PBXGroup;
 			children = (
+				3D69709D15500908004363E7 /* Default.png */,
+				3D69709B15500900004363E7 /* Default@2x.png */,
 				3D5142B4154F6AB300C613F7 /* App */,
 				3D0269DE154F699F001E8BB0 /* Auphonic */,
 				3D0269C3154F699F001E8BB0 /* Frameworks */,
@@ -274,7 +279,6 @@
 				3D0269BB154F699F001E8BB0 /* Resources */,
 				3D0269BC154F699F001E8BB0 /* Sources */,
 				3D0269BD154F699F001E8BB0 /* Frameworks */,
-				3D0269BE154F699F001E8BB0 /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -331,28 +335,13 @@
 				3D026A07154F699F001E8BB0 /* Capture.bundle in Resources */,
 				3D026A09154F699F001E8BB0 /* Cordova.plist in Resources */,
 				3D026A12154F699F001E8BB0 /* MainViewController.xib in Resources */,
-				3D026A16154F699F001E8BB0 /* verify.sh in Resources */,
 				3D5142B5154F6AB300C613F7 /* App in Resources */,
+				3D6970981550083E004363E7 /* Default@2x.png in Resources */,
+				3D69709A15500848004363E7 /* Default.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
-
-/* Begin PBXShellScriptBuildPhase section */
-		3D0269BE154F699F001E8BB0 /* ShellScript */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/bash;
-			shellScript = "\n\t\t\t\t\t\t\t\tchmod 755 \"$PROJECT_DIR/$PROJECT_NAME/verify.sh\"\n\t\t\t\t\t\t\t\t\"$PROJECT_DIR/$PROJECT_NAME/verify.sh\"\n\t\t\t\t\t";
-		};
-/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		3D0269B9154F699F001E8BB0 /* Sources */ = {
@@ -436,11 +425,12 @@
 					"$(inherited)",
 				);
 				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_THUMB_SUPPORT = NO;
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 3.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 4.0;
 				SDKROOT = iphoneos;
 			};
 			name = Debug;
@@ -456,11 +446,12 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_THUMB_SUPPORT = NO;
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 3.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 4.0;
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;
 			};
@@ -479,7 +470,9 @@
 					"DEBUG=1,",
 					"CORDOVA_FRAMEWORK=1",
 				);
+				GCC_THUMB_SUPPORT = NO;
 				INFOPLIST_FILE = "Auphonic/Auphonic-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 4.0;
 				OTHER_LDFLAGS = (
 					"-weak_framework",
 					UIKit,
@@ -491,7 +484,7 @@
 					/usr/lib/libSystem.B.dylib,
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -509,7 +502,9 @@
 					"NDEBUG=1,",
 					"CORDOVA_FRAMEWORK=1",
 				);
+				GCC_THUMB_SUPPORT = NO;
 				INFOPLIST_FILE = "Auphonic/Auphonic-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 4.0;
 				OTHER_LDFLAGS = (
 					"-weak_framework",
 					UIKit,
@@ -521,7 +516,7 @@
 					/usr/lib/libSystem.B.dylib,
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 				VALIDATE_PRODUCT = YES;
 				WRAPPER_EXTENSION = app;
 			};
