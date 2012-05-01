@@ -12,46 +12,58 @@
   <link rel='stylesheet' href='CSS/HR.css' media='only screen and (-moz-min-device-pixel-ratio: 2), only screen and (-o-min-device-pixel-ratio: 2/1), only screen and (-webkit-min-device-pixel-ratio: 2), only screen and (min-device-pixel-ratio: 2)' />
 </head>
 <body>
-<div id="login" class="login hidden"></div>
 
-<div class="footer hidden">
-  <a href="/production/" class="production">
-    <span></span>
-  </a>
-  <a href="/preset/" class="preset">
-    <span></span>
-  </a>
-  <a href="/record/" class="microphone">
-    <span></span>
-  </a>
-  <a href="/settings/" class="settings">
-    <span></span>
-  </a>
+<div id="splash" class="splash"></div>
+<div id="login" class="login hidden">
+  <form id="loginAction">
+    <div class="formcontent">
+      <input type="text" name="username" placeholder="email or username" />
+      <input type="password" name="password" placeholder="password" />
+    </div>
+    <input type="submit" value="Login" />
+  </form>
 </div>
 
-<div id="container" class="container hidden">
-  <h1>A List</h1>
-  <ul>
-    <li><a href="#">List Item List Item List Item List Item List Item List Item List Item</a></li>
-    <li><a href="#" class="arrow"><span></span>A cool Podcast</a></li>
-    <li><a href="#" class="arrow"><span></span>Another awesome list item with a really long text</a></li>
-  </ul>
-  <h1>Auphonic</h1>
-  <div class="content">
-    <a id="record" href="#">record</a>
-    <a id="play" href="#" style="display: none;">play</a>
-    <div id="counter"></div>
+<div id="main" class="hidden">
+  <div class="footer">
+    <a href="/production/" class="production">
+      <span></span>
+    </a>
+    <a href="/preset/" class="preset">
+      <span></span>
+    </a>
+    <a href="/record/" class="microphone">
+      <span></span>
+    </a>
+    <a href="/settings/" class="settings">
+      <span></span>
+    </a>
+  </div>
 
-    <p>Oh hey!</p>
-    <p>Hey Ho, let's go!</p>
-    <p>Oh hey!</p>
-    <p>Hey Ho, let's go!</p>
-    <p>Oh hey!</p>
-    <p>Hey Ho, let's go!</p>
-    <p>Oh hey!</p>
-    <p>Hey Ho, let's go!</p>
-    <p>Oh hey!</p>
-    <p>Hey Ho, let's go!</p>
+  <div id="container" class="container">
+    <h1>A List</h1>
+    <ul>
+      <li><a href="#">List Item List Item List Item List Item List Item List Item List Item</a></li>
+      <li><a href="#" class="arrow"><span></span>A cool Podcast</a></li>
+      <li><a href="#" class="arrow"><span></span>Another awesome list item with a really long text</a></li>
+    </ul>
+    <h1>Auphonic</h1>
+    <div class="content">
+      <a id="record" href="#">record</a>
+      <a id="play" href="#" style="display: none;">play</a>
+      <div id="counter"></div>
+
+      <p>Oh hey!</p>
+      <p>Hey Ho, let's go!</p>
+      <p>Oh hey!</p>
+      <p>Hey Ho, let's go!</p>
+      <p>Oh hey!</p>
+      <p>Hey Ho, let's go!</p>
+      <p>Oh hey!</p>
+      <p>Hey Ho, let's go!</p>
+      <p>Oh hey!</p>
+      <p>Hey Ho, let's go!</p>
+    </div>
   </div>
 </div>
 
@@ -66,6 +78,8 @@
 <script type="text/javascript" src="JavaScript/Library/PowerTools/Mootilities.js"></script>
 
 <script type="text/javascript" src="JavaScript/Library/Extensions/Element.js"></script>
+<script type="text/javascript" src="JavaScript/Library/Extensions/Element.Transition.js"></script>
+<script type="text/javascript" src="JavaScript/Library/Extensions/Form.js"></script>
 <script type="text/javascript" src="JavaScript/Library/Extensions/Router.js"></script>
 
 
@@ -73,9 +87,10 @@
 
 <script type="text/javascript" src="JavaScript/UI/Main.js"></script>
 
-<script type="text/javascript" src="JavaScript/Controllers/Main.js"></script>
-<script type="text/javascript" src="JavaScript/Controllers/Login.js"></script>
+<script type="text/javascript" src="JavaScript/API/API.js"></script>
 
+<script type="text/javascript" src="JavaScript/Controllers/Controller.js"></script>
+<script type="text/javascript" src="JavaScript/Controllers/Login.js"></script>
 
 <script tpye="text/javascript" src="JavaScript/App.js"></script>
 
