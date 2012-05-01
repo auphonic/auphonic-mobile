@@ -6,8 +6,8 @@ DIR=$(cd `dirname $0` && pwd)
 packager build Class-Extras/* +use-only Class-Extras > "$DIR/$JS/PowerTools/Class-Extras.js"
 
 # History
-packager build History/* +use-only History > "$DIR/$JS/PowerTools/History.js"
-
+packager build History/History +use-only History > "$DIR/$JS/PowerTools/History.js"
+  
 # Custom-Event
 packager build Custom-Event/* +use-only Custom-Event > "$DIR/$JS/PowerTools/Custom-Event.js"
 
