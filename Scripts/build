@@ -12,7 +12,7 @@ packager build History/* +use-only History > "$DIR/$JS/PowerTools/History.js"
 packager build Custom-Event/* +use-only Custom-Event > "$DIR/$JS/PowerTools/Custom-Event.js"
 
 # Mootilities
-#packager build Mootilities/Accessor Mootilities/Listener +use-only Mootilities > "$DIR/$JS/PowerTools/Mootilities.js"
+packager build Mootilities/Accessor +use-only Mootilities > "$DIR/$JS/PowerTools/Mootilities.js"
 
 # Mobile
 packager build Mobile/Browser.Mobile Mobile/Click Mobile/Swipe Mobile/Mouse +use-only Mobile > "$DIR/$JS/PowerTools/Mobile.js"
@@ -25,3 +25,6 @@ packager build Mobile/Browser.Mobile Mobile/Click Mobile/Swipe Mobile/Mouse +use
 
 ## MooTools Core
 packager build Element.Delegation Class.Extras +use-only Core -blocks 1.2compat 1.3compat ltIE9 ltIE8 !ES5 ltFF4 > "$DIR/$JS/MooTools/Core.js"
+
+## MooTools More
+#packager build More/Element.Event.Pseudos +use-only More -blocks 1.2compat 1.3compat > "$DIR/$JS/MooTools/More.js"

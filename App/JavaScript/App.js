@@ -1,14 +1,26 @@
 (function() {
 
+var router = new Router();
+
+router.add('login', Controller.lookup('login'));
+
+History.addEvent('change', function(url) {
+  console.log('hey', url);
+  router.parse(url);
+});
+
 var boot = function() {
   
   window.scrollTo(0, 1);
   (new ActiveState()).attach();
   
+  var isLoggedIn = false;
+  if (!isLoggedIn) History.push('login');
+
   var counter = 0;
   var isRecording = false;
-  var button = document.getElementById('record');
-  var play = document.getElementById('play');
+  var button = document.id('record');
+  var play = document.id('play');
   var timer, media, fs;
     
   var success = function() {
@@ -17,11 +29,11 @@ var boot = function() {
   };
 
   var error = function() {
-    console.log('error');
+    alert('error');
   };
 
   var updateTime = function() {
-    document.getElementById('counter').innerText = (++counter) + ' seconds';
+    document.id('counter').innerText = (++counter) + ' seconds';
   };
   
   var successFolderCreation = function(folder) {
@@ -34,7 +46,7 @@ var boot = function() {
       media.stopRecord();
       isRecording = false;
       clearInterval(timer);
-      document.getElementById('counter').innerText = '';
+      document.id('counter').innerText = '';
       return;
     }
 

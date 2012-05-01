@@ -7,17 +7,25 @@
 @import 'UI/Core/Footer'
 @import 'UI/Core/Content'
 @import 'UI/Core/Lists'
+@import 'UI/Core/Login'
 
 body
   font-family $font
   font-weight normal
   font-size $font-size
   color $color
-  background white url(../Images/background.jpg)
+  background white url(../Images/Background.jpg)
   overflow auto
   -webkit-tap-highlight-color transparent
   -webkit-touch-callout none
   -webkit-user-drag none
   -webkit-user-select none
 
+body.lock
+  overflow hidden
+
+.hidden
+  display none
+
 @import 'Sprites/Default'
+@import 'UI/Default'
