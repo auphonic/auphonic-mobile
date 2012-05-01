@@ -31,13 +31,15 @@ ActiveState.prototype = {
 
   touchstart: function(event) {
     if (event.touches.length > 1) return;
+
+    this.cancel();
     
     var node = event.target;
     var current;
     if (node.nodeType == 3) node = node.parentNode;
     
     while (node && node.getAttribute) {
-      if (node.webkitMatchesSelector('a')) {
+      if (node.webkitMatchesSelector('a, input')) {
         current = node;
         break;
       }
@@ -47,7 +49,10 @@ ActiveState.prototype = {
     
     if (!current) return;
     
-    current.addClass(this.className);
+    // on iOS, scrolling prevents redraws. We delay the addClass so the highlight does not
+    // take effect before a scroll is likely to happen and the active state is not stuck
+    // during scroll.
+    this.timer = this.highlight.delay(75, this);
     this.current = current;
     this.start = event.touches[0].pageY;
   },
@@ -71,6 +76,11 @@ ActiveState.prototype = {
   cancel: function() {
     if (this.current) this.current.removeClass(this.className);
     this.current = null;
+    clearTimeout(this.timer);
+  },
+
+  highlight: function() {
+    if (this.current) this.current.addClass(this.className);
   }
 
 };
