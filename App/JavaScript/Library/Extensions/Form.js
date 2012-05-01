@@ -21,7 +21,7 @@ this.Form = new Class({
 	submit: function(event) {
     if (event) event.preventDefault();
 
-    if (window.activeElement) window.activeElement.blur();
+    if (document.activeElement) document.activeElement.blur();
     API.call(this.action, this.element.toQueryString());
   }
 
