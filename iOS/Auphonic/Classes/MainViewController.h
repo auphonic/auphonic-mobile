@@ -21,7 +21,7 @@
 //  MainViewController.h
 //  Auphonic
 //
-//  Created by Christoph Pojer on 4/19/12.
+//  Created by Christoph Pojer on 5/1/12.
 //  Copyright __MyCompanyName__ 2012. All rights reserved.
 //
 

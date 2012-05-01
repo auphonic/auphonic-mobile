@@ -21,7 +21,7 @@
 //  MainViewController.h
 //  Auphonic
 //
-//  Created by Christoph Pojer on 4/19/12.
+//  Created by Christoph Pojer on 5/1/12.
 //  Copyright __MyCompanyName__ 2012. All rights reserved.
 //
 
@@ -66,6 +66,14 @@
     // Return YES for supported orientations
     return [super shouldAutorotateToInterfaceOrientation:interfaceOrientation];
 }
+
+/* Comment out the block below to over-ride */
+/*
+- (CDVCordovaView*) newCordovaViewWithFrame:(CGRect)bounds
+{
+    return[super newCordovaViewWithFrame:bounds];
+}
+*/
 
 /* Comment out the block below to over-ride */
 /*
