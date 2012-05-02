@@ -1,6 +1,20 @@
 (function() {
 
-API.on('login/submit').addEvents({
+var spinner, children;
+
+API.on('login/submit', function() {
+  if (!spinner) spinner = new Spinner({
+    lines: 12,
+    length: 10,
+    width: 7,
+    radius: 13,
+    trail: 30,
+    color: '#fff'
+  });
+
+  children = document.id('login').getChildren().dispose();
+  spinner.spin(login);
+}).addEvents({
 
   success: function() {
     document.id('main').show();
@@ -8,7 +22,7 @@ API.on('login/submit').addEvents({
     var login = document.id('login');
     var splash = document.id('splash');
 
-    login.addClass('fade').addEvent('transformComplete', function() {
+    login.empty().addClass('fade').addEvent('transformComplete', function() {
       login.hide();
       splash.hide();
     });
@@ -18,7 +32,8 @@ API.on('login/submit').addEvents({
   },
 
   error: function() {
-
+    var login = document.id('login');
+    login.empty().adopt(children);
   }
 
 });

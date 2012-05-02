@@ -22,7 +22,7 @@ this.Form = new Class({
     if (event) event.preventDefault();
 
     if (document.activeElement) document.activeElement.blur();
-    API.call(this.action, this.element.toQueryString());
+    API.call(this.action, [this.element.toQueryString()]);
   }
 
 });
