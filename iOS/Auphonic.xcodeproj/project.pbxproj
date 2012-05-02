@@ -38,8 +38,6 @@
 		3D026A10154F699F001E8BB0 /* MainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3D026A0F154F699F001E8BB0 /* MainViewController.m */; };
 		3D026A12154F699F001E8BB0 /* MainViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3D026A11154F699F001E8BB0 /* MainViewController.xib */; };
 		3D5142B5154F6AB300C613F7 /* App in Resources */ = {isa = PBXBuildFile; fileRef = 3D5142B4154F6AB300C613F7 /* App */; };
-		3D6970981550083E004363E7 /* Default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3D6970971550083E004363E7 /* Default@2x.png */; };
-		3D69709A15500848004363E7 /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = 3D69709915500848004363E7 /* Default.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -81,8 +79,6 @@
 		3D026A14154F699F001E8BB0 /* README */ = {isa = PBXFileReference; lastKnownFileType = text; name = README; path = Plugins/README; sourceTree = "<group>"; };
 		3D026A15154F699F001E8BB0 /* verify.sh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; path = verify.sh; sourceTree = "<group>"; };
 		3D5142B4154F6AB300C613F7 /* App */ = {isa = PBXFileReference; lastKnownFileType = folder; name = App; path = ../App; sourceTree = "<group>"; };
-		3D6970971550083E004363E7 /* Default@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default@2x.png"; sourceTree = "<group>"; };
-		3D69709915500848004363E7 /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Default.png; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -120,8 +116,6 @@
 		3D0269B2154F699F001E8BB0 = {
 			isa = PBXGroup;
 			children = (
-				3D69709D15500908004363E7 /* Default.png */,
-				3D69709B15500900004363E7 /* Default@2x.png */,
 				3D5142B4154F6AB300C613F7 /* App */,
 				3D0269DE154F699F001E8BB0 /* Auphonic */,
 				3D0269C3154F699F001E8BB0 /* Frameworks */,
@@ -336,8 +330,6 @@
 				3D026A09154F699F001E8BB0 /* Cordova.plist in Resources */,
 				3D026A12154F699F001E8BB0 /* MainViewController.xib in Resources */,
 				3D5142B5154F6AB300C613F7 /* App in Resources */,
-				3D6970981550083E004363E7 /* Default@2x.png in Resources */,
-				3D69709A15500848004363E7 /* Default.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

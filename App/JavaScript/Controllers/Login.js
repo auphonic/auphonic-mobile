@@ -27,8 +27,6 @@ API.on('login/submit', function() {
       splash.hide();
     });
     splash.addClass('fade');
-
-    UI.unlock();
   },
 
   error: function() {
@@ -44,7 +42,6 @@ Controller.define('/login', function() {
 
   new Form(document.id('loginAction'), 'login/submit');
 
-  UI.lock();
   login.show();
 
 });

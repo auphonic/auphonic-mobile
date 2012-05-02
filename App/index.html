@@ -14,7 +14,7 @@
 <body>
 
 <div id="splash" class="splash"></div>
-<div id="login" class="login hidden">
+<div id="login" class="login hidden prevent">
   <form id="loginAction">
     <div class="formcontent">
       <input type="text" name="username" placeholder="email or username" autocapitalize="off" />
@@ -25,7 +25,7 @@
 </div>
 
 <div id="main" class="hidden">
-  <div class="footer">
+  <footer>
     <a href="/production" class="production">
       <span></span>
     </a>
@@ -38,27 +38,33 @@
     <a href="/settings" class="settings">
       <span></span>
     </a>
-  </div>
+  </footer>
 
   <div id="container" class="container">
-    <h1>A List</h1>
-    <ul>
-      <li><a href="#">List Item List Item List Item List Item List Item List Item List Item</a></li>
-      <li><a href="#" class="arrow"><span></span>A cool Podcast</a></li>
-      <li><a href="#" class="arrow"><span></span>Another awesome list item with a really long text</a></li>
-    </ul>
-    <h1>Auphonic</h1>
-    <div class="content">
-      <p>Oh hey!</p>
-      <p>Hey Ho, let's go!</p>
-      <p>Oh hey!</p>
-      <p>Hey Ho, let's go!</p>
-      <p>Oh hey!</p>
-      <p>Hey Ho, let's go!</p>
-      <p>Oh hey!</p>
-      <p>Hey Ho, let's go!</p>
-      <p>Oh hey!</p>
-      <p>Hey Ho, let's go!</p>
+    <div class="panel vflex scrolling">
+      <div class="vflex scrolling">
+        <div class="panel-content vflex">
+          <h1>A List</h1>
+          <ul>
+            <li><a href="#">List Item List Item List Item List Item List Item List Item List Item</a></li>
+            <li><a href="#" class="arrow"><span></span>A cool Podcast</a></li>
+            <li><a href="#" class="arrow"><span></span>Another awesome list item with a really long text</a></li>
+          </ul>
+          <h1>Auphonic</h1>
+          <div class="content">
+            <p>Oh hey!</p>
+            <p>Hey Ho, let's go!</p>
+            <p>Oh hey!</p>
+            <p>Hey Ho, let's go!</p>
+            <p>Oh hey!</p>
+            <p>Hey Ho, let's go!</p>
+            <p>Oh hey!</p>
+            <p>Hey Ho, let's go!</p>
+            <p>Oh hey!</p>
+            <p>Hey Ho, let's go!</p>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </div>
@@ -82,8 +88,6 @@
 <script type="text/javascript" src="JavaScript/Library/Extensions/Slick.js"></script>
 
 <script tpye="text/javascript" src="JavaScript/Library/Browser/ActiveState.js"></script>
-
-<script type="text/javascript" src="JavaScript/UI/Main.js"></script>
 
 <script type="text/javascript" src="JavaScript/API/API.js"></script>
 
