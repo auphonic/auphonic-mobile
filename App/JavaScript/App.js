@@ -12,7 +12,7 @@ var boot = function() {
   var isLoggedIn = false;
   // Browser bug: prevent this from firing twice in Chrome
   if (!isLoggedIn) setTimeout(function() {
-    History.push('login');
+    History.push('/login');
   }, 100);
 
   // TODO make this work with DOM updates

@@ -13,7 +13,7 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "3D0269BF154F699F001E8BB0"
+               BlueprintIdentifier = "3D67B52C1551E22100876377"
                BuildableName = "Auphonic.app"
                BlueprintName = "Auphonic"
                ReferencedContainer = "container:Auphonic.xcodeproj">
@@ -31,7 +31,7 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "3D0269BF154F699F001E8BB0"
+            BlueprintIdentifier = "3D67B52C1551E22100876377"
             BuildableName = "Auphonic.app"
             BlueprintName = "Auphonic"
             ReferencedContainer = "container:Auphonic.xcodeproj">
@@ -50,7 +50,7 @@
       <BuildableProductRunnable>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "3D0269BF154F699F001E8BB0"
+            BlueprintIdentifier = "3D67B52C1551E22100876377"
             BuildableName = "Auphonic.app"
             BlueprintName = "Auphonic"
             ReferencedContainer = "container:Auphonic.xcodeproj">
@@ -68,7 +68,7 @@
       <BuildableProductRunnable>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "3D0269BF154F699F001E8BB0"
+            BlueprintIdentifier = "3D67B52C1551E22100876377"
             BuildableName = "Auphonic.app"
             BlueprintName = "Auphonic"
             ReferencedContainer = "container:Auphonic.xcodeproj">
