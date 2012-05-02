@@ -1,19 +1,5 @@
 (function() {
 
-var router = new Router();
-
-router.add('/login', Controller.lookup('login'));
-
-var baseURL = '/Thesis/App/';
-var baseRegex = /^\/Thesis\/App\//;
-History.addEvent('change', function(url) {
-  if (baseRegex.test(url)) url = url.substr(baseURL.length);
-  if (!(/^\//).test(url)) url = '/' + url;
-
-  console.log('going to', url);
-  router.parse(url);
-});
-
 var boot = function() {
 
   window.scrollTo(0, 1);

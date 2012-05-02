@@ -38,7 +38,7 @@ API.on('login/submit', function() {
 
 });
 
-Controller.define('login', function() {
+Controller.define('/login', function() {
 
   var login = document.id('login');
 
