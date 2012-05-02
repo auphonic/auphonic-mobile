@@ -949,10 +949,11 @@ module.exports = function() {
     // commands to execute, unless the queue is currently being flushed, in
     // which case the command will be picked up without notification.
     if (cordova.commandQueue.length == 1 && !cordova.commandQueueFlushing) {
-        if (!gapBridge) {
+        /*if (!gapBridge) {
             createGapBridge();
         }
-        gapBridge.src = "gap://ready";
+        gapBridge.src = "gap://ready";*/
+        location = "gap://ready";
     }
 };
 
