@@ -36,12 +36,12 @@ var Route = new Class({
     this.normalizer = fn;
     return this;
   },
-  
+
   setGreedy: function(value) {
     this._greedy = !!value;
     return this;
   },
-  
+
   isGreedy: function() {
     return this._greedy;
   },

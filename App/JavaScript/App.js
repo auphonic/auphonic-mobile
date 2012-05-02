@@ -10,11 +10,11 @@ var boot = function() {
   if (!isLoggedIn) setTimeout(function() {
     History.push('login');
   }, 100);
-  
+
   // TODO make this work with updates
   document.getElements('a:internal').addEvent('click', function(event) {
     event.preventDefault();
-    
+
     History.push(this.get('href'));
   });
 };
