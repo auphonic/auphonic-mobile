@@ -76,7 +76,6 @@
 		3D67B57C1551E22100876377 /* MainViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = MainViewController.m; path = Classes/MainViewController.m; sourceTree = "<group>"; };
 		3D67B57E1551E22100876377 /* MainViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = MainViewController.xib; path = Classes/MainViewController.xib; sourceTree = "<group>"; };
 		3D67B5811551E22100876377 /* README */ = {isa = PBXFileReference; lastKnownFileType = text; name = README; path = Plugins/README; sourceTree = "<group>"; };
-		3D67B5821551E22100876377 /* verify.sh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; path = verify.sh; sourceTree = "<group>"; };
 		3DEBA50C1551E44F00EE1B3B /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Default.png; sourceTree = "<group>"; };
 		3DEBA50F1551E45700EE1B3B /* Default@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default@2x.png"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -173,7 +172,6 @@
 				3D67B5531551E22100876377 /* Auphonic-Prefix.pch */,
 				3D67B5751551E22100876377 /* Cordova.plist */,
 				3D67B57E1551E22100876377 /* MainViewController.xib */,
-				3D67B5821551E22100876377 /* verify.sh */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
