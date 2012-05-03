@@ -35,6 +35,7 @@
 		3D67B57A1551E22100876377 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 3D67B5791551E22100876377 /* AppDelegate.m */; };
 		3D67B57D1551E22100876377 /* MainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3D67B57C1551E22100876377 /* MainViewController.m */; };
 		3D67B57F1551E22100876377 /* MainViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 3D67B57E1551E22100876377 /* MainViewController.xib */; };
+		3DE49AA2155336AB002C8E0D /* App in Resources */ = {isa = PBXBuildFile; fileRef = 3DE49AA1155336AB002C8E0D /* App */; };
 		3DEBA50D1551E44F00EE1B3B /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = 3DEBA50C1551E44F00EE1B3B /* Default.png */; };
 		3DEBA5101551E45700EE1B3B /* Default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3DEBA50F1551E45700EE1B3B /* Default@2x.png */; };
 /* End PBXBuildFile section */
@@ -76,6 +77,7 @@
 		3D67B57C1551E22100876377 /* MainViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = MainViewController.m; path = Classes/MainViewController.m; sourceTree = "<group>"; };
 		3D67B57E1551E22100876377 /* MainViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = MainViewController.xib; path = Classes/MainViewController.xib; sourceTree = "<group>"; };
 		3D67B5811551E22100876377 /* README */ = {isa = PBXFileReference; lastKnownFileType = text; name = README; path = Plugins/README; sourceTree = "<group>"; };
+		3DE49AA1155336AB002C8E0D /* App */ = {isa = PBXFileReference; lastKnownFileType = folder; name = App; path = ../App; sourceTree = "<group>"; };
 		3DEBA50C1551E44F00EE1B3B /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Default.png; sourceTree = "<group>"; };
 		3DEBA50F1551E45700EE1B3B /* Default@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default@2x.png"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -115,6 +117,7 @@
 		3D67B51F1551E22100876377 = {
 			isa = PBXGroup;
 			children = (
+				3DE49AA1155336AB002C8E0D /* App */,
 				3DEBA50F1551E45700EE1B3B /* Default@2x.png */,
 				3DEBA50C1551E44F00EE1B3B /* Default.png */,
 				3D67B54B1551E22100876377 /* Auphonic */,
@@ -328,6 +331,7 @@
 				3D67B57F1551E22100876377 /* MainViewController.xib in Resources */,
 				3DEBA50D1551E44F00EE1B3B /* Default.png in Resources */,
 				3DEBA5101551E45700EE1B3B /* Default@2x.png in Resources */,
+				3DE49AA2155336AB002C8E0D /* App in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

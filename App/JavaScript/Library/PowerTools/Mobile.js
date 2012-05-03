@@ -110,11 +110,6 @@ provides: Touch
 
 (function(){
 
-var preventDefault = function(event){
-	if (!event.target || event.target.tagName.toLowerCase() != 'select')
-		event.preventDefault();
-};
-
 var disabled;
 
 Element.defineCustomEvent('touch', {
@@ -122,7 +117,7 @@ Element.defineCustomEvent('touch', {
 	base: 'touchend',
 
 	condition: function(event){
-		if (disabled || event.targetTouches.length != 0) return false;
+		if (disabled || event.targetTouches.length !== 0) return false;
 
 		var touch = event.changedTouches[0],
 			target = document.elementFromPoint(touch.clientX, touch.clientY);
@@ -132,14 +127,6 @@ Element.defineCustomEvent('touch', {
 		} while (target && (target = target.parentNode));
 
 		return false;
-	},
-
-	onSetup: function(){
-		this.addEvent('touchstart', preventDefault);
-	},
-
-	onTeardown: function(){
-		this.removeEvent('touchstart', preventDefault);
 	},
 
 	onEnable: function(){
