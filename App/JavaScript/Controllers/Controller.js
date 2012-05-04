@@ -11,8 +11,7 @@ this.Controller = {
 };
 
 History.addEvent('change', function(url) {
-  if (!(/^\//).test(url)) url = '/' + url;
-  router.parse(url);
+  router.parse('/' + url.replace(/^\//, ''));
 });
 
 })();

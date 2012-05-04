@@ -1,11 +1,11 @@
 (function(push, onChange) {
 
 // Monkey Patching for dev.
-var baseURL = '/Thesis/App';
-var base = /^\/Thesis\/App\//;
-if (base.test(location.pathname)) {
+if (this.__DEV__) {
+  var baseURL = this.__baseURL;
+  var base = this.__base;
   History.push = function(url, title, state) {
-    push.call(this, baseURL + (!(/^\//).test(url) ? '/' : '') + url, title, state);
+    push.call(this, baseURL + url.replace(/^\//, ''), title, state);
   };
 
   History.onChange = function(url, state) {

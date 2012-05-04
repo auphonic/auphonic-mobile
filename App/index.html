@@ -8,6 +8,19 @@
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
 
+  <script type="text/javascript">
+
+  (function() {
+    this.__baseURL = '/Thesis/App/';
+    this.__base = /^\/Thesis\/App\//;
+    if (this.__base.test(location.pathname)) {
+      document.write('<base href="' + this.__baseURL + '" />');
+      this.__DEV__ = true;
+    }
+  })();
+
+  </script>
+
 	<link rel="stylesheet" media="all" type="text/css" href="CSS/Style.css" />
   <link rel='stylesheet' href='CSS/HR.css' media='only screen and (-moz-min-device-pixel-ratio: 2), only screen and (-o-min-device-pixel-ratio: 2/1), only screen and (-webkit-min-device-pixel-ratio: 2), only screen and (min-device-pixel-ratio: 2)' />
 </head>
