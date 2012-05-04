@@ -11,7 +11,8 @@ var boot = function() {
 
   var isLoggedIn = false;
   // Browser bug: prevent this from firing twice in Chrome
-  if (!isLoggedIn) setTimeout(function() {
+  if (isLoggedIn) UI.Chrome.show({immediate: true});
+  else setTimeout(function() {
     History.push('/login');
   }, 100);
 

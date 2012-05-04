@@ -12,21 +12,14 @@ API.on('login/submit', function() {
     color: '#fff'
   });
 
-  children = document.id('login').getChildren().dispose();
+  var login = document.id('login');
+  children = login.getChildren().dispose();
   spinner.spin(login);
 }).addEvents({
 
   success: function() {
-    document.id('main').show();
-
-    var login = document.id('login');
-    var splash = document.id('splash');
-
-    login.empty().addClass('fade').addEvent('transformComplete', function() {
-      login.hide();
-      splash.hide();
-    });
-    splash.addClass('fade');
+    document.id('login').empty();
+    UI.Chrome.show();
   },
 
   error: function() {

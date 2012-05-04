@@ -7,7 +7,7 @@ packager build Class-Extras/* +use-only Class-Extras > "$DIR/$JS/PowerTools/Clas
 
 # History
 packager build History/History +use-only History > "$DIR/$JS/PowerTools/History.js"
-  
+
 # Custom-Event
 packager build Custom-Event/* +use-only Custom-Event > "$DIR/$JS/PowerTools/Custom-Event.js"
 
@@ -27,4 +27,4 @@ packager build Mobile/Browser.Mobile Mobile/Click Mobile/Swipe Mobile/Mouse +use
 packager build Element.Delegation Class.Extras +use-only Core -blocks 1.2compat 1.3compat ltIE9 ltIE8 !ES5 ltFF4 > "$DIR/$JS/MooTools/Core.js"
 
 ## MooTools More
-#packager build More/Element.Event.Pseudos +use-only More -blocks 1.2compat 1.3compat > "$DIR/$JS/MooTools/More.js"
+packager build More/Element.Event.Pseudos +use-only More -blocks 1.2compat 1.3compat > "$DIR/$JS/MooTools/More.js"

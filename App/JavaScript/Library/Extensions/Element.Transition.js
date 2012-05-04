@@ -28,4 +28,22 @@ Element.defineCustomEvent('transitionStart', {
 
 });
 
+Element.implement('transition', function(options, fn) {
+	var isImmediate = options && options.immediate;
+
+	if (isImmediate) this.addClass('immediate');
+
+	(function() {
+		if (isImmediate) {
+			this.removeClass('immediate');
+			if (fn) fn.call(this);
+			return;
+		}
+
+		if (fn) this.addEvent('transitionComplete:once', fn);
+	}).delay(0, this);
+
+	return this;
+});
+
 })();
