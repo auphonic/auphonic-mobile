@@ -1,11 +1,12 @@
 @import 'nib'
+@import 'UI/Core/Footer'
 
 div.container
   position absolute
   left 0
   right 0
   top 0
-  bottom 40px
+  bottom $footer-height
 
   div.panel-content
     padding 10px
@@ -20,16 +21,3 @@ div.container
 
   &.left
     transform translate3d(-100%, 0, 0)
-
-div.content, div.formcontent, ul
-  padding 10px
-  margin 0 0 15px
-
-  overflow hidden
-
-  background #fff
-  border-radius 5px
-  box-shadow 0px 3px 8px #bcbcbc
-
-div.formcontent
-  padding 0
