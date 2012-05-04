@@ -4,6 +4,20 @@ var preventDefault = function(event) {
   event.preventDefault();
 };
 
+var click = function(event) {
+  event.preventDefault();
+
+  History.push(this.get('href'));
+};
+
+UI.register('.prevent, footer', function(elements) {
+  elements.addEvent('touchmove', preventDefault);
+});
+
+UI.register('a:internal', function(elements) {
+  elements.addEvent('click', click);
+});
+
 var boot = function() {
 
   window.scrollTo(0, 1);
@@ -16,15 +30,18 @@ var boot = function() {
     History.push('/login');
   }, 100);
 
-  // TODO make this work with DOM updates
-  document.getElement('footer').addEvent('touchmove', preventDefault);
-  document.getElements('.prevent').addEvent('touchmove', preventDefault);
+  UI.update();
 
-  document.getElements('a:internal').addEvent('click', function(event) {
-    event.preventDefault();
+  Views.set('Main', new View.Controller('main', {
+    templateId: 'container-template',
+    contentSelector: 'div.panel-content'
+  }));
 
-    History.push(this.get('href'));
-  });
+  Views.get('Main').push('default', new View.Object({
+    url: '/',
+    title: 'Home',
+    content: UI.render('default')
+  }));
 };
 
 var fired;

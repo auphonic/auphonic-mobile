@@ -1,9 +1,11 @@
 (function() {
 
-var UI = this.UI = {
+var UI = this.UI = new DynamicMatcher;
 
-
-
+UI.render = function(name, data) {
+  var template = Handlebars.compile(document.id(name + '-template').get('html'));
+  if (!data) data = '';
+  return template(typeof data == 'string' ? {content: data} : data);
 };
 
 var isVisible = false;
@@ -13,7 +15,7 @@ UI.Chrome = {
   show: function(options) {
     if (isVisible) return;
 
-    var main = document.id('main');
+    var main = document.id('ui');
     var login = document.id('login');
     var splash = document.id('splash');
 
@@ -29,7 +31,7 @@ UI.Chrome = {
   hide: function(options) {
     if (!isVisible) return;
 
-    var main = document.id('main');
+    var main = document.id('ui');
     var login = document.id('login');
     var splash = document.id('splash');
 
@@ -41,7 +43,7 @@ UI.Chrome = {
         isVisible = false;
         main.hide();
       }).removeClass('fade');
-    }).delay(0);
+    }).delay(10);
   }
 
 };

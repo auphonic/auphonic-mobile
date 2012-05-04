@@ -1,6 +1,10 @@
 (function() {
 
-var router = new Router();
+var router = new Router({
+  normalizeFn: function(req, vals) {
+    return [vals];
+  }
+});
 
 this.Controller = {
 

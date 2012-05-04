@@ -41,7 +41,7 @@ Element.implement('transition', function(options, fn) {
 		}
 
 		if (fn) this.addEvent('transitionComplete:once', fn);
-	}).delay(0, this);
+	}).delay(10, this);
 
 	return this;
 });

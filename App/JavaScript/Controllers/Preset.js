@@ -1,9 +1,12 @@
 (function() {
 
+var presets = null;
+var list = null;
+
 API.on('/preset').addEvents({
 
-  success: function(presets) {
-    presets = [
+  success: function(result) {
+    list = [
         {
             "outgoing": {
                 "basename": "base",
@@ -49,8 +52,16 @@ API.on('/preset').addEvents({
         }
     ];
 
-    var template = Handlebars.compile(document.id('preset-template').get('html'));
-    document.id('container').set('html', template({preset: presets}));
+    presets = {};
+    list.each(function(preset) {
+      presets[preset.uuid] = preset;
+    });
+
+    Views.get('Main').push('preset', new View.Object({
+      url: '/preset',
+      title: 'Presets',
+      content: UI.render('preset', {preset: list})
+    }));
   }
 
 });
@@ -58,6 +69,17 @@ API.on('/preset').addEvents({
 Controller.define('/preset', function() {
 
   API.call('/preset');
+
+});
+
+Controller.define('/preset/{uuid}', function(req) {
+
+  var preset = presets[req.uuid];
+  Views.get('Main').push('preset', new View.Object({
+    url: '/preset/' + preset.uuid,
+    title: preset.presetname,
+    content: UI.render('preset-detail', preset)
+  }));
 
 });
 

@@ -37,7 +37,7 @@
   </form>
 </div>
 
-<div id="main" class="hidden">
+<div id="ui" class="hidden">
   <footer>
     <a href="/production" class="production">
       <span></span>
@@ -53,29 +53,17 @@
     </a>
   </footer>
 
+  <div id="main">
+
+  </div>
+</div>
+
+<div id="container-template" class="hidden">
   <div class="container">
     <div class="panel vflex scrolling">
       <div class="vflex scrolling">
-        <div id="container" class="panel-content vflex">
-          <h1>A List</h1>
-          <ul>
-            <li><a href="#">List Item List Item List Item List Item List Item List Item List Item</a></li>
-            <li><a href="#" class="arrow"><span></span>A cool Podcast</a></li>
-            <li><a href="#" class="arrow"><span></span>Another awesome list item with a really long text</a></li>
-          </ul>
-          <h1>Auphonic</h1>
-          <div class="content">
-            <p>Oh hey!</p>
-            <p>Hey Ho, let's go!</p>
-            <p>Oh hey!</p>
-            <p>Hey Ho, let's go!</p>
-            <p>Oh hey!</p>
-            <p>Hey Ho, let's go!</p>
-            <p>Oh hey!</p>
-            <p>Hey Ho, let's go!</p>
-            <p>Oh hey!</p>
-            <p>Hey Ho, let's go!</p>
-          </div>
+        <div class="panel-content vflex">
+
         </div>
       </div>
     </div>
@@ -90,6 +78,7 @@
 <script tpye="text/javascript" src="JavaScript/Library/ThirdParty/Spinner.js"></script>
 <script tpye="text/javascript" src="JavaScript/Library/ThirdParty/Handlebars.js"></script>
 
+<script type="text/javascript" src="JavaScript/Library/PowerTools/DynamicMatcher.js"></script>
 <script type="text/javascript" src="JavaScript/Library/PowerTools/Class-Extras.js"></script>
 <script type="text/javascript" src="JavaScript/Library/PowerTools/Custom-Event.js"></script>
 <script type="text/javascript" src="JavaScript/Library/PowerTools/History.js"></script>
@@ -111,10 +100,37 @@
 <script type="text/javascript" src="JavaScript/Controllers/Preset.js"></script>
 <script type="text/javascript" src="JavaScript/Controllers/Record.js"></script>
 
+<script type="text/javascript" src="JavaScript/View/View.js"></script>
+<script type="text/javascript" src="JavaScript/View/View.Controller.js"></script>
+<script type="text/javascript" src="JavaScript/View/View.Stack.js"></script>
+<script type="text/javascript" src="JavaScript/View/View.Object.js"></script>
+
 <script tpye="text/javascript" src="JavaScript/UI/Main.js"></script>
 
 <script tpye="text/javascript" src="JavaScript/App.js"></script>
 <script tpye="text/javascript" src="JavaScript/Dev.js"></script>
+
+<script id="default-template" type="text/x-handlebars-template">
+  <h1>A List</h1>
+    <ul>
+      <li><a href="#">List Item List Item List Item List Item List Item List Item List Item</a></li>
+      <li><a href="#" class="arrow"><span></span>A cool Podcast</a></li>
+      <li><a href="#" class="arrow"><span></span>Another awesome list item with a really long text</a></li>
+    </ul>
+    <h1>Auphonic</h1>
+    <div class="content">
+      <p>Oh hey!</p>
+      <p>Hey Ho, lets go!</p>
+      <p>Oh hey!</p>
+      <p>Hey Ho, lets go!</p>
+      <p>Oh hey!</p>
+      <p>Hey Ho, lets go!</p>
+      <p>Oh hey!</p>
+      <p>Hey Ho, lets go!</p>
+      <p>Oh hey!</p>
+      <p>Hey Ho, lets go!</p>
+    </div>
+</script>
 
 <script id="preset-template" type="text/x-handlebars-template">
   <h1>Presets</h1>
@@ -123,6 +139,13 @@
     <li><a href="preset/{{uuid}}" class="arrow"><span></span>{{presetname}}</a></li>
     {{/each}}
   <ul>
+</script>
+
+<script id="preset-detail-template" type="text/x-handlebars-template">
+  <h1>{{presetname}}</h1>
+  <div class="content">
+    {{metadata.album}}
+  </div>
 </script>
 
 </body>
