@@ -2,19 +2,16 @@
 
 var events = ['touchstart', 'touchmove', 'touchend', 'touchcancel'];
 
-var ActiveState = this.ActiveState = function(className) {
-  if (className) this.className = className;
-};
+this.ActiveState = new Class({
 
-ActiveState.prototype = {
-  
+  Implements: Class.Binds,
+
   className: 'active',
   current: null,
   start: 0,
-  
-  $bound: {},
-  bound: function(name) {
-    return this.$bound[name] ? this.$bound[name] : this.$bound[name] = this[name].bind(this);
+
+  initialize: function(className) {
+    if (className) this.className = className;
   },
 
   attach: function() {
@@ -33,22 +30,22 @@ ActiveState.prototype = {
     if (event.touches.length > 1) return;
 
     this.cancel();
-    
+
     var node = event.target;
     var current;
     if (node.nodeType == 3) node = node.parentNode;
-    
+
     while (node && node.getAttribute) {
       if (node.webkitMatchesSelector('a, input')) {
         current = node;
         break;
       }
-      
+
       node = node.parentNode;
     }
-    
+
     if (!current) return;
-    
+
     // on iOS, scrolling prevents redraws. We delay the addClass so the highlight does not
     // take effect before a scroll is likely to happen and the active state is not stuck
     // during scroll.
@@ -83,6 +80,6 @@ ActiveState.prototype = {
     if (this.current) this.current.addClass(this.className);
   }
 
-};
+});
 
 })();
