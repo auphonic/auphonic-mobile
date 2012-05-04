@@ -2,6 +2,9 @@
 JS="../App/JavaScript/Library"
 DIR=$(cd `dirname $0` && pwd)
 
+# DynamicMatcher
+packager build DynamicMatcher/* +use-only DynamicMatcher > "$DIR/$JS/PowerTools/DynamicMatcher.js"
+
 # Class-Extras
 packager build Class-Extras/* +use-only Class-Extras > "$DIR/$JS/PowerTools/Class-Extras.js"
 
