@@ -2,10 +2,12 @@
 
 var UI = this.UI = new DynamicMatcher;
 
+var cache = {};
+
 UI.render = function(name, data) {
-  var template = Handlebars.compile(document.id(name + '-template').get('html'));
+  if (!cache[name]) cache[name] = Handlebars.compile(document.id(name + '-template').get('html'));
   if (!data) data = '';
-  return template(typeof data == 'string' ? {content: data} : data);
+  return cache[name](typeof data == 'string' ? {content: data} : data);
 };
 
 var isVisible = false;
