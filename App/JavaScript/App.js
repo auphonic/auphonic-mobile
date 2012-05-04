@@ -9,7 +9,7 @@ var boot = function() {
   window.scrollTo(0, 1);
   (new ActiveState()).attach();
 
-  var isLoggedIn = false;
+  var isLoggedIn = true;
   // Browser bug: prevent this from firing twice in Chrome
   if (isLoggedIn) UI.Chrome.show({immediate: true});
   else setTimeout(function() {

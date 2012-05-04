@@ -24,7 +24,7 @@ provides: [Core, MooTools, Type, typeOf, instanceOf, Native]
 
 this.MooTools = {
 	version: '1.4.6dev',
-	build: '1f60b7dc649d4829f9c6e027ccc35e71229f6003'
+	build: 'bfab5ed6aff48e6f0e5bb655975793fc63015c57'
 };
 
 // typeOf, instanceOf
@@ -3057,7 +3057,7 @@ Element.Properties.html = {
 
 };
 
-var supportsHTML5Elements, supportsTableInnerHTML, supportsTRInnerHTML;
+var supportsHTML5Elements = true, supportsTableInnerHTML = true, supportsTRInnerHTML = true;
 
 
 

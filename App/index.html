@@ -40,10 +40,10 @@
     </a>
   </footer>
 
-  <div id="container" class="container">
+  <div class="container">
     <div class="panel vflex scrolling">
       <div class="vflex scrolling">
-        <div class="panel-content vflex">
+        <div id="container" class="panel-content vflex">
           <h1>A List</h1>
           <ul>
             <li><a href="#">List Item List Item List Item List Item List Item List Item List Item</a></li>
@@ -95,12 +95,22 @@
 
 <script type="text/javascript" src="JavaScript/Controllers/Controller.js"></script>
 <script type="text/javascript" src="JavaScript/Controllers/Login.js"></script>
+<script type="text/javascript" src="JavaScript/Controllers/Preset.js"></script>
 <script type="text/javascript" src="JavaScript/Controllers/Record.js"></script>
 
 <script tpye="text/javascript" src="JavaScript/UI/Main.js"></script>
 
 <script tpye="text/javascript" src="JavaScript/App.js"></script>
 <script tpye="text/javascript" src="JavaScript/Dev.js"></script>
+
+<script id="preset-template" type="text/x-handlebars-template">
+  <h1>Presets</h1>
+  <ul>
+    {{#each preset}}
+    <li><a href="preset/{{uuid}}" class="arrow"><span></span>{{presetname}}</a></li>
+    {{/each}}
+  <ul>
+</script>
 
 </body>
 </html>
