@@ -38,6 +38,9 @@
 </div>
 
 <div id="ui" class="hidden">
+  <header>
+    <h1><h1>
+  </header>
   <footer>
     <ul>
       <li><a href="/production" class="production"><span /></a></li>
@@ -127,7 +130,6 @@
 </script>
 
 <script id="preset-template" type="text/x-handlebars-template">
-  <h1>Presets</h1>
   <ul>
     {{#each preset}}
     <li><a href="preset/{{uuid}}" class="arrow"><span></span>{{presetname}}</a></li>
@@ -136,7 +138,6 @@
 </script>
 
 <script id="preset-detail-template" type="text/x-handlebars-template">
-  <h1>{{presetname}}</h1>
   <div class="content">
     {{metadata.album}}
   </div>

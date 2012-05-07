@@ -9,7 +9,8 @@ View.Controller = new Class({
 
   options: {
     templateId: null,
-    contentSelector: null
+    contentSelector: null,
+    headerSelector: null
   },
 
   initialize: function(element, options) {

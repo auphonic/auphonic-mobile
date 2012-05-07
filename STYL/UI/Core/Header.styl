@@ -1,0 +1,26 @@
+@import 'nib'
+
+$header-height = 40px
+
+header
+  z-index 10
+  position absolute
+  top 0
+  left 0
+  right 0
+  overflow hidden
+  height $header-height
+  overflow hidden
+
+  background-color #444
+  background-image linear-gradient(top, #555 0%, #333 100%)
+  border-bottom 1px solid rgba(0, 0, 0, 0.3)
+  box-shadow rgba(0, 0, 0, 0.1) 0 2px 2px
+
+  h1
+    margin 0
+    padding 0
+    height $header-height
+    line-height $header-height
+    color #fff
+    text-align center
