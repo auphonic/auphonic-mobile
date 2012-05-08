@@ -32,6 +32,9 @@ var boot = function() {
 
   UI.update();
 
+  // Prevent all clicks from working
+  window.addEventListener('click', preventDefault, false);
+
   Views.set('Main', new View.Controller('main', {
     templateId: 'container-template',
     contentSelector: 'div.panel-content',

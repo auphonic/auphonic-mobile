@@ -110,7 +110,7 @@ View.Controller = new Class({
 
   updateTitle: function() {
     var title = this._current.getCurrent().getTitle();
-    this.getTitleElement().set('text', title);
+    this.getTitleElement().set('text', title).set('title', title);
 
     return this;
   },

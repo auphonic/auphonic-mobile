@@ -1,6 +1,7 @@
 @import 'nib'
 
 $header-height = 40px
+$headline-offset = 2px
 
 header
   z-index 10
@@ -18,14 +19,27 @@ header
   box-shadow rgba(0, 0, 0, 0.1) 0 2px 2px
 
   h1
+    position relative
     margin 0
     padding 0
-    height $header-height
-    line-height $header-height
-    color #fff
+    height $header-height - (2 * $headline-offset)
+    line-height $header-height - (2 * $headline-offset)
+    color rgba(0, 0, 0, 0.3)
     text-align center
+    font-size 1.4em
+    font-weight bold
+
+    &:before
+      position absolute
+      top $headline-offset
+      left 0
+      right 0
+      text-align center
+      content attr(title)
+      color rgba(255, 255, 255, 1)
 
   a
+    z-index 11
     position absolute
     top 0
     bottom 0
