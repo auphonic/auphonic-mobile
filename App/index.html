@@ -94,6 +94,7 @@
 
 <script type="text/javascript" src="JavaScript/Controllers/Controller.js"></script>
 <script type="text/javascript" src="JavaScript/Controllers/Login.js"></script>
+<script type="text/javascript" src="JavaScript/Controllers/Production.js"></script>
 <script type="text/javascript" src="JavaScript/Controllers/Preset.js"></script>
 <script type="text/javascript" src="JavaScript/Controllers/Record.js"></script>
 
@@ -140,6 +141,21 @@
 <script id="preset-detail-template" type="text/x-handlebars-template">
   <div class="content">
     {{metadata.album}}
+  </div>
+</script>
+
+<script id="production-template" type="text/x-handlebars-template">
+  <ul>
+    {{#each production}}
+    <li><a href="production/{{uuid}}" class="arrow"><span></span>{{metadata.title}}</a></li>
+    {{/each}}
+  </ul>
+</script>
+
+<script id="production-detail-template" type="text/x-handlebars-template">
+  <div class="content">
+    <p>{{metadata.track}} - {{metadata.album}}<p/>
+    <p>{{metadata.license}}</p>
   </div>
 </script>
 
