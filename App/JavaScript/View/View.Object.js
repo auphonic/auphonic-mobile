@@ -6,7 +6,8 @@ View.Object = new Class({
     URL: null,
     title: null,
     content: null,
-    stack: null
+    stack: null,
+    scrollTop: 0
   },
 
   initialize: function(options) {
@@ -20,10 +21,9 @@ View.Object = new Class({
   render: function() {
     if (this.element) return this.element;
 
-    var stack = this.getStack();
-    if (!stack) return;
+    var view = this.getView();
+    if (!view) return;
 
-    var view = this.getStack().getView();
     var template = view.getOption('templateId');
     var selector = view.getOption('contentSelector');
 
@@ -31,6 +31,29 @@ View.Object = new Class({
     element.getElement(selector).set('html', this.getContent());
 
     return this.element = element;
+  },
+
+  rememberScroll: function() {
+    var view = this.getView();
+    var selector = view.getOption('scrollableSelector');
+    var scrollable = this.toElement().getElement(selector);
+    if (scrollable) this.setScrollTop(scrollable.scrollTop);
+
+    return this;
+  },
+
+  revertScrollTop: function() {
+    var view = this.getView();
+    var selector = view.getOption('scrollableSelector');
+    var scrollable = this.toElement().getElement(selector);
+    if (scrollable) scrollable.scrollTop = this.getScrollTop();
+
+    return this;
+  },
+
+  getView: function() {
+    var stack = this.getStack();
+    return stack && stack.getView();
   }
 
 });

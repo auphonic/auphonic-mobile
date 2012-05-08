@@ -145,7 +145,7 @@ var setter = function(name){
 
 var getter = function(name){
 	return function(){
-		return this[name] || null;
+		return this[name] !== undefined ? this[name] : null;
 	};
 };
 

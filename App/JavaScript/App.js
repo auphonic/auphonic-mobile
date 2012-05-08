@@ -45,6 +45,7 @@ var boot = function() {
     headerSelector: 'header',
     titleSelector: 'h1',
     backSelector: 'header a.back',
+    scrollableSelector: 'div.scrollable',
     onTransitionEnd: function() {
       var stack = this.getCurrent();
       var previous = stack && stack.getPrevious();

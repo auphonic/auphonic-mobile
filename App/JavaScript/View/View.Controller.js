@@ -12,6 +12,7 @@ View.Controller = new Class({
     headerSelector: null,
     titleSelector: null,
     backSelector: null,
+    scrollableSelector: null,
     onTransitionEnd: null
   },
 
@@ -48,15 +49,20 @@ View.Controller = new Class({
     var current = this._current;
     var isImmediate = rotated;
     var direction = current.hasURL(object.getURL()) ? 'left' : 'right';
-    var previous = !isImmediate && current.getCurrent().toElement();
+    var previous;
+    if (!isImmediate) previous = current.getCurrent().rememberScroll();
+
     current.push(object);
 
     this.updateBackButton();
-    UI.transition(this.element, previous, object.render(), {
+
+    UI.transition(this.element, previous && previous.toElement(), object.render(), {
       isImmediate: isImmediate,
       direction: direction,
       onTransitionEnd: this.bound('onTransitionEnd')
     });
+
+    object.revertScrollTop();
 
     var previousTitle = this.header.getElement(this.options.titleSelector);
     var title = this.createTitleElement(object.getTitle());
