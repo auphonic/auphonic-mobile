@@ -7,7 +7,7 @@ var preventDefault = function(event) {
 var click = function(event) {
   event.preventDefault();
 
-  this.getParent('ul').getElements('li a').removeClass('active');
+  this.getParent('ul').getElements('li a.active').removeClass('active');
   this.addClass('active');
 
   History.push(this.get('href'));
@@ -42,7 +42,8 @@ var boot = function() {
   Views.set('Main', new View.Controller('main', {
     templateId: 'container-template',
     contentSelector: 'div.panel-content',
-    titleSelector: 'header h1',
+    headerSelector: 'header',
+    titleSelector: 'h1',
     backSelector: 'header a.back',
     onTransitionEnd: function() {
       var stack = this.getCurrent();

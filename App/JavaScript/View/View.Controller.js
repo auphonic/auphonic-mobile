@@ -9,6 +9,7 @@ View.Controller = new Class({
   options: {
     templateId: null,
     contentSelector: null,
+    headerSelector: null,
     titleSelector: null,
     backSelector: null,
     onTransitionEnd: null
@@ -22,7 +23,7 @@ View.Controller = new Class({
 
     this.element = document.id(element);
     this.backElement = document.getElement(this.options.backSelector) || new Element('div');
-    this.titleElement = document.getElement(this.options.titleSelector) || new Element('div');
+    this.header = document.getElement(this.options.headerSelector);
 
     this.attach();
   },
@@ -46,15 +47,22 @@ View.Controller = new Class({
 
     var current = this._current;
     var isImmediate = rotated;
-    var hasURL = current.hasURL(object.getURL());
+    var direction = current.hasURL(object.getURL()) ? 'left' : 'right';
     var previous = !isImmediate && current.getCurrent().toElement();
     current.push(object);
 
-    this.updateBackButton().updateTitle();
+    this.updateBackButton();
     UI.transition(this.element, previous, object.render(), {
       isImmediate: isImmediate,
-      direction: hasURL ? 'left' : 'right',
+      direction: direction,
       onTransitionEnd: this.bound('onTransitionEnd')
+    });
+
+    var previousTitle = this.header.getElement(this.options.titleSelector);
+    var title = this.createTitleElement(object.getTitle());
+    UI.transition(this.header, previousTitle, title, {
+      isImmediate: isImmediate,
+      direction: direction
     });
 
     return this;
@@ -107,7 +115,7 @@ View.Controller = new Class({
       (function() {
         this.backButtonIsVisible = true;
         back.addClass('show');
-      }).delay(10, this);
+      }).delay(50, this);
     } else if (this.backButtonIsVisible) {
       back.transition((function() {
         this.backButtonIsVisible = false;
@@ -118,11 +126,8 @@ View.Controller = new Class({
     return this;
   },
 
-  updateTitle: function() {
-    var title = this._current.getCurrent().getTitle();
-    this.getTitleElement().set('text', title).set('title', title);
-
-    return this;
+  createTitleElement: function(title) {
+    return new Element(this.options.titleSelector).set('text', title).set('title', title);
   },
 
   getOption: function(name) {

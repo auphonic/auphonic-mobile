@@ -42,7 +42,7 @@ Element.implement('transition', function(options, fn) {
 		}
 
 		if (fn) this.addEvent('transitionComplete:once', fn);
-	}).delay(10, this);
+	}).delay(50, this);
 
 	return this;
 });

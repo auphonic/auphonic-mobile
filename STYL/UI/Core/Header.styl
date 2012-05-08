@@ -19,24 +19,51 @@ header
   box-shadow rgba(0, 0, 0, 0.1) 0 2px 2px
 
   h1
-    position relative
+    top 0
+    left 65px
+    right 65px
+
+    position absolute
     margin 0
     padding 0
     height $header-height - (2 * $headline-offset)
     line-height $header-height - (2 * $headline-offset)
     color rgba(0, 0, 0, 0.3)
     text-align center
-    font-size 1.4em
+    font-size 1.3em
     font-weight bold
+
+    text-overflow ellipsis
+    white-space nowrap
+    overflow hidden
 
     &:before
       position absolute
       top $headline-offset
       left 0
       right 0
-      text-align center
+
       content attr(title)
       color rgba(255, 255, 255, 1)
+      text-align center
+
+      text-overflow ellipsis
+      white-space nowrap
+      overflow hidden
+
+    transition-property opacity, -webkit-transform
+    transition-duration 400ms
+    opacity 1
+    transform translate3d(0, 0, 0)
+
+    &.right
+      opacity 0
+      transform translate3d(100%, 0, 0)
+
+    &.left
+      opacity 0
+      transform translate3d(-100%, 0, 0)
+
 
   a
     z-index 11
@@ -57,19 +84,20 @@ header
     text-decoration none
 
     &.button-left
-      left 10px
+      left 5px
 
     &.button-right
-      left 10px
+      left 5px
 
     .button
       position absolute
       top 5px
       bottom 5px
+      width 55px
       height $header-height - 10px
       line-height $header-height - 10px
 
       display block
-      padding 0 0.5em
+      padding 0
       min-width auto
 

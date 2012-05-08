@@ -21,16 +21,24 @@ Object.append(UI, {
 
     if (!isImmediate) current.addClass(direction);
     container.adopt(current);
-    if (!isImmediate) (function() {
-      UI.lock();
-      previous.transition(function() {
+
+    if (previous) {
+      if (isImmediate) previous.dispose();
+      else previous.transition(function() {
         this.dispose();
-      }).addClass(oppositeDirection);
-      current.transition(function() {
-        UI.unlock();
-        if (onTransitionEnd) onTransitionEnd();
-      }).removeClass(direction);
-    }).delay(10, this);
+      });
+    }
+
+    current.transition({immediate: isImmediate}, function() {
+      UI.unlock();
+      if (onTransitionEnd) onTransitionEnd();
+    });
+
+    (function() {
+      UI.lock();
+      if (previous) previous.addClass(oppositeDirection);
+      current.removeClass(direction);
+    }).delay(50, this); // Use a higher delay to account for dom insertion delays
 
     this.update(container);
   },
@@ -86,7 +94,7 @@ UI.Chrome = {
         isVisible = false;
         main.hide();
       }).removeClass('fade');
-    }).delay(10);
+    }).delay(50);
   }
 
 };
