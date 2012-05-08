@@ -14,13 +14,22 @@ View.Stack = new Class({
   },
 
   push: function(object){
+    var stack = this.stack;
+    // Check if the URL is already part of the stack and rewind if necessary
+    for (var index = 0; index < stack.length; index++) {
+      if (stack[index].getURL() == object.getURL()) {
+        this.rewind(index, object);
+        break;
+      }
+    }
+
     // This is also the case when you go back to a tab
     if (this.current && this.current.getURL() == object.getURL())
       return this; // Don't do anything
 
     object.setStack(this);
     this.current = object;
-    this.stack.push(this.current);
+    stack.push(this.current);
 
     return this;
   },
@@ -38,6 +47,19 @@ View.Stack = new Class({
     this.stack = [];
 
     return this;
+  },
+
+  rewind: function(index, object) {
+    this.stack[index] = object;
+    this.stack = this.stack.slice(0, index + 1);
+
+    return this;
+  },
+
+  hasURL: function(url) {
+    return this.stack.some(function(object) {
+      return (object.getURL() == url);
+    });
   },
 
   getLength: function(){

@@ -10,6 +10,21 @@ UI.render = function(name, data) {
   return cache[name](typeof data == 'string' ? {content: data} : data);
 };
 
+UI.transition = function(container, previous, current, options) {
+  var isImmediate = options && options.isImmediate;
+  var direction = (options && options.direction) || 'right';
+  var oppositeDirection = (direction == 'right' ? 'left' : 'right');
+
+  if (!isImmediate) current.addClass(direction);
+  container.adopt(current);
+  if (!isImmediate) (function() {
+    previous.addClass(oppositeDirection);
+    current.removeClass(direction);
+  }).delay(10);
+
+  this.update(container);
+};
+
 var isVisible = false;
 
 UI.Chrome = {

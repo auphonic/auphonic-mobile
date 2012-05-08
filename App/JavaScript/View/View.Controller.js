@@ -23,18 +23,15 @@ View.Controller = new Class({
     if (!this.isCurrent(stack)) this.rotate(stack);
 
     var current = this._current;
-    var transition = (current.getLength() > 0);
+    var isImmediate = (current.getLength() === 0);
+    var hasURL = current.hasURL(object.getURL());
+    var previous = !isImmediate && current.getCurrent().toElement();
     current.push(object);
 
-    var element = object.render();
-    if (transition) element.addClass('right');
-    this.element.adopt(element);
-    if (transition) (function() {
-      current.getPrevious().toElement().addClass('left');
-      element.removeClass('right');
-    }).delay(10, this);
-
-    UI.update(this.element);
+    UI.transition(this.element, previous, object.render(), {
+      isImmediate: isImmediate,
+      direction: hasURL ? 'left' : 'right'
+    });
   },
 
   rotate: function(stack) {
