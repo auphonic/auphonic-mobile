@@ -24,3 +24,38 @@ header
     line-height $header-height
     color #fff
     text-align center
+
+  a
+    position absolute
+    top 0
+    bottom 0
+
+    transition-duration 400ms
+    transition-property opacity, -webkit-transform
+
+    opacity 0
+    transform translate3d(100px, 0, 0)
+
+    &.show
+      opacity 1
+      transform translate3d(0, 0, 0)
+
+    text-decoration none
+
+    &.button-left
+      left 10px
+
+    &.button-right
+      left 10px
+
+    .button
+      position absolute
+      top 5px
+      bottom 5px
+      height $header-height - 10px
+      line-height $header-height - 10px
+
+      display block
+      padding 0 0.5em
+      min-width auto
+
