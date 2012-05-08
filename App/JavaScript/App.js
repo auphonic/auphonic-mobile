@@ -8,6 +8,7 @@ var click = function(event) {
   event.preventDefault();
 
   if (this.hasClass('selected')) return;
+  if (event.touches && event.touches.length > 1) return;
 
   this.addClass('selected');
   var lists = this.getParent('li').getSiblings().getElements('a.selected');
