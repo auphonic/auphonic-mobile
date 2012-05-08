@@ -11,6 +11,8 @@
   <script type="text/javascript">
 
   (function() {
+    this.__VERSION = '0.01';
+
     this.__baseURL = '/Thesis/App/';
     this.__base = /^\/Thesis\/App\//;
     if (this.__base.test(location.pathname)) {
@@ -92,6 +94,7 @@
 <script type="text/javascript" src="JavaScript/Controllers/Production.js"></script>
 <script type="text/javascript" src="JavaScript/Controllers/Preset.js"></script>
 <script type="text/javascript" src="JavaScript/Controllers/Record.js"></script>
+<script type="text/javascript" src="JavaScript/Controllers/Settings.js"></script>
 
 <script type="text/javascript" src="JavaScript/View/View.js"></script>
 <script type="text/javascript" src="JavaScript/View/View.Controller.js"></script>
@@ -125,6 +128,16 @@
     </div>
 </script>
 
+<script id="login-template" type="text/x-handlebars-template">
+  <form>
+    <div class="formcontent">
+      <input type="text" name="username" placeholder="email or username" autocapitalize="off" />
+      <input type="password" name="password" placeholder="password" />
+    </div>
+    <input type="submit" value="Login" />
+  </form>
+</script>
+
 <script id="preset-template" type="text/x-handlebars-template">
   <ul>
     {{#each preset}}
@@ -152,6 +165,20 @@
     <p>{{metadata.track}} - {{metadata.album}}<p/>
     <p>{{metadata.license}}</p>
   </div>
+</script>
+
+<script id="settings-template" type="text/x-handlebars-template">
+  <ul>
+    <li><a href="/settings/about"><span />About</a></li>
+  </ul>
+
+  <a href="/logout" class="button red expand">Logout</a>
+</script>
+
+<script id="about-template" type="text/x-handlebars-template">
+  <ul class="split">
+    <li><span class="right">{{version}}</span><label>Version</label></li>
+  </ul>
 </script>
 
 </body>
