@@ -25,6 +25,7 @@ var boot = function() {
 
   window.scrollTo(0, 1);
   (new ActiveState()).attach();
+  (new PreventClickOnScroll('div.scrolling')).attach();
 
   var isLoggedIn = true;
   // Browser bug: prevent this from firing twice in Chrome
