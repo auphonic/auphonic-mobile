@@ -19,7 +19,8 @@ API.on('login/submit', function() {
 
   success: function() {
     document.id('login').empty();
-    UI.Chrome.show();
+
+    History.push('/');
   },
 
   error: function() {
@@ -30,11 +31,17 @@ API.on('login/submit', function() {
 });
 
 Controller.define('/login', function() {
+  if (LocalStorage.get('User')) {
+    History.push('/');
+    return;
+  }
+
+  UI.Chrome.hide();
 
   var login = document.id('login');
 
-  new Form(document.id('loginAction'), 'login/submit');
-
+  login.set('html', UI.render('login'));
+  new Form(login.getElement('form'), 'login/submit');
   login.show();
 
 });

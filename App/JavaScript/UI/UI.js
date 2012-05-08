@@ -56,6 +56,19 @@ Object.append(UI, {
 
   isLocked: function() {
     return locked;
+  },
+
+  highlight: function(element) {
+    element.addClass('selected');
+    var parent = element.getParent('li');
+    if (!parent) return;
+
+    var lists = parent.getSiblings().getElements('a.selected');
+    Elements.removeClass(lists.flatten(), 'selected');
+  },
+
+  isHighlighted: function(element) {
+    return element.hasClass('selected'); // oh no, state management!
   }
 
 });
@@ -93,6 +106,9 @@ UI.Chrome = {
       login.transition(options).removeClass('fade');
       splash.transition(options, function() {
         isVisible = false;
+
+        document.getElements('footer a.selected').removeClass('selected');
+
         main.hide();
       }).removeClass('fade');
     }).delay(50);

@@ -21,11 +21,17 @@ var boot = function() {
   (new ActiveState()).attach();
   (new PreventClickOnScroll('div.scrolling')).attach();
 
-  var isLoggedIn = true;
-  // Browser bug: prevent this from firing twice in Chrome
+  LocalStorage.set('User', {
+    name: 'cpojer',
+    email: 'christoph.pojer@gmail.com'
+  });
+
+  var isLoggedIn = !!LocalStorage.get('User');
   if (isLoggedIn) UI.Chrome.show({immediate: true});
-  else setTimeout(function() {
-    History.push('/login');
+
+  // Browser bug: prevent this from firing twice in Chrome
+  setTimeout(function() {
+    History.push(isLoggedIn ? '/' : '/login');
   }, 100);
 
   // Prevent all clicks from working normally
@@ -62,13 +68,19 @@ var boot = function() {
       previous.toElement().getElements('ul li a.selected').removeClass('selected');
     }
   }));
+};
+
+Controller.define('/', function() {
+
+  UI.Chrome.show();
 
   Views.get('Main').push('default', new View.Object({
     url: '/',
     title: 'Home',
     content: UI.render('default')
   }));
-};
+
+});
 
 var fired;
 var ready = function(){
