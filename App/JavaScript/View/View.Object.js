@@ -25,13 +25,10 @@ View.Object = new Class({
 
     var view = this.getStack().getView();
     var template = view.getOption('templateId');
-    var content = view.getOption('contentSelector');
-    var header = view.getOption('headerSelector');
+    var selector = view.getOption('contentSelector');
 
     var element = document.id(template).getFirst().clone();
-    element.getElement(content).set('html', this.getContent());
-
-    document.getElement(header).set('text', this.getTitle());
+    element.getElement(selector).set('html', this.getContent());
 
     return this.element = element;
   }

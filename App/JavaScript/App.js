@@ -35,7 +35,7 @@ var boot = function() {
   Views.set('Main', new View.Controller('main', {
     templateId: 'container-template',
     contentSelector: 'div.panel-content',
-    headerSelector: 'header h1',
+    titleSelector: 'header h1',
     backSelector: 'header a.back'
   }));
 

@@ -9,7 +9,7 @@ View.Controller = new Class({
   options: {
     templateId: null,
     contentSelector: null,
-    headerSelector: null,
+    titleSelector: null,
     backSelector: null
   },
 
@@ -18,16 +18,17 @@ View.Controller = new Class({
 
     this.element = document.id(element);
     this.backElement = document.getElement(this.options.backSelector) || new Element('div');
+    this.titleElement = document.getElement(this.options.titleSelector) || new Element('div');
 
     this.attach();
   },
 
   attach: function() {
-    this.getBackElement().addEvent('click', this.bound('clickBack'));
+    this.getBackButton().addEvent('click', this.bound('clickBack'));
   },
 
   detach: function() {
-    this.getBackElement().removeEvent('click', this.bound('clickBack'));
+    this.getBackButton().removeEvent('click', this.bound('clickBack'));
   },
 
   push: function(stack, object) {
@@ -45,17 +46,7 @@ View.Controller = new Class({
     var previous = !isImmediate && current.getCurrent().toElement();
     current.push(object);
 
-    var back = this.getBackElement();
-    if (current.getLength() > 1) {
-      back.removeClass('hidden');
-      (function() {
-        back.addClass('show');
-      }).delay(10);
-    } else {
-      back.transition(function() {
-        back.addClass('hidden');
-      }).removeClass('show');
-    }
+    this.updateBackButton().updateTitle();
     UI.transition(this.element, previous, object.render(), {
       isImmediate: isImmediate,
       direction: hasURL ? 'left' : 'right'
@@ -88,8 +79,35 @@ View.Controller = new Class({
     this.pop();
   },
 
-  getBackElement: function() {
+  getBackButton: function() {
     return this.backElement;
+  },
+
+  getTitleElement: function() {
+    return this.titleElement;
+  },
+
+  updateBackButton: function() {
+    var back = this.getBackButton();
+    if (this._current.getLength() > 1) {
+      back.removeClass('hidden');
+      (function() {
+        back.addClass('show');
+      }).delay(10);
+      return this;
+    }
+
+    back.transition(function() {
+      back.addClass('hidden');
+    }).removeClass('show');
+    return this;
+  },
+
+  updateTitle: function() {
+    var title = this._current.getCurrent().getTitle();
+    this.getTitleElement().set('text', title);
+
+    return this;
   },
 
   getOption: function(name) {
