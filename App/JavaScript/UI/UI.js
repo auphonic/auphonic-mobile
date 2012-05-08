@@ -3,29 +3,49 @@
 var UI = this.UI = new DynamicMatcher;
 
 var cache = {};
+var locked = false;
 
-UI.render = function(name, data) {
-  if (!cache[name]) cache[name] = Handlebars.compile(document.id(name + '-template').get('html'));
-  if (!data) data = '';
-  return cache[name](typeof data == 'string' ? {content: data} : data);
-};
+Object.append(UI, {
 
-UI.transition = function(container, previous, current, options) {
-  var isImmediate = options && options.isImmediate;
-  var direction = (options && options.direction) || 'right';
-  var oppositeDirection = (direction == 'right' ? 'left' : 'right');
+  render: function(name, data) {
+    if (!cache[name]) cache[name] = Handlebars.compile(document.id(name + '-template').get('html'));
+    if (!data) data = '';
+    return cache[name](typeof data == 'string' ? {content: data} : data);
+  },
 
-  if (!isImmediate) current.addClass(direction);
-  container.adopt(current);
-  if (!isImmediate) (function() {
-    previous.transition(function() {
-      this.dispose();
-    }).addClass(oppositeDirection);
-    current.removeClass(direction);
-  }).delay(10);
+  transition: function(container, previous, current, options) {
+    var isImmediate = options && options.isImmediate;
+    var direction = (options && options.direction) || 'right';
+    var oppositeDirection = (direction == 'right' ? 'left' : 'right');
 
-  this.update(container);
-};
+    if (!isImmediate) current.addClass(direction);
+    container.adopt(current);
+    if (!isImmediate) (function() {
+      this.lock();
+      previous.transition(function() {
+        this.dispose();
+      }).addClass(oppositeDirection);
+      current.transition(this.unlock.bind(this)).removeClass(direction);
+    }).delay(10, this);
+
+    this.update(container);
+  },
+
+  lock: function() {
+    Element.disableCustomEvents();
+    locked = true;
+  },
+
+  unlock: function() {
+    Element.enableCustomEvents();
+    locked = false;
+  },
+
+  isLocked: function() {
+    return locked;
+  }
+
+});
 
 var isVisible = false;
 
