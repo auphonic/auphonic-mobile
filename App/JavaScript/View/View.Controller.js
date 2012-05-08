@@ -2,7 +2,7 @@
 
 View.Controller = new Class({
 
-  Implements: [Options, Class.Binds],
+  Implements: [Options, Class.Binds, Events],
 
   _current: null,
 
@@ -10,7 +10,8 @@ View.Controller = new Class({
     templateId: null,
     contentSelector: null,
     titleSelector: null,
-    backSelector: null
+    backSelector: null,
+    onTransitionEnd: null
   },
 
 
@@ -52,7 +53,8 @@ View.Controller = new Class({
     this.updateBackButton().updateTitle();
     UI.transition(this.element, previous, object.render(), {
       isImmediate: isImmediate,
-      direction: hasURL ? 'left' : 'right'
+      direction: hasURL ? 'left' : 'right',
+      onTransitionEnd: this.bound('onTransitionEnd')
     });
 
     return this;
@@ -76,10 +78,18 @@ View.Controller = new Class({
     return (this._current && stack == this._current.getName());
   },
 
+  getCurrent: function() {
+    return this._current;
+  },
+
   clickBack: function(event) {
     event.preventDefault();
 
     this.pop();
+  },
+
+  onTransitionEnd: function() {
+    this.fireEvent('transitionEnd');
   },
 
   getBackButton: function() {

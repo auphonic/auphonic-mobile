@@ -17,15 +17,19 @@ Object.append(UI, {
     var isImmediate = options && options.isImmediate;
     var direction = (options && options.direction) || 'right';
     var oppositeDirection = (direction == 'right' ? 'left' : 'right');
+    var onTransitionEnd = options && options.onTransitionEnd;
 
     if (!isImmediate) current.addClass(direction);
     container.adopt(current);
     if (!isImmediate) (function() {
-      this.lock();
+      UI.lock();
       previous.transition(function() {
         this.dispose();
       }).addClass(oppositeDirection);
-      current.transition(this.unlock.bind(this)).removeClass(direction);
+      current.transition(function() {
+        UI.unlock();
+        if (onTransitionEnd) onTransitionEnd();
+      }).removeClass(direction);
     }).delay(10, this);
 
     this.update(container);

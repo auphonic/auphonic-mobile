@@ -7,6 +7,9 @@ var preventDefault = function(event) {
 var click = function(event) {
   event.preventDefault();
 
+  this.getParent('ul').getElements('li a').removeClass('active');
+  this.addClass('active');
+
   History.push(this.get('href'));
 };
 
@@ -14,7 +17,7 @@ UI.register('.prevent, footer, header', function(elements) {
   elements.addEvent('touchmove', preventDefault);
 });
 
-UI.register('a:internal', function(elements) {
+UI.register('a:internal:not(.back)', function(elements) {
   elements.addEvent('click', click);
 });
 
@@ -39,7 +42,14 @@ var boot = function() {
     templateId: 'container-template',
     contentSelector: 'div.panel-content',
     titleSelector: 'header h1',
-    backSelector: 'header a.back'
+    backSelector: 'header a.back',
+    onTransitionEnd: function() {
+      var stack = this.getCurrent();
+      var previous = stack && stack.getPrevious();
+      if (!stack || !previous) return;
+
+      previous.toElement().getElements('ul li a.active').removeClass('active');
+    }
   }));
 
   Views.get('Main').push('default', new View.Object({
