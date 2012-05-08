@@ -13,6 +13,9 @@ View.Controller = new Class({
     backSelector: null
   },
 
+
+  backButtonIsVisible: false,
+
   initialize: function(element, options) {
     this.setOptions(options);
 
@@ -92,14 +95,16 @@ View.Controller = new Class({
     if (this._current.getLength() > 1) {
       back.removeClass('hidden');
       (function() {
+        this.backButtonIsVisible = true;
         back.addClass('show');
-      }).delay(10);
-      return this;
+      }).delay(10, this);
+    } else if (this.backButtonIsVisible) {
+      back.transition((function() {
+        this.backButtonIsVisible = false;
+        back.addClass('hidden');
+      }).bind(this)).removeClass('show');
     }
 
-    back.transition(function() {
-      back.addClass('hidden');
-    }).removeClass('show');
     return this;
   },
 

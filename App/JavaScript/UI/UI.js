@@ -18,7 +18,9 @@ UI.transition = function(container, previous, current, options) {
   if (!isImmediate) current.addClass(direction);
   container.adopt(current);
   if (!isImmediate) (function() {
-    previous.addClass(oppositeDirection);
+    previous.transition(function() {
+      this.dispose();
+    }).addClass(oppositeDirection);
     current.removeClass(direction);
   }).delay(10);
 

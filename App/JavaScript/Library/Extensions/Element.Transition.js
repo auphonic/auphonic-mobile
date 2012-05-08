@@ -31,7 +31,7 @@ Element.defineCustomEvent('transitionStart', {
 Element.implement('transition', function(options, fn) {
 	var isImmediate = options && options.immediate;
 
-	if (!options) fn = options;
+	if (!fn && typeOf(options) == 'function') fn = options;
 	if (isImmediate) this.addClass('immediate');
 
 	(function() {
