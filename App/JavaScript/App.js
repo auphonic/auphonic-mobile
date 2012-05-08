@@ -17,21 +17,7 @@ var click = function(event) {
   History.push(this.get('href'));
 };
 
-UI.register('.prevent, footer, header', function(elements) {
-  elements.addEvent('touchmove', preventDefault);
-});
-
-UI.register('#main a:internal', function(elements) {
-  elements.addEvent('click', click);
-});
-
-UI.register('footer a:internal', function(elements) {
-  elements.addEvent('touchstart', click);
-});
-
 var boot = function() {
-
-  window.scrollTo(0, 1);
   (new ActiveState()).attach();
   (new PreventClickOnScroll('div.scrolling')).attach();
 
@@ -42,10 +28,24 @@ var boot = function() {
     History.push('/login');
   }, 100);
 
-  UI.update();
-
-  // Prevent all clicks from working
+  // Prevent all clicks from working normally
   window.addEventListener('click', preventDefault, false);
+
+  UI.register({
+
+    '.prevent, footer, header': function(elements) {
+      elements.addEvent('touchmove', preventDefault);
+    },
+
+    '#main a:internal': function(elements) {
+      elements.addEvent('click', click);
+    },
+
+    'footer a:internal': function(elements) {
+      elements.addEvent('touchstart', click);
+    }
+
+  }).update();
 
   Views.set('Main', new View.Controller('main', {
     templateId: 'container-template',
