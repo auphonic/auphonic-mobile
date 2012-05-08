@@ -24,7 +24,7 @@ API.dispatch = function(url) {
     API.on(url).fireEvent('success', [{
       success: true
     }]);
-  }, Number.random(100, 600));
+  }, 0);
 };
 
 })();

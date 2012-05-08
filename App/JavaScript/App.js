@@ -7,6 +7,8 @@ var preventDefault = function(event) {
 var click = function(event) {
   event.preventDefault();
 
+  if (this.hasClass('selected')) return;
+
   this.addClass('selected');
   var lists = this.getParent('li').getSiblings().getElements('a.selected');
   Elements.removeClass(lists.flatten(), 'selected');
@@ -18,8 +20,12 @@ UI.register('.prevent, footer, header', function(elements) {
   elements.addEvent('touchmove', preventDefault);
 });
 
-UI.register('a:internal:not(.back)', function(elements) {
+UI.register('#main a:internal', function(elements) {
   elements.addEvent('click', click);
+});
+
+UI.register('footer a:internal', function(elements) {
+  elements.addEvent('touchstart', click);
 });
 
 var boot = function() {
