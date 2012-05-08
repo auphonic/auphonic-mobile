@@ -29,13 +29,14 @@ Object.append(UI, {
       });
     }
 
+    UI.lock();
+
     current.transition({immediate: isImmediate}, function() {
       UI.unlock();
       if (onTransitionEnd) onTransitionEnd();
     });
 
     (function() {
-      UI.lock();
       if (previous) previous.addClass(oppositeDirection);
       current.removeClass(direction);
     }).delay(50, this); // Use a higher delay to account for dom insertion delays
