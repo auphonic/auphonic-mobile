@@ -4,7 +4,6 @@ View.Controller = new Class({
 
   Implements: [Options],
 
-  _stacks: {},
   _current: null,
 
   options: {
@@ -20,10 +19,14 @@ View.Controller = new Class({
   },
 
   push: function(stack, object) {
-    if (!this.isCurrent(stack)) this.rotate(stack);
+    var rotated = false;
+    if (!this.isCurrent(stack)) {
+      rotated = true;
+      this.rotate(stack);
+    }
 
     var current = this._current;
-    var isImmediate = (current.getLength() === 0);
+    var isImmediate = rotated;
     var hasURL = current.hasURL(object.getURL());
     var previous = !isImmediate && current.getCurrent().toElement();
     current.push(object);
@@ -36,14 +39,7 @@ View.Controller = new Class({
 
   rotate: function(stack) {
     this.element.empty();
-    this._current = this.getStack(stack);
-  },
-
-  getStack: function(stack) {
-    var stacks = this._stacks;
-    if (!stacks[stack]) stacks[stack] = new View.Stack(this, stack);
-
-    return stacks[stack];
+    this._current = new View.Stack(this, stack);
   },
 
   isCurrent: function(stack) {
