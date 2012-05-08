@@ -7,8 +7,9 @@ var preventDefault = function(event) {
 var click = function(event) {
   event.preventDefault();
 
-  this.getParent('ul').getElements('li a.active').removeClass('active');
-  this.addClass('active');
+  this.addClass('selected');
+  var lists = this.getParent('li').getSiblings().getElements('a.selected');
+  Elements.removeClass(lists.flatten(), 'selected');
 
   History.push(this.get('href'));
 };
@@ -51,7 +52,7 @@ var boot = function() {
       var previous = stack && stack.getPrevious();
       if (!stack || !previous) return;
 
-      previous.toElement().getElements('ul li a.active').removeClass('active');
+      previous.toElement().getElements('ul li a.selected').removeClass('selected');
     }
   }));
 

@@ -49,7 +49,7 @@ this.ActiveState = new Class({
     // on iOS, scrolling prevents redraws. We delay the addClass so the highlight does not
     // take effect before a scroll is likely to happen and the active state is not stuck
     // during scroll.
-    this.timer = this.highlight.delay(75, this);
+    this.timer = this.highlight.delay(50, this);
     this.current = current;
     this.start = event.touches[0].pageY;
   },
@@ -71,9 +71,9 @@ this.ActiveState = new Class({
   },
 
   cancel: function() {
+    clearTimeout(this.timer);
     if (this.current) this.current.removeClass(this.className);
     this.current = null;
-    clearTimeout(this.timer);
   },
 
   highlight: function() {

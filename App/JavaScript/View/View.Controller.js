@@ -56,6 +56,13 @@ View.Controller = new Class({
 
     this.updateBackButton();
 
+    var previousTitle = this.header.getElement(this.options.titleSelector);
+    var title = this.createTitleElement(object.getTitle());
+    UI.transition(this.header, previousTitle, title, {
+      isImmediate: isImmediate,
+      direction: direction
+    });
+
     UI.transition(this.element, previous && previous.toElement(), object.render(), {
       isImmediate: isImmediate,
       direction: direction,
@@ -63,13 +70,6 @@ View.Controller = new Class({
     });
 
     object.revertScrollTop();
-
-    var previousTitle = this.header.getElement(this.options.titleSelector);
-    var title = this.createTitleElement(object.getTitle());
-    UI.transition(this.header, previousTitle, title, {
-      isImmediate: isImmediate,
-      direction: direction
-    });
 
     return this;
   },
