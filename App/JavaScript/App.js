@@ -10,7 +10,7 @@ var click = function(event) {
   History.push(this.get('href'));
 };
 
-UI.register('.prevent, footer', function(elements) {
+UI.register('.prevent, footer, header', function(elements) {
   elements.addEvent('touchmove', preventDefault);
 });
 
