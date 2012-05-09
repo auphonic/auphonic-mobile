@@ -16,7 +16,11 @@ var click = function(event) {
 };
 
 var boot = function() {
-  (new ActiveState()).attach();
+  (new ActiveState()).attach({
+    active: 'active',
+    hit: 'hit',
+    hitProperty: 'data-hit-target'
+  });
   (new PreventClickOnScroll('div.scrolling')).attach();
 
   LocalStorage.set('User', {
@@ -30,7 +34,7 @@ var boot = function() {
   // Browser bug: prevent this from firing twice in Chrome
   setTimeout(function() {
     History.push(isLoggedIn ? '/' : '/login');
-  }, 100);
+  }, 200);
 
   // Prevent all clicks from working normally
   window.addEventListener('click', preventDefault, false);
