@@ -8,6 +8,7 @@ var click = function(event) {
   event.preventDefault();
 
   if (event.touches && event.touches.length > 1) return;
+  if (UI.isLocked()) return;
   if (UI.isHighlighted(this)) return;
 
   UI.highlight(this);
