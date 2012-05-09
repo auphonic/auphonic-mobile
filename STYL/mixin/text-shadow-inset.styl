@@ -1,0 +1,13 @@
+
+text-shadow-inset(offset, background, foreground)
+  color background
+
+  &:before
+      position absolute
+      top offset
+      left 0
+      right 0
+
+      content attr(title)
+      color foreground
+      text-align center
