@@ -1,6 +1,6 @@
 (function() {
 
-this.BackButton = new Class({
+this.UI.BackButton = new Class({
 
   Implements: [Options, Class.Binds],
 

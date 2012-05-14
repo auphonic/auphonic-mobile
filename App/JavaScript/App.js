@@ -76,15 +76,17 @@ var boot = function() {
 
   });
 
-  var backButton = new BackButton(document.getElement('header a.back'));
+  var back = new UI.BackButton(document.getElement('header a.back'));
+  var header = document.getElement('header');
+  var title = new UI.Title(header, new Element('h1'));
 
   Views.set('Main', new View.Controller('main', {
     templateId: (Browser.Platform.ios ? 'ios-' : '') + 'container-template',
     contentSelector: 'div.panel-content',
-    headerSelector: 'header',
-    titleSelector: 'h1',
     scrollableSelector: 'div.scrollable',
-    backButton: backButton,
+
+    back: back,
+    title: title,
     onTransitionEnd: function() {
       var stack = this.getCurrent();
       var previous = stack && stack.getPrevious();

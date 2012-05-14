@@ -9,24 +9,26 @@ View.Controller = new Class({
   options: {
     templateId: null,
     contentSelector: null,
-    headerSelector: null,
-    titleSelector: null,
     scrollableSelector: null,
-    backButton: null,
+
+    back: null,
+    title: null,
+
     onTransitionEnd: null
   },
 
 
   initialize: function(element, options) {
     if (!options) options = {};
-    this.backButton = options.backButton;
-    delete options.backButton;
+    this.back = options.back;
+    this.title = options.title;
+    delete options.back;
+    delete options.title;
 
     this.setOptions(options);
 
     this.element = document.id(element);
-    this.header = document.getElement(this.options.headerSelector);
-    this.backButton.setView(this);
+    this.back.setView(this);
   },
 
   push: function(stack, object) {
@@ -48,11 +50,9 @@ View.Controller = new Class({
 
     current.push(object);
 
-    this.backButton.update(isImmediate);
+    this.back.update(isImmediate);
 
-    var previousTitle = this.header.getElement(this.options.titleSelector);
-    var title = this.createTitleElement(object.getTitle());
-    UI.transition(this.header, previousTitle, title, {
+    this.title = this.title.create(object.getTitle()).transition(this.title, {
       isImmediate: isImmediate,
       direction: direction
     });
@@ -92,14 +92,6 @@ View.Controller = new Class({
 
   onTransitionEnd: function() {
     this.fireEvent('transitionEnd');
-  },
-
-  getTitleElement: function() {
-    return this.titleElement;
-  },
-
-  createTitleElement: function(title) {
-    return new Element(this.options.titleSelector).set('text', title).set('title', title);
   },
 
   getOption: function(name) {
