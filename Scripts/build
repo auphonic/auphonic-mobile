@@ -11,6 +11,9 @@ packager build Class-Extras/* +use-only Class-Extras > "$DIR/$JS/PowerTools/Clas
 # History
 packager build History/History +use-only History > "$DIR/$JS/PowerTools/History.js"
 
+# Router
+packager build Router/Router +use-only Router > "$DIR/$JS/PowerTools/Router.js"
+
 # Custom-Event
 packager build Custom-Event/* +use-only Custom-Event > "$DIR/$JS/PowerTools/Custom-Event.js"
 

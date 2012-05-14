@@ -1,4 +1,21 @@
-// Fork of Crossroads.js (http://millermedeiros.github.com/crossroads.js) adapted to MooTools by @cpojer
+/*
+---
+
+name: Router
+
+description: Router for client side web apps based on CrossroadsJS (http://millermedeiros.github.com/crossroads.js), adapted to MooTools.
+
+authors: Christoph Pojer (@cpojer)
+
+license: MIT-style license.
+
+requires: [Core/Class.Extras, Core/Object]
+
+provides: Router
+
+...
+*/
+
 (function() {
 
 var Route = new Class({
@@ -282,3 +299,4 @@ Router.getDefaultLexer = function() {
 };
 
 })();
+
