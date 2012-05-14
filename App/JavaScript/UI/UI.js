@@ -45,12 +45,16 @@ Object.append(UI, {
   },
 
   lock: function() {
-    Element.disableCustomEvents();
+    (function() {
+      Element.disableCustomEvents();
+    }).delay(0);
     locked = true;
   },
 
   unlock: function() {
-    Element.enableCustomEvents();
+    (function() {
+      Element.enableCustomEvents();
+    }).delay(0);
     locked = false;
   },
 

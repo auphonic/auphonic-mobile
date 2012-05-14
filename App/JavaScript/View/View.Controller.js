@@ -99,6 +99,8 @@ View.Controller = new Class({
   clickBack: function(event) {
     event.preventDefault();
 
+    if (UI.isLocked()) return;
+
     this.pop();
   },
 

@@ -42,7 +42,7 @@ this.ActiveState = new Class({
     if (node.nodeType == 3) node = node.parentNode;
 
     while (node && node.getAttribute) {
-      if (node.webkitMatchesSelector('a, input')) {
+      if (node.match('a, input')) {
         current = node;
         break;
       }

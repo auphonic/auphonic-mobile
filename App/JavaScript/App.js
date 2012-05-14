@@ -4,6 +4,10 @@ var preventDefault = function(event) {
   event.preventDefault();
 };
 
+var preventScroll = function(event) {
+  if (UI.isLocked()) event.preventDefault();
+};
+
 var click = function(event) {
   event.preventDefault();
 
@@ -17,12 +21,14 @@ var click = function(event) {
 };
 
 var boot = function() {
-  (new ActiveState()).attach({
+  (new ActiveState({
     active: 'active',
     hit: 'hit',
     hitProperty: 'data-hit-target'
-  });
-  (new PreventClickOnScroll('div.scrolling')).attach();
+  })).attach();
+  if (Browser.Platform.ios) {
+    (new PreventClickOnScroll('div.scrollable')).attach();
+  }
 
   LocalStorage.set('User', {
     name: 'cpojer',
@@ -39,6 +45,9 @@ var boot = function() {
 
   // Prevent all clicks from working normally
   window.addEventListener('click', preventDefault, false);
+
+  // Prevent Scroling when the UI is locked
+  window.addEventListener('touchmove', preventScroll, false);
 
   UI.register({
 
