@@ -24,12 +24,8 @@
 		3D67B5521551E22100876377 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 3D67B5511551E22100876377 /* main.m */; };
 		3D67B5551551E22100876377 /* Cordova.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3D67B5541551E22100876377 /* Cordova.framework */; };
 		3D67B55A1551E22100876377 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 3D67B5581551E22100876377 /* Localizable.strings */; };
-		3D67B55E1551E22100876377 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 3D67B55C1551E22100876377 /* Localizable.strings */; };
-		3D67B5621551E22100876377 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 3D67B5601551E22100876377 /* Localizable.strings */; };
-		3D67B5661551E22100876377 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 3D67B5641551E22100876377 /* Localizable.strings */; };
 		3D67B5691551E22100876377 /* icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 3D67B5681551E22100876377 /* icon.png */; };
 		3D67B56B1551E22100876377 /* icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3D67B56A1551E22100876377 /* icon@2x.png */; };
-		3D67B56D1551E22100876377 /* icon-72.png in Resources */ = {isa = PBXBuildFile; fileRef = 3D67B56C1551E22100876377 /* icon-72.png */; };
 		3D67B5741551E22100876377 /* Capture.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 3D67B5731551E22100876377 /* Capture.bundle */; };
 		3D67B5761551E22100876377 /* Cordova.plist in Resources */ = {isa = PBXBuildFile; fileRef = 3D67B5751551E22100876377 /* Cordova.plist */; };
 		3D67B57A1551E22100876377 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 3D67B5791551E22100876377 /* AppDelegate.m */; };
@@ -66,9 +62,6 @@
 		3D67B5651551E22100876377 /* se */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = se; path = Resources/se.lproj/Localizable.strings; sourceTree = "<group>"; };
 		3D67B5681551E22100876377 /* icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = icon.png; path = Resources/icons/icon.png; sourceTree = "<group>"; };
 		3D67B56A1551E22100876377 /* icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "icon@2x.png"; path = "Resources/icons/icon@2x.png"; sourceTree = "<group>"; };
-		3D67B56C1551E22100876377 /* icon-72.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "icon-72.png"; path = "Resources/icons/icon-72.png"; sourceTree = "<group>"; };
-		3D67B56F1551E22100876377 /* Default~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Default~iphone.png"; path = "Resources/splash/Default~iphone.png"; sourceTree = "<group>"; };
-		3D67B5711551E22100876377 /* Default@2x~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Default@2x~iphone.png"; path = "Resources/splash/Default@2x~iphone.png"; sourceTree = "<group>"; };
 		3D67B5731551E22100876377 /* Capture.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; name = Capture.bundle; path = Resources/Capture.bundle; sourceTree = "<group>"; };
 		3D67B5751551E22100876377 /* Cordova.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Cordova.plist; sourceTree = "<group>"; };
 		3D67B5781551E22100876377 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = AppDelegate.h; path = Classes/AppDelegate.h; sourceTree = "<group>"; };
@@ -230,7 +223,6 @@
 			children = (
 				3D67B5681551E22100876377 /* icon.png */,
 				3D67B56A1551E22100876377 /* icon@2x.png */,
-				3D67B56C1551E22100876377 /* icon-72.png */,
 			);
 			name = icons;
 			sourceTree = "<group>";
@@ -238,8 +230,6 @@
 		3D67B56E1551E22100876377 /* splash */ = {
 			isa = PBXGroup;
 			children = (
-				3D67B56F1551E22100876377 /* Default~iphone.png */,
-				3D67B5711551E22100876377 /* Default@2x~iphone.png */,
 			);
 			name = splash;
 			sourceTree = "<group>";
@@ -320,12 +310,8 @@
 			files = (
 				3D67B5501551E22100876377 /* InfoPlist.strings in Resources */,
 				3D67B55A1551E22100876377 /* Localizable.strings in Resources */,
-				3D67B55E1551E22100876377 /* Localizable.strings in Resources */,
-				3D67B5621551E22100876377 /* Localizable.strings in Resources */,
-				3D67B5661551E22100876377 /* Localizable.strings in Resources */,
 				3D67B5691551E22100876377 /* icon.png in Resources */,
 				3D67B56B1551E22100876377 /* icon@2x.png in Resources */,
-				3D67B56D1551E22100876377 /* icon-72.png in Resources */,
 				3D67B5741551E22100876377 /* Capture.bundle in Resources */,
 				3D67B5761551E22100876377 /* Cordova.plist in Resources */,
 				3D67B57F1551E22100876377 /* MainViewController.xib in Resources */,
