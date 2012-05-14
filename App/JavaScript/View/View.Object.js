@@ -34,18 +34,14 @@ View.Object = new Class({
   },
 
   rememberScroll: function() {
-    var view = this.getView();
-    var selector = view.getOption('scrollableSelector');
-    var scrollable = this.toElement().getElement(selector);
+    var scrollable = this.getScrollableElement();
     if (scrollable) this.setScrollTop(scrollable.scrollTop);
 
     return this;
   },
 
   revertScrollTop: function() {
-    var view = this.getView();
-    var selector = view.getOption('scrollableSelector');
-    var scrollable = this.toElement().getElement(selector);
+    var scrollable = this.getScrollableElement();
     if (scrollable) scrollable.scrollTop = this.getScrollTop();
 
     return this;
@@ -54,6 +50,14 @@ View.Object = new Class({
   getView: function() {
     var stack = this.getStack();
     return stack && stack.getView();
+  },
+
+  getScrollableElement: function() {
+    var view = this.getView();
+    var selector = view.getOption('scrollableSelector');
+    var element = this.toElement();
+
+    return element.match(selector) ? element : element.getElement(selector);
   }
 
 });

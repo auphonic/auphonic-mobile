@@ -40,7 +40,7 @@ var boot = function() {
 
   // Browser bug: prevent this from firing twice in Chrome
   setTimeout(function() {
-    History.push(isLoggedIn ? '/' : '/login');
+    History.push(isLoggedIn ? '' : '/login');
   }, 200);
 
   // Prevent all clicks from working normally
@@ -65,6 +65,17 @@ var boot = function() {
 
   }).update();
 
+  Controller.define('/', function() {
+
+    UI.Chrome.show();
+
+    Views.get('Main').push('default', new View.Object({
+      title: 'Home',
+      content: UI.render('default')
+    }));
+
+  });
+
   Views.set('Main', new View.Controller('main', {
     templateId: (Browser.Platform.ios ? 'ios-' : '') + 'container-template',
     contentSelector: 'div.panel-content',
@@ -81,18 +92,6 @@ var boot = function() {
     }
   }));
 };
-
-Controller.define('/', function() {
-
-  UI.Chrome.show();
-
-  Views.get('Main').push('default', new View.Object({
-    url: '/',
-    title: 'Home',
-    content: UI.render('default')
-  }));
-
-});
 
 var fired;
 var ready = function(){

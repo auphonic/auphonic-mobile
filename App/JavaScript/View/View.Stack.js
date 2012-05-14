@@ -56,10 +56,18 @@ View.Stack = new Class({
     return this;
   },
 
-  hasURL: function(url) {
-    return this.stack.some(function(object) {
-      return (object.getURL() == url);
-    });
+  hasObject: function(needle) {
+    return !!this.getByURL(needle.getURL());
+  },
+
+  getByURL: function(url) {
+    var stack = this.stack;
+    for (var index = 0; index < stack.length; index++) {
+      if (stack[index].getURL() == url)
+        return stack[index];
+    }
+
+    return null;
   },
 
   getLength: function(){

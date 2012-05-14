@@ -75,7 +75,7 @@ this.PreventClickOnScroll = new Class({
   listener: function() {
     this.scrolling = true;
     clearTimeout(this.timer);
-    this.timer = this.cancel.delay(300, this);
+    this.timer = this.cancel.delay(400, this);
   },
 
   getNode: function(node) {

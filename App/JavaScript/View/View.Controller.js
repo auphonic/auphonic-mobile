@@ -46,9 +46,11 @@ View.Controller = new Class({
       this.rotate(stack);
     }
 
+    object.setURL(History.getPath());
+
     var current = this._current;
     var isImmediate = rotated;
-    var direction = current.hasURL(object.getURL()) ? 'left' : 'right';
+    var direction = current.hasObject(object) ? 'left' : 'right';
     var previous;
     if (!isImmediate) previous = current.getCurrent().rememberScroll();
 
@@ -76,7 +78,7 @@ View.Controller = new Class({
 
   pop: function() {
     var current = this._current;
-    if (current) this.push(current.getName(), current.getPrevious());
+    if (current) History.push(current.getPrevious().getURL());
 
     return this;
   },

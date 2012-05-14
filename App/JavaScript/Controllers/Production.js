@@ -14,7 +14,6 @@ API.on('/production').addEvents({
     });
 
     Views.get('Main').push('production', new View.Object({
-      url: '/production',
       title: 'Productions',
       content: UI.render('production', {production: list})
     }));
@@ -32,7 +31,6 @@ Controller.define('/production/{uuid}', function(req) {
 
   var production = productions[req.uuid];
   Views.get('Main').push('production', new View.Object({
-    url: '/production/' + production.uuid,
     title: production.metadata.title,
     content: UI.render('production-detail', production)
   }));

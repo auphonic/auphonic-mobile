@@ -58,7 +58,6 @@ API.on('/preset').addEvents({
     });
 
     Views.get('Main').push('preset', new View.Object({
-      url: '/preset',
       title: 'Presets',
       content: UI.render('preset', {preset: list})
     }));
@@ -76,7 +75,6 @@ Controller.define('/preset/{uuid}', function(req) {
 
   var preset = presets[req.uuid];
   Views.get('Main').push('preset', new View.Object({
-    url: '/preset/' + preset.uuid,
     title: preset.presetname,
     content: UI.render('preset-detail', preset)
   }));
