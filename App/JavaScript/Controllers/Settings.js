@@ -6,7 +6,9 @@ Controller.define('/settings', function() {
 
   Views.get('Main').push('settings', new View.Object({
     title: 'Settings',
-    content: UI.render('settings')
+    content: UI.render('settings', {
+      user: LocalStorage.get('User')
+    })
   }));
 
 });
