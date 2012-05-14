@@ -14,8 +14,13 @@ var API = this.API = {
 };
 
 API.call = function(url, args) {
-  var fn = urls[url] && urls[url].fn;
+  var api = API.on(url);
+  var fn = api.fn;
   API.dispatch(url, fn ? fn.apply(this, args) : args);
+  return {on: function(events) {
+    if (events.success) api.addEvent('success:once', events.success);
+    if (events.error) api.addEvent('error:once', events.error);
+  }};
 };
 
 API.dispatch = function(url) {
