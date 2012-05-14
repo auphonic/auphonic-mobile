@@ -57,7 +57,7 @@ var boot = function() {
   }).update();
 
   Views.set('Main', new View.Controller('main', {
-    templateId: 'container-template',
+    templateId: (Browser.Platform.ios ? 'ios-' : '') + 'container-template',
     contentSelector: 'div.panel-content',
     headerSelector: 'header',
     titleSelector: 'h1',
