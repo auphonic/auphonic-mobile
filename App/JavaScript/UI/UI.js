@@ -14,7 +14,7 @@ Object.append(UI, {
   },
 
   transition: function(container, previous, current, options) {
-    var isImmediate = options && options.isImmediate;
+    var isImmediate = options && options.immediate;
     var direction = (options && options.direction) || 'right';
     var oppositeDirection = (direction == 'right' ? 'left' : 'right');
     var onTransitionEnd = options && options.onTransitionEnd;

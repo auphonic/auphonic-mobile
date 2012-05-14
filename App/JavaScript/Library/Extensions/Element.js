@@ -9,3 +9,11 @@ Element.implement({
   }
 
 });
+
+Element.from = function(string) {
+  return new Element('div', {html: string}).getFirst();
+};
+
+Elements.from = function(string) {
+  return new Element('div', {html: string}).getChildren();
+};

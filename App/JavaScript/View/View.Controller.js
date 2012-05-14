@@ -13,6 +13,7 @@ View.Controller = new Class({
 
     back: null,
     title: null,
+    action: null,
 
     onTransitionEnd: null
   },
@@ -22,13 +23,17 @@ View.Controller = new Class({
     if (!options) options = {};
     this.back = options.back;
     this.title = options.title;
+    this.action = options.action;
     delete options.back;
     delete options.title;
+    delete options.action;
 
     this.setOptions(options);
 
     this.element = document.id(element);
     this.back.setView(this);
+    this.title.setView(this);
+    this.action.setView(this);
   },
 
   push: function(stack, object) {
@@ -50,15 +55,17 @@ View.Controller = new Class({
 
     current.push(object);
 
-    this.back.update(isImmediate);
-
-    this.title = this.title.create(object.getTitle()).transition(this.title, {
-      isImmediate: isImmediate,
+    var options = {
+      immediate: isImmediate,
       direction: direction
-    });
+    };
+
+    this.back = this.back.update(this.back, options);
+    this.title = this.title.update(this.title, options, object.getTitleTemplate());
+    this.action = this.action.update(this.action, options, object.getAction());
 
     UI.transition(this.element, previous && previous.toElement(), object.render(), {
-      isImmediate: isImmediate,
+      immediate: isImmediate,
       direction: direction,
       onTransitionEnd: this.bound('onTransitionEnd')
     });

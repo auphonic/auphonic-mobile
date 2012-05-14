@@ -76,8 +76,11 @@ var boot = function() {
 
   });
 
-  var back = new UI.BackButton(document.getElement('header a.back'));
   var header = document.getElement('header');
+  var back = new UI.BackButton(document.getElement('header a.back'));
+  var action = new UI.ActionButton(header, new Element('a'), {
+    onClick: click
+  });
   var title = new UI.Title(header, new Element('h1'));
 
   Views.set('Main', new View.Controller('main', {
@@ -87,6 +90,8 @@ var boot = function() {
 
     back: back,
     title: title,
+    action: action,
+
     onTransitionEnd: function() {
       var stack = this.getCurrent();
       var previous = stack && stack.getPrevious();

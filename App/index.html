@@ -34,7 +34,6 @@
 <div id="ui" class="hidden">
   <header>
     <a href="#" class="back button-left" data-hit-target="1"><span class="button" title="Back">Back</span></a>
-    <a href="#" class="back button-right show" data-hit-target="1"><span class="button" title="Add">Add</span></a>
   </header>
   <footer>
     <ul>
@@ -109,7 +108,9 @@
 <script type="text/javascript" src="JavaScript/View/View.Object.js"></script>
 
 <script tpye="text/javascript" src="JavaScript/UI/UI.js"></script>
+<script tpye="text/javascript" src="JavaScript/UI/Elements/Element.js"></script>
 <script type="text/javascript" src="JavaScript/UI/Elements/BackButton.js"></script>
+<script type="text/javascript" src="JavaScript/UI/Elements/ActionButton.js"></script>
 <script type="text/javascript" src="JavaScript/UI/Elements/Title.js"></script>
 
 <script tpye="text/javascript" src="JavaScript/App.js"></script>
@@ -192,6 +193,14 @@
   <ul class="split">
     <li><span class="right">{{version}}</span><label>Version</label></li>
   </ul>
+</script>
+
+<script id="ui-title-template" type="text/x-handlebars-template">
+  <h1 title="{{title}}">{{title}}</h1>
+</script>
+
+<script id="ui-action-template" type="text/x-handlebars-template">
+  <a href="{{url}}" class="back button-right hidden" data-hit-target="1"><span class="button" title="{{title}}">{{title}}</span></a>
 </script>
 
 </body>

@@ -18,6 +18,7 @@ header
   box-shadow rgba(0, 0, 0, 0.1) 0 2px 2px
 
   h1
+    z-index 11
     top 0
     left 65px
     right 65px
@@ -38,7 +39,7 @@ header
       overflow: ellipsis
 
     transition-property opacity, -webkit-transform
-    transition-timing-function ease-in-out
+    transition-timing-function cubic-bezier(.2, .14, .25, .81), ease-in-out
     transition-duration 400ms
     opacity 1
     transform translate3d(0, 0, 0)
@@ -53,7 +54,6 @@ header
 
 
   a
-    z-index 11
     position absolute
     top 0
     bottom 0
@@ -85,6 +85,7 @@ header
     &.button-right
       right 0
 
+      transition-timing-function ease-in
       .button
         right 5px
 

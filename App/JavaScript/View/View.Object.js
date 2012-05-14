@@ -7,11 +7,18 @@ View.Object = new Class({
     title: null,
     content: null,
     stack: null,
+
+    action: null,
+
     scrollTop: 0
   },
 
   initialize: function(options) {
-    this.setURL(options.url).setTitle(options.title).setContent(options.content);
+    this
+      .setURL(options.url)
+      .setTitle(options.title)
+      .setContent(options.content)
+      .setAction(options.action);
   },
 
   toElement: function() {
@@ -58,6 +65,12 @@ View.Object = new Class({
     var element = this.toElement();
 
     return element.match(selector) ? element : element.getElement(selector);
+  },
+
+  getTitleTemplate: function() {
+    return {
+      title: this.getTitle()
+    };
   }
 
 });

@@ -22,6 +22,10 @@ this.UI.BackButton = new Class({
     this.attach();
   },
 
+  toElement: function() {
+    return this.element;
+  },
+
   attach: function() {
     this.element.addEvent('click', this.bound('click'));
   },
@@ -38,9 +42,11 @@ this.UI.BackButton = new Class({
     this.getView().pop();
   },
 
-  update: function(isImmediate) {
+  update: function(previous, options) {
+    var isImmediate = options && options.immediate;
     var element = this.element;
     var className = this.options.className;
+
     if (this.getView().getCurrent().getLength() > 1) {
       element.removeClass('hidden');
       (function() {
