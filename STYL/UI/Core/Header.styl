@@ -65,24 +65,31 @@ header
     transition-duration 400ms
 
     opacity 0
-    transform translate3d(150px, 0, 0)
 
     &.show
       opacity 1
-      transform translate3d(0, 0, 0)
 
     &.hit
       bottom -50px
 
     &.button-left
       left 0
+      transform translate3d(150px, 0, 0)
+
+      &.show
+        transform translate3d(0, 0, 0)
+
+      .button
+        left 5px
 
     &.button-right
       right 0
 
+      .button
+        right 5px
+
     .button
       position absolute
-      left 5px
       top 5px
       bottom 5px
       width 55px

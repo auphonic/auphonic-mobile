@@ -76,13 +76,15 @@ var boot = function() {
 
   });
 
+  var backButton = new BackButton(document.getElement('header a.back'));
+
   Views.set('Main', new View.Controller('main', {
     templateId: (Browser.Platform.ios ? 'ios-' : '') + 'container-template',
     contentSelector: 'div.panel-content',
     headerSelector: 'header',
     titleSelector: 'h1',
-    backSelector: 'header a.back',
     scrollableSelector: 'div.scrollable',
+    backButton: backButton,
     onTransitionEnd: function() {
       var stack = this.getCurrent();
       var previous = stack && stack.getPrevious();
