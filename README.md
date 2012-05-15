@@ -15,10 +15,12 @@ Gaussian Blur (129.5 for Splash, 247.5 for Icon) on a centered white circle. Set
 Phonegap Upgrade Notes
 ----------------------
 
-    if (cordova.commandQueue.length == 1 && !cordova.commandQueueFlushing) {
-        /*if (!gapBridge) {
-            createGapBridge();
-        }
-        gapBridge.src = "gap://ready";*/
-        location = "gap://ready";
+    if (navigator.userAgent.toLowerCase().match(/(ip(ad|od|hone))/)) {
+        location = 'gap://ready';
+        return;
     }
+
+    if (!gapBridge) {
+        createGapBridge();
+    }
+    gapBridge.src = "gap://ready";

@@ -10,9 +10,9 @@
  to you under the Apache License, Version 2.0 (the
  "License"); you may not use this file except in compliance
  with the License.  You may obtain a copy of the License at
- 
+
      http://www.apache.org/licenses/LICENSE-2.0
- 
+
  Unless required by applicable law or agreed to in writing,
  software distributed under the License is distributed on an
  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
@@ -998,11 +998,15 @@ module.exports = function() {
     // commands to execute, unless the queue is currently being flushed, in
     // which case the command will be picked up without notification.
     if (cordova.commandQueue.length == 1 && !cordova.commandQueueFlushing) {
-        /*if (!gapBridge) {
+        if (navigator.userAgent.toLowerCase().match(/(ip(ad|od|hone))/)) {
+            location = 'gap://ready';
+            return;
+        }
+
+        if (!gapBridge) {
             createGapBridge();
         }
-        gapBridge.src = "gap://ready";*/
-        location = "gap://ready";
+        gapBridge.src = "gap://ready";
     }
 };
 
