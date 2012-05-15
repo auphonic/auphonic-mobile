@@ -31,14 +31,14 @@ this.PreventClickOnScroll = new Class({
   touchstart: function(event) {
     if (event.touches.length > 1) return;
 
-    if (this.scrolling) {
+    this.enabled = !!this.getNode(event.target);
+    this.start = event.touches[0].pageY;
+
+    if (this.scrolling && this.enabled) {
       clearTimeout(this.timer);
       this.cancelOnTouchEnd = true;
       if (this.node) this.node.removeEventListener('scroll', this.bound('listener'), false);
     }
-
-    this.enabled = !!this.getNode(event.target);
-    this.start = event.touches[0].pageY;
   },
 
   touchmove: function(event) {
