@@ -60,10 +60,11 @@ View.Controller = new Class({
       direction: direction
     };
 
-    this.back = this.back.update(this.back, options);
-    this.title = this.title.update(this.title, options, object.getTitleTemplate());
-    this.action = this.action.update(this.action, options, object.getAction());
+    this.back = this.back.update(options, object.getBackTemplate());
+    this.title = this.title.update(options, object.getTitleTemplate());
+    this.action = this.action.update(options, object.getAction());
 
+    UI.lock();
     UI.transition(this.element, previous && previous.toElement(), object.render(), {
       immediate: isImmediate,
       direction: direction,
@@ -98,6 +99,7 @@ View.Controller = new Class({
   },
 
   onTransitionEnd: function() {
+    UI.unlock();
     this.fireEvent('transitionEnd');
   },
 

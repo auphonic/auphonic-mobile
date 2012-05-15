@@ -19,8 +19,14 @@ Object.append(UI, {
     var oppositeDirection = (direction == 'right' ? 'left' : 'right');
     var onTransitionEnd = options && options.onTransitionEnd;
 
-    if (!isImmediate) current.addClass(direction);
-    container.adopt(current);
+    if (current) {
+      if (!isImmediate) current.addClass(direction);
+      container.adopt(current);
+
+      current.transition({immediate: isImmediate}, function() {
+        if (onTransitionEnd) onTransitionEnd();
+      });
+    }
 
     if (previous) {
       if (isImmediate) previous.dispose();
@@ -29,17 +35,10 @@ Object.append(UI, {
       });
     }
 
-    UI.lock();
-
-    current.transition({immediate: isImmediate}, function() {
-      UI.unlock();
-      if (onTransitionEnd) onTransitionEnd();
-    });
-
     (function() {
       if (previous) previous.addClass(oppositeDirection);
-      current.removeClass(direction);
-    }).delay(50, this); // Use a higher delay to account for dom insertion delays
+      if (current) current.removeClass(direction);
+    }).delay(50, this); // Use a higher delay to account for DOM insertion delays
 
     this.update(container);
   },
@@ -63,6 +62,8 @@ Object.append(UI, {
   },
 
   highlight: function(element) {
+    element = document.id(element);
+
     element.addClass('selected');
     var parent = element.getParent('li');
     if (!parent) return;
@@ -72,7 +73,7 @@ Object.append(UI, {
   },
 
   isHighlighted: function(element) {
-    return element.hasClass('selected'); // oh no, state management!
+    return document.id(element).hasClass('selected'); // oh no, state management!
   }
 
 });

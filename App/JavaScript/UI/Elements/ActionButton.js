@@ -10,7 +10,7 @@ this.UI.ActionButton = new Class({
     className: 'show',
   },
 
-  update: function(previous, options, data) {
+  update: function(options, data) {
     var isImmediate = options && options.immediate;
     var className = this.options.className;
 

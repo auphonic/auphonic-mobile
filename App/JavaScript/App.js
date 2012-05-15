@@ -12,8 +12,7 @@ var click = function(event) {
   event.preventDefault();
 
   if (event.touches && event.touches.length > 1) return;
-  if (UI.isLocked()) return;
-  if (UI.isHighlighted(this)) return;
+  if (UI.isLocked() || UI.isHighlighted(this)) return;
 
   UI.highlight(this);
 
@@ -77,7 +76,7 @@ var boot = function() {
   });
 
   var header = document.getElement('header');
-  var back = new UI.BackButton(document.getElement('header a.back'));
+  var back = new UI.BackButton(header, new Element('a'));
   var action = new UI.ActionButton(header, new Element('a'), {
     onClick: click
   });

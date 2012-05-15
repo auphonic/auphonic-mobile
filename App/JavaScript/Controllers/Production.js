@@ -19,7 +19,7 @@ Controller.define('/production', function() {
         title: 'Productions',
         content: UI.render('production', {production: list}),
         action: {
-          title: 'Add',
+          title: 'New',
           url: '/production/new'
         }
       }));

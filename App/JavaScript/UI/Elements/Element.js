@@ -35,7 +35,7 @@ this.UI.Element = new Class({
     return this;
   },
 
-  update: function(previous, options, data) {
+  update: function(options, data) {
     return this.create(data).transition(this, options);
   },
 

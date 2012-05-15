@@ -32,9 +32,7 @@
 <div id="login" class="login hidden prevent"></div>
 
 <div id="ui" class="hidden">
-  <header>
-    <a href="#" class="back button-left" data-hit-target="1"><span class="button" title="Back">Back</span></a>
-  </header>
+  <header></header>
   <footer>
     <ul>
       <li><a href="/production" class="production"><span /></a></li>
@@ -44,25 +42,19 @@
     </ul>
   </footer>
 
-  <div id="main">
-
-  </div>
+  <div id="main"></div>
 </div>
 
 <div id="container-template" class="hidden">
   <div class="container scrolling scrollable">
-    <div class="panel-content">
-
-    </div>
+    <div class="panel-content"></div>
 </div>
 
 <div id="ios-container-template" class="hidden">
   <div class="container">
     <div class="panel vflex scrolling">
       <div class="vflex scrolling scrollable">
-        <div class="panel-content vflex">
-
-        </div>
+        <div class="panel-content vflex"></div>
       </div>
     </div>
   </div>
@@ -193,6 +185,10 @@
   <ul class="split">
     <li><span class="right">{{version}}</span><label>Version</label></li>
   </ul>
+</script>
+
+<script id="ui-back-template" type="text/x-handlebars-template">
+  <a href="#" class="back button-left" data-hit-target="1"><span class="button" title="{{title}}">{{title}}</span></a>
 </script>
 
 <script id="ui-title-template" type="text/x-handlebars-template">

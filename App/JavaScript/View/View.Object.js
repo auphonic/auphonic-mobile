@@ -71,6 +71,13 @@ View.Object = new Class({
     return {
       title: this.getTitle()
     };
+  },
+
+  getBackTemplate: function() {
+    var previous = this.getStack().getPrevious();
+    return {
+      title: (previous && previous.getTitle()) || 'Back'
+    };
   }
 
 });

@@ -1,7 +1,8 @@
 @import 'nib'
 @import 'mixin/text-shadow-inset'
 
-$header-height = 40px
+$header-height = 44px
+$border-bottom = 1px
 $headline-offset = 1px
 
 header
@@ -10,18 +11,17 @@ header
   top 0
   left 0
   right 0
-  height $header-height
+  height $header-height - $border-bottom
 
   background-color #444
   background-image linear-gradient(top, #555 0%, #333 100%)
-  border-bottom 1px solid rgba(0, 0, 0, 0.3)
-  box-shadow rgba(0, 0, 0, 0.1) 0 2px 2px
+  border-bottom rgba(0, 0, 0, 1) $border-bottom solid
 
   h1
     z-index 11
     top 0
     left 65px
-    right 65px
+    right 55px
 
     position absolute
     margin 0
@@ -57,7 +57,7 @@ header
     position absolute
     top 0
     bottom 0
-    width 70px
+    width 80px
     text-decoration none
 
     transition-property opacity, -webkit-transform
@@ -66,18 +66,21 @@ header
 
     opacity 0
 
-    &.show
-      opacity 1
-
     &.hit
       bottom -50px
 
     &.button-left
       left 0
-      transform translate3d(150px, 0, 0)
+      opacity 1
+      transform translate3d(0, 0, 0)
 
-      &.show
-        transform translate3d(0, 0, 0)
+      &.right
+        opacity 0
+        transform translate3d(150px, 0, 0)
+
+      &.left
+        opacity 0
+        transform translate3d(-150px, 0, 0)
 
       .button
         left 5px
@@ -86,20 +89,33 @@ header
       right 0
 
       transition-timing-function ease-in
+
+      &.show
+        opacity 1
+
       .button
+        width 45px
         right 5px
+        padding 0
 
     .button
       position absolute
-      top 5px
-      bottom 5px
+      top 7px
+      bottom 7px
       width 55px
-      height $header-height - 10px
-      line-height $header-height - 10px
+      height $header-height - 14px
+      line-height $header-height - 14px
 
       display block
-      padding 0
+      padding 0 5px
       min-width auto
 
+      font-size 12px
+      overflow ellipsis
       text-shadow-inset($headline-offset, rgba(0, 0, 0, 0.8), rgba(255, 255, 255, 1))
+
+      &:before
+        overflow: ellipsis
+        left 5px
+        right 5px
 

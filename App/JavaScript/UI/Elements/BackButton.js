@@ -2,28 +2,20 @@
 
 this.UI.BackButton = new Class({
 
-  Implements: [Options, Class.Binds],
+  Extends: UI.Element,
+
+  Implements: [Class.Binds],
 
   Properties: {
     view: null
   },
 
-  options: {
-    className: 'show'
-  },
+  template: 'ui-back',
 
-  isVisible: false,
-
-  initialize: function(element, options) {
-    this.setOptions(options);
-
-    this.element = document.id(element);
+  initialize: function(container, element, options) {
+    this.parent(container, element, options);
 
     this.attach();
-  },
-
-  toElement: function() {
-    return this.element;
   },
 
   attach: function() {
@@ -37,30 +29,22 @@ this.UI.BackButton = new Class({
   click: function(event) {
     event.preventDefault();
 
-    if (UI.isLocked()) return;
+    if (UI.isLocked() || UI.isHighlighted(this)) return;
+
+    UI.highlight(this);
 
     this.getView().pop();
   },
 
-  update: function(previous, options) {
-    var isImmediate = options && options.immediate;
-    var element = this.element;
-    var className = this.options.className;
+  update: function(options, data) {
+    var next;
 
-    if (this.getView().getCurrent().getLength() > 1) {
-      element.removeClass('hidden');
-      (function() {
-        this.isVisible = true;
-        element.transition({immediate: isImmediate}).addClass(className);
-      }).delay(50, this);
-    } else if (this.isVisible) {
-      element.transition({immediate: isImmediate}, (function() {
-        this.isVisible = false;
-        element.addClass('hidden');
-      }).bind(this)).removeClass(className);
-    }
+    if (this.getView().getCurrent().getLength() > 1)
+      next = this.create(data);
 
-    return this;
+    UI.transition(this.container, this.toElement(), next && next.toElement(), options);
+
+    return next || this;
   }
 
 });
