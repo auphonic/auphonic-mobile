@@ -1,6 +1,8 @@
 (function(){
 
-this.Form = new Class({
+if (!this.Form) this.Form = {};
+
+this.Form.Element = new Class({
 
 	Implements: [Class.Singleton, Class.Binds],
 

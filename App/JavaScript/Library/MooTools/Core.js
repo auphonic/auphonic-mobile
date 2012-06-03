@@ -3123,6 +3123,466 @@ if (document.createElement('div').getAttributeNode('id')) Element.Properties.id 
 /*
 ---
 
+name: Element.Style
+
+description: Contains methods for interacting with the styles of Elements in a fashionable way.
+
+license: MIT-style license.
+
+requires: Element
+
+provides: Element.Style
+
+...
+*/
+
+(function(){
+
+var html = document.html;
+
+
+
+Element.Properties.styles = {set: function(styles){
+	this.setStyles(styles);
+}};
+
+var hasOpacity = (html.style.opacity != null),
+	hasFilter = (html.style.filter != null),
+	reAlpha = /alpha\(opacity=([\d.]+)\)/i;
+
+var setVisibility = function(element, opacity){
+	element.store('$opacity', opacity);
+	element.style.visibility = opacity > 0 || opacity == null ? 'visible' : 'hidden';
+};
+
+var setOpacity = (hasOpacity ? function(element, opacity){
+	element.style.opacity = opacity;
+} : (hasFilter ? function(element, opacity){
+	var style = element.style;
+	if (!element.currentStyle || !element.currentStyle.hasLayout) style.zoom = 1;
+	if (opacity == null || opacity == 1) opacity = '';
+	else opacity = 'alpha(opacity=' + (opacity * 100).limit(0, 100).round() + ')';
+	var filter = style.filter || element.getComputedStyle('filter') || '';
+	style.filter = reAlpha.test(filter) ? filter.replace(reAlpha, opacity) : filter + opacity;
+	if (!style.filter) style.removeAttribute('filter');
+} : setVisibility));
+
+var getOpacity = (hasOpacity ? function(element){
+	var opacity = element.style.opacity || element.getComputedStyle('opacity');
+	return (opacity == '') ? 1 : opacity.toFloat();
+} : (hasFilter ? function(element){
+	var filter = (element.style.filter || element.getComputedStyle('filter')),
+		opacity;
+	if (filter) opacity = filter.match(reAlpha);
+	return (opacity == null || filter == null) ? 1 : (opacity[1] / 100);
+} : function(element){
+	var opacity = element.retrieve('$opacity');
+	if (opacity == null) opacity = (element.style.visibility == 'hidden' ? 0 : 1);
+	return opacity;
+}));
+
+var floatName = (html.style.cssFloat == null) ? 'styleFloat' : 'cssFloat';
+
+Element.implement({
+
+	getComputedStyle: function(property){
+		if (this.currentStyle) return this.currentStyle[property.camelCase()];
+		var defaultView = Element.getDocument(this).defaultView,
+			computed = defaultView ? defaultView.getComputedStyle(this, null) : null;
+		return (computed) ? computed.getPropertyValue((property == floatName) ? 'float' : property.hyphenate()) : null;
+	},
+
+	setStyle: function(property, value){
+		if (property == 'opacity'){
+			if (value != null) value = parseFloat(value);
+			setOpacity(this, value);
+			return this;
+		}
+		property = (property == 'float' ? floatName : property).camelCase();
+		if (typeOf(value) != 'string'){
+			var map = (Element.Styles[property] || '@').split(' ');
+			value = Array.from(value).map(function(val, i){
+				if (!map[i]) return '';
+				return (typeOf(val) == 'number') ? map[i].replace('@', Math.round(val)) : val;
+			}).join(' ');
+		} else if (value == String(Number(value))){
+			value = Math.round(value);
+		}
+		this.style[property] = value;
+		
+		return this;
+	},
+
+	getStyle: function(property){
+		if (property == 'opacity') return getOpacity(this);
+		property = (property == 'float' ? floatName : property).camelCase();
+		var result = this.style[property];
+		if (!result || property == 'zIndex'){
+			result = [];
+			for (var style in Element.ShortStyles){
+				if (property != style) continue;
+				for (var s in Element.ShortStyles[style]) result.push(this.getStyle(s));
+				return result.join(' ');
+			}
+			result = this.getComputedStyle(property);
+		}
+		if (result){
+			result = String(result);
+			var color = result.match(/rgba?\([\d\s,]+\)/);
+			if (color) result = result.replace(color[0], color[0].rgbToHex());
+		}
+		if (Browser.opera || Browser.ie){
+			if ((/^(height|width)$/).test(property) && !(/px$/.test(result))){
+				var values = (property == 'width') ? ['left', 'right'] : ['top', 'bottom'], size = 0;
+				values.each(function(value){
+					size += this.getStyle('border-' + value + '-width').toInt() + this.getStyle('padding-' + value).toInt();
+				}, this);
+				return this['offset' + property.capitalize()] - size + 'px';
+			}
+			if (Browser.ie && (/^border(.+)Width|margin|padding/).test(property) && isNaN(parseFloat(result))){
+				return '0px';
+			}
+		}
+		return result;
+	},
+
+	setStyles: function(styles){
+		for (var style in styles) this.setStyle(style, styles[style]);
+		return this;
+	},
+
+	getStyles: function(){
+		var result = {};
+		Array.flatten(arguments).each(function(key){
+			result[key] = this.getStyle(key);
+		}, this);
+		return result;
+	}
+
+});
+
+Element.Styles = {
+	left: '@px', top: '@px', bottom: '@px', right: '@px',
+	width: '@px', height: '@px', maxWidth: '@px', maxHeight: '@px', minWidth: '@px', minHeight: '@px',
+	backgroundColor: 'rgb(@, @, @)', backgroundPosition: '@px @px', color: 'rgb(@, @, @)',
+	fontSize: '@px', letterSpacing: '@px', lineHeight: '@px', clip: 'rect(@px @px @px @px)',
+	margin: '@px @px @px @px', padding: '@px @px @px @px', border: '@px @ rgb(@, @, @) @px @ rgb(@, @, @) @px @ rgb(@, @, @)',
+	borderWidth: '@px @px @px @px', borderStyle: '@ @ @ @', borderColor: 'rgb(@, @, @) rgb(@, @, @) rgb(@, @, @) rgb(@, @, @)',
+	zIndex: '@', 'zoom': '@', fontWeight: '@', textIndent: '@px', opacity: '@'
+};
+
+
+
+
+
+Element.ShortStyles = {margin: {}, padding: {}, border: {}, borderWidth: {}, borderStyle: {}, borderColor: {}};
+
+['Top', 'Right', 'Bottom', 'Left'].each(function(direction){
+	var Short = Element.ShortStyles;
+	var All = Element.Styles;
+	['margin', 'padding'].each(function(style){
+		var sd = style + direction;
+		Short[style][sd] = All[sd] = '@px';
+	});
+	var bd = 'border' + direction;
+	Short.border[bd] = All[bd] = '@px @ rgb(@, @, @)';
+	var bdw = bd + 'Width', bds = bd + 'Style', bdc = bd + 'Color';
+	Short[bd] = {};
+	Short.borderWidth[bdw] = Short[bd][bdw] = All[bdw] = '@px';
+	Short.borderStyle[bds] = Short[bd][bds] = All[bds] = '@';
+	Short.borderColor[bdc] = Short[bd][bdc] = All[bdc] = 'rgb(@, @, @)';
+});
+
+})();
+
+
+/*
+---
+
+name: Element.Dimensions
+
+description: Contains methods to work with size, scroll, or positioning of Elements and the window object.
+
+license: MIT-style license.
+
+credits:
+  - Element positioning based on the [qooxdoo](http://qooxdoo.org/) code and smart browser fixes, [LGPL License](http://www.gnu.org/licenses/lgpl.html).
+  - Viewport dimensions based on [YUI](http://developer.yahoo.com/yui/) code, [BSD License](http://developer.yahoo.com/yui/license.html).
+
+requires: [Element, Element.Style]
+
+provides: [Element.Dimensions]
+
+...
+*/
+
+(function(){
+
+var element = document.createElement('div'),
+	child = document.createElement('div');
+element.style.height = '0';
+element.appendChild(child);
+var brokenOffsetParent = (child.offsetParent === element);
+element = child = null;
+
+var isOffset = function(el){
+	return styleString(el, 'position') != 'static' || isBody(el);
+};
+
+var isOffsetStatic = function(el){
+	return isOffset(el) || (/^(?:table|td|th)$/i).test(el.tagName);
+};
+
+Element.implement({
+
+	scrollTo: function(x, y){
+		if (isBody(this)){
+			this.getWindow().scrollTo(x, y);
+		} else {
+			this.scrollLeft = x;
+			this.scrollTop = y;
+		}
+		return this;
+	},
+
+	getSize: function(){
+		if (isBody(this)) return this.getWindow().getSize();
+		return {x: this.offsetWidth, y: this.offsetHeight};
+	},
+
+	getScrollSize: function(){
+		if (isBody(this)) return this.getWindow().getScrollSize();
+		return {x: this.scrollWidth, y: this.scrollHeight};
+	},
+
+	getScroll: function(){
+		if (isBody(this)) return this.getWindow().getScroll();
+		return {x: this.scrollLeft, y: this.scrollTop};
+	},
+
+	getScrolls: function(){
+		var element = this.parentNode, position = {x: 0, y: 0};
+		while (element && !isBody(element)){
+			position.x += element.scrollLeft;
+			position.y += element.scrollTop;
+			element = element.parentNode;
+		}
+		return position;
+	},
+
+	getOffsetParent: brokenOffsetParent ? function(){
+		var element = this;
+		if (isBody(element) || styleString(element, 'position') == 'fixed') return null;
+
+		var isOffsetCheck = (styleString(element, 'position') == 'static') ? isOffsetStatic : isOffset;
+		while ((element = element.parentNode)){
+			if (isOffsetCheck(element)) return element;
+		}
+		return null;
+	} : function(){
+		var element = this;
+		if (isBody(element) || styleString(element, 'position') == 'fixed') return null;
+
+		try {
+			return element.offsetParent;
+		} catch(e) {}
+		return null;
+	},
+
+	getOffsets: function(){
+		if (this.getBoundingClientRect && !Browser.Platform.ios){
+			var bound = this.getBoundingClientRect(),
+				html = document.id(this.getDocument().documentElement),
+				htmlScroll = html.getScroll(),
+				elemScrolls = this.getScrolls(),
+				isFixed = (styleString(this, 'position') == 'fixed');
+
+			return {
+				x: bound.left.toInt() + elemScrolls.x + ((isFixed) ? 0 : htmlScroll.x) - html.clientLeft,
+				y: bound.top.toInt()  + elemScrolls.y + ((isFixed) ? 0 : htmlScroll.y) - html.clientTop
+			};
+		}
+
+		var element = this, position = {x: 0, y: 0};
+		if (isBody(this)) return position;
+
+		while (element && !isBody(element)){
+			position.x += element.offsetLeft;
+			position.y += element.offsetTop;
+
+			if (Browser.firefox){
+				if (!borderBox(element)){
+					position.x += leftBorder(element);
+					position.y += topBorder(element);
+				}
+				var parent = element.parentNode;
+				if (parent && styleString(parent, 'overflow') != 'visible'){
+					position.x += leftBorder(parent);
+					position.y += topBorder(parent);
+				}
+			} else if (element != this && Browser.safari){
+				position.x += leftBorder(element);
+				position.y += topBorder(element);
+			}
+
+			element = element.offsetParent;
+		}
+		if (Browser.firefox && !borderBox(this)){
+			position.x -= leftBorder(this);
+			position.y -= topBorder(this);
+		}
+		return position;
+	},
+
+	getPosition: function(relative){
+		var offset = this.getOffsets(),
+			scroll = this.getScrolls();
+		var position = {
+			x: offset.x - scroll.x,
+			y: offset.y - scroll.y
+		};
+
+		if (relative && (relative = document.id(relative))){
+			var relativePosition = relative.getPosition();
+			return {x: position.x - relativePosition.x - leftBorder(relative), y: position.y - relativePosition.y - topBorder(relative)};
+		}
+		return position;
+	},
+
+	getCoordinates: function(element){
+		if (isBody(this)) return this.getWindow().getCoordinates();
+		var position = this.getPosition(element),
+			size = this.getSize();
+		var obj = {
+			left: position.x,
+			top: position.y,
+			width: size.x,
+			height: size.y
+		};
+		obj.right = obj.left + obj.width;
+		obj.bottom = obj.top + obj.height;
+		return obj;
+	},
+
+	computePosition: function(obj){
+		return {
+			left: obj.x - styleNumber(this, 'margin-left'),
+			top: obj.y - styleNumber(this, 'margin-top')
+		};
+	},
+
+	setPosition: function(obj){
+		return this.setStyles(this.computePosition(obj));
+	}
+
+});
+
+
+[Document, Window].invoke('implement', {
+
+	getSize: function(){
+		var doc = getCompatElement(this);
+		return {x: doc.clientWidth, y: doc.clientHeight};
+	},
+
+	getScroll: function(){
+		var win = this.getWindow(), doc = getCompatElement(this);
+		return {x: win.pageXOffset || doc.scrollLeft, y: win.pageYOffset || doc.scrollTop};
+	},
+
+	getScrollSize: function(){
+		var doc = getCompatElement(this),
+			min = this.getSize(),
+			body = this.getDocument().body;
+
+		return {x: Math.max(doc.scrollWidth, body.scrollWidth, min.x), y: Math.max(doc.scrollHeight, body.scrollHeight, min.y)};
+	},
+
+	getPosition: function(){
+		return {x: 0, y: 0};
+	},
+
+	getCoordinates: function(){
+		var size = this.getSize();
+		return {top: 0, left: 0, bottom: size.y, right: size.x, height: size.y, width: size.x};
+	}
+
+});
+
+// private methods
+
+var styleString = Element.getComputedStyle;
+
+function styleNumber(element, style){
+	return styleString(element, style).toInt() || 0;
+}
+
+function borderBox(element){
+	return styleString(element, '-moz-box-sizing') == 'border-box';
+}
+
+function topBorder(element){
+	return styleNumber(element, 'border-top-width');
+}
+
+function leftBorder(element){
+	return styleNumber(element, 'border-left-width');
+}
+
+function isBody(element){
+	return (/^(?:body|html)$/i).test(element.tagName);
+}
+
+function getCompatElement(element){
+	var doc = element.getDocument();
+	return (!doc.compatMode || doc.compatMode == 'CSS1Compat') ? doc.html : doc.body;
+}
+
+})();
+
+//aliases
+Element.alias({position: 'setPosition'}); //compatability
+
+[Window, Document, Element].invoke('implement', {
+
+	getHeight: function(){
+		return this.getSize().y;
+	},
+
+	getWidth: function(){
+		return this.getSize().x;
+	},
+
+	getScrollTop: function(){
+		return this.getScroll().y;
+	},
+
+	getScrollLeft: function(){
+		return this.getScroll().x;
+	},
+
+	getScrollHeight: function(){
+		return this.getScrollSize().y;
+	},
+
+	getScrollWidth: function(){
+		return this.getScrollSize().x;
+	},
+
+	getTop: function(){
+		return this.getPosition().y;
+	},
+
+	getLeft: function(){
+		return this.getPosition().x;
+	}
+
+});
+
+
+/*
+---
+
 name: Event
 
 description: Contains the Event Type, to make the event object cross-browser.
@@ -3412,148 +3872,6 @@ if ('onmouseenter' in document.documentElement){
 
 
 
-
-})();
-
-
-/*
----
-
-name: Element.Delegation
-
-description: Extends the Element native object to include the delegate method for more efficient event management.
-
-license: MIT-style license.
-
-requires: [Element.Event]
-
-provides: [Element.Delegation]
-
-...
-*/
-
-(function(){
-
-var eventListenerSupport = !!window.addEventListener;
-
-Element.NativeEvents.focusin = Element.NativeEvents.focusout = 2;
-
-var bubbleUp = function(self, match, fn, event, target){
-	while (target && target != self){
-		if (match(target, event)) return fn.call(target, event, target);
-		target = document.id(target.parentNode);
-	}
-};
-
-var map = {
-	mouseenter: {
-		base: 'mouseover'
-	},
-	mouseleave: {
-		base: 'mouseout'
-	},
-	focus: {
-		base: 'focus' + (eventListenerSupport ? '' : 'in'),
-		capture: true
-	},
-	blur: {
-		base: eventListenerSupport ? 'blur' : 'focusout',
-		capture: true
-	}
-};
-
-
-
-var proto = Element.prototype,
-	addEvent = proto.addEvent,
-	removeEvent = proto.removeEvent;
-
-var relay = function(old, method){
-	return function(type, fn, useCapture){
-		if (type.indexOf(':relay') == -1) return old.call(this, type, fn, useCapture);
-		var parsed = Slick.parse(type).expressions[0][0];
-		if (parsed.pseudos[0].key != 'relay') return old.call(this, type, fn, useCapture);
-		var newType = parsed.tag;
-		parsed.pseudos.slice(1).each(function(pseudo){
-			newType += ':' + pseudo.key + (pseudo.value ? '(' + pseudo.value + ')' : '');
-		});
-		old.call(this, type, fn);
-		return method.call(this, newType, parsed.pseudos[0].value, fn);
-	};
-};
-
-var delegation = {
-
-	addEvent: function(type, match, fn){
-		var storage = this.retrieve('$delegates', {}), stored = storage[type];
-		if (stored) for (var _uid in stored){
-			if (stored[_uid].fn == fn && stored[_uid].match == match) return this;
-		}
-
-		var _type = type, _match = match, _fn = fn, _map = map[type] || {};
-		type = _map.base || _type;
-
-		match = function(target){
-			return Slick.match(target, _match);
-		};
-
-		var elementEvent = Element.Events[_type];
-		if (elementEvent && elementEvent.condition){
-			var __match = match, condition = elementEvent.condition;
-			match = function(target, event){
-				return __match(target, event) && condition.call(target, event, type);
-			};
-		}
-
-		var self = this, uid = String.uniqueID();
-		var delegator = _map.listen ? function(event, target){
-			if (!target && event && event.target) target = event.target;
-			if (target) _map.listen(self, match, fn, event, target, uid);
-		} : function(event, target){
-			if (!target && event && event.target) target = event.target;
-			if (target) bubbleUp(self, match, fn, event, target);
-		};
-
-		if (!stored) stored = {};
-		stored[uid] = {
-			match: _match,
-			fn: _fn,
-			delegator: delegator
-		};
-		storage[_type] = stored;
-		return addEvent.call(this, type, delegator, _map.capture);
-	},
-
-	removeEvent: function(type, match, fn, _uid){
-		var storage = this.retrieve('$delegates', {}), stored = storage[type];
-		if (!stored) return this;
-
-		if (_uid){
-			var _type = type, delegator = stored[_uid].delegator, _map = map[type] || {};
-			type = _map.base || _type;
-			if (_map.remove) _map.remove(this, _uid);
-			delete stored[_uid];
-			storage[_type] = stored;
-			return removeEvent.call(this, type, delegator);
-		}
-
-		var __uid, s;
-		if (fn) for (__uid in stored){
-			s = stored[__uid];
-			if (s.match == match && s.fn == fn) return delegation.removeEvent.call(this, type, match, fn, __uid);
-		} else for (__uid in stored){
-			s = stored[__uid];
-			if (s.match == match) delegation.removeEvent.call(this, type, match, s.fn, __uid);
-		}
-		return this;
-	}
-
-};
-
-[Element, Window, Document].invoke('implement', {
-	addEvent: relay(addEvent, delegation.addEvent),
-	removeEvent: relay(removeEvent, delegation.removeEvent)
-});
 
 })();
 
