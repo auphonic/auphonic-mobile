@@ -39,7 +39,6 @@ this.ActiveState = new Class({
 
     var node = event.target;
     var current;
-    if (node.nodeType == 3) node = node.parentNode;
 
     while (node && node.getAttribute) {
       if (node.match('a, input')) {
