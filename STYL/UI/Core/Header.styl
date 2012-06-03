@@ -3,6 +3,7 @@
 
 $header-height = 44px
 $border-bottom = 1px
+$border-top = 1px
 $headline-offset = 1px
 
 header
@@ -11,32 +12,35 @@ header
   top 0
   left 0
   right 0
-  height $header-height - $border-bottom
+  height $header-height - $border-bottom - $border-top
+
+  font-family Helvetica
 
   background-color #444
-  background-image linear-gradient(top, #555 0%, #333 100%)
+  background-image linear-gradient(top, #555 0%, #333 50%, #111 51%, #111 100%)
+  border-top rgba(155, 155, 155, 1) $border-top solid
   border-bottom rgba(0, 0, 0, 1) $border-bottom solid
 
   h1
-    z-index 11
+    z-index 12
     top 0
-    left 65px
-    right 55px
+    left 75px
+    right 75px
 
     position absolute
     margin 0
     padding 0
-    height $header-height - (2 * $headline-offset)
-    line-height $header-height - (2 * $headline-offset)
+    height $header-height - 2px - (2 * $headline-offset)
+    line-height $header-height - 2px - (2 * $headline-offset)
     text-align center
-    font-size 1.3em
-    font-weight bold
 
-    overflow: ellipsis
-    text-shadow-inset($headline-offset, rgba(0, 0, 0, 0.8), rgba(255, 255, 255, 1))
+    font-size 18px
+    font-weight bold
+    overflow ellipsis
+    text-shadow-inset($headline-offset, rgba(0, 0, 0, 1), rgba(255, 255, 255, 1))
 
     &:before
-      overflow: ellipsis
+      overflow ellipsis
 
     transition-property opacity, -webkit-transform
     transition-timing-function cubic-bezier(.2, .14, .25, .81), ease-in-out
@@ -100,11 +104,11 @@ header
 
     .button
       position absolute
-      top 7px
-      bottom 7px
+      top 5px
+      bottom 5px
       width 55px
+      line-height $header-height - 15px
       height $header-height - 14px
-      line-height $header-height - 14px
 
       display block
       padding 0 5px
@@ -115,7 +119,7 @@ header
       text-shadow-inset($headline-offset, rgba(0, 0, 0, 0.8), rgba(255, 255, 255, 1))
 
       &:before
-        overflow: ellipsis
+        overflow ellipsis
         left 5px
         right 5px
 
