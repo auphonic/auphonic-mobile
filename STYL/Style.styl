@@ -1,6 +1,10 @@
-@import 'Base/Reset'
 @import 'nib'
+@import 'Base/Reset'
 
+body
+  background #fff url(../Images/Background.jpg)
+
+@import 'UI/Core/Body'
 @import 'UI/Core/Font'
 @import 'UI/Core/Link'
 @import 'UI/Core/Headline'
@@ -14,21 +18,7 @@
 @import 'UI/App/Lists'
 @import 'UI/App/Login'
 
-body
-  font-family $font
-  font-weight normal
-  font-size $font-size
-  color $color
-  background #fff url(../Images/Background.jpg)
-  overflow auto
-  -webkit-tap-highlight-color transparent
-  -webkit-touch-callout none
-  -webkit-user-drag none
-  -webkit-user-select none
-  overflow hidden
+@import 'UI/App/Sprites'
 
 .hidden
   display none
-
-@import 'Sprites/Default'
-@import 'UI/Default'
