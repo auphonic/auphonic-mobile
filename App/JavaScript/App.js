@@ -19,6 +19,11 @@ var click = function(event) {
   History.push(this.get('href'));
 };
 
+var onLabelClick = function() {
+  var input = this.getElement('input');
+  if (input) input.focus();
+};
+
 var boot = function() {
   (new ActiveState({
     active: 'active',
@@ -60,6 +65,12 @@ var boot = function() {
 
     'footer a:internal': function(elements) {
       elements.addEvent('touchstart', click);
+    },
+
+    'label': function(elements) {
+      elements.each(function(element) {
+        element.onclick = onLabelClick;
+      });
     }
 
   }).update();
