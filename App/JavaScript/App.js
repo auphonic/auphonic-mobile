@@ -44,14 +44,16 @@ var boot = function() {
 
   // Browser bug: prevent this from firing twice in Chrome
   setTimeout(function() {
-    History.push(isLoggedIn ? '' : '/login');
+    History.push(isLoggedIn ? '/preset/new' : '/login');
   }, 200);
 
-  // Prevent all clicks from working normally
-  window.addEventListener('click', preventDefault, false);
+  if (Browser.Platform.ios) {
+    // Prevent all clicks from working normally
+    window.addEventListener('click', preventDefault, false);
 
-  // Prevent Scroling when the UI is locked
-  window.addEventListener('touchmove', preventScroll, false);
+    // Prevent Scroling when the UI is locked
+    window.addEventListener('touchmove', preventScroll, false);
+  }
 
   UI.register({
 
@@ -66,6 +68,8 @@ var boot = function() {
     'footer a:internal': function(elements) {
       elements.addEvent('touchstart', click);
     },
+
+    'textarea.autogrow': Class.Instantiate(Form.AutoGrow),
 
     'label': function(elements) {
       elements.each(function(element) {

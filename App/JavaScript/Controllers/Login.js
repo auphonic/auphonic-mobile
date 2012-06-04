@@ -41,7 +41,7 @@ Controller.define('/login', function() {
   var login = document.id('login');
 
   login.set('html', UI.render('login'));
-  new Form(login.getElement('form'), 'login/submit');
+  new Form.Element(login.getElement('form'), 'login/submit');
   login.show();
 
 });

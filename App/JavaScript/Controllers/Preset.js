@@ -61,11 +61,33 @@ Controller.define('/preset', function() {
 
       Views.get('Main').push('preset', new View.Object({
         title: 'Presets',
-        content: UI.render('preset', {preset: list})
+        content: UI.render('preset', {preset: list}),
+        action: {
+          title: 'New',
+          url: '/preset/new'
+        }
       }));
     }
 
   });
+
+});
+
+Controller.define('/preset/new', function(req) {
+
+  Views.get('Main').push('preset', new View.Object({
+    title: 'New Preset',
+    content: UI.render('preset-new')
+  }));
+
+});
+
+Controller.define('/preset/new/metadata', function(req) {
+
+  Views.get('Main').push('preset', new View.Object({
+    title: 'Enter Metadata',
+    content: UI.render('preset-new-metadata')
+  }));
 
 });
 

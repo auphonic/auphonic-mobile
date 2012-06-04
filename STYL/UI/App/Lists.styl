@@ -16,6 +16,15 @@ div.container ul
     &:last-child
       border-bottom 0
 
+      a
+        border-bottom-right-radius 5px
+        border-bottom-left-radius 5px
+
+    &:first-child
+      a
+        border-top-right-radius 5px
+        border-top-left-radius 5px
+
     a, label, .right
       ellipsis()
       text-decoration none
@@ -53,5 +62,10 @@ div.container ul.split
       position absolute
       left 32%
       right 0
-      text-align right
+      bottom 0
+      top 0
+      width auto
       font-weight normal
+
+    span.right
+      text-align right

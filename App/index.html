@@ -154,6 +154,110 @@
   </div>
 </script>
 
+<script id="preset-new-template" type="text/x-handlebars-template">
+  <ul class="split formcontent">
+    <li>
+      <label>
+        <input type="text" name="name" placeholder="choose a preset name" class="right" />
+        Name
+      </label>
+    </li>
+    <li><a href="/preset/new/metadata" class="arrow"><span></span>Metadata</a></li>
+  </ul>
+
+  <h1>Output Formats</h1>
+  <ul>
+    <li><a href="#" class="arrow"><span></span>Add Audio Format</a></li>
+  </ul>
+</script>
+
+<script id="preset-new-metadata-template" type="text/x-handlebars-template">
+  <ul class="split formcontent">
+    <li>
+      <label>
+        <input type="text" name="title" class="right" />
+        Title
+      </label>
+    </li>
+    <li>
+      <label>
+        <input type="text" name="album" class="right" />
+        Album
+      </label>
+    </li>
+    <li>
+      <label>
+        <input type="text" name="artist" class="right" />
+        Artist
+      </label>
+    </li>
+    <li>
+      <label>
+        <input type="tel" name="track" class="right" />
+        Track
+      </label>
+    </li>
+  </ul>
+  <h1>Details</h1>
+  <ul class="split formcontent">
+    <li>
+      <label>
+        <input type="text" name="genre" class="right" />
+        Genre
+      </label>
+    </li>
+    <li>
+      <label>
+        <input type="tel" name="year" class="right" />
+        Year
+      </label>
+    </li>
+    <li>
+      <label>
+        <input type="text" name="publisher" class="right" />
+        Publisher
+      </label>
+    </li>
+    <li>
+      <label>
+        <input type="text" name="url" class="right" />
+        URL
+      </label>
+    </li>
+    <li>
+      <label>
+        <input type="text" name="license" placeholder="License etc." class="right" />
+        Copyright
+      </label>
+    </li>
+    <li>
+      <label>
+        <input type="text" name="license_url" placeholder="URL" class="right" />
+        License
+      </label>
+    </li>
+    <li>
+      <label>
+        <input type="checkbox" name="append_chapters" value="1" class="right" />
+        Chapters
+      </label>
+    </li>
+  </ul>
+
+  <h1>Summary <small>(max 255 characters)</small></h1>
+  <ul class="formcontent">
+    <li>
+      <textarea class="autogrow" name="summary"/></textarea>
+    </li>
+  </ul>
+  <h1>Long Description</h1>
+  <ul class="formcontent">
+    <li>
+      <textarea class="autogrow" name="summary"/></textarea>
+    </li>
+  </ul>
+</script>
+
 <script id="production-template" type="text/x-handlebars-template">
   <ul>
     {{#each production}}

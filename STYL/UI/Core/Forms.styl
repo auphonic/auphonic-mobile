@@ -1,7 +1,7 @@
 @import 'nib'
 @import 'UI/Core/Font'
 
-input
+input, textarea
   display block
   width 100%
   margin 0
@@ -10,13 +10,23 @@ input
   &:last-child
     border-bottom 0
 
-  font-size 1.3em
+  font-size 1em
   color $color
   outline none
 
   border 0
   border-bottom 1px solid #eee
+  border-radius 5px // Needed so first/last elements don't overlay the container
   -webkit-appearance none
+
+input[type=checkbox]
+  -webkit-appearance checkbox
+
+textarea
+  resize: none;
+
+textarea.autogrow
+    overflow-y hidden
 
 .button, input[type=submit]
   display inline-block
