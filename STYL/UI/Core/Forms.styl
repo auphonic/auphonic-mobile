@@ -19,9 +19,6 @@ input, textarea
   border-radius 5px // Needed so first/last elements don't overlay the container
   -webkit-appearance none
 
-input[type=checkbox]
-  -webkit-appearance checkbox
-
 textarea
   resize: none;
 
@@ -89,3 +86,81 @@ textarea.autogrow
       background-color #353535
       background-image linear-gradient(center top, #444 0%, #222 50%, #111 51%, #111 100%)
       box-shadow inset 0 2px 2px rgba(0, 0, 0, 0.45), 0 0 2px rgba(255, 255, 255, 0.2)
+
+// Based on: http://vxjs.org/switch.html
+.checkbox
+  position relative
+  float right
+  height 28px
+  width 77px
+  border 1px solid #979797
+  border-radius 20px
+  margin-top -5px
+  box-shadow inset 0 1px 3px #BABABA, inset 0 12px 3px 2px rgba(232, 232, 232, 0.5)
+  cursor pointer
+  overflow hidden
+  transform translate3d(0, 0, 0)
+
+  input[type=checkbox]
+    display none
+
+  & > .left
+    z-index 2
+    position absolute
+    top 0
+    bottom 0
+    left 0
+    right 0
+
+    transition-duration 400ms
+    transition-timing-function ease-in-out
+    transform translate3d(0, 0, 0)
+
+    border-radius 20px
+    box-shadow inset 0 1px 2px #333, inset 0 12px 3px 2px rgba(104, 104, 104, 0.50)
+    background-color #333
+
+  & > .thumb
+    z-index 3
+    position relative
+    width 26px
+    height 26px
+    top 0
+    display block
+
+    transition-duration 400ms
+    transition-timing-function ease-in-out
+    transform translate3d(0, 0, 0)
+
+    border solid 1px #919191
+    border-radius 28px
+
+    box-shadow inset 0 2px 1px white, inset 0 -2px 1px white
+    background-color #CECECE
+    background-image linear-gradient(top, #CECECE, #FBFBFB)
+
+    &:before
+      content attr(data-on)
+      position absolute
+      top 4px
+      left -67px
+      right 0
+      color #fff
+      font-weight bold
+      text-align center
+      text-shadow rgba(0, 0, 0, 0.5) 0 -1px 0
+
+    &::after
+      content attr(data-off)
+      position absolute
+      top 4px
+      left 33px
+      right 0
+      color #888
+      text-align center
+      font-weight bold
+
+  &:hover > .thumb
+    box-shadow inset 0 2px 1px #fff, inset 0 -2px 1px #fff
+    background-image none
+

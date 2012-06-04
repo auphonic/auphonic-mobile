@@ -79,6 +79,7 @@
 <script type="text/javascript" src="JavaScript/Library/Extensions/Element.js"></script>
 <script type="text/javascript" src="JavaScript/Library/Extensions/Element.Transition.js"></script>
 <script type="text/javascript" src="JavaScript/Library/Extensions/Form.Element.js"></script>
+<script type="text/javascript" src="JavaScript/Library/Extensions/Form.Checkbox.js"></script>
 <script type="text/javascript" src="JavaScript/Library/Extensions/LocalStorage.js"></script>
 <script type="text/javascript" src="JavaScript/Library/Extensions/Slick.js"></script>
 
@@ -236,10 +237,16 @@
         License
       </label>
     </li>
-    <li>
+    <li class="wide">
       <label>
-        <input type="checkbox" name="append_chapters" value="1" class="right" />
-        Chapters
+        <div class="right">
+          <div class="checkbox">
+            <span class="left"></span>
+            <span class="thumb" data-on="Yes" data-off="No"></span>
+            <input type="checkbox" name="append_chapters" value="1" />
+          </div>
+        </div>
+        Append Chapters
       </label>
     </li>
   </ul>

@@ -70,6 +70,7 @@ var boot = function() {
     },
 
     'textarea.autogrow': Class.Instantiate(Form.AutoGrow),
+    'div.checkbox': Class.Instantiate(Form.Checkbox),
 
     'label': function(elements) {
       elements.each(function(element) {
