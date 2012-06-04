@@ -24,7 +24,7 @@ Browser.Device = {
 
 if (Browser.Platform.ios){
 	var device = navigator.userAgent.toLowerCase().match(/(ip(ad|od|hone))/)[0];
-
+	
 	Browser.Device[device] = true;
 	Browser.Device.name = device;
 }
@@ -60,7 +60,7 @@ Browser.Features.Touch = (function(){
 		document.createEvent('TouchEvent').initTouchEvent('touchstart');
 		return true;
 	} catch (exception){}
-
+	
 	return false;
 })();
 
@@ -214,17 +214,17 @@ var events = {
 		active = true;
 		start = {x: touch.pageX, y: touch.pageY};
 	},
-
+	
 	touchmove: function(event){
 		if (disabled || !active) return;
-
+		
 		var touch = event.changedTouches[0],
 			end = {x: touch.pageX, y: touch.pageY};
 		if (this.retrieve(cancelKey) && Math.abs(start.y - end.y) > 10){
 			active = false;
 			return;
 		}
-
+		
 		var distance = this.retrieve(distanceKey, dflt),
 			delta = end.x - start.x,
 			isLeftSwipe = delta < -distance,
@@ -232,13 +232,13 @@ var events = {
 
 		if (!isRightSwipe && !isLeftSwipe)
 			return;
-
+		
 		event.preventDefault();
 		active = false;
 		event.direction = (isLeftSwipe ? 'left' : 'right');
 		event.start = start;
 		event.end = end;
-
+		
 		this.fireEvent(name, event);
 	},
 

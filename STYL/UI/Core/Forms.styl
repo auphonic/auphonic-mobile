@@ -99,7 +99,6 @@ textarea.autogrow
   box-shadow inset 0 1px 3px #BABABA, inset 0 12px 3px 2px rgba(232, 232, 232, 0.5)
   cursor pointer
   overflow hidden
-  transform translate3d(0, 0, 0)
 
   input[type=checkbox]
     display none
@@ -110,13 +109,16 @@ textarea.autogrow
     top 0
     bottom 0
     left 0
-    right 0
+    right 11px
 
     transition-duration 400ms
     transition-timing-function ease-in-out
     transform translate3d(0, 0, 0)
 
     border-radius 20px
+    border-top-right-radius 0
+    border-bottom-right-radius 0
+
     box-shadow inset 0 1px 2px #333, inset 0 12px 3px 2px rgba(104, 104, 104, 0.50)
     background-color #333
 

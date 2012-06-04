@@ -71,9 +71,7 @@ Form.Checkbox = new Class({
     style.webkitTransform = style.transform = 'translate3d(' + delta + 'px, 0, 0)';
 
     delta = (this.options.max - delta);
-    style = this.left.style;
-    style.webkitTransform = style.transform = 'translate3d(' + -delta + 'px, 0, 0)';
-    style.left = delta + 'px';
+    this.left.style.right = delta + 11 + 'px';
   },
 
   preventDefault: function(event) {
