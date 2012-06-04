@@ -9,6 +9,7 @@ View.Object = new Class({
     stack: null,
 
     action: null,
+    back: null,
 
     scrollTop: 0
   },
@@ -18,7 +19,8 @@ View.Object = new Class({
       .setURL(options.url)
       .setTitle(options.title)
       .setContent(options.content)
-      .setAction(options.action);
+      .setAction(options.action)
+      .setBack(options.back);
   },
 
   toElement: function() {
@@ -74,6 +76,9 @@ View.Object = new Class({
   },
 
   getBackTemplate: function() {
+    var back = this.getBack();
+    if (back) return back;
+
     var previous = this.getStack().getPrevious();
     return {
       title: (previous && previous.getTitle()) || 'Back'

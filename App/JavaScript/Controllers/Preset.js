@@ -77,7 +77,11 @@ Controller.define('/preset/new', function(req) {
 
   Views.get('Main').push('preset', new View.Object({
     title: 'New Preset',
-    content: UI.render('preset-new')
+    content: UI.render('preset-new'),
+    action: {
+      title: 'Save',
+      url: '/preset/new/save'
+    }
   }));
 
 });
@@ -86,8 +90,21 @@ Controller.define('/preset/new/metadata', function(req) {
 
   Views.get('Main').push('preset', new View.Object({
     title: 'Enter Metadata',
-    content: UI.render('preset-new-metadata')
+    content: UI.render('preset-new-metadata'),
+    action: {
+      title: 'Done',
+      url: '/preset/new'
+    },
+    back: {
+      title: 'Cancel'
+    }
   }));
+
+});
+
+Controller.define('/preset/new/save', function(req) {
+
+  History.push('/preset');
 
 });
 
