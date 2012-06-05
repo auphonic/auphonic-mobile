@@ -2,7 +2,7 @@
 
 this.UI.Element = new Class({
 
-  Implements: Options,
+  Implements: [Options, Events],
 
   Properties: {
     view: null
@@ -40,9 +40,11 @@ this.UI.Element = new Class({
   },
 
   create: function(data) {
+    var element = Element.from(UI.render(this.options.template, data));
+    if (data && data.onClick) element.addEvent('click', data.onClick);
     return new this.$constructor(
       this.container,
-      Element.from(UI.render(this.options.template, data)),
+      element,
       this.options
     ).setView(this.getView());
   }

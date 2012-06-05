@@ -41,6 +41,7 @@ View.Controller = new Class({
 
     var rotated = false;
     if (!this.isCurrent(stack)) {
+      if (this._current) this._current.getCurrent().fireEvent('hide', ['left']);
       rotated = true;
       this.rotate(stack);
     }
@@ -53,6 +54,7 @@ View.Controller = new Class({
     var previous;
     if (!isImmediate) previous = current.getCurrent().rememberScroll();
 
+    if (previous) previous.fireEvent('hide', [direction]);
     current.push(object);
 
     var options = {
@@ -65,6 +67,9 @@ View.Controller = new Class({
     this.action = this.action.update(options, object.getAction());
 
     UI.lock();
+
+    object.fireEvent('show', [direction]);
+
     UI.transition(this.element, previous && previous.toElement(), object.render(), {
       immediate: isImmediate,
       direction: direction,
@@ -96,6 +101,10 @@ View.Controller = new Class({
 
   getCurrent: function() {
     return this._current;
+  },
+
+  getCurrentView: function() {
+    return this._current.getCurrent();
   },
 
   onTransitionEnd: function() {

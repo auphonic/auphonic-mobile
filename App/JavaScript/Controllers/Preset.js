@@ -3,6 +3,8 @@
 var presets = null;
 var list = null;
 
+var formdata = {};
+
 Controller.define('/preset', function() {
 
   API.call('/preset').on({
@@ -81,6 +83,10 @@ Controller.define('/preset/new', function(req) {
     action: {
       title: 'Save',
       url: '/preset/new/save'
+    },
+
+    onHide: function(direction) {
+      if (direction == 'left') formdata = {};
     }
   }));
 
@@ -93,10 +99,83 @@ Controller.define('/preset/new/metadata', function(req) {
     content: UI.render('preset-new-metadata'),
     action: {
       title: 'Done',
+      url: '/preset/new',
+      onClick: function() {
+        formdata.metadata = Views.get('Main').getCurrentView().serialize();
+      }
+    },
+    back: {
+      title: 'Cancel'
+    },
+
+    onShow: function() {
+      this.unserialize(formdata.metadata);
+    }
+  }));
+
+});
+
+Controller.define('/preset/new/format', function(req) {
+
+  Views.get('Main').push('preset', new View.Object({
+    title: 'Add Output Format',
+    content: UI.render('preset-new-format'),
+    action: {
+      title: 'Done',
       url: '/preset/new'
     },
     back: {
       title: 'Cancel'
+    }
+  }));
+
+});
+
+Controller.define('/preset/new/service', function(req) {
+
+   var services = [
+      {
+          "display_name": "Dropbox - Georg Holzmann",
+          "type": "dropbox",
+          "uuid": "UC6aoChNZNt7KYZNxJTgUn",
+          "email": "georg@myserver.at"
+      },
+      {
+          "display_name": "FTP - ftp.myserver.at:21/mirror/",
+          "path": "mirror/",
+          "host": "ftp.myserver.at",
+          "type": "ftp",
+          "uuid": "r6MSycBwyeWFAJYqUKtGeX",
+          "port": 21
+      },
+      {
+          "display_name": "SFTP - myserver.at:22/home/user/path/",
+          "path": "/home/user/path",
+          "host": "myserver.at",
+          "type": "sftp",
+          "uuid": "jm7yLuiyGwQe27gQUz869K",
+          "port": 22
+      }
+  ];
+
+  Views.get('Main').push('preset', new View.Object({
+    title: 'Outgoing Transfers',
+    content: UI.render('preset-new-service', {
+      service: services
+    }),
+    action: {
+      title: 'Done',
+      url: '/preset/new',
+      onClick: function() {
+        formdata.services = Views.get('Main').getCurrentView().serialize();
+      }
+    },
+    back: {
+      title: 'Cancel'
+    },
+
+    onShow: function() {
+      this.unserialize(formdata.services);
     }
   }));
 

@@ -34,10 +34,10 @@
   <header></header>
   <footer>
     <ul>
-      <li><a href="/production" class="production"><span /></a></li>
-      <li><a href="/preset" class="preset"><span /></a></li>
-      <li><a href="/record" class="microphone"><span /></a></li>
-      <li><a href="/settings" class="settings"><span /></a></li>
+      <li><a href="/production" class="production"><span></span></a></li>
+      <li><a href="/preset" class="preset"><span></span></a></li>
+      <li><a href="/record" class="microphone"><span></span></a></li>
+      <li><a href="/settings" class="settings"><span></span></a></li>
     </ul>
   </footer>
 
@@ -168,12 +168,12 @@
 
   <h1>Output Formats</h1>
   <ul>
-    <li><a href="#" class="plus"><span></span>Add Audio Format</a></li>
+    <li><a href="/preset/new/format" class="plus"><span></span>Add Audio Format</a></li>
   </ul>
 
   <h1>Outgoing Transfers</h1>
   <ul>
-    <li><a href="#" class="plus"><span></span>Add Outgoing Transfer</a></li>
+    <li><a href="/preset/new/service" class="plus"><span></span>Add Outgoing Transfer</a></li>
   </ul>
 
   <h1>Algorithms</h1>
@@ -312,9 +312,26 @@
   <h1>Long Description</h1>
   <ul class="formcontent">
     <li>
-      <textarea class="autogrow" name="summary"/></textarea>
+      <textarea class="autogrow" name="long_description"/></textarea>
     </li>
   </ul>
+</script>
+
+<script id="preset-new-service-template" type="text/x-handlebars-template">
+  <ul class="formcontent">
+    {{#each service}}
+      <li class="wide">
+        <label class="left">
+          <div class="right">
+            <div class="checkbox">
+              <span class="left"></span><span class="thumb" data-on="On" data-off="Off"></span>
+              <input type="checkbox" name="service-{{uuid}}" value="1" />
+            </div>
+          </div>
+          {{display_name}}
+        </label>
+      </li>
+    {{/each}}
 </script>
 
 <script id="production-template" type="text/x-handlebars-template">
@@ -334,7 +351,7 @@
 
 <script id="settings-template" type="text/x-handlebars-template">
   <ul>
-    <li><a href="/settings/about"><span />About</a></li>
+    <li><a href="/settings/about" class="arrow"><span></span>About</a></li>
   </ul>
 
   <ul>
