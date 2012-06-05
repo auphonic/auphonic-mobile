@@ -80,6 +80,7 @@
 <script type="text/javascript" src="JavaScript/Library/Extensions/Element.Transition.js"></script>
 <script type="text/javascript" src="JavaScript/Library/Extensions/Form.Element.js"></script>
 <script type="text/javascript" src="JavaScript/Library/Extensions/Form.Checkbox.js"></script>
+<script type="text/javascript" src="JavaScript/Library/Extensions/Form.EmptySelect.js"></script>
 <script type="text/javascript" src="JavaScript/Library/Extensions/LocalStorage.js"></script>
 <script type="text/javascript" src="JavaScript/Library/Extensions/Slick.js"></script>
 
@@ -164,16 +165,12 @@
       </label>
     </li>
     <li><a href="/preset/new/metadata" class="arrow"><span></span>Metadata</a></li>
+    <li><a href="/preset/new/service" class="arrow"><span></span>Outgoing File Transfers</a></li>
   </ul>
 
   <h1>Output Formats</h1>
   <ul>
     <li><a href="/preset/new/format" class="plus"><span></span>Add Audio Format</a></li>
-  </ul>
-
-  <h1>Outgoing Transfers</h1>
-  <ul>
-    <li><a href="/preset/new/service" class="plus"><span></span>Add Outgoing Transfer</a></li>
   </ul>
 
   <h1>Algorithms</h1>
@@ -317,6 +314,62 @@
   </ul>
 </script>
 
+<script id="preset-new-format-template" type="text/x-handlebars-template">
+  <ul class="formcontent">
+    <li>
+      <label class="left">
+        <select class="right empty">
+          {{#each format}}
+            <option value="{{value}}">{{display_name}}</option>
+          {{/each}}
+        </select>
+        <span class="right placeholder">choose a format</span>
+        Format
+      </label>
+    </li>
+  </ul>
+
+  <ul class="bitrates hidden">
+    {{#each format}}
+      <li data-format="{{value}}">
+        <label class="left">
+          <select class="right small">
+            {{#each bitrate_format}}
+              <option value="{{value}}"{{#if selected}}selected="selected"{{/if}}>{{title}}</option>
+            {{/each}}
+          </select>
+          Bitrate
+        </label>
+      </li>
+    {{/each}}
+  </ul>
+</script>
+
+<script id="preset-new-format-detail-template" type="text/x-handlebars-template">
+  <li class="wide">
+    <label class="left">
+        <div class="right">
+          <div class="checkbox">
+            <span class="left"></span><span class="thumb" data-on="Yes" data-off="No"></span>
+            <input type="checkbox" name="mono_mixdown" value="1" />
+          </div>
+        </div>
+        Mono Mixdown
+    </label>
+  </li>
+  <li class="wide">
+    <label class="left">
+        <div class="right">
+          <div class="checkbox">
+            <span class="left"></span><span class="thumb" data-on="Yes" data-off="No"></span>
+            <input type="checkbox" name="split_on_chapters" value="1" />
+          </div>
+        </div>
+        Split on Chapters
+      </label>
+  </li>
+</script>
+
 <script id="preset-new-service-template" type="text/x-handlebars-template">
   <ul class="formcontent">
     {{#each service}}
@@ -328,7 +381,7 @@
               <input type="checkbox" name="service-{{uuid}}" value="1" />
             </div>
           </div>
-          {{display_name}}
+          <small><span class="light">{{display_type}}</span> {{display_name}}</small>
         </label>
       </li>
     {{/each}}

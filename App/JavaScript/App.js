@@ -74,6 +74,9 @@ var boot = function() {
 
     'textarea.autogrow': Class.Instantiate(Form.AutoGrow),
     'div.checkbox': Class.Instantiate(Form.Checkbox),
+    'select.empty': Class.Instantiate(Form.EmptySelect, {
+      placeholder: '! > .placeholder'
+    }),
 
     'label': function(elements) {
       elements.each(function(element) {

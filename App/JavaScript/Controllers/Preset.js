@@ -5,6 +5,47 @@ var list = null;
 
 var formdata = {};
 
+var formats = {
+  "alac": {
+      "display_name": "ALAC (M4A, MP4)",
+      "bitrate_strings": ["optimal (stereo ~130MB/h, mono ~65MB/h)"],
+      "endings": ["m4a", "mp4"]
+  },
+  "aac": {
+      "display_name": "AAC (M4A, MP4)",
+      "bitrates": ["24", "32", "40", "48", "56", "64", "80", "96", "112", "128", "160", "192", "256"],
+      "default_bitrate": "80",
+      "bitrate_strings": ["24 kbps, HE AAC (~11MB/h)", "32 kbps, HE AAC (~14MB/h)", "40 kbps, HE AAC (~18MB/h)", "48 kbps, HE AAC (~21MB/h)", "56 kbps, HE AAC (~25MB/h)", "64 kbps, HE AAC (~28MB/h)", "80 kbps, HE AAC (~35MB/h)", "96 kbps, HE AAC (~42MB/h)", "112 kbps, HE AAC (~49MB/h)", "128 kbps (~56MB/h)", "160 kbps (~70MB/h)", "192 kbps (~84MB/h)", "256 kbps (~113MB/h)"],
+      "endings": ["m4a", "mp4"]
+  },
+  "mp3-vbr": {
+      "display_name": "MP3 Variable Bitrate",
+      "bitrates": ["32", "40", "48", "64", "80", "96", "112", "128", "160", "192", "224"],
+      "default_bitrate": "96",
+      "bitrate_strings": ["~32 kbps (~14MB/h)", "~40 kbps (~18MB/h)", "~48 kbps (~21MB/h)", "~64 kbps (~28MB/h)", "~80 kbps (~35MB/h)", "~96 kbps (~42MB/h)", "~112 kbps (~49MB/h)", "~128 kbps (~56MB/h)", "~160 kbps (~70MB/h)", "~192 kbps (~84MB/h)", "~224 kbps (~98MB/h)"],
+      "endings": ["mp3"]
+  },
+  "vorbis": {
+      "display_name": "OGG Vorbis",
+      "bitrates": ["32", "40", "48", "64", "80", "96", "112", "128", "160", "192", "224"],
+      "default_bitrate": "96",
+      "bitrate_strings": ["~32 kbps (~14MB/h)", "~40 kbps (~18MB/h)", "~48 kbps (~21MB/h)", "~64 kbps (~28MB/h)", "~80 kbps (~35MB/h)", "~96 kbps (~42MB/h)", "~112 kbps (~49MB/h)", "~128 kbps (~56MB/h)", "~160 kbps (~70MB/h)", "~192 kbps (~84MB/h)", "~224 kbps (~98MB/h)"],
+      "endings": ["ogg", "oga"]
+  },
+  "mp3": {
+      "display_name": "MP3",
+      "bitrates": ["32", "40", "48", "64", "80", "96", "112", "128", "160", "192", "224"],
+      "default_bitrate": "96",
+      "bitrate_strings": ["~32 kbps (~14MB/h)", "~40 kbps (~18MB/h)", "~48 kbps (~21MB/h)", "~64 kbps (~28MB/h)", "~80 kbps (~35MB/h)", "~96 kbps (~42MB/h)", "~112 kbps (~49MB/h)", "~128 kbps (~56MB/h)", "~160 kbps (~70MB/h)", "~192 kbps (~84MB/h)", "~224 kbps (~98MB/h)"],
+      "endings": ["mp3"]
+  },
+  "flac": {
+      "display_name": "FLAC",
+      "bitrate_strings": ["optimal (stereo ~125MB/h, mono ~62MB/h)"],
+      "endings": ["flac"]
+  }
+};
+
 Controller.define('/preset', function() {
 
   API.call('/preset').on({
@@ -117,17 +158,57 @@ Controller.define('/preset/new/metadata', function(req) {
 
 Controller.define('/preset/new/format', function(req) {
 
-  Views.get('Main').push('preset', new View.Object({
+  var list = [];
+  Object.each(formats, function(value, key) {
+    value = Object.append({}, value);
+    value.value = key;
+    value.bitrate_format = [];
+    value.bitrate_strings.each(function(string, index) {
+      var bitrate = (value.bitrates ? value.bitrates[index] : 0);
+      value.bitrate_format.push({
+        value: bitrate,
+        title: string,
+        selected: (!bitrate || bitrate == value.default_bitrate)
+      });
+    });
+    list.push(value);
+  });
+
+  var object;
+  Views.get('Main').push('preset', object = new View.Object({
     title: 'Add Output Format',
-    content: UI.render('preset-new-format'),
-    action: {
-      title: 'Done',
-      url: '/preset/new'
-    },
+    content: UI.render('preset-new-format', {
+      format: list
+    }),
     back: {
       title: 'Cancel'
     }
   }));
+
+  object.toElement().getElements('select.empty').addEvents({
+
+    'change:once': function() {
+      Views.get('Main').updateElement('action', {}, {
+        title: 'Add',
+        url: '/preset/new'
+      });
+    },
+
+    change: function() {
+      var option = this.getSelected()[0];
+      var value = option.get('value');
+      var parent = this.getParent('ul');
+      var item = object.toElement().getElement('.bitrates [data-format=' + value + ']').clone();
+
+      parent.getElements('> :not(li:first-child)').dispose();
+      parent.adopt(item);
+
+      Elements.from(UI.render('preset-new-format-detail')).inject(parent);
+
+      UI.update(parent);
+    }
+
+  });
 
 });
 
@@ -135,13 +216,13 @@ Controller.define('/preset/new/service', function(req) {
 
    var services = [
       {
-          "display_name": "Dropbox - Georg Holzmann",
+          "display_name": "Georg Holzmann",
           "type": "dropbox",
           "uuid": "UC6aoChNZNt7KYZNxJTgUn",
           "email": "georg@myserver.at"
       },
       {
-          "display_name": "FTP - ftp.myserver.at:21/mirror/",
+          "display_name": "ftp.myserver.at:21/mirror/",
           "path": "mirror/",
           "host": "ftp.myserver.at",
           "type": "ftp",
@@ -149,7 +230,7 @@ Controller.define('/preset/new/service', function(req) {
           "port": 21
       },
       {
-          "display_name": "SFTP - myserver.at:22/home/user/path/",
+          "display_name": "myserver.at:22/home/user/path/",
           "path": "/home/user/path",
           "host": "myserver.at",
           "type": "sftp",
@@ -157,6 +238,13 @@ Controller.define('/preset/new/service', function(req) {
           "port": 22
       }
   ];
+
+  services.each(function(service) {
+    var type = service.type;
+    if (type == 'dropbox') type = type.charAt(0).toUpperCase() + type.slice(1);
+    else type = service.type.toUpperCase();
+    service.display_type = type;
+  });
 
   Views.get('Main').push('preset', new View.Object({
     title: 'Outgoing Transfers',

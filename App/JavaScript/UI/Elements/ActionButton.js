@@ -11,28 +11,33 @@ this.UI.ActionButton = new Class({
   },
 
   update: function(options, data) {
-    var isImmediate = options && options.immediate;
-    var className = this.options.className;
-
     var element = this.element;
     element.transition(options, element.dispose.bind(element));
     (function() {
-      element.removeClass(className);
-    }).delay(50);
+      element.removeClass(this.options.className);
+    }).delay(50, this);
 
     if (!data) return this;
 
     var next = this.create(data);
-    var nextElement = next.toElement();
-    this.container.adopt(nextElement);
-    if (isImmediate) nextElement.addClass(className);
-
-    nextElement.transition(options).removeClass('hidden');
-    (function() {
-      nextElement.addClass(className);
-    }).delay(50);
+    this.container.adopt(next);
+    next.show(options);
 
     return next;
+  },
+
+  show: function(options) {
+    var isImmediate = options && options.immediate;
+    var className = this.options.className;
+    var element = this.toElement();
+
+    element.transition(options).removeClass('hidden');
+    if (isImmediate) element.addClass(className);
+    else (function() {
+      element.addClass(className);
+    }).delay(50);
+
+    return this;
   }
 
 });

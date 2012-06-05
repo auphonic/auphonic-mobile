@@ -62,9 +62,9 @@ View.Controller = new Class({
       direction: direction
     };
 
-    this.back = this.back.update(options, object.getBackTemplate());
-    this.title = this.title.update(options, object.getTitleTemplate());
-    this.action = this.action.update(options, object.getAction());
+    this.updateElement('back', options, object.getBackTemplate())
+      .updateElement('title', options, object.getTitleTemplate())
+      .updateElement('action', options, object.getActionTemplate());
 
     UI.lock();
 
@@ -114,6 +114,11 @@ View.Controller = new Class({
 
   getOption: function(name) {
     return this.options[name] || null;
+  },
+
+  updateElement: function(type, options, template) {
+    this[type] = this[type].update(options, template);
+    return this;
   }
 
 });
