@@ -6,6 +6,7 @@ div.container ul
   font-size 1.3em
 
   li
+    position relative
     margin 0
     display block
 
@@ -16,12 +17,12 @@ div.container ul
     &:last-child
       border-bottom 0
 
-      a
+      > a
         border-bottom-right-radius 5px
         border-bottom-left-radius 5px
 
     &:first-child
-      a
+      > a
         border-top-right-radius 5px
         border-top-left-radius 5px
 
@@ -52,11 +53,7 @@ div.container ul
 
           background-repeat no-repeat
 
-div.container ul.split
-  li
-    position relative
-
-    label
+    label.left
       width 30%
 
     .right
@@ -71,9 +68,8 @@ div.container ul.split
     span.right
       text-align right
 
-    &.wide label
+    &.wide label.left
       width 65%
-
 
     &.wide .right
       left 67%

@@ -156,9 +156,9 @@
 </script>
 
 <script id="preset-new-template" type="text/x-handlebars-template">
-  <ul class="split formcontent">
+  <ul class="formcontent">
     <li>
-      <label>
+      <label class="left">
         <input type="text" name="name" placeholder="choose a preset name" class="right" />
         Name
       </label>
@@ -177,9 +177,9 @@
   </ul>
 
   <h1>Algorithms</h1>
-  <ul class="formcontent split">
+  <ul class="formcontent">
     <li class="wide">
-      <label>
+      <label class="left">
         <div class="right">
           <div class="checkbox">
             <span class="left"></span><span class="thumb" data-on="On" data-off="Off"></span>
@@ -190,7 +190,7 @@
       </label>
     </li>
     <li class="wide">
-      <label>
+      <label class="left">
         <div class="right">
           <div class="checkbox">
             <span class="left"></span><span class="thumb" data-on="On" data-off="Off"></span>
@@ -201,7 +201,7 @@
       </label>
     </li>
     <li class="wide">
-      <label>
+      <label class="left">
         <div class="right">
           <div class="checkbox">
             <span class="left"></span><span class="thumb" data-on="On" data-off="Off"></span>
@@ -212,7 +212,7 @@
       </label>
     </li>
     <li class="wide">
-      <label>
+      <label class="left">
         <div class="right">
           <div class="checkbox">
             <span class="left"></span><span class="thumb" data-on="On" data-off="Off"></span>
@@ -226,72 +226,72 @@
 </script>
 
 <script id="preset-new-metadata-template" type="text/x-handlebars-template">
-  <ul class="split formcontent">
+  <ul class="formcontent">
     <li>
-      <label>
+      <label class="left">
         <input type="text" name="title" class="right" />
         Title
       </label>
     </li>
     <li>
-      <label>
+      <label class="left">
         <input type="text" name="album" class="right" />
         Album
       </label>
     </li>
     <li>
-      <label>
+      <label class="left">
         <input type="text" name="artist" class="right" />
         Artist
       </label>
     </li>
     <li>
-      <label>
+      <label class="left">
         <input type="tel" name="track" class="right" />
         Track
       </label>
     </li>
   </ul>
   <h1>Details</h1>
-  <ul class="split formcontent">
+  <ul class="formcontent">
     <li>
-      <label>
+      <label class="left">
         <input type="text" name="genre" class="right" />
         Genre
       </label>
     </li>
     <li>
-      <label>
+      <label class="left">
         <input type="tel" name="year" class="right" />
         Year
       </label>
     </li>
     <li>
-      <label>
+      <label class="left">
         <input type="text" name="publisher" class="right" />
         Publisher
       </label>
     </li>
     <li>
-      <label>
+      <label class="left">
         <input type="text" name="url" class="right" />
         URL
       </label>
     </li>
     <li>
-      <label>
+      <label class="left">
         <input type="text" name="license" placeholder="License etc." class="right" />
         Copyright
       </label>
     </li>
     <li>
-      <label>
+      <label class="left">
         <input type="text" name="license_url" placeholder="URL" class="right" />
         License
       </label>
     </li>
     <li class="wide">
-      <label>
+      <label class="left">
         <div class="right">
           <div class="checkbox">
             <span class="left"></span><span class="thumb" data-on="Yes" data-off="No"></span>
@@ -320,7 +320,7 @@
 <script id="production-template" type="text/x-handlebars-template">
   <ul>
     {{#each production}}
-    <li><a href="production/{{uuid}}" class="arrow"><span></span>{{metadata.title}}</a></li>
+      <li><a href="production/{{uuid}}" class="arrow"><span></span>{{metadata.title}}</a></li>
     {{/each}}
   </ul>
 </script>
@@ -337,16 +337,16 @@
     <li><a href="/settings/about"><span />About</a></li>
   </ul>
 
-  <ul class="split">
-    <li><span class="right">{{user.name}}</span><label>User</label></li>
+  <ul>
+    <li><span class="right">{{user.name}}</span><label class="left">User</label></li>
   </ul>
 
   <a href="/logout" class="button red expand">Logout</a>
 </script>
 
 <script id="about-template" type="text/x-handlebars-template">
-  <ul class="split">
-    <li><span class="right">{{version}}</span><label>Version</label></li>
+  <ul>
+    <li><span class="right">{{version}}</span><label class="left">Version</label></li>
   </ul>
 </script>
 

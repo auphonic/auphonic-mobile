@@ -323,5 +323,9 @@ Element.defineCustomEvent('touchstart', {
 
 });
 
+document.addEvent('mouseup', function() {
+	down = false;
+});
+
 })();
 

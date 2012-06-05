@@ -66,7 +66,10 @@ var boot = function() {
     },
 
     'footer a:internal': function(elements) {
-      elements.addEvent('touchstart', click);
+      elements.addEvents({
+        touchstart: click,
+        click: preventDefault
+      });
     },
 
     'textarea.autogrow': Class.Instantiate(Form.AutoGrow),
