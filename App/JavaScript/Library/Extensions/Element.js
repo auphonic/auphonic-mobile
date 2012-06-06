@@ -30,7 +30,7 @@ Element.implement({
       var value = (el.get('tag') == 'select') ? el.getSelected().map(function(opt){
         // IE
         return document.id(opt).get('value');
-      }) : ((type == 'radio' || type == 'checkbox') && !el.checked) ? null : el.get('value');
+      }) : ((type == 'radio' || type == 'checkbox') && !el.checked) ? (type == 'checkbox' ? false : null) : el.get('value');
 
       if (typeof value != 'undefined') object[el.name] = value;
     });

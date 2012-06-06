@@ -124,21 +124,57 @@ Controller.define('/preset/new', function(req) {
     content: UI.render('preset-new'),
     action: {
       title: 'Save',
-      url: '/preset/new/save'
+      url: '/preset/new/save',
+      onClick: function() {
+        var data = object.serialize();
+
+        var container = object.toElement().getElement('ul.output_formats');
+        data.formats = container.getChildren().retrieve('value').clean().map(function(format) {
+          // Add filename if necessary
+          var file = format.filename;
+          var endings = formats[format.format].endings;
+          var check = function(ending) {
+            return file.indexOf('.' + ending) == file.length - 1 - ending.length;
+          };
+          if (file && !endings.some(check))
+            format.filename += '.' + endings[0];
+
+          return format;
+        });
+
+        data.metadata = formdata.metadata;
+        data.outgoings = formdata.outgoings;
+
+        // Expand flat structures to objects as specified by the API
+        for (var key in data) {
+          var parts = key.split('.');
+          if (parts.length == 1) continue;
+
+          if (!data[parts[0]]) data[parts[0]] = {};
+          data[parts[0]][parts[1]] = data[key];
+          delete data[key];
+        }
+
+        console.log(JSON.stringify(data));
+      }
     },
 
     onShow: function() {
       if (formdata.format) {
         var container = object.toElement().getElement('ul.output_formats');
         var content = formdata.format;
-        var item = formats[content.format[0]];
-        var index = (item.bitrates ? item.bitrates.indexOf(content.bitrate[0]) : 0);
+        // Select-Values are Arrays but we only need the first and only value
+        content.format = content.format[0];
+        content.bitrate = content.bitrate[0];
+
+        var item = formats[content.format];
+        var index = (item.bitrates ? item.bitrates.indexOf(content.bitrate) : 0);
 
         Element.from(UI.render('ui-removable-list-item', {
           title: item.display_name.replace(/\((.+?)\)/, '').trim(), // Remove parenthesis
           detail: item.bitrate_strings[index].replace(/\((.+?)\)/, '').trim(), // Remove parenthesis,
           label: 'Remove'
-        })).inject(container);
+        })).store('value', formdata.format).inject(container);
         delete formdata.format;
       }
     },
@@ -276,7 +312,12 @@ Controller.define('/preset/new/service', function(req) {
       title: 'Done',
       url: '/preset/new',
       onClick: function() {
-        formdata.services = Views.get('Main').getCurrentView().serialize();
+        // Strip the 'service-' prefix
+        // "realOutgoings" is still kept for unserialization.
+        formdata.realOutgoings = Views.get('Main').getCurrentView().serialize();
+        formdata.outgoings = {};
+        for (var key in formdata.realOutgoings)
+          formdata.outgoings[key.substr('service-'.length)] = formdata.realOutgoings[key];
       }
     },
     back: {
@@ -284,7 +325,7 @@ Controller.define('/preset/new/service', function(req) {
     },
 
     onShow: function() {
-      this.unserialize(formdata.services);
+      this.unserialize(formdata.realOutgoings);
     }
   }));
 
