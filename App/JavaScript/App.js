@@ -77,6 +77,31 @@ var boot = function() {
     'select.empty': Class.Instantiate(Form.EmptySelect, {
       placeholder: '! > .placeholder'
     }),
+    '.swipeable': Class.Instantiate(SwipeAble, {
+
+      selector: '.removable > span',
+      scrollableSelector: 'div.scrollable',
+
+      onClick: function() {
+        this.container.addClass('fade');
+        (function() {
+          this.container.addEvent('transitionComplete:once', function() {
+            this.destroy();
+          }).addClass('out');
+        }).delay(10, this);
+      },
+
+      onSwipe: function() {
+        this.container.addClass('wide');
+        this.container.getElement('label').addClass('left');
+      },
+
+      onComplete: function() {
+        this.container.removeClass('wide');
+        this.container.getElement('label').removeClass('left');
+      }
+
+    }),
 
     'label': function(elements) {
       elements.each(function(element) {

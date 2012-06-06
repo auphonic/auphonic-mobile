@@ -102,6 +102,7 @@
 <script type="text/javascript" src="JavaScript/View/View.Object.js"></script>
 
 <script tpye="text/javascript" src="JavaScript/UI/UI.js"></script>
+<script tpye="text/javascript" src="JavaScript/UI/Actions/SwipeAble.js"></script>
 <script tpye="text/javascript" src="JavaScript/UI/Elements/Element.js"></script>
 <script type="text/javascript" src="JavaScript/UI/Elements/BackButton.js"></script>
 <script type="text/javascript" src="JavaScript/UI/Elements/ActionButton.js"></script>
@@ -169,7 +170,7 @@
   </ul>
 
   <h1>Output Formats</h1>
-  <ul>
+  <ul class="output_formats">
     <li><a href="/preset/new/format" class="plus"><span></span>Add Audio Format</a></li>
   </ul>
 
@@ -318,7 +319,7 @@
   <ul class="formcontent">
     <li>
       <label class="left">
-        <select class="right empty">
+        <select name="format" class="right empty">
           {{#each format}}
             <option value="{{value}}">{{display_name}}</option>
           {{/each}}
@@ -333,7 +334,7 @@
     {{#each format}}
       <li data-format="{{value}}">
         <label class="left">
-          <select class="right small">
+          <select name="bitrate" class="right small">
             {{#each bitrate_format}}
               <option value="{{value}}"{{#if selected}}selected="selected"{{/if}}>{{title}}</option>
             {{/each}}
@@ -430,6 +431,15 @@
 
 <script id="ui-action-template" type="text/x-handlebars-template">
   <a href="{{url}}" class="back button-right hidden" data-hit-target="1"><span class="button gradient" title="{{title}}">{{title}}</span></a>
+</script>
+
+<script id="ui-removable-list-item-template" type="text/x-handlebars-template">
+  <li class="swipeable">
+    <span class="right removable">
+      <span><a href="#" class="button red small">{{label}}</a></span>
+    </span>
+    <label>{{title}}{{#if detail}} <small class="light">{{detail}}</small>{{/if}}</label>
+  </li>
 </script>
 
 </body>

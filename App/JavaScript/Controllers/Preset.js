@@ -118,12 +118,29 @@ Controller.define('/preset', function() {
 
 Controller.define('/preset/new', function(req) {
 
-  Views.get('Main').push('preset', new View.Object({
+  var object;
+  Views.get('Main').push('preset', object = new View.Object({
     title: 'New Preset',
     content: UI.render('preset-new'),
     action: {
       title: 'Save',
       url: '/preset/new/save'
+    },
+
+    onShow: function() {
+      if (formdata.format) {
+        var container = object.toElement().getElement('ul.output_formats');
+        var content = formdata.format;
+        var item = formats[content.format[0]];
+        var index = (item.bitrates ? item.bitrates.indexOf(content.bitrate[0]) : 0);
+
+        Element.from(UI.render('ui-removable-list-item', {
+          title: item.display_name.replace(/\((.+?)\)/, '').trim(), // Remove parenthesis
+          detail: item.bitrate_strings[index].replace(/\((.+?)\)/, '').trim(), // Remove parenthesis,
+          label: 'Remove'
+        })).inject(container);
+        delete formdata.format;
+      }
     },
 
     onHide: function(direction) {
@@ -185,12 +202,16 @@ Controller.define('/preset/new/format', function(req) {
     }
   }));
 
+  var bitrateContainer = object.toElement().getElement('.bitrates').dispose();
   object.toElement().getElements('select.empty').addEvents({
 
     'change:once': function() {
       Views.get('Main').updateElement('action', {}, {
         title: 'Add',
-        url: '/preset/new'
+        url: '/preset/new',
+        onClick: function() {
+          formdata.format = Views.get('Main').getCurrentView().serialize();
+        }
       });
     },
 
@@ -198,7 +219,7 @@ Controller.define('/preset/new/format', function(req) {
       var option = this.getSelected()[0];
       var value = option.get('value');
       var parent = this.getParent('ul');
-      var item = object.toElement().getElement('.bitrates [data-format=' + value + ']').clone();
+      var item = bitrateContainer.getElement('[data-format=' + value + ']').clone();
 
       parent.getElements('> :not(li:first-child)').dispose();
       parent.adopt(item);
