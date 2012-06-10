@@ -15,6 +15,7 @@
 
     this.__baseURL = '/Thesis/App/';
     this.__base = /^\/Thesis\/App\//;
+    this.API_DOMAIN = 'https://auphonic.com/api/';
     if (this.__base.test(location.pathname)) {
       document.write('<base href="' + this.__baseURL + '" />');
       this.__DEV__ = true;
@@ -76,6 +77,7 @@
 <script type="text/javascript" src="JavaScript/Library/PowerTools/Mootilities.js"></script>
 <script type="text/javascript" src="JavaScript/Library/PowerTools/Form.AutoGrow.js"></script>
 
+<script type="text/javascript" src="JavaScript/Library/Extensions/Base64.js"></script>
 <script type="text/javascript" src="JavaScript/Library/Extensions/Element.js"></script>
 <script type="text/javascript" src="JavaScript/Library/Extensions/Element.Transition.js"></script>
 <script type="text/javascript" src="JavaScript/Library/Extensions/Form.Element.js"></script>
@@ -146,14 +148,14 @@
 <script id="preset-template" type="text/x-handlebars-template">
   <ul>
     {{#each preset}}
-    <li><a href="preset/{{uuid}}" class="arrow"><span></span>{{presetname}}</a></li>
+    <li><a href="preset/{{uuid}}" class="arrow"><span></span>{{preset_name}}</a></li>
     {{/each}}
   </ul>
 </script>
 
 <script id="preset-detail-template" type="text/x-handlebars-template">
   <div class="content">
-    {{metadata.album}}
+    {{preset_name}}
   </div>
 </script>
 
@@ -161,7 +163,7 @@
   <ul class="formcontent">
     <li>
       <label class="left">
-        <input type="text" name="name" placeholder="choose a preset name" class="right" />
+        <input type="text" name="preset_name" placeholder="choose a preset name" class="right" />
         Name
       </label>
     </li>

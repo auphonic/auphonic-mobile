@@ -36,6 +36,7 @@ var boot = function() {
 
   LocalStorage.set('User', {
     name: 'cpojer',
+    password: 'cpojer-pw',
     email: 'christoph.pojer@gmail.com'
   });
 

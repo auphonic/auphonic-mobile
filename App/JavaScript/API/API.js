@@ -13,7 +13,7 @@ var API = this.API = {
 
 };
 
-API.call = function(url, args) {
+API.call = function(url, method, args) {
   var api = API.on(url);
   var fn = api.fn;
   API.dispatch(url, fn ? fn.apply(this, args) : args);
@@ -23,13 +23,25 @@ API.call = function(url, args) {
   }};
 };
 
-API.dispatch = function(url) {
-  // TODO dispatch real API calls to auphonic
-  setTimeout(function() {
-    API.on(url).fireEvent('success', [{
-      success: true
-    }]);
-  }, 0);
+API.dispatch = function(url, method, data) {
+  var user = LocalStorage.get('User');
+  new Request.JSON({
+
+    url: API_DOMAIN + url,
+    headers: {
+      'Authorization': 'Basic ' + Base64Encode(user.name + ':' + user.password)
+    },
+
+    onFailure: function() {
+      // ToDo
+      alert(this.status);
+    },
+
+    onSuccess: function(data) {
+      API.on(url).fireEvent('success', [data]);
+    }
+
+  })[(method || 'get').toLowerCase()](data);
 };
 
 })();

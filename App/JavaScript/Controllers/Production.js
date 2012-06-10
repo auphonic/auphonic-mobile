@@ -5,10 +5,10 @@ var list = null;
 
 Controller.define('/production', function() {
 
-  API.call('/production').on({
+  API.call('productions.json').on({
 
     success: function(result) {
-      list = getList();
+      list = result.data.productions;
 
       productions = {};
       list.each(function(production) {
