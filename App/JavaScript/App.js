@@ -51,7 +51,7 @@ var boot = function() {
     // Prevent all clicks from working normally
     window.addEventListener('click', preventDefault, false);
 
-    // Prevent Scroling when the UI is locked
+    // Prevent Scrolling when the UI is locked
     window.addEventListener('touchmove', preventScroll, false);
   }
 

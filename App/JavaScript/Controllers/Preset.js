@@ -143,7 +143,7 @@ Controller.define('/preset/new', function(req) {
         });
 
         data.metadata = formdata.metadata;
-        data.outgoings = formdata.outgoings;
+        Object.append(data, formdata.outgoings);
 
         // Expand flat structures to objects as specified by the API
         for (var key in data) {
@@ -312,12 +312,7 @@ Controller.define('/preset/new/service', function(req) {
       title: 'Done',
       url: '/preset/new',
       onClick: function() {
-        // Strip the 'service-' prefix
-        // "realOutgoings" is still kept for unserialization.
-        formdata.realOutgoings = Views.get('Main').getCurrentView().serialize();
-        formdata.outgoings = {};
-        for (var key in formdata.realOutgoings)
-          formdata.outgoings[key.substr('service-'.length)] = formdata.realOutgoings[key];
+        formdata.outgoings = Views.get('Main').getCurrentView().serialize();
       }
     },
     back: {
@@ -325,7 +320,7 @@ Controller.define('/preset/new/service', function(req) {
     },
 
     onShow: function() {
-      this.unserialize(formdata.realOutgoings);
+      this.unserialize(formdata.outgoings);
     }
   }));
 
