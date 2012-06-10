@@ -1,22 +1,21 @@
 @import 'nib'
 
 .vflex
+  box-flex 1
   display -webkit-box
-  -webkit-box-orient vertical
-  -webkit-box-align stretch
-  -webkit-box-flex 1
+  box-orient vertical
 
 .scrolling
-  -webkit-overflow-scrolling touch
   overflow auto
+  -webkit-overflow-scrolling touch
 
-.panel
-  position absolute
-  top 0
-  right 0
-  bottom 0
-  left 0
+.scrollable
+  box-flex 1
+  display block
 
-.panel-content
-  margin-bottom -1px
-  min-height 101%
+  overflow auto
+  -webkit-overflow-scrolling touch
+
+.scroll-content
+  box-flex 1
+  display block

@@ -48,6 +48,33 @@ var boot = function() {
   }, 200);
 
   if (Browser.Platform.ios) {
+    // Fix for scrolling content smaller than the viewport.
+    var preventScrolling = true;
+    var selector = '.panel-content';
+    var update = function(node) {
+      if (node) node.style.minHeight = (node.getParent().offsetHeight + 2) + 'px';
+    };
+    window.addEventListener('touchstart', function(event) {
+      var node = event.target;
+      if (!node.match(selector)) node = node.getParent(selector);
+      if (!node) return;
+
+      update(node);
+      preventScrolling = false;
+    });
+
+    UI.addEvent('update', function(element) {
+      update(element.match && element.match(selector) ? element : element.getElement(selector));
+    });
+
+    window.addEventListener('touchmove', function(event) {
+      if (preventScrolling) event.preventDefault();
+    }, false);
+
+    window.addEventListener('touchend', function() {
+      preventScrolling = true;
+    }, false);
+
     // Prevent all clicks from working normally
     window.addEventListener('click', preventDefault, false);
 
