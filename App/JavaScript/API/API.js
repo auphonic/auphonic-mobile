@@ -16,7 +16,7 @@ var API = this.API = {
 API.call = function(url, method, args) {
   var api = API.on(url);
   var fn = api.fn;
-  API.dispatch(url, fn ? fn.apply(this, args) : args);
+  API.dispatch(url, method, fn ? fn.apply(this, args) : args);
   return {on: function(events) {
     if (events.success) api.addEvent('success:once', events.success);
     if (events.error) api.addEvent('error:once', events.error);
@@ -34,7 +34,6 @@ API.dispatch = function(url, method, data) {
 
     onFailure: function() {
       // ToDo
-      alert(this.status);
     },
 
     onSuccess: function(data) {

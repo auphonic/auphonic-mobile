@@ -12,13 +12,16 @@
 
   (function() {
     this.__VERSION = '0.01';
-
-    this.__baseURL = '/Thesis/App/';
-    this.__base = /^\/Thesis\/App\//;
     this.API_DOMAIN = 'https://auphonic.com/api/';
-    if (this.__base.test(location.pathname)) {
-      document.write('<base href="' + this.__baseURL + '" />');
+
+    var base = /^\/Thesis\/App\//;
+    if (base.test(location.pathname)) {
       this.__DEV__ = true;
+      this.__baseURL = '/Thesis/App/';
+      this.__base = base;
+      this.API_DOMAIN = '../wrapper.php?call=';
+
+      document.write('<base href="' + this.__baseURL + '" />');
     }
   })();
 
