@@ -121,12 +121,12 @@ var boot = function() {
 
       onSwipe: function() {
         this.container.addClass('wide');
-        this.container.getElement('label').addClass('left');
+        this.container.getElement('a').addClass('left');
       },
 
       onComplete: function() {
         this.container.removeClass('wide');
-        this.container.getElement('label').removeClass('left');
+        this.container.getElement('a').removeClass('left');
       }
 
     }),

@@ -15,7 +15,9 @@ $response = CURLRequest::create(array(
   )
 ))->request($url, $method, $data);
 
-file_put_contents('log.txt', date('y-m-d H:i:s') . ' ' . strtoupper($method) . ' ' . $url . ($data ? ' - ' . $data : '') . "\n", FILE_APPEND);
+$log = 'log.txt';
+if (filesize($log) > 1024 * 512) unlink($log); // wipe if the log is big
+file_put_contents($log, date('y-m-d H:i:s') . ' ' . strtoupper($method) . ' ' . $url . ($data ? ' - ' . $data : '') . "\n", FILE_APPEND);
 
 if (!($response instanceof CURLResponse)) echo $response;
 else echo $response->getContent();

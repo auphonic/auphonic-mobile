@@ -4,47 +4,7 @@ var presets = null;
 var list = null;
 
 var formdata = {};
-
-var formats = {
-  "alac": {
-      "display_name": "ALAC (M4A, MP4)",
-      "bitrate_strings": ["optimal (stereo ~130MB/h, mono ~65MB/h)"],
-      "endings": ["m4a", "mp4"]
-  },
-  "aac": {
-      "display_name": "AAC (M4A, MP4)",
-      "bitrates": ["24", "32", "40", "48", "56", "64", "80", "96", "112", "128", "160", "192", "256"],
-      "default_bitrate": "80",
-      "bitrate_strings": ["24 kbps, HE AAC (~11MB/h)", "32 kbps, HE AAC (~14MB/h)", "40 kbps, HE AAC (~18MB/h)", "48 kbps, HE AAC (~21MB/h)", "56 kbps, HE AAC (~25MB/h)", "64 kbps, HE AAC (~28MB/h)", "80 kbps, HE AAC (~35MB/h)", "96 kbps, HE AAC (~42MB/h)", "112 kbps, HE AAC (~49MB/h)", "128 kbps (~56MB/h)", "160 kbps (~70MB/h)", "192 kbps (~84MB/h)", "256 kbps (~113MB/h)"],
-      "endings": ["m4a", "mp4"]
-  },
-  "mp3-vbr": {
-      "display_name": "MP3 Variable Bitrate",
-      "bitrates": ["32", "40", "48", "64", "80", "96", "112", "128", "160", "192", "224"],
-      "default_bitrate": "96",
-      "bitrate_strings": ["~32 kbps (~14MB/h)", "~40 kbps (~18MB/h)", "~48 kbps (~21MB/h)", "~64 kbps (~28MB/h)", "~80 kbps (~35MB/h)", "~96 kbps (~42MB/h)", "~112 kbps (~49MB/h)", "~128 kbps (~56MB/h)", "~160 kbps (~70MB/h)", "~192 kbps (~84MB/h)", "~224 kbps (~98MB/h)"],
-      "endings": ["mp3"]
-  },
-  "vorbis": {
-      "display_name": "OGG Vorbis",
-      "bitrates": ["32", "40", "48", "64", "80", "96", "112", "128", "160", "192", "224"],
-      "default_bitrate": "96",
-      "bitrate_strings": ["~32 kbps (~14MB/h)", "~40 kbps (~18MB/h)", "~48 kbps (~21MB/h)", "~64 kbps (~28MB/h)", "~80 kbps (~35MB/h)", "~96 kbps (~42MB/h)", "~112 kbps (~49MB/h)", "~128 kbps (~56MB/h)", "~160 kbps (~70MB/h)", "~192 kbps (~84MB/h)", "~224 kbps (~98MB/h)"],
-      "endings": ["ogg", "oga"]
-  },
-  "mp3": {
-      "display_name": "MP3",
-      "bitrates": ["32", "40", "48", "64", "80", "96", "112", "128", "160", "192", "224"],
-      "default_bitrate": "96",
-      "bitrate_strings": ["~32 kbps (~14MB/h)", "~40 kbps (~18MB/h)", "~48 kbps (~21MB/h)", "~64 kbps (~28MB/h)", "~80 kbps (~35MB/h)", "~96 kbps (~42MB/h)", "~112 kbps (~49MB/h)", "~128 kbps (~56MB/h)", "~160 kbps (~70MB/h)", "~192 kbps (~84MB/h)", "~224 kbps (~98MB/h)"],
-      "endings": ["mp3"]
-  },
-  "flac": {
-      "display_name": "FLAC",
-      "bitrate_strings": ["optimal (stereo ~125MB/h, mono ~62MB/h)"],
-      "endings": ["flac"]
-  }
-};
+var formats = {};
 
 Controller.define('/preset', function() {
 
@@ -74,71 +34,100 @@ Controller.define('/preset', function() {
 
 Controller.define('/preset/new', function(req) {
 
-  var object;
-  Views.get('Main').push('preset', object = new View.Object({
-    title: 'New Preset',
-    content: UI.render('preset-new'),
-    action: {
-      title: 'Save',
-      url: '/preset/new/save',
-      onClick: function() {
-        var data = object.serialize();
+  API.call('info/formats.json').on({
 
-        var container = object.toElement().getElement('ul.output_formats');
-        data.formats = container.getChildren().retrieve('value').clean().map(function(format) {
-          // Add filename if necessary
-          var file = format.filename;
-          var endings = formats[format.format].endings;
-          var check = function(ending) {
-            return file.indexOf('.' + ending) == file.length - 1 - ending.length;
-          };
-          if (file && !endings.some(check))
-            format.filename += '.' + endings[0];
+    success: function(result) {
+      formats = result.data;
 
-          return format;
-        });
+      var object;
+      Views.get('Main').push('preset', object = new View.Object({
+        title: 'New Preset',
+        content: UI.render('preset-new'),
+        action: {
+          title: 'Save',
+          url: '/preset/new/save',
+          onClick: function() {
+            var data = object.serialize();
 
-        data.metadata = formdata.metadata;
-        Object.append(data, formdata.outgoings);
+            var container = object.toElement().getElement('ul.output_formats');
+            data.formats = container.getChildren().retrieve('value').clean().map(function(format) {
+              // Add filename if necessary
+              var file = format.filename;
+              var endings = formats[format.format].endings;
+              var check = function(ending) {
+                return file.indexOf('.' + ending) == file.length - 1 - ending.length;
+              };
+              if (file && !endings.some(check))
+                format.filename += '.' + endings[0];
 
-        // Expand flat structures to objects as specified by the API
-        for (var key in data) {
-          var parts = key.split('.');
-          if (parts.length == 1) continue;
+              return format;
+            });
 
-          if (!data[parts[0]]) data[parts[0]] = {};
-          data[parts[0]][parts[1]] = data[key];
-          delete data[key];
+            data.metadata = formdata.metadata;
+            Object.append(data, formdata.outgoings);
+
+            // Expand flat structures to objects as specified by the API
+            for (var key in data) {
+              var parts = key.split('.');
+              if (parts.length == 1) continue;
+
+              if (!data[parts[0]]) data[parts[0]] = {};
+              data[parts[0]][parts[1]] = data[key];
+              delete data[key];
+            }
+
+            API.call('presets.json', 'post', JSON.stringify(data));
+          }
+        },
+
+        onShow: function() {
+          if (formdata.format) {
+            var container = object.toElement().getElement('ul.output_formats');
+            var content = formdata.format;
+            var id = formdata.formatID || String.uniqueID();
+            var previous = formdata.formatID ? container.getElement('[data-format-id=' + id + ']') : null;
+            delete formdata.formatID;
+
+            // Select-Values are Arrays but we only need the first and only value
+            content.format = content.format[0];
+            content.bitrate = content.bitrate[0];
+
+            var item = formats[content.format];
+            var index = (item.bitrates ? item.bitrates.indexOf(content.bitrate) : 0);
+
+            var element = Element.from(UI.render('ui-removable-list-item', {
+              title: item.display_name.replace(/\((.+?)\)/, '').trim(), // Remove parenthesis
+              detail: item.bitrate_strings[index].replace(/\((.+?)\)/, '').trim(), // Remove parenthesis,
+              label: 'Remove',
+              href: '/preset/new/format/' + id,
+            })).set('data-format-id', id).store('value', content);
+
+            if (previous) element.replaces(previous)
+            else element.inject(container);
+
+            UI.update(container);
+
+            // Store for editing
+            if (!formdata.formats) formdata.formats = {};
+            formdata.formats[id] = content;
+
+            var instance = element.getInstanceOf(SwipeAble);
+            if (instance) instance.addEvent('click', function() {
+              if (formdata.formats) delete formdata.formats[id];
+            });
+
+            delete formdata.format;
+          }
+        },
+
+        onHide: function(direction) {
+          if (direction == 'left') formdata = {};
         }
+      }));
 
-        API.call('presets.json', 'post', JSON.stringify(data));
-      }
-    },
-
-    onShow: function() {
-      if (formdata.format) {
-        var container = object.toElement().getElement('ul.output_formats');
-        var content = formdata.format;
-        // Select-Values are Arrays but we only need the first and only value
-        content.format = content.format[0];
-        content.bitrate = content.bitrate[0];
-
-        var item = formats[content.format];
-        var index = (item.bitrates ? item.bitrates.indexOf(content.bitrate) : 0);
-
-        Element.from(UI.render('ui-removable-list-item', {
-          title: item.display_name.replace(/\((.+?)\)/, '').trim(), // Remove parenthesis
-          detail: item.bitrate_strings[index].replace(/\((.+?)\)/, '').trim(), // Remove parenthesis,
-          label: 'Remove'
-        })).store('value', formdata.format).inject(container);
-        delete formdata.format;
-      }
-    },
-
-    onHide: function(direction) {
-      if (direction == 'left') formdata = {};
     }
-  }));
+
+  });
 
 });
 
@@ -165,7 +154,7 @@ Controller.define('/preset/new/metadata', function(req) {
 
 });
 
-Controller.define('/preset/new/format', function(req) {
+Controller.define('/preset/new/format/:id:', function(req) {
 
   var list = [];
   Object.each(formats, function(value, key) {
@@ -195,19 +184,25 @@ Controller.define('/preset/new/format', function(req) {
   }));
 
   var bitrateContainer = object.toElement().getElement('.bitrates').dispose();
-  object.toElement().getElements('select.empty').addEvents({
+  var selects = object.toElement().getElements('select.empty');
+  selects.addEvents({
 
     'change:once': function() {
       Views.get('Main').updateElement('action', {}, {
-        title: 'Add',
+        title: req.id ? 'Done' : 'Add',
         url: '/preset/new',
         onClick: function() {
           formdata.format = Views.get('Main').getCurrentView().serialize();
+          if (req.id) formdata.formatID = req.id;
         }
       });
     },
 
     change: function() {
+      var data = object.serialize();
+      delete data.bitrate;
+      delete data.format;
+
       var option = this.getSelected()[0];
       var value = option.get('value');
       var parent = this.getParent('ul');
@@ -218,67 +213,58 @@ Controller.define('/preset/new/format', function(req) {
 
       Elements.from(UI.render('preset-new-format-detail')).inject(parent);
 
+      // Restore previous values
+      object.unserialize(data);
       UI.update(parent);
     }
 
   });
 
+  // editing
+  if (req.id && formdata.formats[req.id]) {
+    object.unserialize({format: formdata.formats[req.id].format});
+    selects.fireEvent('focus:once').fireEvent('change');
+    object.unserialize(formdata.formats[req.id]);
+  }
 });
 
 Controller.define('/preset/new/service', function(req) {
 
-   var services = [
-      {
-          "display_name": "Georg Holzmann",
-          "type": "dropbox",
-          "uuid": "UC6aoChNZNt7KYZNxJTgUn",
-          "email": "georg@myserver.at"
-      },
-      {
-          "display_name": "ftp.myserver.at:21/mirror/",
-          "path": "mirror/",
-          "host": "ftp.myserver.at",
-          "type": "ftp",
-          "uuid": "r6MSycBwyeWFAJYqUKtGeX",
-          "port": 21
-      },
-      {
-          "display_name": "myserver.at:22/home/user/path/",
-          "path": "/home/user/path",
-          "host": "myserver.at",
-          "type": "sftp",
-          "uuid": "jm7yLuiyGwQe27gQUz869K",
-          "port": 22
-      }
-  ];
+  API.call('services.json').on({
 
-  services.each(function(service) {
-    var type = service.type;
-    if (type == 'dropbox') type = type.charAt(0).toUpperCase() + type.slice(1);
-    else type = service.type.toUpperCase();
-    service.display_type = type;
-  });
+    success: function(result) {
+      var services = result.data;
 
-  Views.get('Main').push('preset', new View.Object({
-    title: 'Outgoing Transfers',
-    content: UI.render('preset-new-service', {
-      service: services
-    }),
-    action: {
-      title: 'Done',
-      url: '/preset/new',
-      onClick: function() {
-        formdata.outgoings = Views.get('Main').getCurrentView().serialize();
-      }
-    },
-    back: {
-      title: 'Cancel'
-    },
+      services.each(function(service) {
+        var type = service.type;
+        if (type == 'dropbox') type = type.charAt(0).toUpperCase() + type.slice(1);
+        else type = service.type.toUpperCase();
+        service.display_type = type;
+      });
 
-    onShow: function() {
-      this.unserialize(formdata.outgoings);
+      Views.get('Main').push('preset', new View.Object({
+        title: 'Outgoing Transfers',
+        content: UI.render('preset-new-service', {
+          service: services
+        }),
+        action: {
+          title: 'Done',
+          url: '/preset/new',
+          onClick: function() {
+            formdata.outgoings = Views.get('Main').getCurrentView().serialize();
+          }
+        },
+        back: {
+          title: 'Cancel'
+        },
+
+        onShow: function() {
+          this.unserialize(formdata.outgoings);
+        }
+      }));
+
     }
-  }));
+  });
 
 });
 

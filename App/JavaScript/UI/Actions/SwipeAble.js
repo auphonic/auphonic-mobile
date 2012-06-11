@@ -59,7 +59,6 @@ this.SwipeAble = new Class({
   click: function(event) {
     event.preventDefault();
 
-    this.element.removeClass('visible');
     this.end();
     this.fireEvent('click');
   },

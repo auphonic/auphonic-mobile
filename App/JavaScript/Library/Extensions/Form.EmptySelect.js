@@ -41,7 +41,8 @@ Form.EmptySelect = new Class({
   },
 
   focusOnce: function() {
-    this.element.getElement(this.options.placeholder).dispose();
+    var element = this.element.getElement(this.options.placeholder);
+    if (element) element.dispose();
     this.element.removeClass('empty').fireEvent('change');
   },
 

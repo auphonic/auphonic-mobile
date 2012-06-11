@@ -26,6 +26,7 @@ Form.Checkbox = new Class({
     this.thumb = container.getElement(this.options.thumbSelector);
     this.left = container.getElement(this.options.leftSelector);
     this.element = container.getElement(this.options.selector);
+    this.element.store(':checkbox', this);
 
     this.update();
 
@@ -118,5 +119,15 @@ Form.Checkbox = new Class({
   }
 
 });
+
+Element.Properties.checked = {
+
+  set: function(value) {
+    this.setProperty('checked', value);
+    var instance = this.retrieve(':checkbox');
+    if (instance) instance.update();
+  }
+
+};
 
 })();
