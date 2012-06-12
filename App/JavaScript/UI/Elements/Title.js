@@ -1,8 +1,11 @@
-(function() {
+var Core = require('Core');
+var Class = Core.Class;
 
-this.UI.Title = new Class({
+var UIElement = require('./Element');
 
-  Extends: UI.Element,
+module.exports = new Class({
+
+  Extends: UIElement,
 
   template: 'ui-title',
 
@@ -17,5 +20,3 @@ this.UI.Title = new Class({
   }
 
 });
-
-})();

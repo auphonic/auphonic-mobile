@@ -1,8 +1,9 @@
-(function() {
+var Core = require('Core');
+var Class = Core.Class;
 
 var events = ['touchstart', 'touchmove', 'touchend', 'touchcancel'];
 
-this.ActiveState = new Class({
+module.exports = new Class({
 
   Implements: Class.Binds,
 
@@ -122,5 +123,3 @@ this.ActiveState = new Class({
   }
 
 });
-
-})();

@@ -1,8 +1,9 @@
-(function(){
+var Core = require('Core');
+var Class = Core.Class;
 
-if (!this.Form) this.Form = {};
+var API = require('API');
 
-this.Form.Element = new Class({
+module.exports = new Class({
 
 	Implements: [Class.Singleton, Class.Binds],
 
@@ -28,5 +29,3 @@ this.Form.Element = new Class({
   }
 
 });
-
-})();

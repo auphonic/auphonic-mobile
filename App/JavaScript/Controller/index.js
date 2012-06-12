@@ -1,4 +1,7 @@
-(function() {
+var History = require('History');
+var Router = require('Router');
+
+var View = require('../View');
 
 var router = new Router({
   normalizeFn: function(req, vals) {
@@ -6,11 +9,11 @@ var router = new Router({
   }
 });
 
-this.Controller = {
+module.exports = {
 
   define: function(key, fn) {
     router.add(key, function() {
-      var main = Views.get('Main');
+      var main = View.get('Main');
       var current = main.getCurrent();
       var object = current && current.getByURL(History.getPath());
 
@@ -25,5 +28,3 @@ History.addEvent('change', function(url) {
   // Phonegap likes to add file:///
   router.parse('/' + url.replace(/^\/|^file\:\/\/\//, ''));
 });
-
-})();

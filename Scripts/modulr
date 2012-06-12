@@ -1,0 +1,138 @@
+#!/usr/bin/env node
+
+// Watch Script for Modulr-Node based on Stylus by @cpojer
+
+var fs = require('fs'),
+  modulr = require('modulr'),
+  path = require('path');
+
+var options = {
+  allowDirModules: true,
+  minify: false,
+  resolveIdentifiers: true,
+  paths: ['.'],
+  environment: 'prod' // or 'dev', defaults to undefined
+};
+
+var args = process.argv.slice(2);
+var mainModule;
+var paths = [];
+var dest;
+var watchers;
+
+var arg;
+while (args.length) {
+  arg = args.shift();
+  switch (arg) {
+    case '-o':
+    case '--out':
+      dest = args.shift();
+      break;
+    case '-w':
+    case '--watch':
+      watchers = {};
+      break;
+    case '-m':
+    case '--minify':
+      options.minify = true;
+      break;
+    case '-e':
+    case '--environment':
+      options.environment = args.shift();
+      break;
+    case '-r':
+    case '--resolveIdentifiers':
+      options.resolveIdentifiers = !(args.shift() == 'false');
+      break;
+    case '-p':
+    case '--path':
+      options.paths = args.shift().split(':');
+      break;
+    default:
+      mainModule = arg;
+  }
+}
+
+compileFile();
+
+function compileFile() {
+  options.paths.forEach(function(p) {
+    fs.lstat(path.resolve(p) + '/' + mainModule + '.js', function(err, stat){
+      if (err) return;
+      if (!stat.isFile()) return;
+
+      modulr.build(mainModule, options, function(err, result) {
+        if (err) { throw err; }
+        require('fs').writeFileSync(dest, result.output, 'utf8');
+        console.log('  \033[90mcompiled\033[0m %s', mainModule);
+        options.paths.forEach(watchFiles);
+      });
+    });
+  });
+}
+
+function watch(file, fn) {
+  if (!watchers) return;
+  if (watchers[file]) return;
+
+  watchers[file] = true;
+  console.log('  \033[90mwatching\033[0m %s', file);
+
+  fs.watchFile(file, { interval: 50 }, function(curr, prev) {
+    if (curr.mtime > prev.mtime) fn();
+  });
+}
+
+function watchFiles(directory) {
+  directory = path.resolve(directory) + '/';
+  readdirRecursive(directory, function(err, files) {
+    if (files) files.forEach(function(file) {
+      if (/\.js$/.test(file) && !/^node_modules/.test(file)) watch(directory + file, compileFile);
+    });
+  });
+}
+
+// From: https://github.com/ryanmcgrath/wrench-js
+function readdirRecursive(baseDir, fn) {
+  baseDir = baseDir.replace(/\/$/, '');
+
+  var waitCount = 0;
+
+  function readdirRecursive(curDir) {
+    var files = [],
+    curFiles,
+    nextDirs,
+    prependcurDir = function(fname){
+      return path.join(curDir, fname);
+    };
+
+    waitCount++;
+    fs.readdir(curDir, function(e, curFiles) {
+      waitCount--;
+
+      curFiles = curFiles.map(prependcurDir);
+
+      curFiles.forEach(function(it) {
+        waitCount++;
+
+        fs.stat(it, function(e, stat) {
+          waitCount--;
+
+          if (e) fn(e);
+          else if (stat.isDirectory()) readdirRecursive(it);
+
+          if (waitCount == 0) fn(null, null);
+        });
+      });
+
+      fn(null, curFiles.map(function(val) {
+        // convert absolute paths to relative
+        return path.relative(baseDir, val);
+      }));
+
+      if (waitCount == 0) fn(null, null);
+    });
+  };
+
+  readdirRecursive(baseDir);
+};

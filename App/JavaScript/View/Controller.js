@@ -1,6 +1,14 @@
-(function() {
+var Core = require('Core');
+var Class = Core.Class;
+var Options = Core.Options;
+var Events = Core.Events;
 
-View.Controller = new Class({
+var History = require('History');
+
+var Stack = require('./Stack');
+var UI = require('../UI');
+
+module.exports = new Class({
 
   Implements: [Options, Class.Binds, Events],
 
@@ -90,7 +98,7 @@ View.Controller = new Class({
 
   rotate: function(stack) {
     this.element.empty();
-    this._current = new View.Stack(this, stack);
+    this._current = new Stack(this, stack);
 
     return this;
   },
@@ -122,5 +130,3 @@ View.Controller = new Class({
   }
 
 });
-
-})();

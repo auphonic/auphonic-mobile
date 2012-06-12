@@ -1,6 +1,12 @@
-(function() {
+var Core = require('Core');
+var Class = Core.Class;
+var Options = Core.Options;
+var Events = Core.Events;
+var Element = Core.Element;
 
-this.UI.Element = new Class({
+var UI = require('../');
+
+module.exports = new Class({
 
   Implements: [Options, Events],
 
@@ -50,5 +56,3 @@ this.UI.Element = new Class({
   }
 
 });
-
-})();

@@ -11,15 +11,15 @@
   <script type="text/javascript">
 
   (function() {
-    this.__VERSION = '0.01';
-    this.API_DOMAIN = 'https://auphonic.com/api/';
+    window.__VERSION = '0.01';
+    window.__API_DOMAIN = 'https://auphonic.com/api/';
 
     var base = /^\/Thesis\/App\//;
     if (base.test(location.pathname)) {
-      this.__DEV__ = true;
-      this.__baseURL = '/Thesis/App/';
-      this.__base = base;
-      this.API_DOMAIN = '../wrapper.php?call=';
+      window.__DEV__ = true;
+      window.__baseURL = '/Thesis/App/';
+      window.__base = base;
+      window.__API_DOMAIN = '../wrapper.php?call=';
 
       document.write('<base href="' + this.__baseURL + '" />');
     }
@@ -68,9 +68,6 @@
 <script tpye="text/javascript" src="JavaScript/Library/MooTools/Core.js"></script>
 <script tpye="text/javascript" src="JavaScript/Library/MooTools/More.js"></script>
 
-<script tpye="text/javascript" src="JavaScript/Library/ThirdParty/Spinner.js"></script>
-<script tpye="text/javascript" src="JavaScript/Library/ThirdParty/Handlebars.js"></script>
-
 <script type="text/javascript" src="JavaScript/Library/PowerTools/DynamicMatcher.js"></script>
 <script type="text/javascript" src="JavaScript/Library/PowerTools/Class-Extras.js"></script>
 <script type="text/javascript" src="JavaScript/Library/PowerTools/Custom-Event.js"></script>
@@ -78,43 +75,11 @@
 <script type="text/javascript" src="JavaScript/Library/PowerTools/Router.js"></script>
 <script type="text/javascript" src="JavaScript/Library/PowerTools/Mobile.js"></script>
 <script type="text/javascript" src="JavaScript/Library/PowerTools/Mootilities.js"></script>
-<script type="text/javascript" src="JavaScript/Library/PowerTools/Form.AutoGrow.js"></script>
+<script type="text/javascript" src="JavaScript/Library/PowerTools/FormAutoGrow.js"></script>
 
-<script type="text/javascript" src="JavaScript/Library/Extensions/Base64.js"></script>
-<script type="text/javascript" src="JavaScript/Library/Extensions/Element.js"></script>
-<script type="text/javascript" src="JavaScript/Library/Extensions/Element.Transition.js"></script>
-<script type="text/javascript" src="JavaScript/Library/Extensions/Form.Element.js"></script>
-<script type="text/javascript" src="JavaScript/Library/Extensions/Form.Checkbox.js"></script>
-<script type="text/javascript" src="JavaScript/Library/Extensions/Form.EmptySelect.js"></script>
-<script type="text/javascript" src="JavaScript/Library/Extensions/LocalStorage.js"></script>
-<script type="text/javascript" src="JavaScript/Library/Extensions/Slick.js"></script>
-
-<script tpye="text/javascript" src="JavaScript/Library/Browser/ActiveState.js"></script>
-<script tpye="text/javascript" src="JavaScript/Library/Browser/PreventClickOnScroll.js"></script>
-
-<script type="text/javascript" src="JavaScript/API/API.js"></script>
-
-<script type="text/javascript" src="JavaScript/Controllers/Controller.js"></script>
-<script type="text/javascript" src="JavaScript/Controllers/Login.js"></script>
-<script type="text/javascript" src="JavaScript/Controllers/Production.js"></script>
-<script type="text/javascript" src="JavaScript/Controllers/Preset.js"></script>
-<script type="text/javascript" src="JavaScript/Controllers/Record.js"></script>
-<script type="text/javascript" src="JavaScript/Controllers/Settings.js"></script>
-
-<script type="text/javascript" src="JavaScript/View/View.js"></script>
-<script type="text/javascript" src="JavaScript/View/View.Controller.js"></script>
-<script type="text/javascript" src="JavaScript/View/View.Stack.js"></script>
-<script type="text/javascript" src="JavaScript/View/View.Object.js"></script>
-
-<script tpye="text/javascript" src="JavaScript/UI/UI.js"></script>
-<script tpye="text/javascript" src="JavaScript/UI/Actions/SwipeAble.js"></script>
-<script tpye="text/javascript" src="JavaScript/UI/Elements/Element.js"></script>
-<script type="text/javascript" src="JavaScript/UI/Elements/BackButton.js"></script>
-<script type="text/javascript" src="JavaScript/UI/Elements/ActionButton.js"></script>
-<script type="text/javascript" src="JavaScript/UI/Elements/Title.js"></script>
-
-<script tpye="text/javascript" src="JavaScript/App.js"></script>
 <script tpye="text/javascript" src="JavaScript/Dev.js"></script>
+
+<script type="text/javascript" src="JavaScript/build.js"></script>
 
 <script id="default-template" type="text/x-handlebars-template">
   <h1>A List</h1>

@@ -1,3 +1,6 @@
+var Core = require('Core');
+var Slick = Core.Slick;
+
 Slick.definePseudo('internal', function(){
 	return (this.hostname == location.hostname);
 });

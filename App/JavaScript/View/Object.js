@@ -1,6 +1,9 @@
-(function() {
+var Core = require('Core');
+var typeOf = Core.typeOf;
+var Class = Core.Class;
+var Events = Core.Events;
 
-View.Object = new Class({
+module.exports = new Class({
 
   Implements: [Events],
 
@@ -111,5 +114,3 @@ View.Object = new Class({
   }
 
 });
-
-})();

@@ -1,8 +1,13 @@
-(function() {
+var Core = require('Core');
+var Events = Core.Events;
+var Request = Core.Request;
+
+var LocalStorage = require('Utility/LocalStorage');
+var Base64 = require('Utility/Base64');
 
 var urls = {};
 
-var API = this.API = {
+var API = module.exports = {
 
   on: function(url, fn) {
     if (!urls[url]) urls[url] = new Events;
@@ -27,9 +32,9 @@ API.dispatch = function(url, method, data) {
   var user = LocalStorage.get('User');
   new Request.JSON({
 
-    url: API_DOMAIN + url,
+    url: window.__API_DOMAIN + url,
     headers: {
-      'Authorization': 'Basic ' + Base64Encode(user.name + ':' + user.password)
+      'Authorization': 'Basic ' + Base64.encode(user.name + ':' + user.password)
     },
 
     onFailure: function() {
@@ -42,5 +47,3 @@ API.dispatch = function(url, method, data) {
 
   })[(method || 'get').toLowerCase()](data);
 };
-
-})();

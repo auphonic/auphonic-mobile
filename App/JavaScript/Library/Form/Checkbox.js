@@ -1,6 +1,9 @@
-(function(){
+var Core = require('Core');
+var Class = Core.Class;
+var Options = Core.Options;
+var Element = Core.Element;
 
-Form.Checkbox = new Class({
+module.exports = new Class({
 
   Implements: [Class.Singleton, Class.Binds, Options],
 
@@ -129,5 +132,3 @@ Element.Properties.checked = {
   }
 
 };
-
-})();

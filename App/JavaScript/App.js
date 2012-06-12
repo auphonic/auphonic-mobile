@@ -1,4 +1,29 @@
-(function() {
+var Core = require('Core');
+var Element = Core.Element;
+var Browser = Core.Browser;
+
+// Load Extensions
+require('Extensions/Element');
+require('Extensions/Transition');
+require('Extensions/Slick');
+
+var Form = require('Form');
+var History = require('History');
+var LocalStorage = require('Utility/LocalStorage');
+var ActiveState = require('Browser/ActiveState');
+var PreventClickOnScroll = require('Browser/PreventClickOnScroll');
+
+var UI = require('./UI');
+var View = require('./View');
+var Controller = require('./Controller');
+var SwipeAble = require('./UI/Actions/SwipeAble');
+
+// Load Controllers
+require('Controller/Login');
+require('Controller/Preset');
+require('Controller/Production');
+require('Controller/Record');
+require('Controller/Settings');
 
 var preventDefault = function(event) {
   event.preventDefault();
@@ -31,7 +56,7 @@ var boot = function() {
     hitProperty: 'data-hit-target'
   })).attach();
   if (Browser.Platform.ios) {
-    (new PreventClickOnScroll('div.scrollable')).attach();
+    //(new PreventClickOnScroll('div.scrollable')).attach();
   }
 
   LocalStorage.set('User', {
@@ -143,7 +168,7 @@ var boot = function() {
 
     UI.Chrome.show();
 
-    Views.get('Main').push('default', new View.Object({
+    View.get('Main').push('default', new View.Object({
       title: 'Home',
       content: UI.render('default')
     }));
@@ -157,7 +182,7 @@ var boot = function() {
   });
   var title = new UI.Title(header, new Element('h1'));
 
-  Views.set('Main', new View.Controller('main', {
+  View.set('Main', new View.Controller('main', {
     templateId: (Browser.Platform.ios ? 'ios-' : '') + 'container-template',
     contentSelector: 'div.panel-content',
     scrollableSelector: 'div.scrollable',
@@ -187,5 +212,3 @@ var ready = function(){
 
 document.addEventListener('deviceready', ready, false);
 window.addEventListener('DOMContentLoaded', ready, false);
-
-})();

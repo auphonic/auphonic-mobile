@@ -1,4 +1,6 @@
-(function(){
+var Core = require('Core');
+var typeOf = Core.typeOf;
+var Element = Core.Element;
 
 var prefix = '-webkit-',
 	key = prefix.replace(/-/g, ''),
@@ -46,5 +48,3 @@ Element.implement('transition', function(options, fn) {
 
 	return this;
 });
-
-})();

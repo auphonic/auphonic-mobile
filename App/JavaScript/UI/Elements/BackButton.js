@@ -1,8 +1,12 @@
-(function() {
+var Core = require('Core');
+var Class = Core.Class;
 
-this.UI.BackButton = new Class({
+var UI = require('../');
+var UIElement = require('./Element');
 
-  Extends: UI.Element,
+module.exports = new Class({
+
+  Extends: UIElement,
 
   Implements: [Class.Binds],
 
@@ -48,5 +52,3 @@ this.UI.BackButton = new Class({
   }
 
 });
-
-})();

@@ -1,13 +1,11 @@
-(function() {
-
-var storage = this.localStorage;
+var storage = window.localStorage;
 
 var erase = function(key){
   storage.removeItem(key);
   return this;
 }.overloadGetter();
 
-this.LocalStorage = {
+module.exports = {
 
   set: function(key, value){
     storage.setItem(key, JSON.stringify(value));
@@ -28,5 +26,3 @@ this.LocalStorage = {
   }
 
 };
-
-})();

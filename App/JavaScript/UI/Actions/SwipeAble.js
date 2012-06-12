@@ -1,6 +1,9 @@
-(function(){
+var Core = require('Core');
+var Class = Core.Class;
+var Options = Core.Options;
+var Events = Core.Events;
 
-this.SwipeAble = new Class({
+module.exports = new Class({
 
   Implements: [Class.Singleton, Class.Binds, Options, Events],
 
@@ -96,5 +99,3 @@ this.SwipeAble = new Class({
   }
 
 });
-
-})();

@@ -1,4 +1,15 @@
-(function() {
+var Core = require('Core');
+var Element = Core.Element;
+var Elements = Core.Elements;
+
+var History = require('History');
+
+var API = require('../API');
+var Controller = require('./');
+var View = require('../View');
+var UI = require('../UI');
+
+var SwipeAble = require('../UI/Actions/SwipeAble');
 
 var presets = null;
 var list = null;
@@ -11,14 +22,14 @@ Controller.define('/preset', function() {
   API.call('presets.json').on({
 
     success: function(result) {
-      list = result.data.presets;
+      list = result.data;
 
       presets = {};
       list.each(function(preset) {
         presets[preset.uuid] = preset;
       });
 
-      Views.get('Main').push('preset', new View.Object({
+      View.get('Main').push('preset', new View.Object({
         title: 'Presets',
         content: UI.render('preset', {preset: list}),
         action: {
@@ -40,7 +51,7 @@ Controller.define('/preset/new', function(req) {
       formats = result.data;
 
       var object;
-      Views.get('Main').push('preset', object = new View.Object({
+      View.get('Main').push('preset', object = new View.Object({
         title: 'New Preset',
         content: UI.render('preset-new'),
         action: {
@@ -102,7 +113,7 @@ Controller.define('/preset/new', function(req) {
               href: '/preset/new/format/' + id,
             })).set('data-format-id', id).store('value', content);
 
-            if (previous) element.replaces(previous)
+            if (previous) element.replaces(previous);
             else element.inject(container);
 
             UI.update(container);
@@ -133,14 +144,14 @@ Controller.define('/preset/new', function(req) {
 
 Controller.define('/preset/new/metadata', function(req) {
 
-  Views.get('Main').push('preset', new View.Object({
+  View.get('Main').push('preset', new View.Object({
     title: 'Enter Metadata',
     content: UI.render('preset-new-metadata'),
     action: {
       title: 'Done',
       url: '/preset/new',
       onClick: function() {
-        formdata.metadata = Views.get('Main').getCurrentView().serialize();
+        formdata.metadata = View.get('Main').getCurrentView().serialize();
       }
     },
     back: {
@@ -173,7 +184,7 @@ Controller.define('/preset/new/format/:id:', function(req) {
   });
 
   var object;
-  Views.get('Main').push('preset', object = new View.Object({
+  View.get('Main').push('preset', object = new View.Object({
     title: 'Add Output Format',
     content: UI.render('preset-new-format', {
       format: list
@@ -188,11 +199,11 @@ Controller.define('/preset/new/format/:id:', function(req) {
   selects.addEvents({
 
     'change:once': function() {
-      Views.get('Main').updateElement('action', {}, {
+      View.get('Main').updateElement('action', {}, {
         title: req.id ? 'Done' : 'Add',
         url: '/preset/new',
         onClick: function() {
-          formdata.format = Views.get('Main').getCurrentView().serialize();
+          formdata.format = View.get('Main').getCurrentView().serialize();
           if (req.id) formdata.formatID = req.id;
         }
       });
@@ -242,7 +253,7 @@ Controller.define('/preset/new/service', function(req) {
         service.display_type = type;
       });
 
-      Views.get('Main').push('preset', new View.Object({
+      View.get('Main').push('preset', new View.Object({
         title: 'Outgoing Transfers',
         content: UI.render('preset-new-service', {
           service: services
@@ -251,7 +262,7 @@ Controller.define('/preset/new/service', function(req) {
           title: 'Done',
           url: '/preset/new',
           onClick: function() {
-            formdata.outgoings = Views.get('Main').getCurrentView().serialize();
+            formdata.outgoings = View.get('Main').getCurrentView().serialize();
           }
         },
         back: {
@@ -277,11 +288,9 @@ Controller.define('/preset/new/save', function(req) {
 Controller.define('/preset/{uuid}', function(req) {
 
   var preset = presets[req.uuid];
-  Views.get('Main').push('preset', new View.Object({
+  View.get('Main').push('preset', new View.Object({
     title: preset.presetname,
     content: UI.render('preset-detail', preset)
   }));
 
 });
-
-})();

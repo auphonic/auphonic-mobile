@@ -1,3 +1,7 @@
+var Core = require('Core');
+var Element = Core.Element;
+var Elements = Core.Elements;
+
 Element.implement({
 
   show: function() {

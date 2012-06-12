@@ -1,6 +1,7 @@
-(function(){
+var Core = require('Core');
+var Class = Core.Class;
 
-View.Stack = new Class({
+module.exports = new Class({
 
   Properties: {
     name: null,
@@ -83,5 +84,3 @@ View.Stack = new Class({
   }
 
 });
-
-})();

@@ -1,10 +1,15 @@
-(function() {
+var History = require('History');
+var LocalStorage = require('Utility/LocalStorage');
 
-var version = this.__VERSION;
+var Controller = require('./');
+var View = require('../View');
+var UI = require('../UI');
+
+var version = window.__VERSION;
 
 Controller.define('/settings', function() {
 
-  Views.get('Main').push('settings', new View.Object({
+  View.get('Main').push('settings', new View.Object({
     title: 'Settings',
     content: UI.render('settings', {
       user: LocalStorage.get('User')
@@ -15,7 +20,7 @@ Controller.define('/settings', function() {
 
 Controller.define('/settings/about', function() {
 
-  Views.get('Main').push('settings', new View.Object({
+  View.get('Main').push('settings', new View.Object({
     title: 'About',
     content: UI.render('about', {
       version: version
@@ -29,5 +34,3 @@ Controller.define('/logout', function() {
 
   History.push('/login');
 });
-
-})();

@@ -1,6 +1,16 @@
-(function() {
+var Core = require('Core');
+var Element = Core.Element;
+var Elements = Core.Elements;
 
-var UI = this.UI = new DynamicMatcher;
+var DynamicMatcher = require('DynamicMatcher');
+
+var UI = module.exports = new DynamicMatcher;
+
+UI.BackButton = require('./Elements/BackButton');
+UI.ActionButton = require('./Elements/ActionButton');
+UI.Title = require('./Elements/Title');
+
+var Handlebars = require('Library/ThirdParty/Handlebars');
 
 var cache = {};
 var locked = false;
@@ -120,5 +130,3 @@ UI.Chrome = {
   }
 
 };
-
-})();

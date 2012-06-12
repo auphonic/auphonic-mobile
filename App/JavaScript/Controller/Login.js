@@ -1,4 +1,11 @@
-(function() {
+var History = require('History');
+var Form = require('Form');
+var LocalStorage = require('Utility/LocalStorage');
+var Spinner = require('ThirdParty/Spinner');
+
+var API = require('../API');
+var Controller = require('./');
+var UI = require('../UI');
 
 var spinner, children;
 
@@ -45,5 +52,3 @@ Controller.define('/login', function() {
   login.show();
 
 });
-
-})();

@@ -12,6 +12,7 @@
   },
   "dependencies": {
     "stylus": ">= 0.14.0",
-    "nib": ">= 0.1.0"
+    "nib": ">= 0.1.0",
+    "modulr": "git://github.com/cpojer/modulr-node.git"
   }
 }

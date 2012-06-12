@@ -1,8 +1,10 @@
-(function() {
+var Core = require('Core');
+var Class = Core.Class;
+var Element = Core.Element;
 
 var events = ['touchstart', 'touchmove', 'touchcancel', 'touchend'];
 
-this.PreventClickOnScroll = new Class({
+module.exports = new Class({
 
   Implements: Class.Binds,
 
@@ -84,5 +86,3 @@ this.PreventClickOnScroll = new Class({
   }
 
 });
-
-})();

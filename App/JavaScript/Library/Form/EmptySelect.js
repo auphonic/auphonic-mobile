@@ -1,6 +1,9 @@
-(function(){
+var Core = require('Core');
+var Class = Core.Class;
+var Options = Core.Options;
+var Browser = Core.Browser;
 
-Form.EmptySelect = new Class({
+module.exports = new Class({
 
   Implements: [Class.Singleton, Class.Binds, Options],
 
@@ -68,5 +71,3 @@ Form.EmptySelect = new Class({
   }
 
 });
-
-})();
