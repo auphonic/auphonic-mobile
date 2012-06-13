@@ -74,8 +74,7 @@ Controller.define('/preset/new', function(req) {
               return format;
             });
 
-            data.metadata = formdata.metadata;
-            Object.append(data, formdata.outgoings);
+            Object.append(data, formdata.metadata, formdata.outgoings);
 
             // Expand flat structures to objects as specified by the API
             for (var key in data) {
