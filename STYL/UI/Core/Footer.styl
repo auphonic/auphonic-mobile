@@ -2,14 +2,23 @@
 
 $footer-height = 44px
 
-footer
-  z-index 10
+div.footerBackground, footer
   position absolute
   bottom 0
   left 0
   right 0
   height $footer-height
+
+div.footerBackground
+  z-index 9
+  background-color #111
+
+footer
+  z-index 10
   overflow hidden
+
+  border-bottom-right-radius 10px
+  border-bottom-left-radius 10px
 
   background-color #444
   background-image linear-gradient(top, #444 0%, #222 100%)
