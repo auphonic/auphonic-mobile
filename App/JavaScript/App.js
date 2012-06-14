@@ -29,10 +29,10 @@ var LocalStorage = require('Utility/LocalStorage');
 var ActiveState = require('Browser/ActiveState');
 var PreventClickOnScroll = require('Browser/PreventClickOnScroll');
 
-var UI = require('./UI');
-var View = require('./View');
-var Controller = require('./Controller');
-var SwipeAble = require('./UI/Actions/SwipeAble');
+var UI = require('UI');
+var View = require('View');
+var Controller = require('Controller');
+var SwipeAble = require('UI/Actions/SwipeAble');
 
 var preventDefault = function(event) {
   event.preventDefault();
@@ -46,7 +46,13 @@ var click = function(event) {
   event.preventDefault();
 
   if (event.touches && event.touches.length > 1) return;
-  if (UI.isLocked() || UI.isHighlighted(this)) return;
+  if (UI.isLocked()) return;
+  if (UI.isHighlighted(this)) {
+    if (!this.getParent('footer')) return;
+
+    // Tap on footer icon
+    if (History.getPath() == this.get('href').substr(1)) return;
+  }
 
   UI.highlight(this);
 
@@ -120,7 +126,9 @@ var boot = function() {
   UI.register({
 
     '.prevent, footer, header': function(elements) {
-      elements.addEvent('touchmove', preventDefault);
+      elements.each(function(element) {
+        element.addEventListener('touchmove', preventDefault, false);
+      });
     },
 
     '#main a:internal': function(elements) {
