@@ -30,4 +30,4 @@ packager build Mobile/Browser.Mobile Mobile/Click Mobile/Swipe Mobile/Mouse +use
 packager build Form-AutoGrow/* +use-only Form-AutoGrow > "$DIR/$JS/PowerTools/AutoGrow.js"
 
 ## MooTools Core
-packager build Element.Dimensions Element.Style Element.Event Class.Extras More/Element.Event.Pseudos +use-only Core More -blocks 1.2compat 1.3compat ltIE9 ltIE8 !ES5 ltFF4 > "$DIR/$JS/Core.js"
+packager build Element Element.Event Class.Extras More/Element.Event.Pseudos +use-only Core More -blocks 1.2compat 1.3compat ltIE9 ltIE8 !ES5 ltFF4 > "$DIR/$JS/Core.js"

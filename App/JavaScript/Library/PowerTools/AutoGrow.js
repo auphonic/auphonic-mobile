@@ -22,6 +22,7 @@ var Core = require('Core');
 var Class = Core.Class;
 var Options = Core.Options;
 var Events = Core.Events;
+var Browser = Core.Browser;
 var Element = Core.Element;
 
 var wrapper = new Element('div').setStyles({
@@ -62,9 +63,11 @@ var AutoGrow = module.exports = new Class({
 	attach: function(){
 		this.element.addEvents({
 			focus: this.bound('focus'),
-			keydown: this.bound('keydown'),
-			scroll: this.bound('scroll')
+			keydown: this.bound('keydown')
 		});
+
+		if (!['android', 'ios'].contains(Browser.Platform.name))
+			this.element.addEvent('scroll', this.bound('scroll'));
 
 		return this;
 	},

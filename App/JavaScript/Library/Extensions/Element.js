@@ -4,6 +4,45 @@ var Elements = Core.Elements;
 
 Element.implement({
 
+  setStyle: function(property, value) {
+    if (typeof value == 'number') value += 'px';
+    this.style[property] = value;
+    return this;
+  },
+
+  getStyle: function(property){
+    var defaultView = Element.getDocument(this).defaultView,
+      computed = defaultView ? defaultView.getComputedStyle(this, null) : null;
+    return (computed) ? computed.getPropertyValue(property.hyphenate()) : null;
+  },
+
+  setStyles: function(styles){
+    for (var style in styles) this.setStyle(style, styles[style]);
+    return this;
+  },
+
+  getStyles: function(){
+    var result = {};
+    Array.map(arguments, function(key){
+      result[key] = this.getStyle(key);
+    }, this);
+    return result;
+  },
+
+  getWidth: function() {
+    return this.offsetWidth;
+  },
+
+  getHeight: function() {
+    return this.offsetHeight;
+  },
+
+  scrollTo: function(x, y) {
+    this.scrollLeft = x;
+    this.scrollTop = y;
+    return this;
+  },
+
   show: function() {
     return this.removeClass('hidden');
   },

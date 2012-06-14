@@ -142,7 +142,9 @@ var boot = function() {
       });
     },
 
-    'textarea.autogrow': Class.Instantiate(Form.AutoGrow),
+    'textarea.autogrow': Class.Instantiate(Form.AutoGrow, {
+      margin: 12
+    }),
     'div.checkbox': Class.Instantiate(Form.Checkbox),
     'select.empty': Class.Instantiate(Form.EmptySelect, {
       placeholder: '! > .placeholder'
