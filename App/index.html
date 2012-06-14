@@ -16,7 +16,7 @@
 
     var base = /^\/Thesis\/App\//;
     if (base.test(location.pathname)) {
-      window.__DEV__ = true;
+      window.__LOCALHOST__ = true;
       window.__baseURL = '/Thesis/App/';
       window.__base = base;
       window.__API_DOMAIN = '../wrapper.php?call=';
@@ -76,8 +76,6 @@
 <script type="text/javascript" src="JavaScript/Library/PowerTools/Mobile.js"></script>
 <script type="text/javascript" src="JavaScript/Library/PowerTools/Mootilities.js"></script>
 <script type="text/javascript" src="JavaScript/Library/PowerTools/FormAutoGrow.js"></script>
-
-<script tpye="text/javascript" src="JavaScript/Dev.js"></script>
 
 <script type="text/javascript" src="JavaScript/build.js"></script>
 

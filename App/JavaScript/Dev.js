@@ -1,5 +1,10 @@
 // Monkey Patching for dev.
-if (window.__DEV__) (function(push, onChange, getPath) {
+if (__DEV__ && window.__LOCALHOST__) (function() {
+
+var History = require('History');
+var push = History.push;
+var onChange = History.onChange;
+var getPath = History.getPath;
 
 var baseURL = window.__baseURL;
 var base = window.__base;
@@ -19,4 +24,4 @@ History.getPath = function() {
   return clean(getPath.call(this));
 };
 
-})(History.push, History.onChange, History.getPath);
+})();

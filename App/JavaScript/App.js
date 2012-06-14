@@ -1,3 +1,5 @@
+require('Dev');
+
 var Core = require('Core');
 var Element = Core.Element;
 var Browser = Core.Browser;
