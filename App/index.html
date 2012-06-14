@@ -108,8 +108,62 @@
 </script>
 
 <script id="preset-detail-template" type="text/x-handlebars-template">
-  <div class="content">
-    {{preset_name}}
+  <div class="content detail">
+    {{#if thumbnail}}
+      <img src="{{thumbnail}}" class="thumbnail" />
+    {{/if}}
+    {{#metadata}}
+      {{#if track}}<span class="track">#{{track}}</span>{{/if}}
+      <h1>{{title}}</h1>
+      {{#if genre}}<span class="genre">{{genre}}</span>{{/if}}
+      {{#if album}}<span class="album">{{album}}</span>{{/if}}
+      {{#if year}}<span class="year">{{year}}</span>{{/if}}
+      {{#if artist}}<span class="artist small light">{{artist}}</span>{{/if}}
+      {{#if subtitle}}<div class="clear-left small light">{{subtitle}}</div>{{/if}}
+    {{/metadata}}
+  </div>
+
+  {{#metadata}}
+    <h1>Details</h1>
+    <ul>
+      {{#if summary}}<li><a href="preset/{{uuid}}/summary" class="arrow"><span></span>Summary</a></li>{{/if}}
+      {{#if publisher}}<li><label>Publisher <span class="light">{{publisher}}</label></li>{{/if}}
+      {{#if url}}
+        <li><a href="{{url}}" class="share"><span></span>URL <span class="light">{{{format-url url}}}<span></a></li>
+      {{/if}}
+      {{#if hasLicense}}
+        <li>
+          {{#if license_url}}
+            <a href="{{license_url}}" class="share"><span></span>
+          {{else}}
+            <label>
+          {{/if}}
+
+          License <span class="light">{{#if license}}{{license}}{{else}}{{{format-url license_url}}}{{/if}}</span>
+
+          {{#if license_url}}
+            </a>
+          {{else}}
+            </label>
+          {{/if}}
+        </li>
+      {{/if}}
+    </ul>
+  {{/metadata}}
+
+  {{#if hasAlgorithms}}
+    <h1>Algorithms</h1>
+    <ul>
+    {{#eachInObject algorithms}}
+      {{#if value}}<li><label>{{key}}</label></li>{{/if}}
+    {{/eachInObject}}
+    </ul>
+  {{/if}}
+</script>
+
+<script id="preset-detail-summary-template" type="text/x-handlebars-template">
+  <div class="content detail">
+    {{metadata.summary}}
   </div>
 </script>
 

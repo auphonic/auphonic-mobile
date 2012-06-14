@@ -11,7 +11,11 @@ var router = new Router({
 
 module.exports = {
 
-  define: function(key, fn) {
+  define: function(key, options, fn) {
+    if (!fn) {
+      fn = options;
+      options = null;
+    }
     router.add(key, function() {
       var main = View.get('Main');
       var current = main.getCurrent();
@@ -19,7 +23,7 @@ module.exports = {
 
       if (object) main.push(current.getName(), object);
       else fn.apply(null, arguments);
-    });
+    }, options && options.priority).setGreedy(options && options.isGreedy);
   }
 
 };

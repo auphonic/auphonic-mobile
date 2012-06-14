@@ -21,10 +21,12 @@ body
 
 @import 'UI/App/Sprites'
 
+@import 'UI/App/Details'
+
 .light
   color $color-light
 
-  .selected &
+  .active &, .selected &
     color #fff
 
 .placeholder
@@ -35,3 +37,12 @@ body
 
 .small
   font-size 12px
+
+.clear
+  clear both
+
+.clear-left
+  clear left
+
+.clear-right
+  clear right

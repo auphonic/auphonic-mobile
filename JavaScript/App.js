@@ -10,6 +10,7 @@ require('Mobile');
 
 // Load Extensions
 require('Extensions/Element');
+require('Extensions/HandlebarsHelper');
 require('Extensions/Transition');
 require('Extensions/Slick');
 
@@ -85,7 +86,7 @@ var boot = function() {
 
   // Browser bug: prevent this from firing twice in Chrome
   setTimeout(function() {
-    History.push(isLoggedIn ? '/preset/new' : '/login');
+    History.push(isLoggedIn ? '/' : '/login');
   }, 200);
 
   if (Browser.Platform.ios) {
@@ -165,12 +166,12 @@ var boot = function() {
 
       onSwipe: function() {
         this.container.addClass('wide');
-        this.container.getElement('a').addClass('left');
+        this.container.getElement('> a').addClass('left');
       },
 
       onComplete: function() {
         this.container.removeClass('wide');
-        this.container.getElement('a').removeClass('left');
+        this.container.getElement('> a').removeClass('left');
       }
 
     }),

@@ -43,7 +43,34 @@ Controller.define('/preset', function() {
 
 });
 
-Controller.define('/preset/new', function(req) {
+Controller.define('/preset/{uuid}', function(req) {
+
+  var preset = Object.append({}, presets[req.uuid]);
+  var metadata = preset.metadata;
+
+  metadata.hasLicense = !!(metadata.license || metadata.license_url);
+  preset.hasAlgorithms = preset.algorithms && Object.some(preset.algorithms, function(value) {
+    return !!value;
+  });
+
+  View.get('Main').push('preset', new View.Object({
+    title: preset.preset_name,
+    content: UI.render('preset-detail', preset)
+  }));
+
+});
+
+Controller.define('/preset/{uuid}/summary', function(req) {
+
+  var preset = presets[req.uuid];
+  View.get('Main').push('preset', new View.Object({
+    title: preset.preset_name,
+    content: UI.render('preset-detail-summary', preset)
+  }));
+
+});
+
+Controller.define('/preset/new', {priority: 1, isGreedy: true}, function(req) {
 
   API.call('info/formats.json').on({
 
@@ -281,15 +308,5 @@ Controller.define('/preset/new/service', function(req) {
 Controller.define('/preset/new/save', function(req) {
 
   History.push('/preset');
-
-});
-
-Controller.define('/preset/{uuid}', function(req) {
-
-  var preset = presets[req.uuid];
-  View.get('Main').push('preset', new View.Object({
-    title: preset.presetname,
-    content: UI.render('preset-detail', preset)
-  }));
 
 });

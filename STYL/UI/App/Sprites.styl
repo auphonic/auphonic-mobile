@@ -1,18 +1,27 @@
 a.arrow
-  > span
+  > span:first-child
     background-size 16px
     background-image url(../Images/Sprites/Arrow.png)
 
-  &.active > span, &.selected > span
+  &.active > span:first-child, &.selected > span:first-child
     background-image url(../Images/Sprites/ArrowWhite.png)
 
 a.plus
-  > span
+  > span:first-child
     background-size 16px
     background-image url(../Images/Sprites/Plus.png)
 
-  &.active > span, &.selected > span
+  &.active > span:first-child, &.selected > span:first-child
     background-image url(../Images/Sprites/PlusWhite.png)
+
+a.share
+  > span:first-child
+    background-size 16px
+    background-image url(../Images/Sprites/Share.png)
+
+  &.active > span:first-child, &.selected > span:first-child
+    background-image url(../Images/Sprites/ShareWhite.png)
+
 
 footer
   ul > li > a

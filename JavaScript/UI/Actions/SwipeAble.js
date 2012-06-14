@@ -9,6 +9,7 @@ module.exports = new Class({
 
   options: {
     selector: '.removable > span',
+    anchorSelector: 'a',
     scrollableSelector: 'div.scrollable'
 
     /*
@@ -28,9 +29,9 @@ module.exports = new Class({
 
   setup: function() {
     var container = this.container;
-
-    this.element = container.getElement(this.options.selector);
-    this.element.store('swipe:cancelVertical', true);
+    var element = this.element = container.getElement(this.options.selector);
+    element.store('swipe:cancelVertical', true);
+    this.anchor = element.getElement(this.options.anchorSelector);
 
     this.attach();
   },
@@ -38,12 +39,13 @@ module.exports = new Class({
   attach: function() {
     this.container.addEvent('swipe', this.bound('swipe'));
     this.element.addEvent('click', this.bound('click'));
-    this.element.getElement('a').addEvent('click', this.bound('preventDefault'));
+    this.anchor.addEvent('click', this.bound('preventDefault'));
   },
 
   detach: function() {
     this.container.removeEvent('swipe', this.bound('swipe'));
     this.element.removeEvent('click', this.bound('click'));
+    this.anchor.removeEvent('click', this.bound('preventDefault'));
   },
 
   swipe: function() {
