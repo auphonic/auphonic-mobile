@@ -2,6 +2,8 @@ var Core = require('Core');
 var Events = Core.Events;
 var Request = Core.Request;
 
+var Request = require('Request');
+
 var LocalStorage = require('Utility/LocalStorage');
 var Base64 = require('Utility/Base64');
 
@@ -33,6 +35,7 @@ API.dispatch = function(url, method, data) {
   new Request.JSON({
 
     url: window.__API_DOMAIN + url,
+    method: method || 'get',
     headers: {
       'Authorization': 'Basic ' + Base64.encode(user.name + ':' + user.password)
     },
@@ -45,5 +48,5 @@ API.dispatch = function(url, method, data) {
       API.on(url).fireEvent('success', [data]);
     }
 
-  })[(method || 'get').toLowerCase()](data);
+  }).send(data);
 };
