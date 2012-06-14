@@ -62,10 +62,13 @@ function compileFile() {
       if (!stat.isFile()) return;
 
       modulr.build(mainModule, options, function(err, result) {
-        if (err) { throw err; }
+        options.paths.forEach(watchFiles);
+        if (err) {
+          console.log(err.stack);
+          return;
+        }
         require('fs').writeFileSync(dest, result.output, 'utf8');
         console.log('  \033[90mcompiled\033[0m %s', mainModule);
-        options.paths.forEach(watchFiles);
       });
     });
   });

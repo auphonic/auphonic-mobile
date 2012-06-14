@@ -1,5 +1,5 @@
 #!/bin/bash
-JS="../App/JavaScript/Library"
+JS="../JavaScript/Library"
 DIR=$(cd `dirname $0` && pwd)
 
 # DynamicMatcher

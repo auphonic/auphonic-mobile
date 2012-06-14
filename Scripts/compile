@@ -1,5 +1,6 @@
 #!/bin/bash
-JS="../App/JavaScript"
+JS="../JavaScript"
+OUTPUT="../App/JavaScript"
 DIR=$(cd `dirname $0` && pwd)
 
-$DIR/modulr --watch --out "$DIR/$JS/build.js" "App" --path "$DIR/$JS/:$DIR/$JS/Library:$DIR/$JS/Library/PowerTools" -e "dev" $@
+$DIR/modulr --watch --out "$DIR/$OUTPUT/build.js" "App" --path "$DIR/$JS/:$DIR/$JS/Library:$DIR/$JS/Library/PowerTools" -e "dev" $@
