@@ -2,4 +2,4 @@
 JS="../App/JavaScript"
 DIR=$(cd `dirname $0` && pwd)
 
-$DIR/modulr --watch --out "$DIR/$JS/build.js" "App" --path "$DIR/$JS/:$DIR/$JS/Library:$DIR/$JS/Library/CommonJSPowerTools" $1
+$DIR/modulr --watch --out "$DIR/$JS/build.js" "App" --path "$DIR/$JS/:$DIR/$JS/Library:$DIR/$JS/Library/CommonJSPowerTools" -e "dev" $@
