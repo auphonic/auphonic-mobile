@@ -16,7 +16,10 @@ provides: Element.defineCustomEvent
 ...
 */
 
-(function(){
+var Core = require('Core');
+var Element = Core.Element;
+var Window = window.Window;
+var Document = window.Document;
 
 [Element, Window, Document].invoke('implement', {hasEvent: function(event){
 	var events = this.retrieve('events'),
@@ -83,6 +86,4 @@ Element.disableCustomEvents = function(){
     if (event.onDisable) event.onDisable.call(event, name);
   });
 };
-
-})();
 

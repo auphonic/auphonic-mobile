@@ -1,13 +1,27 @@
-require('Dev');
-
 var Core = require('Core');
+var Class = Core.Class;
 var Element = Core.Element;
 var Browser = Core.Browser;
+
+// Load PowerTools! Extensions
+require('Class-Extras');
+require('Custom-Event');
+require('Mobile');
 
 // Load Extensions
 require('Extensions/Element');
 require('Extensions/Transition');
 require('Extensions/Slick');
+
+// Dev Environment setup
+require('Dev');
+
+// Load Controllers
+require('Controller/Login');
+require('Controller/Preset');
+require('Controller/Production');
+require('Controller/Record');
+require('Controller/Settings');
 
 var Form = require('Form');
 var History = require('History');
@@ -19,13 +33,6 @@ var UI = require('./UI');
 var View = require('./View');
 var Controller = require('./Controller');
 var SwipeAble = require('./UI/Actions/SwipeAble');
-
-// Load Controllers
-require('Controller/Login');
-require('Controller/Preset');
-require('Controller/Production');
-require('Controller/Record');
-require('Controller/Settings');
 
 var preventDefault = function(event) {
   event.preventDefault();

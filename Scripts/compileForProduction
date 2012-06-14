@@ -2,4 +2,4 @@
 
 DIR=$(cd `dirname $0` && pwd)
 
-$DIR/watch -e prod -m
+$DIR/compile -e prod -m

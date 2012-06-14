@@ -16,9 +16,11 @@ provides: DynamicMatcher
 ...
 */
 
-(function(){
+var Core = require('Core');
+var Class = Core.Class;
+var Events = Core.Events;
 
-this.DynamicMatcher = new Class({
+module.exports = new Class({
 
 	Implements: Events,
 
@@ -73,6 +75,4 @@ this.DynamicMatcher = new Class({
 	}
 
 });
-
-}).call(this);
 

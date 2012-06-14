@@ -18,7 +18,11 @@ provides: Form.AutoGrow
 ...
 */
 
-(function(){
+var Core = require('Core');
+var Class = Core.Class;
+var Options = Core.Options;
+var Events = Core.Events;
+var Element = Core.Element;
 
 var wrapper = new Element('div').setStyles({
 	overflowX: 'hidden',
@@ -31,9 +35,7 @@ var escapeHTML = function(string){
 	return string.replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 };
 
-if (!this.Form) this.Form = {};
-
-var AutoGrow = this.Form.AutoGrow = new Class({
+var AutoGrow = module.exports = new Class({
 
 	Implements: [Options, Class.Singleton, Class.Binds],
 
@@ -113,6 +115,4 @@ var AutoGrow = this.Form.AutoGrow = new Class({
 });
 
 AutoGrow.extend(new Events);
-
-}).call(this);
 
