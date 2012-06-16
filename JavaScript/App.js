@@ -61,7 +61,7 @@ var click = function(event) {
 };
 
 var onLabelClick = function() {
-  var input = this.getElement('input');
+  var input = this.getElement('input, select');
   if (input) input.focus();
 };
 

@@ -26,7 +26,7 @@ var Request = module.exports = new Class({
 
 	send: function(data) {
 		var method = this.options.method.toUpperCase();
-		data = Object.toQueryString(data);
+		if (typeof data != 'string') data = Object.toQueryString(data);
 		this.xhr.open(method, this.options.url, true);
 
 		// Set Headers
