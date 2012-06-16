@@ -24,7 +24,7 @@ provides: [Core, MooTools, Type, typeOf, instanceOf]
 
 exports.MooTools = {
 	version: '1.4.6-custom',
-	build: '4411374da98e44c2be4f78aec903dae5260e5716'
+	build: 'eac656c8f0e62e1dcc0836f17a408d0c2e64ce91'
 };
 
 // typeOf, instanceOf
@@ -434,20 +434,6 @@ Array.implement({
 		return obj;
 	},
 
-	link: function(object){
-		var result = {};
-		for (var i = 0, l = this.length; i < l; i++){
-			for (var key in object){
-				if (object[key](this[i])){
-					result[key] = this[i];
-					delete object[key];
-					break;
-				}
-			}
-		}
-		return result;
-	},
-
 	contains: function(item, from){
 		return this.indexOf(item, from) != -1;
 	},
@@ -502,26 +488,6 @@ Array.implement({
 			if (this[i] != null) return this[i];
 		}
 		return null;
-	},
-
-	hexToRgb: function(array){
-		if (this.length != 3) return null;
-		var rgb = this.map(function(value){
-			if (value.length == 1) value += value;
-			return value.toInt(16);
-		});
-		return (array) ? rgb : 'rgb(' + rgb + ')';
-	},
-
-	rgbToHex: function(array){
-		if (this.length < 3) return null;
-		if (this.length == 4 && this[3] == 0 && !array) return 'transparent';
-		var hex = [];
-		for (var i = 0; i < 3; i++){
-			var bit = (this[i] - 0).toString(16);
-			hex.push((bit.length == 1) ? '0' + bit : bit);
-		}
-		return (array) ? hex : '#' + hex.join('');
 	}
 
 });
@@ -635,10 +601,6 @@ Number.implement({
 		return Math.round(this * precision) / precision;
 	},
 
-	times: function(fn, bind){
-		for (var i = 0; i < this; i++) fn.call(bind, i, this);
-	},
-
 	toFloat: function(){
 		return parseFloat(this);
 	},
@@ -648,18 +610,6 @@ Number.implement({
 	}
 
 });
-
-Number.alias('each', 'times');
-
-(function(math){
-	var methods = {};
-	math.each(function(name){
-		if (!Number[name]) methods[name] = function(){
-			return Math[name].apply(null, [this].concat(Array.from(arguments)));
-		};
-	});
-	Number.implement(methods);
-})(['abs', 'acos', 'asin', 'atan', 'atan2', 'ceil', 'cos', 'exp', 'floor', 'log', 'max', 'min', 'pow', 'sin', 'sqrt', 'tan']);
 
 
 /*
@@ -728,16 +678,6 @@ String.implement({
 
 	toFloat: function(){
 		return parseFloat(this);
-	},
-
-	hexToRgb: function(array){
-		var hex = String(this).match(/^#?(\w{1,2})(\w{1,2})(\w{1,2})$/);
-		return (hex) ? hex.slice(1).hexToRgb(array) : null;
-	},
-
-	rgbToHex: function(array){
-		var rgb = String(this).match(/\d{1,3}/g);
-		return (rgb) ? rgb.rgbToHex(array) : null;
 	},
 
 	substitute: function(object, regexp){
@@ -883,15 +823,6 @@ var hasOwnProperty = Object.prototype.hasOwnProperty;
 
 Object.extend({
 
-	subset: function(object, keys){
-		var results = {};
-		for (var i = 0, l = keys.length; i < l; i++){
-			var k = keys[i];
-			if (k in object) results[k] = object[k];
-		}
-		return results;
-	},
-
 	map: function(object, fn, bind){
 		var results = {};
 		for (var key in object){
@@ -923,35 +854,12 @@ Object.extend({
 		return false;
 	},
 
-	keys: function(object){
-		var keys = [];
-		for (var key in object){
-			if (hasOwnProperty.call(object, key)) keys.push(key);
-		}
-		return keys;
-	},
-
 	values: function(object){
 		var values = [];
 		for (var key in object){
 			if (hasOwnProperty.call(object, key)) values.push(object[key]);
 		}
 		return values;
-	},
-
-	getLength: function(object){
-		return Object.keys(object).length;
-	},
-
-	keyOf: function(object, value){
-		for (var key in object){
-			if (hasOwnProperty.call(object, key) && object[key] === value) return key;
-		}
-		return null;
-	},
-
-	contains: function(object, value){
-		return Object.keyOf(object, value) != null;
 	},
 
 	toQueryString: function(object, base){
