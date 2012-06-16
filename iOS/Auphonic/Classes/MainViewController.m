@@ -137,4 +137,26 @@
 }
 */
 
+- (BOOL) webView:(UIWebView*)theWebView shouldStartLoadWithRequest:(NSURLRequest*)request navigationType:(UIWebViewNavigationType)navigationType
+{
+    NSURL *url = [request URL];
+    NSString *absolute = [url absoluteString];
+
+    // This isn't pretty but it works.
+    if (([absolute hasSuffix:@"!external"]) && [[UIApplication sharedApplication] canOpenURL:url]) {
+        NSString *absolute1 = [absolute substringWithRange: NSMakeRange(0, absolute.length - 9)];
+        if ([absolute1 hasSuffix:@"#"]) {
+            NSURL *URL = [NSURL URLWithString:[absolute1 substringWithRange: NSMakeRange(0, absolute1.length - 1)]];
+            [[UIApplication sharedApplication] openURL: URL];
+        } else {
+            NSURL *URL = [NSURL URLWithString:absolute1];
+            [[UIApplication sharedApplication] openURL: URL];
+        }
+
+        return NO;
+    }
+
+    return [super webView:theWebView shouldStartLoadWithRequest:request navigationType:navigationType];
+}
+
 @end

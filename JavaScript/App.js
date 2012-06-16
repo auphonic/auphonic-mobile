@@ -60,6 +60,13 @@ var click = function(event) {
   History.push(this.get('href'));
 };
 
+var clickExternal = function(event) {
+  event.preventDefault();
+
+  var href = this.get('href');
+  window.location.href = href + (~href.indexOf('#') ? '' : '#') + '!external';
+};
+
 var onLabelClick = function() {
   var input = this.getElement('input, select');
   if (input) input.focus();
@@ -130,6 +137,10 @@ var boot = function() {
       elements.each(function(element) {
         element.addEventListener('touchmove', preventDefault, false);
       });
+    },
+
+    '#main a:external': function(elements) {
+      elements.addEvent('click', clickExternal);
     },
 
     '#main a:internal': function(elements) {
