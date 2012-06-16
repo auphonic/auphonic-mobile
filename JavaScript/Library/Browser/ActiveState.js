@@ -36,7 +36,8 @@ module.exports = new Class({
   touchstart: function(event) {
     if (event.touches.length > 1) return;
 
-    this.cancel();
+    clearTimeout(this.timer);
+    this.unhighlight();
 
     var node = event.target;
     var current;
@@ -90,8 +91,7 @@ module.exports = new Class({
 
   cancel: function() {
     clearTimeout(this.timer);
-    this.unhighlight();
-    this.current = null;
+    this.unhighlight.delay(50, this);
   },
 
   matches: function(node) {
@@ -115,6 +115,7 @@ module.exports = new Class({
     var current = this.current;
     if (!current) return;
 
+    this.current = null;
     current.removeClass(this.activeClass);
     // Required to be able to dispatch a click event on the expanded element.
     (function() {
