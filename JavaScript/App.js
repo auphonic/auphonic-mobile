@@ -13,6 +13,7 @@ require('Extensions/Element');
 require('Extensions/HandlebarsHelper');
 require('Extensions/Transition');
 require('Extensions/Slick');
+require('Extensions/Object');
 
 // Dev Environment setup
 require('Dev');
@@ -30,6 +31,7 @@ var LocalStorage = require('Utility/LocalStorage');
 var ActiveState = require('Browser/ActiveState');
 var PreventClickOnScroll = require('Browser/PreventClickOnScroll');
 
+var API = require('API');
 var UI = require('UI');
 var View = require('View');
 var Controller = require('Controller');
@@ -238,6 +240,11 @@ var boot = function() {
       previous.toElement().getElements('ul li a.selected').removeClass('selected');
     }
   }));
+
+  // These are cached during the lifetime of the app so the data
+  // can be accessed synchronously.
+  API.cacheInfo('info/algorithms.json');
+  API.cacheInfo('info/formats.json');
 };
 
 var fired;
@@ -247,7 +254,6 @@ var ready = function(){
 
   boot();
 };
-
 
 document.addEventListener('deviceready', ready, false);
 window.addEventListener('DOMContentLoaded', ready, false);

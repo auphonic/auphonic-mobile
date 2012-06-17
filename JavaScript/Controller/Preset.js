@@ -13,33 +13,7 @@ var SwipeAble = require('../UI/Actions/SwipeAble');
 
 var presets = null;
 var list = null;
-
 var formdata = {};
-var formats = {};
-
-// TODO API call when API is available
-var algorithms = {
-  "denoise": {
-      "display_name": "Noise Reduction ",
-      "description": "Classifies regions with different background noises and automatically removes noise and hum.",
-      "default_value": false
-  },
-  "filtering": {
-      "display_name": "Filtering",
-      "description": "Filters unnecessary and disturbing low frequencies depending on the context (speech, music, noise).",
-      "default_value": true
-  },
-  "leveler": {
-      "display_name": "Adaptive Leveler ",
-      "description": "Corrects level differences between speakers, music and speech, etc. to achieve a balanced overall loudness.",
-      "default_value": true
-  },
-  "normloudness": {
-      "display_name": "Global Loudness Normalization",
-      "description": "Adjusts the global, overall loudness to a value of -18 LUFS (see EBU R128), so that all processed files have a similar average loudness.",
-      "default_value": true
-  }
-};
 
 var formatServices = function(services) {
   services.each(function(service) {
@@ -52,13 +26,30 @@ var formatServices = function(services) {
   return services;
 };
 
-var createFormatUIData = function(formats, content) {
+var createFormatUIData = function(content) {
+  var formats = API.getInfo('formats');
   var item = formats[content.format];
   var index = (item.bitrates ? item.bitrates.indexOf('' + content.bitrate) : 0); // Needs to be String
   return {
     title: item.display_name.replace(/\((.+?)\)/, '').trim(), // Remove parenthesis
     detail: item.bitrate_strings[index].replace(/\((.+?)\)/, '').trim(), // Remove parenthesis,
   };
+};
+
+var parseFormatsFromContainer = function(container) {
+  var formats = API.getInfo('formats');
+  return container.getChildren().retrieve('value').clean().map(function(format) {
+    // Add filename if necessary
+    var file = format.filename;
+    var endings = formats[format.format].endings;
+    var check = function(ending) {
+      return file.indexOf('.' + ending) == file.length - 1 - ending.length;
+    };
+    if (file && !endings.some(check))
+      format.filename += '.' + endings[0];
+
+    return format;
+  });
 };
 
 Controller.define('/preset', function() {
@@ -73,22 +64,14 @@ Controller.define('/preset', function() {
         presets[preset.uuid] = preset;
       });
 
-      // TODO move this and cache it
-      API.call('info/formats.json').on({
-
-        success: function(result) {
-          formats = result.data;
-
-          View.get('Main').push('preset', new View.Object({
-            title: 'Presets',
-            content: UI.render('preset', {preset: list}),
-            action: {
-              title: 'New',
-              url: '/preset/new'
-            }
-          }));
+      View.get('Main').push('preset', new View.Object({
+        title: 'Presets',
+        content: UI.render('preset', {preset: list}),
+        action: {
+          title: 'New',
+          url: '/preset/new'
         }
-      });
+      }));
     }
 
   });
@@ -109,6 +92,7 @@ Controller.define('/preset/{uuid}', function(req) {
 
   if (preset.algorithms) {
     var list = [];
+    var algorithms = API.getInfo('algorithms');
     Object.each(preset.algorithms, function(value, algorithm) {
       if (!value) return;
       preset.hasAlgorithms = true;
@@ -119,7 +103,7 @@ Controller.define('/preset/{uuid}', function(req) {
 
   if (preset.formats && preset.formats.length) {
     preset.formats = preset.formats.map(function(content) {
-      return createFormatUIData(formats, content);
+      return createFormatUIData(content);
     });
   } else {
     preset.formats = null;
@@ -127,7 +111,11 @@ Controller.define('/preset/{uuid}', function(req) {
 
   View.get('Main').push('preset', new View.Object({
     title: preset.preset_name,
-    content: UI.render('preset-detail', preset)
+    content: UI.render('preset-detail', preset),
+    action: {
+      title: 'Edit',
+      url: '/preset/edit/' + preset.uuid
+    }
   }));
 
 });
@@ -142,12 +130,12 @@ Controller.define('/preset/{uuid}/summary', function(req) {
 
 });
 
-Controller.define('/preset/new', {priority: 1, isGreedy: true}, function(req) {
+var presetForm = function(req) {
   var object;
   View.get('Main').push('preset', object = new View.Object({
     title: 'New Preset',
     content: UI.render('preset-new', {
-      algorithm: Object.values(Object.map(algorithms, function(content, algorithm) {
+      algorithm: Object.values(Object.map(API.getInfo('algorithms'), function(content, algorithm) {
         return Object.append({key: algorithm}, content);
       }))
     }),
@@ -155,35 +143,10 @@ Controller.define('/preset/new', {priority: 1, isGreedy: true}, function(req) {
       title: 'Save',
       url: '/preset/new/save',
       onClick: function() {
-        var data = object.serialize();
+        var data = Object.append(object.serialize(), formdata.metadata, formdata.outgoings);
+        data.formats = parseFormatsFromContainer(object.toElement().getElement('ul.output_formats'));
 
-        var container = object.toElement().getElement('ul.output_formats');
-        data.formats = container.getChildren().retrieve('value').clean().map(function(format) {
-          // Add filename if necessary
-          var file = format.filename;
-          var endings = formats[format.format].endings;
-          var check = function(ending) {
-            return file.indexOf('.' + ending) == file.length - 1 - ending.length;
-          };
-          if (file && !endings.some(check))
-            format.filename += '.' + endings[0];
-
-          return format;
-        });
-
-        Object.append(data, formdata.metadata, formdata.outgoings);
-
-        // Expand flat structures to objects as specified by the API
-        for (var key in data) {
-          var parts = key.split('.');
-          if (parts.length == 1) continue;
-
-          if (!data[parts[0]]) data[parts[0]] = {};
-          data[parts[0]][parts[1]] = data[key];
-          delete data[key];
-        }
-
-        API.call('presets.json', 'post', JSON.stringify(data));
+        API.call('presets.json', 'post', JSON.stringify(Object.expand(data)));
       }
     },
 
@@ -200,7 +163,7 @@ Controller.define('/preset/new', {priority: 1, isGreedy: true}, function(req) {
         content.bitrate = content.bitrate[0];
 
         var element = Element.from(UI.render('ui-removable-list-item',
-          Object.append(createFormatUIData(formats, content), {
+          Object.append(createFormatUIData(content), {
             label: 'Remove',
             href: '/preset/new/format/' + id
           })
@@ -229,6 +192,12 @@ Controller.define('/preset/new', {priority: 1, isGreedy: true}, function(req) {
     }
   }));
 
+};
+
+Controller.define('/preset/new', {priority: 1, isGreedy: true}, presetForm);
+Controller.define('/preset/edit/{uuid}', {priority: 1, isGreedy: true}, function(req) {
+  var preset = presets[req.uuid];
+  presetForm(req);
 });
 
 Controller.define('/preset/new/metadata', function(req) {
@@ -257,6 +226,7 @@ Controller.define('/preset/new/metadata', function(req) {
 Controller.define('/preset/new/format/:id:', function(req) {
 
   var list = [];
+  var formats = API.getInfo('formats');
   Object.each(formats, function(value, key) {
     value = Object.append({}, value);
     value.value = key;
