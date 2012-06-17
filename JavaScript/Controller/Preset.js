@@ -45,13 +45,40 @@ Controller.define('/preset', function() {
 
 Controller.define('/preset/{uuid}', function(req) {
 
+  // TODO API call when API is available
+  var algorithms = {
+    "denoise": {
+        "display_name": "Noise Reduction ",
+        "description": "Classifies regions with different background noises and automatically removes noise and hum."
+    },
+    "filtering": {
+        "display_name": "Filtering",
+        "description": "Filters unnecessary and disturbing low frequencies depending on the context (speech, music, noise)."
+    },
+    "leveler": {
+        "display_name": "Adaptive Leveler ",
+        "description": "Corrects level differences between speakers, music and speech, etc. to achieve a balanced overall loudness."
+    },
+    "normloudness": {
+        "display_name": "Global Loudness Normalization",
+        "description": "Adjusts the global, overall loudness to a value of -18 LUFS (see EBU R128), so that all processed files have a similar average loudness."
+    }
+  };
+
   var preset = Object.append({}, presets[req.uuid]);
   var metadata = preset.metadata;
 
   metadata.hasLicense = !!(metadata.license || metadata.license_url);
-  preset.hasAlgorithms = preset.algorithms && Object.some(preset.algorithms, function(value) {
-    return !!value;
-  });
+  preset.hasDetails = metadata.summary || metadata.publisher || metadata.url || metadata.hasLicense;
+  if (preset.algorithms) {
+    var list = [];
+    Object.each(preset.algorithms, function(value, algorithm) {
+      if (!value) return;
+      preset.hasAlgorithms = true;
+      list.push(algorithms[algorithm]);
+    });
+    preset.algorithms = list;
+  }
 
   View.get('Main').push('preset', new View.Object({
     title: preset.preset_name,

@@ -34,6 +34,7 @@ var UI = require('UI');
 var View = require('View');
 var Controller = require('Controller');
 var SwipeAble = require('UI/Actions/SwipeAble');
+var Popover = require('UI/Actions/Popover');
 
 var preventDefault = function(event) {
   event.preventDefault();
@@ -154,6 +155,13 @@ var boot = function() {
       });
     },
 
+    'label.info': Class.Instantiate(Popover, {
+      selector: 'div.popover',
+      scrollSelector: 'div.panel-content',
+      positionProperty: 'data-position',
+      animationClass: 'fade',
+      arrowHeight: 14
+    }),
     'textarea.autogrow': Class.Instantiate(Form.AutoGrow, {
       margin: 12
     }),

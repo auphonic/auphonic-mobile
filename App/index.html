@@ -68,10 +68,17 @@
 <script type="text/javascript" src="JavaScript/build.js"></script>
 
 <script id="default-template" type="text/x-handlebars-template">
+
   <h1>A List</h1>
     <ul>
       <li><a href="#">List Item List Item List Item List Item List Item List Item List Item</a></li>
-      <li><a href="#" class="arrow"><span></span>A cool Podcast</a></li>
+      <li><label class="info">
+        <span></span>This is an Info Link
+        <div class="hidden popover top justify" data-position="top">
+          <h1>Global Loudness Normalization</h1>Adjusts the global, overall loudness to a value of -18 LUFS (see EBU R128), so that all processed files have a similar average loudness.</div>
+      </label></li>
+      <li><a href="#" class="share"><span></span>This is a Share Link</a></li>
+      <li><a href="#" class="plus"><span></span>This is a Plus</a></li>
       <li><a href="#" class="arrow"><span></span>Another awesome list item with a really long text</a></li>
     </ul>
     <h1>Auphonic</h1>
@@ -123,10 +130,13 @@
     {{/metadata}}
   </div>
 
-  {{#metadata}}
+  {{#if hasDetails}}
     <h1>Details</h1>
     <ul>
-      {{#if summary}}<li><a href="preset/{{uuid}}/summary" class="arrow"><span></span>Summary</a></li>{{/if}}
+      {{#if metadata.summary}}<li><a href="preset/{{uuid}}/summary" class="arrow"><span></span>Summary</a></li>{{/if}}
+
+
+    {{#metadata}}
       {{#if publisher}}<li><label>Publisher <span class="light">{{publisher}}</label></li>{{/if}}
       {{#if url}}
         <li><a href="{{url}}" class="share"><span></span>URL <span class="light">{{{format-url url}}}<span></a></li>
@@ -148,15 +158,21 @@
           {{/if}}
         </li>
       {{/if}}
+    {{/metadata}}
     </ul>
-  {{/metadata}}
+  {{/if}}
 
   {{#if hasAlgorithms}}
     <h1>Algorithms</h1>
     <ul>
-    {{#eachInObject algorithms}}
-      {{#if value}}<li><label>{{key}}</label></li>{{/if}}
-    {{/eachInObject}}
+    {{#each algorithms}}
+      <li>
+        <label class="info">
+          <span></span>{{display_name}}
+          <div class="hidden popover top justify" data-position="top">{{description}}</div>
+        </label>
+      </li>
+    {{/each}}
     </ul>
   {{/if}}
 </script>
