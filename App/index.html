@@ -190,7 +190,10 @@
       <li>
         <label class="info">
           <span></span>{{display_name}}
-          <div class="hidden popover top justify" data-position="top">{{description}}</div>
+          <div class="hidden popover top justify" data-position="top">
+            <h1>{{display_name}}</h1>
+            {{description}}
+          </div>
         </label>
       </li>
     {{/each}}
@@ -223,50 +226,23 @@
 
   <h1>Algorithms</h1>
   <ul class="formcontent">
-    <li class="wide">
-      <label class="left">
+    {{#each algorithm}}
+      <li class="wide">
         <div class="right">
           <div class="checkbox">
             <span class="left"></span><span class="thumb" data-on="ON" data-off="OFF"></span>
-            <input type="checkbox" name="algorithms.hipfilter" value="1" checked="checked" />
+            <input type="checkbox" name="algorithms.{{key}}" value="1"{{#if default_value}} checked="checked"{{/if}} />
           </div>
         </div>
-        Filtering
-      </label>
-    </li>
-    <li class="wide">
-      <label class="left">
-        <div class="right">
-          <div class="checkbox">
-            <span class="left"></span><span class="thumb" data-on="ON" data-off="OFF"></span>
-            <input type="checkbox" name="algorithms.leveler" value="1" checked="checked" />
+        <label class="left info">
+          {{display_name}}
+          <div class="hidden popover top justify" data-position="top">
+            <h1>{{display_name}}</h1>
+            {{description}}
           </div>
-        </div>
-        Adaptive Leveler
-      </label>
-    </li>
-    <li class="wide">
-      <label class="left">
-        <div class="right">
-          <div class="checkbox">
-            <span class="left"></span><span class="thumb" data-on="ON" data-off="OFF"></span>
-            <input type="checkbox" name="algorithms.normloudness" value="1" checked="checked" />
-          </div>
-        </div>
-        Normalize Loudness
-      </label>
-    </li>
-    <li class="wide">
-      <label class="left">
-        <div class="right">
-          <div class="checkbox">
-            <span class="left"></span><span class="thumb" data-on="ON" data-off="OFF"></span>
-            <input type="checkbox" name="algorithms.denoise" value="1" />
-          </div>
-        </div>
-        Noise Reduction
-      </label>
-    </li>
+        </label>
+      </li>
+    {{/each}}
   </ul>
 </script>
 

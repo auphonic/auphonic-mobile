@@ -17,6 +17,30 @@ var list = null;
 var formdata = {};
 var formats = {};
 
+// TODO API call when API is available
+var algorithms = {
+  "denoise": {
+      "display_name": "Noise Reduction ",
+      "description": "Classifies regions with different background noises and automatically removes noise and hum.",
+      "default_value": false
+  },
+  "filtering": {
+      "display_name": "Filtering",
+      "description": "Filters unnecessary and disturbing low frequencies depending on the context (speech, music, noise).",
+      "default_value": true
+  },
+  "leveler": {
+      "display_name": "Adaptive Leveler ",
+      "description": "Corrects level differences between speakers, music and speech, etc. to achieve a balanced overall loudness.",
+      "default_value": true
+  },
+  "normloudness": {
+      "display_name": "Global Loudness Normalization",
+      "description": "Adjusts the global, overall loudness to a value of -18 LUFS (see EBU R128), so that all processed files have a similar average loudness.",
+      "default_value": true
+  }
+};
+
 var formatServices = function(services) {
   services.each(function(service) {
     var type = service.type;
@@ -73,26 +97,6 @@ Controller.define('/preset', function() {
 
 Controller.define('/preset/{uuid}', function(req) {
 
-  // TODO API call when API is available
-  var algorithms = {
-    "denoise": {
-        "display_name": "Noise Reduction ",
-        "description": "Classifies regions with different background noises and automatically removes noise and hum."
-    },
-    "filtering": {
-        "display_name": "Filtering",
-        "description": "Filters unnecessary and disturbing low frequencies depending on the context (speech, music, noise)."
-    },
-    "leveler": {
-        "display_name": "Adaptive Leveler ",
-        "description": "Corrects level differences between speakers, music and speech, etc. to achieve a balanced overall loudness."
-    },
-    "normloudness": {
-        "display_name": "Global Loudness Normalization",
-        "description": "Adjusts the global, overall loudness to a value of -18 LUFS (see EBU R128), so that all processed files have a similar average loudness."
-    }
-  };
-
   // We need to create a new object that can be transformed for viewing
   var preset = Object.append({}, presets[req.uuid]);
   var metadata = preset.metadata;
@@ -139,11 +143,14 @@ Controller.define('/preset/{uuid}/summary', function(req) {
 });
 
 Controller.define('/preset/new', {priority: 1, isGreedy: true}, function(req) {
-
   var object;
   View.get('Main').push('preset', object = new View.Object({
     title: 'New Preset',
-    content: UI.render('preset-new'),
+    content: UI.render('preset-new', {
+      algorithm: Object.values(Object.map(algorithms, function(content, algorithm) {
+        return Object.append({key: algorithm}, content);
+      }))
+    }),
     action: {
       title: 'Save',
       url: '/preset/new/save',
