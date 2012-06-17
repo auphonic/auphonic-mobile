@@ -21,7 +21,7 @@
 //  AppDelegate.m
 //  Auphonic
 //
-//  Created by Christoph Pojer on 5/2/12.
+//  Created by Christoph Pojer on 6/18/12.
 //  Copyright __MyCompanyName__ 2012. All rights reserved.
 //
 
