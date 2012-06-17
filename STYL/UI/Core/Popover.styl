@@ -1,0 +1,60 @@
+.popover
+  z-index 50
+  position absolute
+  left 10%
+  right 10%
+
+  padding 10px
+  color #fff
+  background #333
+  border-radius 10px
+  box-shadow 0 0 2px rgba(0, 0, 0, 0.4)
+
+  transition-property opacity, -webkit-transform
+  transition-duration 250ms
+  transition-timing-function cubic-bezier(.11,.99,.28,1.21)
+  transform scale(1)
+  opacity 1
+
+  h1
+    margin-left 0
+    margin-right 0
+    color #fff
+    text-shadow none
+
+  &.fade
+    transform scale(0)
+    opacity 0
+
+  &:before, &:after
+    bottom 100%
+    border solid transparent
+    content ""
+    height 0
+    width 0
+    position absolute
+    pointer-events none
+
+  &:before
+    left 50%
+    margin-left -13px
+    border-bottom-color rgba(0, 0, 0, 0.1)
+    border-width 13px
+
+  &:after
+    left 50%
+    margin-left -12px
+    border-bottom-color #333
+    border-width 12px
+
+  &.top:before, &.top:after
+    bottom auto
+    top 100%
+
+  &.top:before
+    border-top-color rgba(0, 0, 0, 0.1)
+    border-bottom-color transparent
+
+  &.top:after
+    border-bottom-color transparent
+    border-top-color #333
