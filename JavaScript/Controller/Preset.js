@@ -17,6 +17,26 @@ var list = null;
 var formdata = {};
 var formats = {};
 
+var formatServices = function(services) {
+  services.each(function(service) {
+    var type = service.type;
+    if (type == 'dropbox') type = type.charAt(0).toUpperCase() + type.slice(1);
+    else type = service.type.toUpperCase();
+    service.display_type = type;
+  });
+
+  return services;
+};
+
+var createFormatUIData = function(formats, content) {
+  var item = formats[content.format];
+  var index = (item.bitrates ? item.bitrates.indexOf('' + content.bitrate) : 0); // Needs to be String
+  return {
+    title: item.display_name.replace(/\((.+?)\)/, '').trim(), // Remove parenthesis
+    detail: item.bitrate_strings[index].replace(/\((.+?)\)/, '').trim(), // Remove parenthesis,
+  };
+};
+
 Controller.define('/preset', function() {
 
   API.call('presets.json').on({
@@ -29,14 +49,22 @@ Controller.define('/preset', function() {
         presets[preset.uuid] = preset;
       });
 
-      View.get('Main').push('preset', new View.Object({
-        title: 'Presets',
-        content: UI.render('preset', {preset: list}),
-        action: {
-          title: 'New',
-          url: '/preset/new'
+      // TODO move this and cache it
+      API.call('info/formats.json').on({
+
+        success: function(result) {
+          formats = result.data;
+
+          View.get('Main').push('preset', new View.Object({
+            title: 'Presets',
+            content: UI.render('preset', {preset: list}),
+            action: {
+              title: 'New',
+              url: '/preset/new'
+            }
+          }));
         }
-      }));
+      });
     }
 
   });
@@ -65,11 +93,16 @@ Controller.define('/preset/{uuid}', function(req) {
     }
   };
 
+  // We need to create a new object that can be transformed for viewing
   var preset = Object.append({}, presets[req.uuid]);
   var metadata = preset.metadata;
 
   metadata.hasLicense = !!(metadata.license || metadata.license_url);
   preset.hasDetails = metadata.summary || metadata.publisher || metadata.url || metadata.hasLicense;
+
+  if (preset.outgoings && preset.outgoings.length) formatServices(preset.outgoings);
+  else preset.outgoings = null; // Be safe
+
   if (preset.algorithms) {
     var list = [];
     Object.each(preset.algorithms, function(value, algorithm) {
@@ -78,6 +111,14 @@ Controller.define('/preset/{uuid}', function(req) {
       list.push(algorithms[algorithm]);
     });
     preset.algorithms = list;
+  }
+
+  if (preset.formats && preset.formats.length) {
+    preset.formats = preset.formats.map(function(content) {
+      return createFormatUIData(formats, content);
+    });
+  } else {
+    preset.formats = null;
   }
 
   View.get('Main').push('preset', new View.Object({
@@ -99,99 +140,87 @@ Controller.define('/preset/{uuid}/summary', function(req) {
 
 Controller.define('/preset/new', {priority: 1, isGreedy: true}, function(req) {
 
-  API.call('info/formats.json').on({
+  var object;
+  View.get('Main').push('preset', object = new View.Object({
+    title: 'New Preset',
+    content: UI.render('preset-new'),
+    action: {
+      title: 'Save',
+      url: '/preset/new/save',
+      onClick: function() {
+        var data = object.serialize();
 
-    success: function(result) {
-      formats = result.data;
+        var container = object.toElement().getElement('ul.output_formats');
+        data.formats = container.getChildren().retrieve('value').clean().map(function(format) {
+          // Add filename if necessary
+          var file = format.filename;
+          var endings = formats[format.format].endings;
+          var check = function(ending) {
+            return file.indexOf('.' + ending) == file.length - 1 - ending.length;
+          };
+          if (file && !endings.some(check))
+            format.filename += '.' + endings[0];
 
-      var object;
-      View.get('Main').push('preset', object = new View.Object({
-        title: 'New Preset',
-        content: UI.render('preset-new'),
-        action: {
-          title: 'Save',
-          url: '/preset/new/save',
-          onClick: function() {
-            var data = object.serialize();
+          return format;
+        });
 
-            var container = object.toElement().getElement('ul.output_formats');
-            data.formats = container.getChildren().retrieve('value').clean().map(function(format) {
-              // Add filename if necessary
-              var file = format.filename;
-              var endings = formats[format.format].endings;
-              var check = function(ending) {
-                return file.indexOf('.' + ending) == file.length - 1 - ending.length;
-              };
-              if (file && !endings.some(check))
-                format.filename += '.' + endings[0];
+        Object.append(data, formdata.metadata, formdata.outgoings);
 
-              return format;
-            });
+        // Expand flat structures to objects as specified by the API
+        for (var key in data) {
+          var parts = key.split('.');
+          if (parts.length == 1) continue;
 
-            Object.append(data, formdata.metadata, formdata.outgoings);
-
-            // Expand flat structures to objects as specified by the API
-            for (var key in data) {
-              var parts = key.split('.');
-              if (parts.length == 1) continue;
-
-              if (!data[parts[0]]) data[parts[0]] = {};
-              data[parts[0]][parts[1]] = data[key];
-              delete data[key];
-            }
-
-            API.call('presets.json', 'post', JSON.stringify(data));
-          }
-        },
-
-        onShow: function() {
-          if (formdata.format) {
-            var container = object.toElement().getElement('ul.output_formats');
-            var content = formdata.format;
-            var id = formdata.formatID || String.uniqueID();
-            var previous = formdata.formatID ? container.getElement('[data-format-id=' + id + ']') : null;
-            delete formdata.formatID;
-
-            // Select-Values are Arrays but we only need the first and only value
-            content.format = content.format[0];
-            content.bitrate = content.bitrate[0];
-
-            var item = formats[content.format];
-            var index = (item.bitrates ? item.bitrates.indexOf(content.bitrate) : 0);
-
-            var element = Element.from(UI.render('ui-removable-list-item', {
-              title: item.display_name.replace(/\((.+?)\)/, '').trim(), // Remove parenthesis
-              detail: item.bitrate_strings[index].replace(/\((.+?)\)/, '').trim(), // Remove parenthesis,
-              label: 'Remove',
-              href: '/preset/new/format/' + id,
-            })).set('data-format-id', id).store('value', content);
-
-            if (previous) element.replaces(previous);
-            else element.inject(container);
-
-            UI.update(container);
-
-            // Store for editing
-            if (!formdata.formats) formdata.formats = {};
-            formdata.formats[id] = content;
-
-            var instance = element.getInstanceOf(SwipeAble);
-            if (instance) instance.addEvent('click', function() {
-              if (formdata.formats) delete formdata.formats[id];
-            });
-
-            delete formdata.format;
-          }
-        },
-
-        onHide: function(direction) {
-          if (direction == 'left') formdata = {};
+          if (!data[parts[0]]) data[parts[0]] = {};
+          data[parts[0]][parts[1]] = data[key];
+          delete data[key];
         }
-      }));
 
+        API.call('presets.json', 'post', JSON.stringify(data));
+      }
+    },
+
+    onShow: function() {
+      if (formdata.format) {
+        var container = object.toElement().getElement('ul.output_formats');
+        var content = formdata.format;
+        var id = formdata.formatID || String.uniqueID();
+        var previous = formdata.formatID ? container.getElement('[data-format-id=' + id + ']') : null;
+        delete formdata.formatID;
+
+        // Select-Values are Arrays but we only need the first and only value
+        content.format = content.format[0];
+        content.bitrate = content.bitrate[0];
+
+        var element = Element.from(UI.render('ui-removable-list-item',
+          Object.append(createFormatUIData(formats, content), {
+            label: 'Remove',
+            href: '/preset/new/format/' + id
+          })
+        )).set('data-format-id', id).store('value', content);
+
+        if (previous) element.replaces(previous);
+        else element.inject(container);
+
+        UI.update(container);
+
+        // Store for editing
+        if (!formdata.formats) formdata.formats = {};
+        formdata.formats[id] = content;
+
+        var instance = element.getInstanceOf(SwipeAble);
+        if (instance) instance.addEvent('click', function() {
+          if (formdata.formats) delete formdata.formats[id];
+        });
+
+        delete formdata.format;
+      }
+    },
+
+    onHide: function(direction) {
+      if (direction == 'left') formdata = {};
     }
-
-  });
+  }));
 
 });
 
@@ -297,14 +326,7 @@ Controller.define('/preset/new/service', function(req) {
   API.call('services.json').on({
 
     success: function(result) {
-      var services = result.data;
-
-      services.each(function(service) {
-        var type = service.type;
-        if (type == 'dropbox') type = type.charAt(0).toUpperCase() + type.slice(1);
-        else type = service.type.toUpperCase();
-        service.display_type = type;
-      });
+      var services = formatServices(result.data);
 
       View.get('Main').push('preset', new View.Object({
         title: 'Outgoing Transfers',

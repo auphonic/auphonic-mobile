@@ -103,7 +103,7 @@ var AutoGrow = module.exports = new Class({
 		wrapper.set('html', html);
 		var height = wrapper.getHeight() + this.options.margin;
 		if (element.getHeight() != height){
-			element.setStyle('height', this.minHeight.max(height));
+			element.setStyle('height', Math.max(this.minHeight, height));
 
 			AutoGrow.fireEvent('resize', [this]);
 		}

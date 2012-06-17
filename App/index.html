@@ -115,7 +115,8 @@
 </script>
 
 <script id="preset-detail-template" type="text/x-handlebars-template">
-  <div class="content detail">
+  <div class="white"></div>
+  <div class="content detail expand">
     {{#if thumbnail}}
       <img src="{{thumbnail}}" class="thumbnail" />
     {{/if}}
@@ -159,6 +160,26 @@
         </li>
       {{/if}}
     {{/metadata}}
+    </ul>
+  {{/if}}
+
+  {{#if formats}}
+    <h1>Output Formats</h1>
+    <ul>
+      {{#each formats}}
+        <li>
+          <label>{{title}}{{#if detail}} <small class="light">{{detail}}</small>{{/if}}</label>
+        </li>
+      {{/each}}
+    </ul>
+  {{/if}}
+
+  {{#if outgoings}}
+    <h1>Outgoing File Transfers</h1>
+    <ul>
+      {{#each outgoings}}
+        <li><label><small><span class="light">{{display_type}}</span> {{display_name}}</small></label></li>
+      {{/each}}
     </ul>
   {{/if}}
 
