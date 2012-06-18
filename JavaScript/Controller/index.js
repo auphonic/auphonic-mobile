@@ -18,10 +18,10 @@ module.exports = {
     }
     router.add(key, function() {
       var main = View.get('Main');
-      var current = main.getCurrent();
-      var object = current && current.getByURL(History.getPath());
+      var stack = main.getStack();
+      var object = stack && stack.getByURL(History.getPath());
 
-      if (object) main.push(current.getName(), object);
+      if (object) main.push(stack.getName(), object);
       else fn.apply(null, arguments);
     }, options && options.priority).setGreedy(options && options.isGreedy);
   }

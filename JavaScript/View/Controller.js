@@ -48,8 +48,8 @@ module.exports = new Class({
     if (!object) return this;
 
     var rotated = false;
-    if (!this.isCurrent(stack)) {
-      if (this._current) this._current.getCurrent().fireEvent('hide', ['left']);
+    if (!this.isCurrentStack(stack)) {
+      if (this._current) this.getCurrentView().fireEvent('hide', ['left']);
       rotated = true;
       this.rotate(stack);
     }
@@ -60,7 +60,7 @@ module.exports = new Class({
     var isImmediate = rotated;
     var direction = current.hasObject(object) ? 'left' : 'right';
     var previous;
-    if (!isImmediate) previous = current.getCurrent().rememberScroll();
+    if (!isImmediate) previous = this.getCurrentView().rememberScroll();
 
     if (previous) previous.fireEvent('hide', [direction]);
     current.push(object);
@@ -103,11 +103,11 @@ module.exports = new Class({
     return this;
   },
 
-  isCurrent: function(stack) {
+  isCurrentStack: function(stack) {
     return (this._current && stack == this._current.getName());
   },
 
-  getCurrent: function() {
+  getStack: function() {
     return this._current;
   },
 

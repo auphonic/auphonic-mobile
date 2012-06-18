@@ -233,7 +233,7 @@ var boot = function() {
     action: action,
 
     onTransitionEnd: function() {
-      var stack = this.getCurrent();
+      var stack = this.getStack();
       var previous = stack && stack.getPrevious();
       if (!stack || !previous) return;
 

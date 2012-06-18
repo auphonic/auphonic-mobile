@@ -1,17 +1,20 @@
 var Core = require('Core');
 var Class = Core.Class;
 var Options = Core.Options;
-var Events = Core.Events;
 var Element = Core.Element;
 
 var UI = require('../');
 
 module.exports = new Class({
 
-  Implements: [Options, Events],
+  Implements: [Options, Class.Binds],
 
   Properties: {
     view: null
+  },
+
+  options: {
+    back: false
   },
 
   template: null,
@@ -25,11 +28,11 @@ module.exports = new Class({
 
     if (options.template) this.template = options.template;
     else this.options.template = this.template;
-    if (options.onClick) {
-      this.element.addEvent('click', options.onClick);
-      // Preserve options (this gets removed by the setOptions call)
-      this.options.onClick = options.onClick;
-    }
+
+    // Act like the back button
+    if (options.back) this.element.addEvent('click', this.bound('back'));
+    // Default click event, passed on in every transition
+    else if (options.onClick) this.element.addEvent('click', options.onClick);
   },
 
   toElement: function() {
@@ -47,12 +50,29 @@ module.exports = new Class({
 
   create: function(data) {
     var element = Element.from(UI.render(this.options.template, data));
-    if (data && data.onClick) element.addEvent('click', data.onClick);
+    // Click event from the View.Object
+    if (data.onClick) element.addEvent('click', data.onClick);
+    // This can be modified because the current element gets removed anyway
+    this.options.back = !!data.back;
     return new this.$constructor(
       this.container,
       element,
       this.options
     ).setView(this.getView());
+  },
+
+  click: function(event) {
+    event.preventDefault();
+
+    if (event.touches && event.touches.length > 1) return false;
+    if (UI.isLocked() || UI.isHighlighted(this)) return false;
+
+    UI.highlight(this);
+    return true;
+  },
+
+  back: function(event) {
+    if (this.click(event)) this.getView().pop();
   }
 
 });
