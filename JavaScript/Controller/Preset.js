@@ -207,7 +207,15 @@ var showPresetForm = function(preset) {
     },
 
     onShow: function() {
-      var container = object.toElement().getElement('ul.output_formats');
+      var parent = object.toElement();
+
+      var countElement = parent.getElement('.servicesCount');
+      if (countElement) {
+        var count = Object.values(formdata.outgoings).erase(false).length;
+        countElement.set('text', count ? count + ' selected' : '');
+      }
+
+      var container = parent.getElement('ul.output_formats');
       if (formatElements) {
         container.adopt(formatElements);
         formatElements = null;
