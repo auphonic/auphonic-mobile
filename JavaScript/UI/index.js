@@ -91,18 +91,17 @@ Object.append(UI, {
   },
 
   disable: function(container, exception) {
-    container.addEvent('touchmove', preventDefault);
+    container.addEvent('touchmove', preventDefault)
+      .addClass('disable-events');
 
-    var elements = container.getElements('*').setStyle('pointer-events', 'none');
-    if (exception) exception.setStyle('pointer-events', 'auto');
-    return function() {
-      UI.enable(container, elements);
-    };
+    if (exception) exception.addClass('enable-events');
   },
 
-  enable: function(container, elements) {
-    elements.setStyle('pointer-events', '');
-    container.removeEvent('touchmove', preventDefault);
+  enable: function(container, exception) {
+    container.removeEvent('touchmove', preventDefault)
+      .removeClass('disable-events');
+
+    if (exception) exception.removeClass('enable-events');
   }
 
 });

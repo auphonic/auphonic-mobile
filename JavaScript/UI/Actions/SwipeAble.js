@@ -53,8 +53,8 @@ module.exports = new Class({
   swipe: function() {
     this.element.addClass('visible');
 
-    this.enableUI = UI.disable(this.getScrollable(), this.element);
-    this.getScrollable().addEvent('touchstart:once', this.bound('touchstart'));
+    UI.disable(this.getScrollable(), this.element);
+    window.addEvent('touchstart:once', this.bound('touchstart'));
 
     this.fireEvent('swipe');
   },
@@ -73,12 +73,11 @@ module.exports = new Class({
     event.preventDefault();
 
     this.element.removeClass('visible');
-    this.getScrollable().addEvent('touchend:once', this.bound('end'));
+    window.addEvent('touchend:once', this.bound('end'));
   },
 
   end: function(event) {
-    if (this.enableUI) this.enableUI();
-    this.enableUI = null;
+    UI.enable(this.getScrollable(), this.element);
 
     this.fireEvent('complete');
   },

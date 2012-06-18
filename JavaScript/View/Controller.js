@@ -119,7 +119,7 @@ module.exports = new Class({
   },
 
   getCurrentView: function() {
-    return this._current.getCurrent();
+    return this._current && this._current.getCurrent();
   },
 
   onTransitionEnd: function() {
@@ -150,7 +150,8 @@ module.exports = new Class({
     UI.lock();
     var current = this.getCurrentView();
     var element = current.toElement();
-    this.enableUI = UI.disable(element);
+    UI.disable(element);
+
     if (options && options.fade) {
       document.id(this.title).addClass('fade');
       document.id(this.action).addClass('fade');
@@ -170,8 +171,8 @@ module.exports = new Class({
     UI.unlock();
     this.indicator.stop();
 
-    if (this.enableUI) this.enableUI();
-    this.enableUI = null;
+    var object = this.getCurrentView();
+    if (object) UI.enable(object.toElement());
   }
 
 });
