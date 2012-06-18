@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		3D4E8828158E91E200D3E96E /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = 3D4E8826158E91E200D3E96E /* Default.png */; };
 		3D4E8829158E91E200D3E96E /* Default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3D4E8827158E91E200D3E96E /* Default@2x.png */; };
+		3D6967F5158EB7EE005F3D08 /* App in Resources */ = {isa = PBXBuildFile; fileRef = 3D6967F4158EB7EE005F3D08 /* App */; };
 		3DD02C0A158E8EDA00C51A50 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3DD02C09158E8EDA00C51A50 /* Foundation.framework */; };
 		3DD02C0C158E8EDA00C51A50 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3DD02C0B158E8EDA00C51A50 /* UIKit.framework */; };
 		3DD02C0E158E8EDA00C51A50 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3DD02C0D158E8EDA00C51A50 /* CoreGraphics.framework */; };
@@ -39,6 +40,7 @@
 /* Begin PBXFileReference section */
 		3D4E8826158E91E200D3E96E /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Default.png; sourceTree = "<group>"; };
 		3D4E8827158E91E200D3E96E /* Default@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default@2x.png"; sourceTree = "<group>"; };
+		3D6967F4158EB7EE005F3D08 /* App */ = {isa = PBXFileReference; lastKnownFileType = folder; name = App; path = ../App; sourceTree = "<group>"; };
 		3DD02C05158E8EDA00C51A50 /* Auphonic.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Auphonic.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3DD02C09158E8EDA00C51A50 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		3DD02C0B158E8EDA00C51A50 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
@@ -112,6 +114,7 @@
 		3DD02BF7158E8ED900C51A50 = {
 			isa = PBXGroup;
 			children = (
+				3D6967F4158EB7EE005F3D08 /* App */,
 				3D4E8826158E91E200D3E96E /* Default.png */,
 				3D4E8827158E91E200D3E96E /* Default@2x.png */,
 				3DD02C23158E8EDA00C51A50 /* Auphonic */,
@@ -322,6 +325,7 @@
 				3DD02C4C158E8EDA00C51A50 /* Capture.bundle in Resources */,
 				3DD02C4E158E8EDA00C51A50 /* Cordova.plist in Resources */,
 				3DD02C57158E8EDA00C51A50 /* MainViewController.xib in Resources */,
+				3D6967F5158EB7EE005F3D08 /* App in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
