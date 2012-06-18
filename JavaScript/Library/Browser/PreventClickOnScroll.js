@@ -2,82 +2,70 @@ var Core = require('Core');
 var Class = Core.Class;
 var Element = Core.Element;
 
-var events = ['touchstart', 'touchmove', 'touchcancel', 'touchend'];
-
 module.exports = new Class({
 
   Implements: Class.Binds,
 
-  start: 0,
-  scrolling: false,
-  enabled: false,
-  cancelOnTouchEnd: false,
-  attachOnTouchEnd: false,
+  down: false,
+  enabled: true,
 
-  initialize: function(selector) {
-    this.selector = selector;
+  initialize: function(options) {
+    this.selector = options.selector;
+    this.contentSelector = options.contentSelector;
+    this.activeState = options.activeState;
   },
 
   attach: function() {
-    events.forEach(function(event) {
-      document.addEventListener(event, this.bound(event), true);
-    }, this);
+    window.addEventListener('touchstart', this.bound('touchstart'), true);
   },
 
   detach: function() {
-    events.forEach(function(event) {
-      document.removeEventListener(event, this.bound(event), true);
-    }, this);
+    window.removeEventListener('touchstart', this.bound('touchstart'), true);
   },
 
   touchstart: function(event) {
     if (event.touches.length > 1) return;
 
-    this.enabled = !!this.getNode(event.target);
-    this.start = event.touches[0].pageY;
+    var node = this.node = this.getNode(event.target);
+    if (!node) return;
 
-    if (this.scrolling && this.enabled) {
-      clearTimeout(this.timer);
-      this.cancelOnTouchEnd = true;
-      if (this.node) this.node.removeEventListener('scroll', this.bound('listener'), false);
-    }
-  },
-
-  touchmove: function(event) {
-    var end = event.touches[0].pageY;
-    if (!this.enabled || !end || Math.abs(this.start - end) <= 3) return;
-
-    Element.disableCustomEvents.delay(0);
-    this.attachOnTouchEnd = true;
+    this.down = true;
+    node.addEventListener('scroll', this.bound('scroll'), false);
+    node.addEventListener('touchend', this.bound('touchend'), false);
   },
 
   touchend: function(event) {
-    if (this.attachOnTouchEnd) {
-      var node = this.getNode(event.target);
-      node.addEventListener('scroll', this.bound('listener'), false);
-      this.node = node;
-    }
-
-    if (this.cancelOnTouchEnd)
-      this.cancel();
+    this.down = false;
+    this.touchendTime = Date.now();
+    if (this.touchendTime - this.scrollTime > 100) this.enable();
+    if (this.node) this.node.removeEventListener('touchend', this.bound('touchend'), false);
   },
 
-  touchcancel: function() {
-    this.cancel();
-  },
+  enable: function() {
+    if (this.enabled) return;
 
-  cancel: function() {
-    this.scrolling = false;
-    this.cancelOnTouchEnd = false;
-    Element.enableCustomEvents.delay(0);
-    if (this.node) this.node.removeEventListener('scroll', this.bound('listener'), false);
+    this.activeState.enable();
+    if (this.node) this.node.getElement(this.contentSelector).removeClass('disable-events');
+    this.enabled = true;
     this.node = null;
   },
 
-  listener: function() {
-    this.scrolling = true;
+  disable: function() {
+    if (!this.enabled) return;
+
+    this.activeState.disable();
+    if (this.node) this.node.getElement(this.contentSelector).addClass('disable-events');
+    this.enabled = false;
+  },
+
+  scroll: function() {
+    if (this.enabled) this.disable();
+
+    this.scrollTime = Date.now();
+    if (this.down) return;
+
     clearTimeout(this.timer);
-    this.timer = this.cancel.delay(400, this);
+    this.timer = this.enable.delay(100, this);
   },
 
   getNode: function(node) {

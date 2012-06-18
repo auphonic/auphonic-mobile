@@ -95,17 +95,21 @@ var boot = function() {
     History.push(isLoggedIn ? '/' : '/login');
   }, 350);
 
-  (new ActiveState({
+  var activeState = (new ActiveState({
     active: 'active',
     hit: 'hit',
     hitProperty: 'data-hit-target'
-  })).attach();
+  }));
+  activeState.attach();
 
   if (Browser.Platform.ios) {
-    (new PreventClickOnScroll('div.scrollable')).attach();
+    (new PreventClickOnScroll({
+      selector: 'div.scrollable',
+      contentSelector: 'div.scroll-content',
+      activeState: activeState
+    })).attach();
 
     // Fix for scrolling content smaller than the viewport.
-    var preventScrolling = true;
     var selector = '.panel-content';
     var update = function(node) {
       if (node) node.style.minHeight = (node.getParent().offsetHeight + 2) + 'px';
@@ -116,20 +120,11 @@ var boot = function() {
       if (!node) return;
 
       update(node);
-      preventScrolling = false;
     });
 
     UI.addEvent('update', function(element) {
       update(element.match && element.match(selector) ? element : element.getElement(selector));
     });
-
-    window.addEventListener('touchmove', function(event) {
-      if (preventScrolling) event.preventDefault();
-    }, false);
-
-    window.addEventListener('touchend', function() {
-      preventScrolling = true;
-    }, false);
 
     // Prevent all clicks from working normally
     window.addEventListener('click', preventDefault, false);

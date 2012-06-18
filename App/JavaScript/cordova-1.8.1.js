@@ -1015,10 +1015,8 @@ module.exports = function() {
     // which case the command will be picked up without notification.
     if (cordova.commandQueue.length == 1 && !cordova.commandQueueFlushing) {
         // cpojer: Do not use an iframe to avoid scrolling issues.
-        if (navigator.userAgent.toLowerCase().match(/(ip(ad|od|hone))/)) {
-            location = 'gap://ready';
-            return;
-        }
+        location = 'gap://ready';
+        return;
 
         if (!gapBridge) {
             createGapBridge();

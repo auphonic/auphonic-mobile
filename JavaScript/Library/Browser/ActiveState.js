@@ -12,6 +12,7 @@ module.exports = new Class({
   hitProperty: 'data-hit-target',
   current: null,
   start: 0,
+  enabled: true,
 
   initialize: function(options) {
     if (!options) options = {};
@@ -23,20 +24,30 @@ module.exports = new Class({
 
   attach: function() {
     events.forEach(function(event) {
-      document.addEventListener(event, this.bound(event), true);
+      window.addEventListener(event, this.bound(event), true);
     }, this);
   },
 
   detach: function() {
     events.forEach(function(event) {
-      document.removeEventListener(event, this.bound(event), true);
+      window.removeEventListener(event, this.bound(event), true);
     }, this);
+  },
+
+  enable: function() {
+    this.enabled = true;
+  },
+
+  disable: function() {
+    this.enabled = false;
   },
 
   touchstart: function(event) {
     if (event.touches.length > 1) return;
 
     this.cancel();
+
+    if (!this.enabled) return;
 
     var node = event.target;
     var current;
