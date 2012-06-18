@@ -187,12 +187,17 @@ var boot = function() {
       scrollableSelector: 'div.scrollable',
 
       onClick: function() {
-        this.container.addClass('fade');
+        var container = this.container;
+        container.addClass('fade');
         (function() {
-          this.container.addEvent('transitionComplete:once', function() {
+          container.addEvent('transitionComplete:once', function() {
             this.destroy();
           }).addClass('out');
-        }).delay(10, this);
+        }).delay(10);
+
+        var url = container.get('data-api-url');
+        var method = container.get('data-method');
+        if (url && method) API.call(url, method);
       },
 
       onSwipe: function() {

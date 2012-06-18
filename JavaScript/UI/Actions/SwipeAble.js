@@ -32,7 +32,7 @@ module.exports = new Class({
   setup: function() {
     var container = this.container;
     var element = this.element = container.getElement(this.options.selector);
-    element.store('swipe:cancelVertical', true);
+    container.store('swipe:cancelVertical', true);
     this.anchor = element.getElement(this.options.anchorSelector);
 
     this.attach();
