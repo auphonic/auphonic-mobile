@@ -8,6 +8,8 @@ var LocalStorage = require('Utility/LocalStorage');
 var Base64 = require('Utility/Base64');
 
 var urls = {};
+var info = {};
+var request;
 
 var API = module.exports = {
 
@@ -31,17 +33,23 @@ API.call = function(url, method, args) {
 };
 
 API.dispatch = function(url, method, data) {
-  var user = LocalStorage.get('User');
-  new Request.JSON({
+  if (request && request.isRunning() && request.getOption('method').toLowerCase() == 'get') {
+    request.cancel();
+    API.on(url).removeEvents('success:once').removeEvents('error:once');
+  }
 
-    url: window.__API_DOMAIN + url,
+  var user = LocalStorage.get('User');
+  request = new Request.JSON({
+
+    url: window.__API_DOMAIN + url + '.json',
     method: method || 'get',
     headers: {
-      'Authorization': 'Basic ' + Base64.encode(user.name + ':' + user.password)
+      'Authorization': 'Basic ' + Base64.encode(user.name + ':' + user.password),
+      'Content-Type': 'application/json'
     },
 
-    onFailure: function() {
-      // ToDo
+    onFailure: function(data) {
+      console.log(data);
     },
 
     onSuccess: function(data) {
@@ -51,10 +59,12 @@ API.dispatch = function(url, method, data) {
   }).send(data);
 };
 
-var info = {};
+API.invalidate = function(url) {
+  // TODO
+};
 
 API.cacheInfo = function(url) {
-  var type = url.split('/').getLast().split('.')[0];
+  var type = url.split('/').getLast();
   if (type == 'algorithms') {
     // TODO API call when API is available
     info[type] = {

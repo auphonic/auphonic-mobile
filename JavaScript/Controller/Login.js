@@ -25,12 +25,14 @@ API.on('login/submit', function() {
 }).addEvents({
 
   success: function() {
+    spinner.stop();
     document.id('login').empty();
 
     History.push('/');
   },
 
   error: function() {
+    spinner.stop();
     var login = document.id('login');
     login.empty().adopt(children);
   }

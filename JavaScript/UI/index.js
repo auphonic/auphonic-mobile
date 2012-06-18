@@ -15,6 +15,10 @@ var Handlebars = require('Library/ThirdParty/Handlebars');
 var cache = {};
 var locked = false;
 
+var preventDefault = function(event) {
+  event.preventDefault();
+};
+
 Object.append(UI, {
 
   render: function(name, data) {
@@ -84,6 +88,21 @@ Object.append(UI, {
 
   isHighlighted: function(element) {
     return document.id(element).hasClass('selected'); // oh no, state management!
+  },
+
+  disable: function(container, exception) {
+    container.addEvent('touchmove', preventDefault);
+
+    var elements = container.getElements('*').setStyle('pointer-events', 'none');
+    if (exception) exception.setStyle('pointer-events', 'auto');
+    return function() {
+      UI.enable(container, elements);
+    };
+  },
+
+  enable: function(container, elements) {
+    elements.setStyle('pointer-events', '');
+    container.removeEvent('touchmove', preventDefault);
   }
 
 });

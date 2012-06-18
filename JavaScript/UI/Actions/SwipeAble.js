@@ -3,6 +3,8 @@ var Class = Core.Class;
 var Options = Core.Options;
 var Events = Core.Events;
 
+var UI = require('UI');
+
 module.exports = new Class({
 
   Implements: [Class.Singleton, Class.Binds, Options, Events],
@@ -51,12 +53,8 @@ module.exports = new Class({
   swipe: function() {
     this.element.addClass('visible');
 
-    this.elements = this.getScrollable().getElements('*').setStyle('pointer-events', 'none');
-    this.element.setStyle('pointer-events', 'auto');
-    this.getScrollable().addEvents({
-      'touchstart:once': this.bound('touchstart'),
-      touchmove: this.bound('preventDefault')
-    });
+    this.enableUI = UI.disable(this.getScrollable(), this.element);
+    this.getScrollable().addEvent('touchstart:once', this.bound('touchstart'));
 
     this.fireEvent('swipe');
   },
@@ -79,9 +77,8 @@ module.exports = new Class({
   },
 
   end: function(event) {
-    this.elements.setStyle('pointer-events', '');
-    this.elements = null;
-    this.getScrollable().removeEvent('touchmove', this.bound('preventDefault'));
+    if (this.enableUI) this.enableUI();
+    this.enableUI = null;
 
     this.fireEvent('complete');
   },

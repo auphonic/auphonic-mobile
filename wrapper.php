@@ -6,6 +6,10 @@ $method = $_SERVER['REQUEST_METHOD'];
 $data = file_get_contents("php://input");
 $user = $_SERVER['PHP_AUTH_USER'] . ':' . $_SERVER['PHP_AUTH_PW'];
 
+// Simulate latency between 100-600 ms
+srand();
+usleep(rand(1, 6) * 100000);
+
 $response = CURLRequest::create(array(
   'userpwd' => $user,
   'httpauth' => CURLAUTH_BASIC,

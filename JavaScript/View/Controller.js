@@ -22,6 +22,9 @@ module.exports = new Class({
     back: null,
     title: null,
     action: null,
+    indicator: null,
+
+    indicatorDelay: 500,
 
     onTransitionEnd: null
   },
@@ -32,9 +35,11 @@ module.exports = new Class({
     this.back = options.back;
     this.title = options.title;
     this.action = options.action;
+    this.indicator = options.indicator;
     delete options.back;
     delete options.title;
     delete options.action;
+    delete options.indicator;
 
     this.setOptions(options);
 
@@ -46,6 +51,8 @@ module.exports = new Class({
 
   push: function(stack, object) {
     if (!object) return this;
+
+    this.hideLoadingIndicator();
 
     var rotated = false;
     if (!this.isCurrentStack(stack)) {
@@ -127,6 +134,44 @@ module.exports = new Class({
   updateElement: function(type, options, template) {
     this[type] = this[type].update(options, template);
     return this;
+  },
+
+  showLoadingIndicator: function(options) {
+    this.timer = (function() {
+      this._showLoadingIndicator(options);
+    }).delay(this.options.indicatorDelay, this);
+  },
+
+  _showLoadingIndicator: function(options) {
+    if (!this.getStack()) return;
+    if (this.indicatorIsVisible) return;
+
+    this.indicatorIsVisible = true;
+    UI.lock();
+    var current = this.getCurrentView();
+    var element = current.toElement();
+    this.enableUI = UI.disable(element);
+    if (options && options.fade) {
+      document.id(this.title).addClass('fade');
+      document.id(this.action).addClass('fade');
+      document.id(this.back).addClass('fade');
+      element.addClass('fade').addEvent('transitionComplete:once', (function() {
+        document.id(this.title).dispose();
+        document.id(this.action).dispose();
+        document.id(this.back).dispose();
+      }).bind(this));
+    }
+    this.indicator.spin(element.getParent());
+  },
+
+  hideLoadingIndicator: function() {
+    clearTimeout(this.timer);
+    this.indicatorIsVisible = false;
+    UI.unlock();
+    this.indicator.stop();
+
+    if (this.enableUI) this.enableUI();
+    this.enableUI = null;
   }
 
 });

@@ -78,25 +78,27 @@ var parseFormatsFromContainer = function(container) {
 
 Controller.define('/preset', function() {
 
-  API.call('presets.json').on({
+  View.get('Main').showLoadingIndicator({fade: true});
 
-    success: function(result) {
-      list = result.data;
+  API.call('presets').on({
 
-      presets = {};
-      list.each(function(preset) {
-        presets[preset.uuid] = preset;
-      });
+  success: function(result) {
+    list = result.data;
 
-      View.get('Main').push('preset', new View.Object({
-        title: 'Presets',
-        content: UI.render('preset', {preset: list}),
-        action: {
-          title: 'New',
-          url: '/preset/new'
-        }
-      }));
-    }
+    presets = {};
+    list.each(function(preset) {
+      presets[preset.uuid] = preset;
+    });
+
+    View.get('Main').push('preset', new View.Object({
+      title: 'Presets',
+      content: UI.render('preset', {preset: list}),
+      action: {
+        title: 'New',
+        url: '/preset/new'
+      }
+    }));
+  }
 
   });
 
@@ -187,7 +189,10 @@ var showPresetForm = function(preset) {
     title: 'New Preset',
     content: UI.render('preset-new', {
       algorithm: Object.values(Object.map(API.getInfo('algorithms'), function(content, algorithm) {
-        return Object.append({key: algorithm}, content, {
+        // TODO(cpojer): fix this once the API is fixed
+        var key = (algorithm == 'filtering') ? key = 'hipfilter' : algorithm;
+
+        return Object.append({key: key}, content, {
           value: (preset ? preset.algorithms[algorithm] : content.default_value)
         });
       })),
@@ -196,13 +201,22 @@ var showPresetForm = function(preset) {
     back: (preset ? {title: 'Cancel'} : null),
     action: {
       title: 'Save',
-      url: '/preset/new/save',
-      onClick: function() {
+      onClick: function(event) {
+        event.preventDefault();
+
         var data = Object.append(object.serialize(), formdata.metadata, formdata.outgoings);
         data.formats = parseFormatsFromContainer(object.toElement().getElement('ul.output_formats'));
 
-        var url = (preset ? 'preset/' + preset.uuid : 'presets') + '.json';
-        API.call(url, 'post', JSON.stringify(Object.expand(data)));
+        View.get('Main').showLoadingIndicator();
+
+        var url = (preset ? 'preset/' + preset.uuid : 'presets');
+        API.call(url, 'post', JSON.stringify(Object.expand(data))).on({
+          success: function() {
+            View.get('Main').getStack().getByURL('preset').invalidate();
+            API.invalidate('presets');
+            History.push('/preset');
+          }
+        });
       }
     },
 
@@ -254,7 +268,7 @@ Controller.define('/preset/edit/{uuid}', {priority: 1, isGreedy: true}, function
 Controller.define('/preset/new/metadata', function(req) {
 
   View.get('Main').push('preset', new View.Object({
-    title: 'Enter Metadata',
+    title: 'Metadata',
     content: UI.render('preset-new-metadata'),
     action: {
       title: 'Done',
@@ -303,7 +317,7 @@ Controller.define('/preset/new/format/:id:', function(req) {
 
   var object;
   View.get('Main').push('preset', object = new View.Object({
-    title: id ? 'Edit Output Format' : 'Add Output Format',
+    title: id ? 'Edit Format' : 'Add Format',
     content: UI.render('preset-new-format', {
       format: list
     }),
@@ -359,13 +373,15 @@ Controller.define('/preset/new/format/:id:', function(req) {
 
 Controller.define('/preset/new/service', function(req) {
 
-  API.call('services.json').on({
+  View.get('Main').showLoadingIndicator();
+
+  API.call('services').on({
 
     success: function(result) {
       var services = formatServices(result.data);
 
       View.get('Main').push('preset', new View.Object({
-        title: 'Outgoing Transfers',
+        title: 'Transfers',
         content: UI.render('preset-new-service', {
           service: services
         }),
@@ -387,11 +403,5 @@ Controller.define('/preset/new/service', function(req) {
 
     }
   });
-
-});
-
-Controller.define('/preset/new/save', function(req) {
-
-  History.push('/preset');
 
 });

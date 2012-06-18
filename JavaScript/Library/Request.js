@@ -6,7 +6,7 @@ var Events = Core.Events;
 // Lightweight Request Class based on MooTools from @amadeus.
 var Request = module.exports = new Class({
 
-	Implements: [Options, Events],
+	Implements: [Options, Events, Class.Binds],
 
 	options: {
 		method: 'get',
@@ -17,11 +17,13 @@ var Request = module.exports = new Class({
 		}
 	},
 
+	running: false,
+
 	initialize: function(options) {
 		this.setOptions(options);
 
 		this.xhr = new XMLHttpRequest();
-		this.xhr.addEventListener('readystatechange', this.readyStateChange.bind(this), false);
+		this.xhr.addEventListener('readystatechange', this.bound('onReadyStateChange'), false);
 	},
 
 	send: function(data) {
@@ -31,21 +33,23 @@ var Request = module.exports = new Class({
 
 		// Set Headers
 		var headers = this.options.headers;
-		if (['POST', 'PUT'].contains(method))
-			this.xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded; charset=UTF-8');
+		if (['POST', 'PUT'].contains(method) && !headers['Content-Type'])
+			this.xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8');
 
 		for (var header in headers)
 			this.xhr.setRequestHeader(header, headers[header]);
 
+		this.running = true;
 		this.xhr.send(data);
 	},
 
-	readyStateChange: function() {
+	onReadyStateChange: function() {
 		if (this.xhr.readyState !== 4) return;
 
 		if ((this.xhr.status >= 200 && this.xhr.status < 300) || this.xhr.status === 0) this.success();
 		else this.failure();
 		this.fireEvent('complete', this.responseText);
+		this.running = false;
 	},
 
 	success: function() {
@@ -54,6 +58,20 @@ var Request = module.exports = new Class({
 
 	failure: function() {
 		this.fireEvent('failure', this.xhr.responseText);
+	},
+
+	cancel: function() {
+		if (!this.running) return;
+		this.xhr.abort();
+		this.xhr.removeEventListener('readystatechange', this.bound('onReadyStateChange'), false);
+	},
+
+	isRunning: function() {
+		return this.running;
+	},
+
+	getOption: function(property) {
+		return this.options[property];
 	}
 
 });
@@ -70,7 +88,7 @@ Request.JSON = new Class({
 
 	response: null,
 
-	readyStateChange: function() {
+	onReadyStateChange: function() {
 		if (this.xhr.readyState !== 4) return;
 
 		this.response = Function.attempt((function() {
@@ -78,6 +96,7 @@ Request.JSON = new Class({
 		}).bind(this)) || undefined;
 		if ((this.xhr.status >= 200 && this.xhr.status < 300) || this.xhr.status === 0) this.success();
 		else this.failure();
+		this.running = false;
 		this.fireEvent('complete', this.response);
 	},
 

@@ -18,6 +18,13 @@ require('Extensions/Object');
 // Dev Environment setup
 require('Dev');
 
+// Monkey Patch for Cordova which sometimes adds file:///
+var History = require('History');
+var getPath = History.getPath;
+History.getPath = function() {
+  return '/' + getPath.call(this).replace(/^\/|^file\:\/\/\//, '');
+};
+
 // Load Controllers
 require('Controller/Login');
 require('Controller/Preset');
@@ -26,7 +33,6 @@ require('Controller/Record');
 require('Controller/Settings');
 
 var Form = require('Form');
-var History = require('History');
 var LocalStorage = require('Utility/LocalStorage');
 var ActiveState = require('Browser/ActiveState');
 var PreventClickOnScroll = require('Browser/PreventClickOnScroll');
@@ -37,6 +43,7 @@ var View = require('View');
 var Controller = require('Controller');
 var SwipeAble = require('UI/Actions/SwipeAble');
 var Popover = require('UI/Actions/Popover');
+var Spinner = require('ThirdParty/Spinner');
 
 var preventDefault = function(event) {
   event.preventDefault();
@@ -48,19 +55,21 @@ var preventScroll = function(event) {
 
 var click = function(event) {
   event.preventDefault();
+  var href = this.get('href');
 
+  if (!href) return;
   if (event.touches && event.touches.length > 1) return;
   if (UI.isLocked()) return;
   if (UI.isHighlighted(this)) {
     if (!this.getParent('footer')) return;
 
     // Tap on footer icon
-    if (History.getPath() == this.get('href').substr(1)) return;
+    if (History.getPath() == href) return;
   }
 
   UI.highlight(this);
 
-  History.push(this.get('href'));
+  History.push(href);
 };
 
 var clickExternal = function(event) {
@@ -94,10 +103,11 @@ var boot = function() {
   var isLoggedIn = !!LocalStorage.get('User');
   if (isLoggedIn) UI.Chrome.show({immediate: true});
 
-  // Browser bug: prevent this from firing twice in Chrome
+  // Browser bug in both Chrome and iOS. This delay is necessary
+  // at the startup of the app.
   setTimeout(function() {
     History.push(isLoggedIn ? '/' : '/login');
-  }, 200);
+  }, 350);
 
   if (Browser.Platform.ios) {
     // Fix for scrolling content smaller than the viewport.
@@ -231,6 +241,15 @@ var boot = function() {
     back: back,
     title: title,
     action: action,
+    indicator: new Spinner({
+      lines: 12,
+      length: 10,
+      width: 7,
+      radius: 13,
+      trail: 30,
+      color: '#000'
+    }),
+    indicatorDelay: 500,
 
     onTransitionEnd: function() {
       var stack = this.getStack();
@@ -243,8 +262,8 @@ var boot = function() {
 
   // These are cached during the lifetime of the app so the data
   // can be accessed synchronously.
-  API.cacheInfo('info/algorithms.json');
-  API.cacheInfo('info/formats.json');
+  API.cacheInfo('info/algorithms');
+  API.cacheInfo('info/formats');
 };
 
 var fired;

@@ -21,7 +21,7 @@ module.exports = {
       var stack = main.getStack();
       var object = stack && stack.getByURL(History.getPath());
 
-      if (object) main.push(stack.getName(), object);
+      if (object && !object.isInvalid()) main.push(stack.getName(), object);
       else fn.apply(null, arguments);
     }, options && options.priority).setGreedy(options && options.isGreedy);
   }

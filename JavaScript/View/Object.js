@@ -111,6 +111,14 @@ module.exports = new Class({
 
   unserialize: function(object) {
     return this.toElement().unserialize(object);
+  },
+
+  invalidate: function() {
+    this.isInvalidated = true;
+  },
+
+  isInvalid: function() {
+    return !!this.isInvalidated;
   }
 
 });

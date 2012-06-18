@@ -8,7 +8,9 @@ var list = null;
 
 Controller.define('/production', function() {
 
-  API.call('productions.json').on({
+  View.get('Main').showLoadingIndicator({fade: true});
+
+  API.call('productions').on({
 
     success: function(result) {
       list = result.data;

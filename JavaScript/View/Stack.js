@@ -62,9 +62,10 @@ module.exports = new Class({
   },
 
   getByURL: function(url) {
+    url = url.replace(/^\//, '');
     var stack = this.stack;
     for (var index = 0; index < stack.length; index++) {
-      if (stack[index].getURL() == url)
+      if (stack[index].getURL().replace(/^\//, '') == url)
         return stack[index];
     }
 
