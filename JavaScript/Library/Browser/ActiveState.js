@@ -39,8 +39,7 @@ module.exports = new Class({
     if (event.touches.length > 1) return;
     if (UI.isLocked()) return;
 
-    clearTimeout(this.timer);
-    this.unhighlight();
+    this.cancel();
 
     var node = event.target;
     var current;
@@ -85,16 +84,17 @@ module.exports = new Class({
   },
 
   touchend: function() {
-    this.cancel();
+    this.cancel(true);
   },
 
   touchcancel: function() {
-    this.cancel();
+    this.cancel(true);
   },
 
-  cancel: function() {
+  cancel: function(timeout) {
     clearTimeout(this.timer);
-    this.unhighlight.delay(50, this);
+    if (timeout) this.unhighlight.delay(50, this);
+    else this.unhighlight();
   },
 
   matches: function(node) {
