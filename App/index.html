@@ -211,7 +211,7 @@
   <ul class="formcontent">
     <li>
       <label class="left">
-        <input type="text" name="preset_name" placeholder="choose a preset name" class="right" />
+        <input type="text" name="preset_name" value="{{preset_name}}" placeholder="choose a preset name" class="right" />
         Name
       </label>
     </li>
@@ -231,7 +231,7 @@
         <div class="right">
           <div class="checkbox">
             <span class="left"></span><span class="thumb" data-on="ON" data-off="OFF"></span>
-            <input type="checkbox" name="algorithms.{{key}}" value="1"{{#if default_value}} checked="checked"{{/if}} />
+            <input type="checkbox" name="algorithms.{{key}}" value="1"{{#if value}} checked="checked"{{/if}} />
           </div>
         </div>
         <label class="left info">

@@ -26,6 +26,30 @@ var formatServices = function(services) {
   return services;
 };
 
+var createFormatUIElement = function(content, id) {
+  if (!id) id = String.uniqueID();
+
+  var element = Element.from(UI.render('ui-removable-list-item',
+    Object.append(createFormatUIData(content), {
+      label: 'Remove',
+      href: '/preset/new/format/' + id
+    })
+  )).set('data-format-id', id).store('value', content);
+
+  UI.update(element);
+
+  // Store for editing
+  if (!formdata.formats) formdata.formats = {};
+  formdata.formats[id] = content;
+
+  var instance = element.getInstanceOf(SwipeAble);
+  if (instance) instance.addEvent('click', function() {
+    if (formdata.formats) delete formdata.formats[id];
+  });
+
+  return element;
+};
+
 var createFormatUIData = function(content) {
   var formats = API.getInfo('formats');
   var item = formats[content.format];
@@ -130,15 +154,37 @@ Controller.define('/preset/{uuid}/summary', function(req) {
 
 });
 
-var presetForm = function(req) {
+var showPresetForm = function(preset) {
+  var formatElements = null;
+
+  if (preset) {
+    var outgoings = {};
+    if (preset.outgoings) preset.outgoings.each(function(outgoing) {
+      outgoings['outgoings.' + outgoing.uuid] = true;
+    });
+
+    formdata = {
+      metadata: Object.flatten({metadata: preset.metadata}),
+      outgoings: outgoings
+    };
+
+    if (preset.formats) formatElements = preset.formats.map(function(format) {
+      return createFormatUIElement(format);
+    });
+  }
+
   var object;
   View.get('Main').push('preset', object = new View.Object({
     title: 'New Preset',
     content: UI.render('preset-new', {
       algorithm: Object.values(Object.map(API.getInfo('algorithms'), function(content, algorithm) {
-        return Object.append({key: algorithm}, content);
-      }))
+        return Object.append({key: algorithm}, content, {
+          value: (preset ? preset.algorithms[algorithm] : content.default_value)
+        });
+      })),
+      preset_name: (preset ? preset.preset_name : '')
     }),
+    back: (preset ? {title: 'Cancel'} : null),
     action: {
       title: 'Save',
       url: '/preset/new/save',
@@ -146,43 +192,30 @@ var presetForm = function(req) {
         var data = Object.append(object.serialize(), formdata.metadata, formdata.outgoings);
         data.formats = parseFormatsFromContainer(object.toElement().getElement('ul.output_formats'));
 
-        API.call('presets.json', 'post', JSON.stringify(Object.expand(data)));
+        var url = (preset ? 'preset/' + preset.uuid : 'presets') + '.json';
+        API.call(url, 'post', JSON.stringify(Object.expand(data)));
       }
     },
 
     onShow: function() {
-      if (formdata.format) {
-        var container = object.toElement().getElement('ul.output_formats');
+      var container = object.toElement().getElement('ul.output_formats');
+      if (formatElements) {
+        container.adopt(formatElements);
+        formatElements = null;
+      } else if (formdata.format) {
         var content = formdata.format;
-        var id = formdata.formatID || String.uniqueID();
-        var previous = formdata.formatID ? container.getElement('[data-format-id=' + id + ']') : null;
-        delete formdata.formatID;
-
         // Select-Values are Arrays but we only need the first and only value
         content.format = content.format[0];
         content.bitrate = content.bitrate[0];
 
-        var element = Element.from(UI.render('ui-removable-list-item',
-          Object.append(createFormatUIData(content), {
-            label: 'Remove',
-            href: '/preset/new/format/' + id
-          })
-        )).set('data-format-id', id).store('value', content);
+        var id = formdata.formatID;
+        var previous = id ? container.getElement('[data-format-id=' + id + ']') : null;
+        var element = createFormatUIElement(content, id);
 
         if (previous) element.replaces(previous);
         else element.inject(container);
 
-        UI.update(container);
-
-        // Store for editing
-        if (!formdata.formats) formdata.formats = {};
-        formdata.formats[id] = content;
-
-        var instance = element.getInstanceOf(SwipeAble);
-        if (instance) instance.addEvent('click', function() {
-          if (formdata.formats) delete formdata.formats[id];
-        });
-
+        delete formdata.formatID;
         delete formdata.format;
       }
     },
@@ -194,10 +227,11 @@ var presetForm = function(req) {
 
 };
 
-Controller.define('/preset/new', {priority: 1, isGreedy: true}, presetForm);
+Controller.define('/preset/new', {priority: 1, isGreedy: true}, function(req) {
+  showPresetForm();
+});
 Controller.define('/preset/edit/{uuid}', {priority: 1, isGreedy: true}, function(req) {
-  var preset = presets[req.uuid];
-  presetForm(req);
+  showPresetForm(presets[req.uuid]);
 });
 
 Controller.define('/preset/new/metadata', function(req) {
@@ -207,7 +241,7 @@ Controller.define('/preset/new/metadata', function(req) {
     content: UI.render('preset-new-metadata'),
     action: {
       title: 'Done',
-      url: '/preset/new',
+      back: true,
       onClick: function() {
         formdata.metadata = View.get('Main').getCurrentView().serialize();
       }
@@ -217,13 +251,21 @@ Controller.define('/preset/new/metadata', function(req) {
     },
 
     onShow: function() {
-      this.unserialize(formdata.metadata);
+      var metadata = formdata.metadata;
+      if (!metadata) metadata = {
+        'metadata.year': (new Date).getFullYear(),
+        'metadata.genre': 'Podcast'
+      };
+
+      this.unserialize(metadata);
     }
   }));
 
 });
 
 Controller.define('/preset/new/format/:id:', function(req) {
+
+  var id = (req.id && formdata.formats[req.id]) ? req.id : null;
 
   var list = [];
   var formats = API.getInfo('formats');
@@ -244,7 +286,7 @@ Controller.define('/preset/new/format/:id:', function(req) {
 
   var object;
   View.get('Main').push('preset', object = new View.Object({
-    title: 'Add Output Format',
+    title: id ? 'Edit Output Format' : 'Add Output Format',
     content: UI.render('preset-new-format', {
       format: list
     }),
@@ -259,11 +301,11 @@ Controller.define('/preset/new/format/:id:', function(req) {
 
     'change:once': function() {
       View.get('Main').updateElement('action', {}, {
-        title: req.id ? 'Done' : 'Add',
-        url: '/preset/new',
+        title: id ? 'Done' : 'Add',
+        back: true,
         onClick: function() {
           formdata.format = View.get('Main').getCurrentView().serialize();
-          if (req.id) formdata.formatID = req.id;
+          if (id) formdata.formatID = id;
         }
       });
     },
@@ -291,10 +333,10 @@ Controller.define('/preset/new/format/:id:', function(req) {
   });
 
   // editing
-  if (req.id && formdata.formats[req.id]) {
-    object.unserialize({format: formdata.formats[req.id].format});
+  if (id) {
+    object.unserialize({format: formdata.formats[id].format});
     selects.fireEvent('focus:once').fireEvent('change');
-    object.unserialize(formdata.formats[req.id]);
+    object.unserialize(formdata.formats[id]);
   }
 });
 
@@ -312,7 +354,7 @@ Controller.define('/preset/new/service', function(req) {
         }),
         action: {
           title: 'Done',
-          url: '/preset/new',
+          back: true,
           onClick: function() {
             formdata.outgoings = View.get('Main').getCurrentView().serialize();
           }
