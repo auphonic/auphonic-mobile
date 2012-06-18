@@ -49,17 +49,12 @@ var preventDefault = function(event) {
   event.preventDefault();
 };
 
-var preventScroll = function(event) {
-  if (UI.isLocked()) event.preventDefault();
-};
-
 var click = function(event) {
   event.preventDefault();
   var href = this.get('href');
 
   if (!href) return;
   if (event.touches && event.touches.length > 1) return;
-  if (UI.isLocked()) return;
   if (UI.isHighlighted(this)) {
     if (!this.getParent('footer')) return;
 
@@ -139,9 +134,6 @@ var boot = function() {
 
     // Prevent all clicks from working normally
     window.addEventListener('click', preventDefault, false);
-
-    // Prevent Scrolling when the UI is locked
-    window.addEventListener('touchmove', preventScroll, false);
   }
 
   UI.register({

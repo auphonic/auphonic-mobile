@@ -81,7 +81,7 @@ module.exports = new Class({
       .updateElement('title', options, object.getTitleTemplate())
       .updateElement('action', options, object.getActionTemplate());
 
-    UI.lock();
+    UI.disable();
 
     object.fireEvent('show', [direction]);
 
@@ -123,7 +123,7 @@ module.exports = new Class({
   },
 
   onTransitionEnd: function() {
-    UI.unlock();
+    UI.enable();
     this.fireEvent('transitionEnd');
   },
 
@@ -137,6 +137,8 @@ module.exports = new Class({
   },
 
   showLoadingIndicator: function(options) {
+    UI.disable();
+
     this.timer = (function() {
       this._showLoadingIndicator(options);
     }).delay(this.options.indicatorDelay, this);
@@ -147,10 +149,8 @@ module.exports = new Class({
     if (this.indicatorIsVisible) return;
 
     this.indicatorIsVisible = true;
-    UI.lock();
     var current = this.getCurrentView();
     var element = current.toElement();
-    UI.disable(element);
 
     if (options && options.fade) {
       document.id(this.title).addClass('fade');
@@ -168,11 +168,8 @@ module.exports = new Class({
   hideLoadingIndicator: function() {
     clearTimeout(this.timer);
     this.indicatorIsVisible = false;
-    UI.unlock();
+    UI.enable();
     this.indicator.stop();
-
-    var object = this.getCurrentView();
-    if (object) UI.enable(object.toElement());
   }
 
 });

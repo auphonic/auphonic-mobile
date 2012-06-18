@@ -65,7 +65,7 @@ module.exports = new Class({
     event.preventDefault();
 
     if (event.touches && event.touches.length > 1) return false;
-    if (UI.isLocked() || UI.isHighlighted(this)) return false;
+    if (UI.isHighlighted(this)) return false;
 
     UI.highlight(this);
     return true;

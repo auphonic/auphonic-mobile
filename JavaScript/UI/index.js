@@ -57,24 +57,6 @@ Object.append(UI, {
     this.update(container);
   },
 
-  lock: function() {
-    (function() {
-      Element.disableCustomEvents();
-    }).delay(0);
-    locked = true;
-  },
-
-  unlock: function() {
-    (function() {
-      Element.enableCustomEvents();
-    }).delay(0);
-    locked = false;
-  },
-
-  isLocked: function() {
-    return locked;
-  },
-
   highlight: function(element) {
     element = document.id(element);
 
@@ -91,6 +73,8 @@ Object.append(UI, {
   },
 
   disable: function(container, exception) {
+    if (!container) container = document.body;
+
     container.addEvent('touchmove', preventDefault)
       .addClass('disable-events');
 
@@ -98,6 +82,8 @@ Object.append(UI, {
   },
 
   enable: function(container, exception) {
+    if (!container) container = document.body;
+
     container.removeEvent('touchmove', preventDefault)
       .removeClass('disable-events');
 

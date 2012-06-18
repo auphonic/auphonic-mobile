@@ -1,8 +1,6 @@
 var Core = require('Core');
 var Class = Core.Class;
 
-var UI = require('UI');
-
 var events = ['touchstart', 'touchmove', 'touchend', 'touchcancel'];
 
 module.exports = new Class({
@@ -37,7 +35,6 @@ module.exports = new Class({
 
   touchstart: function(event) {
     if (event.touches.length > 1) return;
-    if (UI.isLocked()) return;
 
     this.cancel();
 
