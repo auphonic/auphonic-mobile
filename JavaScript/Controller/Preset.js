@@ -111,8 +111,17 @@ Controller.define('/preset/{uuid}', function(req) {
   metadata.hasLicense = !!(metadata.license || metadata.license_url);
   preset.hasDetails = metadata.summary || metadata.publisher || metadata.url || metadata.hasLicense;
 
-  if (preset.outgoings && preset.outgoings.length) formatServices(preset.outgoings);
-  else preset.outgoings = null; // Be safe
+  if (preset.outgoings && preset.outgoings.length) {
+    var uuids = {};
+    // Remove duplicates. The API currently allows to add the same service more than once
+    preset.outgoings = formatServices(preset.outgoings).filter(function(service) {
+      if (uuids[service.uuid]) return false;
+      uuids[service.uuid] = true;
+      return true;
+    });
+  } else {
+    preset.outgoings = null; // Be safe
+  }
 
   if (preset.algorithms) {
     var list = [];
