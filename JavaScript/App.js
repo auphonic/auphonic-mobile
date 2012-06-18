@@ -80,15 +80,6 @@ var onLabelClick = function() {
 };
 
 var boot = function() {
-  (new ActiveState({
-    active: 'active',
-    hit: 'hit',
-    hitProperty: 'data-hit-target'
-  })).attach();
-  if (Browser.Platform.ios) {
-    //(new PreventClickOnScroll('div.scrollable')).attach();
-  }
-
   LocalStorage.set('User', {
     name: 'cpojer',
     password: 'cpojer-pw',
@@ -104,7 +95,15 @@ var boot = function() {
     History.push(isLoggedIn ? '/' : '/login');
   }, 350);
 
+  (new ActiveState({
+    active: 'active',
+    hit: 'hit',
+    hitProperty: 'data-hit-target'
+  })).attach();
+
   if (Browser.Platform.ios) {
+    (new PreventClickOnScroll('div.scrollable')).attach();
+
     // Fix for scrolling content smaller than the viewport.
     var preventScrolling = true;
     var selector = '.panel-content';
@@ -212,17 +211,6 @@ var boot = function() {
 
   }).update();
 
-  Controller.define('/', function() {
-
-    UI.Chrome.show();
-
-    View.get('Main').push('default', new View.Object({
-      title: 'Home',
-      content: UI.render('default')
-    }));
-
-  });
-
   var header = document.getElement('header');
   var back = new UI.BackButton(header, new Element('a'));
   var action = new UI.ActionButton(header, new Element('a'), {
@@ -256,6 +244,17 @@ var boot = function() {
       previous.toElement().getElements('ul li a.selected').removeClass('selected');
     }
   }));
+
+  Controller.define('/', function() {
+
+    UI.Chrome.show();
+
+    View.get('Main').push('default', new View.Object({
+      title: 'Home',
+      content: UI.render('default')
+    }));
+
+  });
 
   // These are cached during the lifetime of the app so the data
   // can be accessed synchronously.
