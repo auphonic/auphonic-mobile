@@ -49,7 +49,8 @@ API.dispatch = function(url, method, data) {
     },
 
     onFailure: function(data) {
-      console.log(data);
+      // TODO delete requests currently don't return anything
+      if (method != 'delete') console.log(data);
     },
 
     onSuccess: function(data) {

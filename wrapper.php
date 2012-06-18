@@ -57,7 +57,7 @@ class CURLRequest {
     } elseif ($method == 'post') {
       $options['post'] = true;
     } else {
-      $options['customrequest'] = $method;
+      $options['customrequest'] = strtoupper($method);
     }
 
     $headers = array();
@@ -107,9 +107,11 @@ class CURLResponse {
     $version = array_shift($head);
 
     preg_match('#HTTP/(\d\.\d)\s(\d\d\d)\s(.*)#', $version, $m);
-    $headers['Http-Version'] = $m[1];
-    $headers['Status-Code'] = $m[2];
-    $headers['Status'] = $m[2] . ' ' . $m[3];
+    if (!empty($m)) {
+      $headers['Http-Version'] = $m[1];
+      $headers['Status-Code'] = $m[2];
+      $headers['Status'] = $m[2] . ' ' . $m[3];
+    }
 
     foreach ($head as $header) {
       preg_match('#(.*?)\:\s(.*)#', $header, $m);
