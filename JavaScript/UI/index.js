@@ -74,22 +74,18 @@ Object.append(UI, {
 
   disable: function(container, exception) {
     if (!container) container = document.body;
-    var element = container;
-    if (container == document.body) element = window;
 
-    element.addEvent('touchmove', preventDefault);
-    container.addClass('disable-events');
+    container.addEvent('touchmove', preventDefault)
+      .addClass('disable-events');
 
     if (exception) exception.addClass('enable-events');
   },
 
   enable: function(container, exception) {
     if (!container) container = document.body;
-    var element = container;
-    if (container == document.body) element = window;
 
-    element.removeEvent('touchmove', preventDefault);
-    container.removeClass('disable-events');
+    container.removeEvent('touchmove', preventDefault)
+      .removeClass('disable-events');
 
     if (exception) exception.removeClass('enable-events');
   }

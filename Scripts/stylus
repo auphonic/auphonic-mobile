@@ -1,4 +1,4 @@
 #!/bin/bash
 DIR=$(cd `dirname $0` && pwd)
 
-$DIR/../node_modules/bin/stylus --use "$DIR/../node_modules/nib/lib/nib.js" --out "$DIR/../App/CSS" --watch "$DIR/../STYL"
+$DIR/../node_modules/.bin/stylus --use "$DIR/../node_modules/nib/lib/nib.js" --out "$DIR/../App/CSS" --watch "$DIR/../STYL"

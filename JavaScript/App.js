@@ -132,12 +132,6 @@ var boot = function() {
 
   UI.register({
 
-    '.prevent, footer, header': function(elements) {
-      elements.each(function(element) {
-        element.addEventListener('touchmove', preventDefault, false);
-      });
-    },
-
     '#main a:external': function(elements) {
       elements.addEvent('click', clickExternal);
     },
