@@ -85,6 +85,7 @@ var boot = function() {
     password: 'cpojer-pw',
     email: 'christoph.pojer@gmail.com'
   });
+  LocalStorage.erase('User');
 
   var isLoggedIn = !!LocalStorage.get('User');
   if (isLoggedIn) UI.Chrome.show({immediate: true});

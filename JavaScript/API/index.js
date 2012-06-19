@@ -32,19 +32,26 @@ API.call = function(url, method, args) {
   }};
 };
 
-API.dispatch = function(url, method, data) {
+API.dispatch = function(url, method, requestData) {
+  // TODO API oAuth Login
+  if (url == 'login/submit') {
+    API.on(url).fireEvent('success', []);
+    return;
+  }
+
   if (request && request.isRunning() && request.getOption('method').toLowerCase() == 'get') {
     request.cancel();
     API.on(url).removeEvents('success:once').removeEvents('error:once');
   }
 
   var user = LocalStorage.get('User');
+  var authorization = (user ? 'Basic ' + Base64.encode(user.name + ':' + user.password) : '');
   request = new Request.JSON({
 
     url: window.__API_DOMAIN + url + '.json',
     method: method || 'get',
     headers: {
-      'Authorization': 'Basic ' + Base64.encode(user.name + ':' + user.password),
+      'Authorization': authorization,
       'Content-Type': 'application/json'
     },
 
@@ -57,7 +64,7 @@ API.dispatch = function(url, method, data) {
       API.on(url).fireEvent('success', [data]);
     }
 
-  }).send(data);
+  }).send(requestData);
 };
 
 API.invalidate = function(url) {

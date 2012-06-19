@@ -7,7 +7,7 @@ var API = require('../API');
 var Controller = require('./');
 var UI = require('../UI');
 
-var spinner, children;
+var spinner, children, form;
 
 API.on('login/submit', function() {
   if (!spinner) spinner = new Spinner({
@@ -25,9 +25,12 @@ API.on('login/submit', function() {
 }).addEvents({
 
   success: function() {
-    spinner.stop();
-    document.id('login').empty();
+    var login = document.id('login');
 
+    spinner.stop();
+    login.empty();
+
+    LocalStorage.set('User', form.serialize());
     History.push('/');
   },
 
@@ -48,9 +51,9 @@ Controller.define('/login', function() {
   UI.Chrome.hide();
 
   var login = document.id('login');
-
   login.set('html', UI.render('login'));
-  new Form.Element(login.getElement('form'), 'login/submit');
+  form = login.getElement('form');
+  new Form.Element(form, 'login/submit');
   login.show();
 
 });
