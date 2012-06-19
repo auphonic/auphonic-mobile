@@ -109,23 +109,6 @@ var boot = function() {
       activeState: activeState
     })).attach();
 
-    // Fix for scrolling content smaller than the viewport.
-    var selector = '.panel-content';
-    var update = function(node) {
-      if (node) node.style.minHeight = (node.getParent().offsetHeight + 2) + 'px';
-    };
-    window.addEventListener('touchstart', function(event) {
-      var node = event.target;
-      if (!node.match(selector)) node = node.getParent(selector);
-      if (!node) return;
-
-      update(node);
-    });
-
-    UI.addEvent('update', function(element) {
-      update(element.match && element.match(selector) ? element : element.getElement(selector));
-    });
-
     // Prevent all clicks from working normally
     window.addEventListener('click', preventDefault, false);
   }
@@ -149,7 +132,7 @@ var boot = function() {
 
     'label.info': Class.Instantiate(Popover, {
       selector: 'div.popover',
-      scrollSelector: 'div.panel-content',
+      scrollSelector: 'div.scroll-content',
       positionProperty: 'data-position',
       animationClass: 'fade',
       arrowHeight: 14
@@ -208,8 +191,8 @@ var boot = function() {
   var title = new UI.Title(header, new Element('h1'));
 
   View.set('Main', new View.Controller('main', {
-    templateId: (Browser.Platform.ios ? 'ios-' : '') + 'container-template',
-    contentSelector: 'div.panel-content',
+    template: 'container-template',
+    contentSelector: 'div.scroll-content',
     scrollableSelector: 'div.scrollable',
 
     back: back,

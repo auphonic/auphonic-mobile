@@ -12,7 +12,7 @@ module.exports = new Class({
 
   options: {
     selector: 'div.popover',
-    scrollSelector: 'div.panel-content',
+    scrollSelector: 'div.scroll-content',
     positionProperty: 'data-position',
     animationClass: 'fade',
     arrowHeight: 14

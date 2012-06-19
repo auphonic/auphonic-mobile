@@ -1,23 +1,14 @@
 @import 'nib'
 
-.vflex
-  box-flex 1
-  display -webkit-box
-  box-orient vertical
-
-.scrolling
-  overflow auto
-  -webkit-overflow-scrolling touch
-
 .scrollable
-  box-flex 1
   display block
 
   overflow auto
   -webkit-overflow-scrolling touch
 
 .scroll-content
-  box-flex 1
+  box-sizing border-box
   display block
 
+  min-height 101%
   transform translate3d(0, 0, 0) // iOS cuts of elements if this is missing

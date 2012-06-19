@@ -15,7 +15,7 @@ module.exports = new Class({
   _current: null,
 
   options: {
-    templateId: null,
+    template: null,
     contentSelector: null,
     scrollableSelector: null,
 

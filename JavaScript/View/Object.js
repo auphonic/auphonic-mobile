@@ -48,7 +48,7 @@ module.exports = new Class({
     var view = this.getView();
     if (!view) return;
 
-    var template = view.getOption('templateId');
+    var template = view.getOption('template');
     var selector = view.getOption('contentSelector');
 
     var element = document.id(template).getFirst().clone();
