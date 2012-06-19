@@ -80,6 +80,9 @@ Controller.define('/preset', function() {
 
   View.get('Main').showLoadingIndicator({fade: true});
 
+  list = [];
+  presets = {};
+
   API.call('presets').on({
 
   success: function(result) {
@@ -211,10 +214,25 @@ var showPresetForm = function(preset) {
 
         var url = (preset ? 'preset/' + preset.uuid : 'presets');
         API.call(url, 'post', JSON.stringify(Object.expand(data))).on({
-          success: function() {
-            View.get('Main').getStack().getByURL('preset').invalidate();
+          success: function(response) {
+            var stack = View.get('Main').getStack();
+            var obj = stack.getByURL('preset');
+            if (obj) obj.invalidate();
+            if (preset) {
+              obj = stack.getByURL('preset/' + preset.uuid);
+              if (obj) obj.invalidate();
+            }
+
+            // Current object should get removed after sliding it out
+            object.addEvent('hide:once', function() {
+              this.getStack().remove(this);
+              this.getStack().getCurrent().setBack({
+                title: 'Presets'
+              });
+            });
             API.invalidate('presets');
-            History.push('/preset');
+            presets[response.data.uuid] = response.data;
+            History.push('/preset/' + response.data.uuid);
           }
         });
       }

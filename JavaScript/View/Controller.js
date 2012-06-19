@@ -69,8 +69,8 @@ module.exports = new Class({
     var previous;
     if (!isImmediate) previous = this.getCurrentView().rememberScroll();
 
-    if (previous) previous.fireEvent('hide', [direction]);
     current.push(object);
+    if (previous) previous.fireEvent('hide', [direction]);
 
     var options = {
       immediate: isImmediate,

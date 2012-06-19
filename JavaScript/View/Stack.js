@@ -50,6 +50,10 @@ module.exports = new Class({
     return this;
   },
 
+  remove: function(object) {
+    this.stack.erase(object);
+  },
+
   rewind: function(index, object) {
     this.stack[index] = object;
     this.stack = this.stack.slice(0, index + 1);
