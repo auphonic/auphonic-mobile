@@ -74,9 +74,26 @@ Controller.define('/production', function() {
 
 });
 
+var click = function(event) {
+  event.preventDefault();
+
+  var url = this.get('data-api-url');
+  var method = this.get('data-method');
+  if (url && method) API.call(url, method, 'null');
+
+  this.dispose();
+};
+
 Controller.define('/production/{uuid}', function(req) {
 
   var production = Data.prepare(productions[req.uuid]);
+  production.production = true;
+  production.baseURL = 'production';
+
+  UI.register('a.startProduction', function(elements) {
+    elements.addEvent('click', click);
+  });
+
   View.getMain().push('production', new View.Object({
     title: production.metadata.title,
     content: UI.render('data-detail', production),
@@ -84,6 +101,16 @@ Controller.define('/production/{uuid}', function(req) {
       title: 'Edit',
       url: '/production/edit/' + production.uuid
     }
+  }));
+
+});
+
+Controller.define('/production/{uuid}/summary', function(req) {
+
+  var production = productions[req.uuid];
+  View.getMain().push('production', new View.Object({
+    title: production.metadata.title,
+    content: UI.render('data-detail-summary', production)
   }));
 
 });

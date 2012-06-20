@@ -78,6 +78,8 @@ Controller.define('/preset', function() {
 Controller.define('/preset/{uuid}', function(req) {
 
   var preset = Data.prepare(presets[req.uuid]);
+  preset.preset = true;
+  preset.baseURL = 'preset';
 
   View.getMain().push('preset', new View.Object({
     title: preset.preset_name,

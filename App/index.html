@@ -126,10 +126,14 @@
     {{/metadata}}
   </div>
 
+  {{#if canStartProduction}}
+    <a href="#" data-api-url="production/{{uuid}}/start" data-method="post" class="button green expand startProduction">Start Production</a>
+  {{/if}}
+
   {{#if hasDetails}}
     <h1>Details</h1>
     <ul>
-      {{#if metadata.summary}}<li><a href="preset/{{uuid}}/summary" class="arrow"><span></span>Summary</a></li>{{/if}}
+      {{#if metadata.summary}}<li><a href="{{baseURL}}/{{uuid}}/summary" class="arrow"><span></span>Summary</a></li>{{/if}}
 
 
     {{#metadata}}
@@ -209,7 +213,7 @@
   {{/if}}
 </script>
 
-<script id="preset-detail-summary-template" type="text/x-handlebars-template">
+<script id="data-detail-summary-template" type="text/x-handlebars-template">
   <div class="content detail">
     {{metadata.summary}}
   </div>
