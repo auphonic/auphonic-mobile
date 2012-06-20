@@ -1,0 +1,41 @@
+@import 'nib'
+
+@import 'UI/Core/Font'
+
+div.detail
+
+  img.thumbnail
+    float left
+    width 100px
+    height 100px
+    margin 0 10px 10px 0
+
+    border-radius 5px
+    box-shadow 0 1px 3px 0 rgba(0, 0, 0, 0.4)
+
+  h1
+    margin-left 0
+    margin-bottom 5px
+
+  span.album
+    display block
+    font-weight bold
+    margin-bottom 5px
+    overflow ellipsis
+
+    font-size 13px
+    text-transform uppercase
+
+  span.artist
+    display block
+    overflow ellipsis
+
+  span.track, span.year, span.genre
+    float right
+    padding 2px 0 0 2px
+
+    color $color-light
+    font-size 12px
+
+  span.track
+    padding 3px 0 0 3px

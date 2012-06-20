@@ -1,0 +1,133 @@
+@import 'nib'
+@import 'mixin/text-shadow-inset'
+
+$header-height = 44px
+$border-bottom = 1px
+$border-top = 1px
+$headline-offset = 1px
+
+header
+  z-index 10
+  position absolute
+  top 0
+  left 0
+  right 0
+  height $header-height - $border-bottom - $border-top
+
+  background-color #444
+  background-image linear-gradient(top, #555 0%, #333 50%, #111 51%, #111 100%)
+  border-top rgba(155, 155, 155, 1) $border-top solid
+  border-bottom rgba(0, 0, 0, 1) $border-bottom solid
+
+  h1
+    z-index 12
+    top 0
+    left 75px
+    right 75px
+
+    position absolute
+    margin 0
+    padding 0
+    height $header-height - 2px - (2 * $headline-offset)
+    line-height $header-height - 2px - (2 * $headline-offset)
+    text-align center
+
+    font-size 19px
+    font-weight bold
+    overflow ellipsis
+    text-shadow none
+    text-transform none
+    text-shadow-inset($headline-offset, rgba(0, 0, 0, 1), rgba(255, 255, 255, 1))
+
+    &:before
+      overflow ellipsis
+
+    transition-property opacity, -webkit-transform
+    transition-timing-function cubic-bezier(.2, .14, .25, .81), ease-in-out
+    transition-duration 400ms
+    opacity 1
+    transform translate3d(0, 0, 0)
+
+    &.right
+      opacity 0
+      transform translate3d(100%, 0, 0)
+
+    &.left
+      opacity 0
+      transform translate3d(-100%, 0, 0)
+
+    &.fade
+      opacity 0
+
+  a
+    position absolute
+    top 0
+    bottom 0
+    width 80px
+    text-decoration none
+
+    transition-property opacity, -webkit-transform
+    transition-timing-function ease-in-out
+    transition-duration 400ms
+
+    opacity 0
+
+    &.hit
+      bottom -50px
+
+    &.button-left
+      left 0
+      opacity 1
+      transform translate3d(0, 0, 0)
+
+      &.right
+        opacity 0
+        transform translate3d(150px, 0, 0)
+
+      &.left
+        opacity 0
+        transform translate3d(-150px, 0, 0)
+
+      &.fade
+        opacity 0
+
+      .button
+        left 5px
+
+    &.button-right
+      right 0
+
+      transition-timing-function ease-in
+
+      &.show
+        opacity 1
+
+      &.fade
+        opacity 0
+
+      .button
+        width 45px
+        right 5px
+        padding 0
+
+    .button
+      position absolute
+      top 5px
+      bottom 6px
+      width 55px
+      line-height $header-height - 16px
+      height $header-height - 15px
+
+      display block
+      padding 0 5px
+      min-width auto
+
+      font-size 12px
+      overflow ellipsis
+      text-shadow-inset($headline-offset, rgba(0, 0, 0, 0.8), rgba(255, 255, 255, 1))
+
+      &:before
+        overflow ellipsis
+        left 5px
+        right 5px
+

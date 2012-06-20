@@ -1,0 +1,28 @@
+@import 'nib'
+
+div.content, div.formcontent, div.container ul
+  padding 10px
+  margin 0 0 15px
+
+  overflow hidden
+
+  background #fff
+  border-radius 10px
+  box-shadow 0 2px 3px rgba(0, 0, 0, 0.2)
+
+  &.expand
+    margin -10px -10px 10px -10px
+    border-radius 0
+    background-image linear-gradient(top, #fff 0%, #fff 85%, #e5e5e5 100%)
+
+div.formcontent, ul.formcontent
+  padding 0
+
+.white
+  position absolute
+  left 0
+  right 0
+  top -200px
+  height 200px
+
+  background #fff

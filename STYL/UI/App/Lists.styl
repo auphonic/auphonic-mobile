@@ -1,0 +1,78 @@
+@import 'nib'
+@import 'UI/Core/Font'
+
+div.container ul
+  padding 0
+  font-size 1.3em
+
+  li
+    position relative
+    margin 0
+    display block
+
+    list-style-type none
+
+    border-bottom 1px solid #eee
+
+    &:last-child
+      border-bottom 0
+
+      > a
+        border-bottom-right-radius 10px
+        border-bottom-left-radius 10px
+
+    &:first-child
+      > a
+        border-top-right-radius 10px
+        border-top-left-radius 10px
+
+    a, label, .right
+      ellipsis()
+      text-decoration none
+      display block
+      padding 12px 10px
+      font-weight bold
+      cursor pointer
+
+    a
+      color $color
+
+    a, label
+      &.active, &.selected
+        background-image linear-gradient(top, #df5d5d 0%, #9c2e2e 100%)
+        color #fff
+        text-shadow 0 1px 0 rgba(0, 0, 0, 1)
+
+      &.arrow, &.plus, &.share, &.info
+        padding-right 24px
+
+        > span:first-child
+          display inline-block
+          float right
+          width 16px
+          height 16px
+          margin-top 1px
+          margin-right -13px
+
+          background-repeat no-repeat
+
+    label.left
+      width 30%
+
+    .right
+      position absolute
+      left 32%
+      right 0
+      bottom 0
+      top 0
+      width auto
+      font-weight normal
+
+    span.right, a.right
+      text-align right
+
+    &.wide label.left
+      width 65%
+
+    &.wide .right
+      left 67%

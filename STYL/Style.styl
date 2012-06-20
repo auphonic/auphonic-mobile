@@ -1,0 +1,54 @@
+@import 'nib'
+@import 'Base/Reset'
+
+body
+  background #fff url(../Images/Background.jpg)
+
+@import 'UI/Core/Body'
+@import 'UI/Core/Font'
+@import 'UI/Core/Link'
+@import 'UI/Core/Headline'
+@import 'UI/Core/Container' // includes Header, Footer
+@import 'UI/Core/Scroll'
+@import 'UI/Core/Popover'
+@import 'UI/Core/Forms'
+@import 'UI/Core/Pointer'
+@import 'UI/Core/Transition'
+
+@import 'UI/App/Content'
+@import 'UI/App/Splash'
+@import 'UI/App/Lists'
+@import 'UI/App/Login'
+@import 'UI/App/SwipeAble'
+@import 'UI/App/Spinner'
+
+@import 'UI/App/Sprites'
+
+@import 'UI/App/Details'
+
+.light
+  color $color-light
+
+  .active &, .selected &
+    color #fff
+
+.placeholder
+  color $color-placeholder
+
+.hidden
+  display none
+
+.small
+  font-size 12px
+
+.clear
+  clear both
+
+.clear-left
+  clear left
+
+.clear-right
+  clear right
+
+.justify
+  text-align justify

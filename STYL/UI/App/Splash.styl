@@ -1,0 +1,15 @@
+@import 'mixin/expand'
+
+div.splash
+  z-index 20
+  expand()
+
+  transition-property transform
+  transition-duration 500ms
+  transform translate3d(0, 0, 0)
+
+  background-size 320px 480px
+  background-image url(../Images/Splash/Background.png)
+
+  &.fade
+    transform translate3d(0, -100%, 0)

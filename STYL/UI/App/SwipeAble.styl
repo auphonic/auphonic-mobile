@@ -1,0 +1,41 @@
+@import 'nib'
+
+div.container ul li.swipeable
+  &.fade
+    padding 0
+    height 40px
+
+    &.out
+      height 0
+      transition-duration 400ms
+
+      > *
+        opacity 0
+        transition-duration 250ms
+        transform translate3d(-10%, 0, 0)
+
+  .right.removable
+    z-index 101
+    right 0
+    left auto
+    padding-top 6px
+    padding-bottom 6px
+
+    > span
+      display block
+      float right
+      width 0
+      overflow hidden
+
+      transition-duration 250ms
+
+      padding 0
+
+      &.visible
+        width 69px
+
+      .button
+        float right
+        color #fff
+        padding-top 0
+        padding-bottom 0

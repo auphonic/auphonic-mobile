@@ -1,0 +1,59 @@
+@import 'nib'
+
+$footer-height = 44px
+
+div.footerBackground, footer
+  position absolute
+  bottom 0
+  left 0
+  right 0
+  height $footer-height
+
+div.footerBackground
+  z-index 9
+  background-color #111
+
+footer
+  z-index 10
+  overflow hidden
+
+  border-bottom-right-radius 10px
+  border-bottom-left-radius 10px
+
+  background-color #444
+  background-image linear-gradient(top, #444 0%, #222 100%)
+
+  ul
+    margin 0
+    padding 0
+
+    li
+      display block
+      float left
+      width 25%
+      list-style-type none
+
+      > a
+        display block
+        height $footer-height
+
+        text-decoration none
+
+        &.active
+          background-image linear-gradient(top, #222 0%, #000 100%)
+          border-top 2px solid #cd5c5c
+          box-shadow inset 0 20px 20px -20px rgba(255, 255, 255, 0.2)
+
+        &.selected
+          background-image linear-gradient(top, #222 0%, #000 100%)
+          border-top 2px solid #cd5c5c
+
+        > span
+          display block
+          height $footer-height
+          background-position center center
+          background-repeat no-repeat
+          opacity 0.95
+
+        &.active > span, &.selected > span
+          opacity 1
