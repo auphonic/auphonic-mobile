@@ -168,6 +168,10 @@ Form.Main = new Class({
               Object.append(data, view.getData(dataStore, element));
           });
 
+          // Use Title from productions
+          if (data.title && data.title !== '') data['metadata.title'] = data.title;
+          delete data.title;
+
           View.getMain().showIndicator();
 
           API.call(saveURL, 'post', JSON.stringify(Object.expand(data))).on({
@@ -224,7 +228,7 @@ Form.Main = new Class({
       onHide: function(direction) {
         // Use metadata.title in both forms in productions.
         var data = object.serialize();
-        if (data.title) Metadata.getData(dataStore)['metadata.title'] = data.title;
+        if (data.title && data.title !== '') Metadata.getData(dataStore)['metadata.title'] = data.title;
 
         if (direction == 'left') dataStore.erase();
       }
