@@ -18,7 +18,14 @@ exports.getType = function() {
 };
 
 exports.getData = function(dataStore) {
-  return dataStore.get('outgoings', {});
+  var list = [];
+  var outgoings = Object.expand(Object.append({}, dataStore.get('outgoings', {})));
+  Object.each(outgoings.outgoings, function(value, service) {
+    if (value) list.push(service);
+  });
+  return {
+    outgoings: list
+  };
 };
 
 exports.createView = function(dataStore) {

@@ -11,6 +11,7 @@ var UI = require('UI');
 
 var Data = require('App/Data');
 var Format = require('App/Format');
+var MainForm = require('App/MainForm');
 var Metadata = require('App/Metadata');
 var Service = require('App/Service');
 
@@ -23,7 +24,7 @@ var list = null;
 var createForm = function(options) {
   return new Form({
     use: [
-      new Form.Main(Object.append({
+      new MainForm(Object.append({
         displayName: 'Preset',
         displayType: 'preset',
         baseURL: 'preset/',

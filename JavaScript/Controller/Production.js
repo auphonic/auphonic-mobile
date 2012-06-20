@@ -9,6 +9,7 @@ var Chapter = require('App/Chapter');
 var Data = require('App/Data');
 var Format = require('App/Format');
 var ListFiles = require('App/ListFiles');
+var MainForm = require('App/MainForm');
 var Metadata = require('App/Metadata');
 var Service = require('App/Service');
 var Source = require('App/Source');
@@ -22,7 +23,7 @@ var list = null;
 var createForm = function(options) {
   return new Form({
     use: [
-      new Form.Main(Object.append({
+      new MainForm(Object.append({
         displayName: 'Production',
         displayType: 'production',
         baseURL: 'production/',
