@@ -25,6 +25,10 @@ exports.setData = function(dataStore, id) {
   return service;
 };
 
+exports.getObject = function(dataStore) {
+  return dataStore.get('serviceObject', {});
+};
+
 var cacheServices = exports.cacheServices = function(callback) {
   API.call('services').on({
 

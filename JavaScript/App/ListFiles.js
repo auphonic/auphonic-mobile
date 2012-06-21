@@ -41,8 +41,9 @@ exports.createView = function(dataStore) {
         };
       });
 
+      var serviceObject = Source.getObject(dataStore);
       View.getMain().push(new View.Object({
-        title: service.display_type + ' ' + service.display_name,
+        title: serviceObject.display_type + ' ' + serviceObject.display_name,
         content: UI.render('service-list', {
           files: list
         })
