@@ -16,7 +16,7 @@ exports.getData = function(dataStore) {
   };
 };
 
-exports.setService = function(dataStore, id) {
+exports.setData = function(dataStore, id) {
   var service = services[id];
   if (!service) return;
 
@@ -25,9 +25,7 @@ exports.setService = function(dataStore, id) {
   return service;
 };
 
-exports.createView = function(dataStore) {
-  View.getMain().showIndicator();
-
+var cacheServices = exports.cacheServices = function(callback) {
   API.call('services').on({
 
     success: function(response) {
@@ -38,13 +36,20 @@ exports.createView = function(dataStore) {
         services[service.uuid] = service;
       });
 
-      View.getMain().push('production', new View.Object({
-        title: 'Choose Source',
-        content: UI.render('service-choose', {
-          source: list
-        })
-      }));
+      callback(list);
     }
+  });
+};
 
+exports.createView = function(dataStore) {
+  View.getMain().showIndicator();
+
+  cacheServices(function(list) {
+    View.getMain().push(new View.Object({
+      title: 'Choose Source',
+      content: UI.render('service-choose', {
+        source: list
+      })
+    }));
   });
 };

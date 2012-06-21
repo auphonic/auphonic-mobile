@@ -12,6 +12,7 @@ var Chapter = require('./Chapter');
 var Format = require('./Format');
 var Metadata = require('./Metadata');
 var Service = require('./Service');
+var ListFiles = require('./ListFiles');
 
 module.exports = new Class({
 
@@ -63,7 +64,7 @@ module.exports = new Class({
     this.options.onSave(object);
   },
 
-  createView: function(dataStore, dataObject, uiData) {
+  createView: function(dataStore, dataObject) {
     var baseURL = this.getBaseURL();
     var saveURL = this.getSaveURL();
     var displayName = this.getDisplayName();
@@ -98,8 +99,13 @@ module.exports = new Class({
       }
     }
 
-    var typeObject = {};
-    typeObject[displayType] = true;
+    var service = dataStore.get('serviceObject');
+    var uiData = {
+      service: (service ? service.display_type : null),
+      audiofile: ListFiles.getData(dataStore).audiofile
+    };
+    uiData[displayType] = true;
+
     var object;
     View.getMain().push(object = new View.Object({
       title: this.getObjectName(dataObject) ||  'New ' + displayName,
@@ -114,7 +120,7 @@ module.exports = new Class({
         })),
         baseURL: baseURL,
         name: this.getObjectName(dataObject)
-      }, typeObject, uiData)),
+      }, uiData)),
       back: (dataObject ? {title: 'Cancel'} : null),
       action: {
         title: 'Save',

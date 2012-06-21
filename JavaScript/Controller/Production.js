@@ -49,7 +49,7 @@ var createForm = function(options) {
 
 Controller.define('/production', function() {
 
-  View.getMain().showIndicator({stack: 'preset'});
+  View.getMain().showIndicator({stack: 'production'});
 
   API.call('productions').on({
 
@@ -119,8 +119,20 @@ Controller.define('/production/{uuid}/summary', function(req) {
 Controller.define('/production/edit/{uuid}', function(req) {
 
   var production = productions[req.uuid];
-  form = createForm(production ? {saveURL: 'production/' + production.uuid} : null);
-  form.show('main', production);
+  if (!production) return;
+
+  View.getMain().showIndicator({stack: 'production'});
+
+  Source.cacheServices(function() {
+    Source.setData(form, production.service);
+
+    // TODO(cpojer): Fix after API is fixed
+    if (!production.audiofile) production.audiofile = production.filename;
+
+    ListFiles.setData(form, production.audiofile);
+    form = createForm(production ? {saveURL: 'production/' + production.uuid} : null);
+    form.show('main', production);
+  });
 
 });
 
@@ -130,21 +142,19 @@ Controller.define('/production/source', {priority: 1, isGreedy: true}, function(
 });
 
 Controller.define('/production/source/{service}', function(req) {
-  form.show('listFiles', req.service);
+  var service = Source.setData(form, req.service);
+  if (!service) return;
+
+  form.show('listFiles');
 });
 
 Controller.define('/production/selectFile/{index}', function(req) {
-  ListFiles.setFile(form, req.index);
+  ListFiles.setData(form, req.index);
   History.push('/production/new');
 });
 
 Controller.define('/production/new', {priority: 1, isGreedy: true}, function() {
-  form.show('main', null, {
-    audioSource: {
-      service: form.get('serviceObject').display_type,
-      file: form.get('audiofile')
-    }
-  });
+  form.show('main');
 });
 
 Controller.define('/production/new/metadata', function() {

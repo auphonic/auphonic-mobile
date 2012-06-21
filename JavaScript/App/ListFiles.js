@@ -16,19 +16,20 @@ exports.getData = function(dataStore) {
   };
 };
 
-exports.setFile = function(dataStore, index) {
+exports.setData = function(dataStore, index) {
   if (!files[index]) return;
+
   dataStore.set('audiofile', files[index]);
+  return files[index];
 };
 
-exports.createView = function(dataStore, serviceId) {
+exports.createView = function(dataStore) {
 
-  var service = Source.setService(dataStore, serviceId);
+  var service = Source.getData(dataStore).service;
   if (!service) return;
 
   View.getMain().showIndicator();
-
-  API.call('service/' + service.uuid + '/ls').on({
+  API.call('service/' + service + '/ls').on({
 
     success: function(response) {
       files = response.data;
@@ -40,7 +41,7 @@ exports.createView = function(dataStore, serviceId) {
         };
       });
 
-      View.getMain().push('production', new View.Object({
+      View.getMain().push(new View.Object({
         title: service.display_type + ' ' + service.display_name,
         content: UI.render('service-list', {
           files: list
