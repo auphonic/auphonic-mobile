@@ -8,6 +8,8 @@ var API = require('API');
 var UI = require('UI');
 var View = require('View');
 
+var SwipeAble = require('UI/Actions/SwipeAble');
+
 var Chapter = require('./Chapter');
 var Format = require('./Format');
 var Metadata = require('./Metadata');
@@ -73,6 +75,8 @@ module.exports = new Class({
 
     var formatElements = null;
     var chapterElements = null;
+
+    var click;
 
     if (dataObject) {
       var outgoings = {};
@@ -174,12 +178,24 @@ module.exports = new Class({
           countElement.set('text', count ? count + ' selected' : '');
         }
 
+        var indicatorElement = parent.getElement('.output_format_required');
         var container = parent.getElement('ul.output_formats');
         if (formatElements) {
           container.adopt(formatElements);
           formatElements = null;
         } else {
           Format.add(dataStore, container, baseURL);
+        }
+
+        if (indicatorElement) {
+          if (!click) click = function() {
+            Format.updateRequiredIndicator(dataStore, indicatorElement);
+          };
+
+          Format.updateRequiredIndicator(dataStore, indicatorElement);
+          container.getChildren().getInstanceOf(SwipeAble).clean().each(function(instance) {
+            instance.addEvent('click', click);
+          });
         }
 
         container = parent.getElement('ul.chapter_marks');

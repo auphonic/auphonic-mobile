@@ -35,6 +35,13 @@ exports.createUIElement = function(href, dataStore, content, id) {
   return element;
 };
 
+var updateRequiredIndicator = exports.updateRequiredIndicator = function(dataStore, element) {
+  var formats = dataStore.get('formats', {});
+
+  if (Object.keys(formats).length) element.addClass('hidden');
+  else element.removeClass('hidden');
+};
+
 exports.add = function(dataStore, container, baseURL) {
   if (!format) return;
 

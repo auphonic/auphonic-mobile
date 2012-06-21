@@ -31,9 +31,9 @@ var getCache = function(type) {
 
 var API = module.exports = {
 
-  on: function(url/*, options*/) {
+  on: function(url, options) {
     if (!urls[url]) urls[url] = new Events;
-    //urls[url].options = options;
+    if (options) urls[url].options = options;
     return urls[url];
   }
 
@@ -91,6 +91,9 @@ API.dispatch = function(url, method, requestData) {
     },
 
     onSuccess: function(data) {
+      var options = API.on(url).options;
+      if (options && options.formatter) data = options.formatter(data);
+
       if (method == 'get') setCache(url, data);
       API.on(url).fireEvent('success', [data]);
     }

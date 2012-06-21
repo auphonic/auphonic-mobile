@@ -33,7 +33,7 @@ var cacheServices = exports.cacheServices = function(callback) {
   API.call('services').on({
 
     success: function(response) {
-      var list = response.data.map(Service.format);
+      var list = response.data;
 
       services = {};
       list.each(function(service) {

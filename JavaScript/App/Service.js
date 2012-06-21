@@ -13,6 +13,13 @@ var format = exports.format = function(service) {
   return service;
 };
 
+API.on('services', {
+  formatter: function(response) {
+    response.data = response.data.map(format);
+    return response;
+  }
+});
+
 exports.getType = function() {
   return 'outgoings';
 };
@@ -34,12 +41,10 @@ exports.createView = function(dataStore) {
   API.call('services').on({
 
     success: function(response) {
-      var services = response.data.map(format);
-
       View.getMain().push(new View.Object({
         title: 'Transfers',
         content: UI.render('form-new-service', {
-          service: services
+          service: response.data
         }),
         action: {
           title: 'Done',

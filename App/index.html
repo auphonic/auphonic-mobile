@@ -228,7 +228,7 @@
     {{#if production}}
       <li>
         <label class="left">
-          <input type="text" name="title" value="{{name}}" placeholder="choose a production title" class="right" />
+          <input type="text" name="title" value="{{name}}" placeholder="choose production title" class="right" />
           Title
         </label>
       </li>
@@ -247,7 +247,7 @@
     <li><a href="{{baseURL}}new/outgoings" class="arrow"><span></span>Outgoing Transfers <small class="servicesCount light"></small></a></li>
   </ul>
 
-  <h1>Output Formats</h1>
+  <h1>Output Formats {{#if production}}<small class="output_format_required">(one is required)</small>{{/if}}</h1>
   <ul class="output_formats">
     <li><a href="{{baseURL}}new/format" class="plus"><span></span>Add Audio Format</a></li>
   </ul>
