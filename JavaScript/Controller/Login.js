@@ -7,40 +7,15 @@ var API = require('../API');
 var Controller = require('./');
 var UI = require('../UI');
 
-var spinner, children, form;
-
-API.on('login/submit', function() {
-  if (!spinner) spinner = new Spinner({
-    lines: 12,
-    length: 10,
-    width: 7,
-    radius: 13,
-    trail: 30,
-    color: '#fff'
-  });
-
-  var login = document.id('login');
-  children = login.getChildren().dispose();
-  spinner.spin(login);
-}).addEvents({
-
-  success: function() {
-    var login = document.id('login');
-
-    spinner.stop();
-    login.empty();
-
-    LocalStorage.set('User', form.serialize());
-    History.push('/');
-  },
-
-  error: function() {
-    spinner.stop();
-    var login = document.id('login');
-    login.empty().adopt(children);
-  }
-
-});
+var spinnerOptions = {
+  lines: 12,
+  length: 10,
+  width: 7,
+  radius: 13,
+  trail: 30,
+  color: '#fff'
+};
+var spinner;
 
 Controller.define('/login', function() {
   if (LocalStorage.get('User')) {
@@ -52,8 +27,35 @@ Controller.define('/login', function() {
 
   var login = document.id('login');
   login.set('html', UI.render('login'));
-  form = login.getElement('form');
-  new Form.Element(form, 'login/submit');
+  login.getElement('a.button').addEvent('click', function(event) {
+    event.preventDefault();
+
+    if (!spinner) spinner = new Spinner(spinnerOptions);
+
+    var data = login.serialize();
+    var children = login.getChildren().dispose();
+    spinner.spin(login);
+
+    API.call('login/submit', 'post', Object.toQueryString(data)).on({
+
+      success: function() {
+        spinner.stop();
+
+        login.empty();
+        API.invalidate();
+        LocalStorage.set('User', data);
+        History.push('/');
+      },
+
+      error: function() {
+        spinner.stop();
+
+        login.empty().adopt(children);
+      }
+
+    });
+  });
+
   login.show();
 
 });

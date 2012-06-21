@@ -5,26 +5,20 @@ div.login
   z-index 21
   expand()
 
-  .spinner
-    position absolute
-    left 50%
-    top 55%
+  > div
+    box-shadow 0 1px 3px rgba(0, 0, 0, 1)
+    width 90%
+    margin 196px auto 0
 
-  form
-    > div
-      box-shadow 0 1px 3px rgba(0, 0, 0, 1)
-      width 90%
-      margin 196px auto 0
+  input
+    box-sizing border-box
+    font-size 1.3em
 
-    input[type=text], input[type=password]
-      box-sizing border-box
-      font-size 1.3em
-
-    input[type=submit]
-      display block
-      margin 20px auto 0
-      width 60px
-      height 39px
+  a.button
+    width 90%
+    margin 15px auto
+    height 39px
+    line-height 39px
 
   transition-property transform
   transition-duration 500ms

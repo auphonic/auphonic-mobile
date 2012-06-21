@@ -141,7 +141,10 @@ module.exports = new Class({
   },
 
   showIndicator: function(options) {
-    UI.disable();
+    // Don't disable the UI if we have cached API resources
+    this.disableUITimer = (function() {
+      UI.disable();
+    }).delay(50);
 
     this.timer = (function() {
       this._showIndicator(options);
@@ -176,6 +179,7 @@ module.exports = new Class({
   },
 
   hideIndicator: function() {
+    clearTimeout(this.disableUITimer);
     clearTimeout(this.timer);
     this.indicatorIsVisible = false;
     UI.enable();

@@ -8,15 +8,32 @@ var LocalStorage = require('Utility/LocalStorage');
 var Base64 = require('Utility/Base64');
 
 var urls = {};
-var info = {};
+var cache = {};
 var request;
+
+var setCache = function(type, data, lifetime) {
+  cache[type] = {
+    data: data,
+    expires: (lifetime == -1 ? null : Date.now() + (lifetime || 600) * 1000)
+  };
+};
+
+var getCache = function(type) {
+  var c = cache[type];
+  if (!c) return null;
+  if (c.expires && Date.now() > c.expires) {
+    delete cache[type];
+    return null;
+  }
+
+  return c.data;
+};
 
 var API = module.exports = {
 
-  on: function(url, fn) {
+  on: function(url/*, options*/) {
     if (!urls[url]) urls[url] = new Events;
-    if (fn) urls[url].fn = fn;
-
+    //urls[url].options = options;
     return urls[url];
   }
 
@@ -24,8 +41,7 @@ var API = module.exports = {
 
 API.call = function(url, method, args) {
   var api = API.on(url);
-  var fn = api.fn;
-  API.dispatch(url, method, fn ? fn.apply(this, args) : args);
+  API.dispatch(url, method, args);
   return {on: function(events) {
     if (events.success) api.addEvent('success:once', events.success);
     if (events.error) api.addEvent('error:once', events.error);
@@ -33,9 +49,11 @@ API.call = function(url, method, args) {
 };
 
 API.dispatch = function(url, method, requestData) {
-  // TODO API oAuth Login
+  // TODO(cpojer): API oAuth Login
   if (url == 'login/submit') {
-    API.on(url).fireEvent('success', []);
+    (function() {
+      API.on(url).fireEvent('success', []);
+    }).delay(1);
     return;
   }
 
@@ -44,12 +62,24 @@ API.dispatch = function(url, method, requestData) {
     API.on(url).removeEvents('success:once').removeEvents('error:once');
   }
 
+  method = (method || 'get').toLowerCase();
+  if (method == 'get') {
+    var data = getCache(url);
+    if (data) {
+      // Must be async
+      (function() {
+        API.on(url).fireEvent('success', [data]);
+      }).delay(1);
+      return;
+    }
+  }
+
   var user = LocalStorage.get('User');
   var authorization = (user ? 'Basic ' + Base64.encode(user.name + ':' + user.password) : '');
   request = new Request.JSON({
 
     url: window.__API_DOMAIN + url + '.json',
-    method: method || 'get',
+    method: method,
     headers: {
       'Authorization': authorization,
       'Content-Type': 'application/json'
@@ -61,6 +91,7 @@ API.dispatch = function(url, method, requestData) {
     },
 
     onSuccess: function(data) {
+      if (method == 'get') setCache(url, data);
       API.on(url).fireEvent('success', [data]);
     }
 
@@ -68,14 +99,15 @@ API.dispatch = function(url, method, requestData) {
 };
 
 API.invalidate = function(url) {
-  // TODO
+  if (!url) cache = {};
+  delete cache[url];
 };
 
 API.cacheInfo = function(url) {
   var type = url.split('/').getLast();
   if (type == 'algorithms') {
     // TODO API call when API is available
-    info[type] = {
+    setCache('info-' + type, {
       "denoise": {
           "display_name": "Noise Reduction ",
           "description": "Classifies regions with different background noises and automatically removes noise and hum.",
@@ -96,17 +128,17 @@ API.cacheInfo = function(url) {
           "description": "Adjusts the global, overall loudness to a value of -18 LUFS (see EBU R128), so that all processed files have a similar average loudness.",
           "default_value": true
       }
-    };
+    }, -1);
     return;
   }
 
   API.call(url).on({
     success: function(response) {
-      info[type] = response.data;
+      setCache('info-' + type, response.data, -1);
     }
   });
 };
 
 API.getInfo = function(type) {
-  return info[type];
+  return getCache('info-' + type);
 };

@@ -219,6 +219,11 @@ var boot = function() {
 
   Controller.define('/', function() {
 
+    // These are cached during the lifetime of the app so the data
+    // can be accessed synchronously.
+    API.cacheInfo('info/algorithms');
+    API.cacheInfo('info/formats');
+
     UI.Chrome.show();
 
     View.getMain().push('default', new View.Object({
@@ -227,11 +232,6 @@ var boot = function() {
     }));
 
   });
-
-  // These are cached during the lifetime of the app so the data
-  // can be accessed synchronously.
-  API.cacheInfo('info/algorithms');
-  API.cacheInfo('info/formats');
 };
 
 var fired;
