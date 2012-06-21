@@ -29,7 +29,9 @@ exports.createView = function(dataStore) {
   if (!service) return;
 
   View.getMain().showIndicator();
-  API.call('service/' + service + '/ls').on({
+  API.on('service/' + service + '/ls', {
+    lifetime: 60
+  }).call().on({
 
     success: function(response) {
       files = response.data;
@@ -42,11 +44,16 @@ exports.createView = function(dataStore) {
       });
 
       var serviceObject = Source.getObject(dataStore);
-      View.getMain().push(new View.Object({
+      var object;
+      View.getMain().push(object = new View.Object({
         title: serviceObject.display_type + ' ' + serviceObject.display_name,
+        backTitle: serviceObject.display_type,
         content: UI.render('service-list', {
           files: list
-        })
+        }),
+        onHide: function() {
+          object.invalidate();
+        }
       }));
     }
 

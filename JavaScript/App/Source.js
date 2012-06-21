@@ -50,7 +50,8 @@ exports.createView = function(dataStore) {
 
   cacheServices(function(list) {
     View.getMain().push(new View.Object({
-      title: 'Choose Source',
+      title: 'Input Source',
+      backTitle: 'Source',
       content: UI.render('service-choose', {
         source: list
       })

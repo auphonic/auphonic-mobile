@@ -15,6 +15,7 @@ module.exports = new Class({
 
     action: null,
     back: null,
+    backTitle: null,
 
     scrollTop: 0,
 
@@ -33,6 +34,7 @@ module.exports = new Class({
     this
       .setURL(options.url)
       .setTitle(options.title)
+      .setBackTitle(options.backTitle)
       .setContent(options.content)
       .setAction(options.action)
       .setBack(options.back);
@@ -96,7 +98,7 @@ module.exports = new Class({
 
     var previous = this.getStack().getPrevious();
     return {
-      title: (previous && previous.getTitle()) || 'Back'
+      title: (previous && (previous.getBackTitle() || previous.getTitle())) || 'Back'
     };
   },
 

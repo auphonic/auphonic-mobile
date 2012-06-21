@@ -101,7 +101,7 @@
       <span class="right removable">
         <span><a href="#" class="button red small">Delete</a></span>
       </span>
-      <a href="preset/{{uuid}}" class="arrow"><span></span>{{preset_name}}</a></li>
+      <a href="/preset/{{uuid}}" class="arrow"><span></span>{{preset_name}}</a></li>
     </li>
     {{/each}}
   </ul>
@@ -125,7 +125,7 @@
   </div>
 
   {{#if canStartProduction}}
-    <a href="#" data-api-url="production/{{uuid}}/start" data-method="post" class="button green expand startProduction">Start Production</a>
+    <a href="#" data-api-url="/production/{{uuid}}/start" data-method="post" class="button green expand startProduction">Start Production</a>
   {{/if}}
 
   {{#if hasDetails}}
@@ -438,7 +438,7 @@
 <script id="production-template" type="text/x-handlebars-template">
   <ul>
     {{#each production}}
-      <li><a href="production/{{uuid}}" class="arrow"><span></span>{{metadata.title}}</a></li>
+      <li><a href="/production/{{uuid}}" class="arrow"><span></span>{{metadata.title}}</a></li>
     {{/each}}
   </ul>
 </script>
@@ -447,7 +447,7 @@
   <ul>
     <li><a href="/record" class="arrow"><span></span>New Recording</a></li>
     {{#each source}}
-      <li><a href="production/source/{{uuid}}" class="arrow"><span></span><span class="light">{{display_type}}</span> <small>{{display_name}}</small></a></li>
+      <li><a href="/production/source/{{uuid}}" class="arrow"><span></span><span class="light">{{display_type}}</span> <small>{{display_name}}</small></a></li>
     {{/each}}
   </ul>
 </script>
@@ -455,7 +455,7 @@
 <script id="service-list-template" type="text/x-handlebars-template">
   <ul>
     {{#each files}}
-      <li><a href="production/selectFile/{{index}}" class="arrow"><span></span>{{display_name}}</a></li>
+      <li><a href="/production/selectFile/{{index}}" class="arrow"><span></span>{{display_name}}</a></li>
     {{/each}}
   </ul>
 </script>

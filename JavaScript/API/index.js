@@ -32,9 +32,13 @@ var getCache = function(type) {
 var API = module.exports = {
 
   on: function(url, options) {
-    if (!urls[url]) urls[url] = new Events;
-    if (options) urls[url].options = options;
-    return urls[url];
+    var object = urls[url];
+    if (!object) {
+      object = urls[url] = new Events;
+      object.call = API.call.bind(API, url);
+    }
+    if (options) object.options = options;
+    return object;
   }
 
 };
@@ -94,7 +98,7 @@ API.dispatch = function(url, method, requestData) {
       var options = API.on(url).options;
       if (options && options.formatter) data = options.formatter(data);
 
-      if (method == 'get') setCache(url, data);
+      if (method == 'get') setCache(url, data, options && options.lifetime);
       API.on(url).fireEvent('success', [data]);
     }
 
