@@ -37,6 +37,7 @@ exports.prepare = function(object) {
     var algorithms = API.getInfo('algorithms');
     Object.each(object.algorithms, function(value, algorithm) {
       if (!value) return;
+      if (!algorithms[algorithm]) return;
       object.hasAlgorithms = true;
       list.push(algorithms[algorithm]);
     });

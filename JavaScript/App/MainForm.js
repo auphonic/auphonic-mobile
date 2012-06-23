@@ -115,10 +115,7 @@ module.exports = new Class({
       title: this.getObjectName(dataObject) ||  'New ' + displayName,
       content: UI.render('form-main-new', Object.append({
         algorithm: Object.values(Object.map(API.getInfo('algorithms'), function(content, algorithm) {
-          // TODO(cpojer): fix this once the API is fixed
-          var key = (algorithm == 'filtering') ? key = 'hipfilter' : algorithm;
-
-          return Object.append({key: key}, content, {
+          return Object.append({key: algorithm}, content, {
             value: (dataObject ? dataObject.algorithms[algorithm] : content.default_value)
           });
         })),
