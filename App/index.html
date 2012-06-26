@@ -163,6 +163,13 @@
   {{#if formats}}
     <h1>Output Formats</h1>
     <ul>
+      {{#if output_basename}}
+        <li>
+          <label class="left">
+            Prefix <small class="light">{{output_basename}}</small>
+          </label>
+        </li>
+      {{/if}}
       {{#each formats}}
         <li>
           <label>{{title}}{{#if detail}} <small class="light">{{detail}}</small>{{/if}}</label>
@@ -249,6 +256,12 @@
 
   <h1>Output Formats {{#if production}}<small class="output_format_required">(one is required)</small>{{/if}}</h1>
   <ul class="output_formats">
+    <li>
+      <label class="left">
+        <input type="text" name="output_basename" value="{{output_basename}}" placeholder="file name prefix" class="right" />
+        Prefix
+      </label>
+    </li>
     <li><a href="{{baseURL}}new/format" class="plus"><span></span>Add Audio Format</a></li>
   </ul>
 

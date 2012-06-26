@@ -120,7 +120,8 @@ module.exports = new Class({
           });
         })),
         baseURL: baseURL,
-        name: this.getObjectName(dataObject)
+        name: this.getObjectName(dataObject),
+        output_basename: dataObject && dataObject.output_basename
       }, uiData)),
       back: (dataObject ? {title: 'Cancel'} : null),
       action: {
