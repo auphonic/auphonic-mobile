@@ -12,7 +12,7 @@
 
   (function() {
     window.__VERSION = '0.01';
-    window.__API_DOMAIN = 'https://auphonic.com/api/';
+    window.__API_DOMAIN = 'https://auphonic.com/';
 
     var base = /^\/Thesis\/App\//;
     if (base.test(location.pathname)) {
@@ -88,6 +88,8 @@
 
 <script id="login-template" type="text/x-handlebars-template">
   <div class="formcontent">
+    <input type="hidden" name="client_id" value="3qGkHpUEFecbvkDaeqVBLS" />
+    <input type="hidden" name="client_secret" value="U8Ds4g9n9uomM83PJXBRzg" />
     <input type="text" name="name" placeholder="email or username" autocapitalize="off" />
     <input type="password" name="password" placeholder="password" />
   </div>

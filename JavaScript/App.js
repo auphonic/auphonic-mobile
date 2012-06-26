@@ -80,12 +80,6 @@ var onLabelClick = function() {
 };
 
 var boot = function() {
-  LocalStorage.set('User', {
-    name: 'cpojer',
-    password: 'cpojer-pw',
-    email: 'christoph.pojer@gmail.com'
-  });
-
   var isLoggedIn = !!LocalStorage.get('User');
   if (isLoggedIn) UI.Chrome.show({immediate: true});
 

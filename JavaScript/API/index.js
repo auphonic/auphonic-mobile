@@ -4,8 +4,8 @@ var Request = Core.Request;
 
 var Request = require('Request');
 
-var LocalStorage = require('Utility/LocalStorage');
 var Base64 = require('Utility/Base64');
+var LocalStorage = require('Utility/LocalStorage');
 
 var urls = {};
 var cache = {};
@@ -43,24 +43,15 @@ var API = module.exports = {
 
 };
 
-API.call = function(url, method, args) {
-  var api = API.on(url);
-  API.dispatch(url, method, args);
+var listenersFor = function(url) {
   return {on: function(events) {
+    var api = API.on(url);
     if (events.success) api.addEvent('success:once', events.success);
     if (events.error) api.addEvent('error:once', events.error);
   }};
 };
 
-API.dispatch = function(url, method, requestData) {
-  // TODO(cpojer): API oAuth Login
-  if (url == 'login/submit') {
-    (function() {
-      API.on(url).fireEvent('success', []);
-    }).delay(1);
-    return;
-  }
-
+API.call = function(url, method, requestData) {
   if (request && request.isRunning() && request.getOption('method').toLowerCase() == 'get') {
     request.cancel();
     API.on(url).removeEvents('success:once').removeEvents('error:once');
@@ -79,19 +70,20 @@ API.dispatch = function(url, method, requestData) {
   }
 
   var user = LocalStorage.get('User');
-  var authorization = (user ? 'Basic ' + Base64.encode(user.name + ':' + user.password) : '');
+
   request = new Request.JSON({
 
-    url: window.__API_DOMAIN + url + '.json',
+    url: window.__API_DOMAIN + 'api/' + url + '.json',
     method: method,
     headers: {
-      'Authorization': authorization,
+      'Authorization': (user ? 'OAuth ' + user.access_token : ''),
       'Content-Type': 'application/json'
     },
 
     onFailure: function(data) {
       // TODO delete requests currently don't return anything
       if (method != 'delete') console.log(data);
+      API.on(url).fireEvent('failure', [data]);
     },
 
     onSuccess: function(data) {
@@ -103,6 +95,37 @@ API.dispatch = function(url, method, requestData) {
     }
 
   }).send(requestData);
+
+  return listenersFor(url);
+};
+
+API.authenticate = function(requestData) {
+  var url = 'oauth/grant/';
+  var authentication = 'Basic ' + Base64.encode(requestData.name + ':' + requestData.password);
+
+  delete requestData.name;
+  delete requestData.password;
+
+  new Request({
+
+    url: window.__API_DOMAIN + url,
+    method: 'post',
+    headers: {
+      'Authorization': authentication,
+    },
+
+    onFailure: function(data) {
+      console.log(data);
+      API.on(url).fireEvent('failure', [data]);
+    },
+
+    onSuccess: function(data) {
+      API.on(url).fireEvent('success', [data]);
+    }
+
+  }).send(requestData);
+
+  return listenersFor(url);
 };
 
 API.invalidate = function(url) {
