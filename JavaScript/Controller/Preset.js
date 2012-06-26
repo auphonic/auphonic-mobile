@@ -35,7 +35,7 @@ var createForm = function(options) {
         onSave: function(object) {
           API.invalidate('presets');
           presets[object.uuid] = object;
-          History.push('preset/' + object.uuid);
+          History.push('/preset/' + object.uuid);
         }
       }, options)),
       Metadata,

@@ -45,7 +45,7 @@ var createForm = function(options) {
               break;
           }
 
-          History.push('production/' + object.uuid);
+          History.push('/production/' + object.uuid);
         }
       }, options)),
       Chapter,
@@ -136,11 +136,8 @@ Controller.define('/production/edit/{uuid}', function(req) {
 
   Source.cacheServices(function() {
     Source.setData(form, production.service);
-
-    // TODO(cpojer): Fix after API is fixed
-    if (!production.audiofile) production.audiofile = production.filename;
-
     ListFiles.setData(form, production.audiofile);
+
     form = createForm(production ? {saveURL: 'production/' + production.uuid} : null);
     form.show('main', production);
   });
