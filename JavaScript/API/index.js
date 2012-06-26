@@ -65,7 +65,7 @@ API.call = function(url, method, requestData) {
       (function() {
         API.on(url).fireEvent('success', [data]);
       }).delay(1);
-      return;
+      return listenersFor(url);
     }
   }
 

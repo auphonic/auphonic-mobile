@@ -131,6 +131,10 @@ module.exports = new Class({
 
           var element = object.toElement();
           var data = object.serialize();
+
+          // Always reset formats/outgoings/chapters
+          data.reset_data = true;
+
           dataStore.eachView(function(view, type) {
             if (view.getData)
               Object.append(data, view.getData(dataStore, element));
