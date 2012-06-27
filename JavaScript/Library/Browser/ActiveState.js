@@ -88,7 +88,7 @@ module.exports = new Class({
     // Otherwise we only allow a small delta of movement
     var end = event.touches[0].pageY;
     // Allows a small delta to detect movement
-    if (end && Math.abs(this.start - end) > 3) this.cancel();
+    if (end && Math.abs(this.start - end) > 2) this.cancel();
   },
 
   touchend: function() {
