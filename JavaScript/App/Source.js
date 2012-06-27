@@ -29,11 +29,13 @@ exports.getObject = function(dataStore) {
   return dataStore.get('serviceObject', {});
 };
 
-var cacheServices = exports.cacheServices = function(callback) {
+var get = exports.get = function(callback) {
   API.call('services').on({
 
     success: function(response) {
-      var list = response.data;
+      var list = response.data.filter(function(service) {
+        return !!service.incoming;
+      });
 
       services = {};
       list.each(function(service) {
@@ -48,7 +50,7 @@ var cacheServices = exports.cacheServices = function(callback) {
 exports.createView = function(dataStore) {
   View.getMain().showIndicator();
 
-  cacheServices(function(list) {
+  get(function(list) {
     View.getMain().push(new View.Object({
       title: 'Input Source',
       backTitle: 'Source',

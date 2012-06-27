@@ -84,7 +84,7 @@ module.exports = new Class({
         outgoings['outgoings.' + outgoing.uuid] = true;
       });
 
-      dataStore.erase()
+      dataStore
         .set('metadata', Object.flatten({metadata: dataObject.metadata}))
         .set('outgoings', outgoings);
 

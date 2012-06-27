@@ -16,11 +16,15 @@ exports.getData = function(dataStore) {
   };
 };
 
+var setFile = exports.setFile = function(dataStore, filename) {
+  dataStore.set('audiofile', filename);
+  return filename;
+};
+
 exports.setData = function(dataStore, index) {
   if (!files[index]) return;
 
-  dataStore.set('audiofile', files[index]);
-  return files[index];
+  return setFile(dataStore, files[index]);
 };
 
 exports.createView = function(dataStore) {

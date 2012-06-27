@@ -126,7 +126,7 @@
     {{/metadata}}
   </div>
 
-  {{#if canStartProduction}}
+  {{#if start_allowed}}
     <a href="#" data-api-url="/production/{{uuid}}/start" data-method="post" class="button green expand startProduction">Start Production</a>
   {{/if}}
 

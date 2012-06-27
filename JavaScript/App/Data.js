@@ -17,8 +17,6 @@ exports.prepare = function(object) {
     return a.start > b.start ? 1 : -1;
   });
 
-  if (object.status == 10)
-    object.canStartProduction = true;
 
   if (object.outgoings && object.outgoings.length) {
     var uuids = {};

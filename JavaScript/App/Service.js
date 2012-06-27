@@ -35,33 +35,39 @@ exports.getData = function(dataStore) {
   };
 };
 
+var get = exports.get = function(callback) {
+  API.call('services').on({
+    success: function(response) {
+      callback(response.data.filter(function(service) {
+        return !!service.outgoing;
+      }));
+    }
+  });
+};
+
 exports.createView = function(dataStore) {
   View.getMain().showIndicator();
 
-  API.call('services').on({
-
-    success: function(response) {
-      View.getMain().push(new View.Object({
-        title: 'Transfers',
-        content: UI.render('form-new-service', {
-          service: response.data
-        }),
-        action: {
-          title: 'Done',
-          back: true,
-          onClick: function() {
-            dataStore.set('outgoings', View.getMain().getCurrentView().serialize());
-          }
-        },
-        back: {
-          title: 'Cancel'
-        },
-
-        onShow: function() {
-          this.unserialize(dataStore.get('outgoings'));
+  get(function(services) {
+    View.getMain().push(new View.Object({
+      title: 'Transfers',
+      content: UI.render('form-new-service', {
+        service: services
+      }),
+      action: {
+        title: 'Done',
+        back: true,
+        onClick: function() {
+          dataStore.set('outgoings', View.getMain().getCurrentView().serialize());
         }
-      }));
+      },
+      back: {
+        title: 'Cancel'
+      },
 
-    }
+      onShow: function() {
+        this.unserialize(dataStore.get('outgoings'));
+      }
+    }));
   });
 };

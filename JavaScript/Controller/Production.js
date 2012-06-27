@@ -134,11 +134,12 @@ Controller.define('/production/edit/{uuid}', function(req) {
 
   View.getMain().showIndicator({stack: 'production'});
 
-  Source.cacheServices(function() {
-    Source.setData(form, production.service);
-    ListFiles.setData(form, production.audiofile);
-
+  Source.get(function() {
     form = createForm(production ? {saveURL: 'production/' + production.uuid} : null);
+
+    Source.setData(form, production.service);
+    ListFiles.setFile(form, production.audiofile);
+
     form.show('main', production);
   });
 
