@@ -145,6 +145,9 @@ Controller.define('/production/edit/{uuid}', function(req) {
 
 });
 
+Controller.define('/production/new', {priority: 1, isGreedy: true}, function() {
+    form.show('main', null, presets);
+});
 Controller.define('/production/source', {priority: 1, isGreedy: true}, function() {
   form = createForm();
   form.show('source');
@@ -160,10 +163,6 @@ Controller.define('/production/source/{service}', function(req) {
 Controller.define('/production/selectFile/{index}', function(req) {
   ListFiles.setData(form, req.index);
   History.push('/production/new');
-});
-
-Controller.define('/production/new', {priority: 1, isGreedy: true}, function() {
-  form.show('main');
 });
 
 Controller.define('/production/new/metadata', function() {

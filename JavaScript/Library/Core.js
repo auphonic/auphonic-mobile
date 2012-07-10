@@ -24,7 +24,7 @@ provides: [Core, MooTools, Type, typeOf, instanceOf]
 
 exports.MooTools = {
 	version: '1.4.6-custom',
-	build: 'eac656c8f0e62e1dcc0836f17a408d0c2e64ce91'
+	build: '47ddfe5d2a76065a464396afbb5f73d7469f2d92'
 };
 
 // typeOf, instanceOf
@@ -2812,7 +2812,7 @@ Element.implement({
 				self.removeListener('unload', fn);
 				old();
 			};
-		} else {
+		} else if (window.attachEvent && !window.addEventListener){
 			collected[Slick.uidOf(this)] = this;
 		}
 		if (this.addEventListener) this.addEventListener(type, fn, !!arguments[2]);
