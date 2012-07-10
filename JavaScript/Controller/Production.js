@@ -7,10 +7,10 @@ var UI = require('../UI');
 
 var Chapter = require('App/Chapter');
 var Data = require('App/Data');
-var Format = require('App/Format');
 var ListFiles = require('App/ListFiles');
 var MainForm = require('App/MainForm');
 var Metadata = require('App/Metadata');
+var OutputFiles = require('App/OutputFiles');
 var Service = require('App/Service');
 var Source = require('App/Source');
 
@@ -53,7 +53,7 @@ var createForm = function(options) {
       Source,
       Service,
       ListFiles,
-      Format
+      OutputFiles
     ]
   });
 };
@@ -148,6 +148,7 @@ Controller.define('/production/edit/{uuid}', function(req) {
 Controller.define('/production/new', {priority: 1, isGreedy: true}, function() {
     form.show('main', null, presets);
 });
+
 Controller.define('/production/source', {priority: 1, isGreedy: true}, function() {
   form = createForm();
   form.show('source');
@@ -169,8 +170,8 @@ Controller.define('/production/new/metadata', function() {
   form.show('metadata');
 });
 
-Controller.define('/production/new/format/:id:', function(req) {
-  form.show('format', req.id);
+Controller.define('/production/new/output_file/:id:', function(req) {
+  form.show('output_files', req.id);
 });
 
 Controller.define('/production/new/chapter/:id:', function(req) {

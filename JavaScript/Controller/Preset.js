@@ -10,9 +10,9 @@ var View = require('View');
 var UI = require('UI');
 
 var Data = require('App/Data');
-var Format = require('App/Format');
 var MainForm = require('App/MainForm');
 var Metadata = require('App/Metadata');
+var OutputFiles = require('App/OutputFiles');
 var Service = require('App/Service');
 
 var Form = require('App/Form');
@@ -40,7 +40,7 @@ var createForm = function(options) {
       }, options)),
       Metadata,
       Service,
-      Format
+      OutputFiles
     ]
   });
 };
@@ -118,8 +118,8 @@ Controller.define('/preset/new/metadata', function() {
   form.show('metadata');
 });
 
-Controller.define('/preset/new/format/:id:', function(req) {
-  form.show('format', req.id);
+Controller.define('/preset/new/output_file/:id:', function(req) {
+  form.show('output_files', req.id);
 });
 
 Controller.define('/preset/new/outgoings', function() {

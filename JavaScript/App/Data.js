@@ -1,6 +1,6 @@
 var API = require('API');
 
-var Format = require('./Format');
+var OutputFiles = require('./OutputFiles');
 var Service = require('./Service');
 
 exports.prepare = function(object) {
@@ -42,10 +42,10 @@ exports.prepare = function(object) {
     object.algorithms = list;
   }
 
-  if (object.formats && object.formats.length)
-    object.formats = object.formats.map(Format.createUIData);
+  if (object.output_files && object.output_files.length)
+    object.output_files = object.output_files.map(OutputFiles.createUIData);
   else
-    object.formats = null;
+    object.output_files = null;
 
   return object;
 };

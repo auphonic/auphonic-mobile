@@ -215,8 +215,8 @@ var boot = function() {
 
     // These are cached during the lifetime of the app so the data
     // can be accessed synchronously.
-    API.cacheInfo('info/algorithms');
-    API.cacheInfo('info/formats');
+    API.cacheInfo('algorithms');
+    API.cacheInfo('output_files');
 
     UI.Chrome.show();
 

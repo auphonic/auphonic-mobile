@@ -162,8 +162,8 @@
     </ul>
   {{/if}}
 
-  {{#if formats}}
-    <h1>Output Formats</h1>
+  {{#if output_files}}
+    <h1>Output Files</h1>
     <ul>
       {{#if output_basename}}
         <li>
@@ -172,7 +172,7 @@
           </label>
         </li>
       {{/if}}
-      {{#each formats}}
+      {{#each output_files}}
         <li>
           <label>{{title}}{{#if detail}} <small class="light">{{detail}}</small>{{/if}}</label>
         </li>
@@ -256,15 +256,15 @@
     <li><a href="{{baseURL}}new/outgoings" class="arrow"><span></span>Outgoing Transfers <small class="servicesCount light"></small></a></li>
   </ul>
 
-  <h1>Output Formats {{#if production}}<small class="output_format_required">(one is required)</small>{{/if}}</h1>
-  <ul class="output_formats">
+  <h1>Output Files {{#if production}}<small class="output_files_required">(one is required)</small>{{/if}}</h1>
+  <ul class="output_files">
     <li>
       <label class="left">
         <input type="text" name="output_basename" value="{{output_basename}}" placeholder="file name prefix" class="right" />
         Prefix
       </label>
     </li>
-    <li><a href="{{baseURL}}new/format" class="plus"><span></span>Add Audio Format</a></li>
+    <li><a href="{{baseURL}}new/output_file" class="plus"><span></span>Add Audio Format</a></li>
   </ul>
 
   {{#if production}}
@@ -354,7 +354,7 @@
   </ul>
 </script>
 
-<script id="form-new-format-template" type="text/x-handlebars-template">
+<script id="form-new-output-file-template" type="text/x-handlebars-template">
   <ul class="formcontent">
     <li>
       <label class="left">
@@ -371,16 +371,18 @@
 
   <ul class="bitrates hidden">
     {{#each format}}
-      <li data-format="{{value}}">
-        <label class="left">
-          <select name="bitrate" class="right small">
-            {{#each bitrate_format}}
-              <option value="{{value}}"{{#if selected}}selected="selected"{{/if}}>{{title}}</option>
-            {{/each}}
-          </select>
-          Bitrate
-        </label>
-      </li>
+      {{#if has_options}}
+        <li data-output-file="{{value}}">
+          <label class="left">
+            <select name="bitrate" class="right small">
+              {{#each bitrate_format}}
+                <option value="{{value}}"{{#if selected}}selected="selected"{{/if}}>{{title}}</option>
+              {{/each}}
+            </select>
+            Bitrate
+          </label>
+        </li>
+      {{/if}}
     {{/each}}
   </ul>
 </script>
@@ -402,29 +404,31 @@
   </ul>
 </script>
 
-<script id="form-new-format-detail-template" type="text/x-handlebars-template">
-  <li class="wide">
-    <label class="left">
-      <div class="right">
-        <div class="checkbox">
-          <span class="left"></span><span class="thumb" data-on="YES" data-off="NO"></span>
-          <input type="checkbox" name="mono_mixdown" value="1" />
+<script id="form-new-output-file-detail-template" type="text/x-handlebars-template">
+  {{#if has_options}}
+    <li class="wide">
+      <label class="left">
+        <div class="right">
+          <div class="checkbox">
+            <span class="left"></span><span class="thumb" data-on="YES" data-off="NO"></span>
+            <input type="checkbox" name="mono_mixdown" value="1" />
+          </div>
         </div>
-      </div>
-      Mono Mixdown
-    </label>
-  </li>
-  <li class="wide">
-    <label class="left">
-      <div class="right">
-        <div class="checkbox">
-          <span class="left"></span><span class="thumb" data-on="YES" data-off="NO"></span>
-          <input type="checkbox" name="split_on_chapters" value="1" />
+        Mono Mixdown
+      </label>
+    </li>
+    <li class="wide">
+      <label class="left">
+        <div class="right">
+          <div class="checkbox">
+            <span class="left"></span><span class="thumb" data-on="YES" data-off="NO"></span>
+            <input type="checkbox" name="split_on_chapters" value="1" />
+          </div>
         </div>
-      </div>
-      Split on Chapters
-    </label>
-  </li>
+        Split on Chapters
+      </label>
+    </li>
+  {{/if}}
   <li>
     <label class="left">
       <input type="text" name="filename" placeholder="optional" class="right" />

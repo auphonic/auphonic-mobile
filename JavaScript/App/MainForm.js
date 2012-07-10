@@ -11,8 +11,8 @@ var View = require('View');
 var SwipeAble = require('UI/Actions/SwipeAble');
 
 var Chapter = require('./Chapter');
-var Format = require('./Format');
 var Metadata = require('./Metadata');
+var OutputFiles = require('./OutputFiles');
 var Service = require('./Service');
 var ListFiles = require('./ListFiles');
 
@@ -73,7 +73,7 @@ module.exports = new Class({
     var displayType = this.getDisplayType();
     var onSave = this.onSave.bind(this);
 
-    var formatElements = null;
+    var outputFileElements = null;
     var chapterElements = null;
 
     var click;
@@ -88,8 +88,8 @@ module.exports = new Class({
         .set('metadata', Object.flatten({metadata: dataObject.metadata}))
         .set('outgoings', outgoings);
 
-      if (dataObject.formats) formatElements = dataObject.formats.map(function(format) {
-        return Format.createUIElement(baseURL + 'new/format/{id}', dataStore, format);
+      if (dataObject.output_files) outputFileElements = dataObject.output_files.map(function(output_file) {
+        return OutputFiles.createUIElement(baseURL + 'new/output_file/{id}', dataStore, output_file);
       });
 
       if (dataObject.chapters) {
@@ -132,7 +132,7 @@ module.exports = new Class({
           var element = object.toElement();
           var data = object.serialize();
 
-          // Always reset formats/outgoings/chapters
+          // Always reset output_files/outgoings/chapters
           data.reset_data = true;
 
           dataStore.eachView(function(view, type) {
@@ -180,21 +180,21 @@ module.exports = new Class({
           countElement.set('text', count ? count + ' selected' : '');
         }
 
-        var indicatorElement = parent.getElement('.output_format_required');
-        var container = parent.getElement('ul.output_formats');
-        if (formatElements) {
-          container.adopt(formatElements);
-          formatElements = null;
+        var indicatorElement = parent.getElement('.output_files_required');
+        var container = parent.getElement('ul.output_files');
+        if (outputFileElements) {
+          container.adopt(outputFileElements);
+          outputFileElements = null;
         } else {
-          Format.add(dataStore, container, baseURL);
+          OutputFiles.add(dataStore, container, baseURL);
         }
 
         if (indicatorElement) {
           if (!click) click = function() {
-            Format.updateRequiredIndicator(dataStore, indicatorElement);
+            OutputFiles.updateRequiredIndicator(dataStore, indicatorElement);
           };
 
-          Format.updateRequiredIndicator(dataStore, indicatorElement);
+          OutputFiles.updateRequiredIndicator(dataStore, indicatorElement);
           container.getChildren().getInstanceOf(SwipeAble).clean().each(function(instance) {
             instance.addEvent('click', click);
           });

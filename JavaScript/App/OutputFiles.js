@@ -8,8 +8,8 @@ var View = require('View');
 
 var SwipeAble = require('UI/Actions/SwipeAble');
 
-var format = null;
-var formatID = null;
+var outputFile = null;
+var outputFileID = null;
 
 exports.createUIElement = function(href, dataStore, content, id) {
   if (!id) id = String.uniqueID();
@@ -19,108 +19,112 @@ exports.createUIElement = function(href, dataStore, content, id) {
       label: 'Remove',
       href: href.substitute({id: id})
     })
-  )).set('data-format-id', id).store('value', content);
+  )).set('data-output-file-id', id).store('value', content);
 
   UI.update(element);
 
   // Store for editing
-  var formats = dataStore.get('formats', {});
-  formats[id] = content;
+  var outputFiles = dataStore.get('output_files', {});
+  outputFiles[id] = content;
 
   var instance = element.getInstanceOf(SwipeAble);
   if (instance) instance.addEvent('click', function() {
-    delete formats[id];
+    delete outputFiles[id];
   });
 
   return element;
 };
 
 var updateRequiredIndicator = exports.updateRequiredIndicator = function(dataStore, element) {
-  var formats = dataStore.get('formats', {});
+  var outputFiles = dataStore.get('output_files', {});
 
-  if (Object.keys(formats).length) element.addClass('hidden');
+  if (Object.keys(outputFiles).length) element.addClass('hidden');
   else element.removeClass('hidden');
 };
 
 exports.add = function(dataStore, container, baseURL) {
-  if (!format) return;
+  if (!outputFile) return;
 
   // Select-Values are Arrays but we only need the first and only value
-  format.format = format.format[0];
-  format.bitrate = format.bitrate[0];
+  outputFile.format = outputFile.format[0];
+  if (outputFile.bitrate) outputFile.bitrate = outputFile.bitrate[0];
 
-  var id = formatID;
-  var previous = id ? container.getElement('[data-format-id=' + id + ']') : null;
-  var element = exports.createUIElement(baseURL + 'new/format/{id}', dataStore, format, id);
+  var id = outputFileID;
+  var previous = id ? container.getElement('[data-output-file-id=' + id + ']') : null;
+  var element = exports.createUIElement(baseURL + 'new/output_file/{id}', dataStore, outputFile, id);
 
   if (previous) element.replaces(previous);
   else element.inject(container);
 
-  format = null;
-  formatID = null;
+  outputFile = null;
+  outputFileID = null;
 };
 
 var createUIData = exports.createUIData = function(content) {
-  var formats = API.getInfo('formats');
-  var item = formats[content.format];
+  var outputFiles = API.getInfo('output_files');
+  var item = outputFiles[content.format];
   var index = (item.bitrates ? item.bitrates.indexOf('' + content.bitrate) : 0); // Needs to be String
   return {
     title: item.display_name.replace(/\((.+?)\)/, '').trim(), // Remove parenthesis
-    detail: item.bitrate_strings[index].replace(/\((.+?)\)/, '').trim(), // Remove parenthesis,
+    detail: item.bitrate_strings ? item.bitrate_strings[index].replace(/\((.+?)\)/, '').trim() : '', // Remove parenthesis,
   };
 };
 
 var parseFromContainer = function(container) {
-  var formats = API.getInfo('formats');
-  return container.getChildren().retrieve('value').clean().map(function(format) {
+  var outputFiles = API.getInfo('output_files');
+  return container.getChildren().retrieve('value').clean().map(function(outputFile) {
     // Add filename if necessary
-    var file = format.filename;
-    var endings = formats[format.format].endings;
+    var file = outputFile.filename;
+    var endings = outputFiles[outputFile.format].endings;
     var check = function(ending) {
       return file.indexOf('.' + ending) == file.length - 1 - ending.length;
     };
     if (file && !endings.some(check))
-      format.filename += '.' + endings[0];
+      outputFile.filename += '.' + endings[0];
 
-    return format;
+    return outputFile;
   });
 };
 
 exports.getType = function() {
-  return 'format';
+  return 'output_files';
 };
 
 exports.getData = function(dataSource, container) {
   return {
-    formats: parseFromContainer(container.getElement('ul.output_formats'))
+    output_files: parseFromContainer(container.getElement('ul.output_formats'))
   };
 };
 
 exports.createView = function(dataStore, editId) {
-  var formatsData = dataStore.get('formats', {});
-  var id = (editId && formatsData[editId]) ? editId : null;
+  var outputFiles = dataStore.get('output_files', {});
+  var id = (editId && outputFiles[editId]) ? editId : null;
 
   var list = [];
-  var formats = API.getInfo('formats');
-  Object.each(formats, function(value, key) {
+  var files = {};
+  Object.each(API.getInfo('output_files'), function(value, key) {
     value = Object.append({}, value);
     value.value = key;
-    value.bitrate_format = [];
-    value.bitrate_strings.each(function(string, index) {
-      var bitrate = (value.bitrates ? value.bitrates[index] : 0);
-      value.bitrate_format.push({
-        value: bitrate,
-        title: string,
-        selected: (!bitrate || bitrate == value.default_bitrate)
+    if (value.type != 'description' && value.bitrate_strings) {
+      value.has_options = true;
+      value.bitrate_format = [];
+        value.bitrate_strings.each(function(string, index) {
+        var bitrate = (value.bitrates ? value.bitrates[index] : 0);
+        value.bitrate_format.push({
+          value: bitrate,
+          title: string,
+          selected: (!bitrate || bitrate == value.default_bitrate)
+        });
       });
-    });
+    }
+    files[key] = value;
     list.push(value);
   });
 
   var object;
   View.getMain().push(object = new View.Object({
     title: id ? 'Edit Format' : 'Add Format',
-    content: UI.render('form-new-format', {
+    content: UI.render('form-new-output-file', {
       format: list
     }),
     back: {
@@ -137,8 +141,8 @@ exports.createView = function(dataStore, editId) {
         title: id ? 'Done' : 'Add',
         back: true,
         onClick: function() {
-          format = View.getMain().getCurrentView().serialize();
-          if (id) formatID = id;
+          outputFile = View.getMain().getCurrentView().serialize();
+          if (id) outputFileID = id;
         }
       });
     },
@@ -151,12 +155,12 @@ exports.createView = function(dataStore, editId) {
       var option = this.getSelected()[0];
       var value = option.get('value');
       var parent = this.getParent('ul');
-      var item = bitrateContainer.getElement('[data-format=' + value + ']').clone();
+      var item = bitrateContainer.getElement('[data-output-file=' + value + ']');
 
       parent.getElements('> :not(li:first-child)').dispose();
-      parent.adopt(item);
+      if (item) parent.adopt(item.clone());
 
-      Elements.from(UI.render('form-new-format-detail')).inject(parent);
+      Elements.from(UI.render('form-new-output-file-detail', files[value])).inject(parent);
 
       // Restore previous values
       object.unserialize(data);
@@ -167,8 +171,8 @@ exports.createView = function(dataStore, editId) {
 
   // editing
   if (id) {
-    object.unserialize({format: formatsData[id].format});
+    object.unserialize({format: outputFiles[id].format});
     selects.fireEvent('focus:once').fireEvent('change');
-    object.unserialize(formatsData[id]);
+    object.unserialize(outputFiles[id]);
   }
 };

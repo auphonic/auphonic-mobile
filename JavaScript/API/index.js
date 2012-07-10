@@ -134,10 +134,9 @@ API.invalidate = function(url) {
 };
 
 API.cacheInfo = function(url) {
-  API.call(url).on({
+  API.call('info/' + url).on({
     success: function(response) {
-      var type = url.split('/').getLast();
-      setCache('info-' + type, response.data, -1);
+      setCache('info-' + url, response.data, -1);
     }
   });
 };
