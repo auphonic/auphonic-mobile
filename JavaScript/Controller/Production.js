@@ -178,6 +178,6 @@ Controller.define('/production/new/chapter/:id:', function(req) {
   form.show('chapter', req.id);
 });
 
-Controller.define('/production/new/outgoings', function() {
-  form.show('outgoings');
+Controller.define('/production/new/outgoing_services', function() {
+  form.show('outgoing_services');
 });

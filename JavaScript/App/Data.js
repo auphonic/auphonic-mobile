@@ -18,16 +18,16 @@ exports.prepare = function(object) {
   });
 
 
-  if (object.outgoings && object.outgoings.length) {
+  if (object.outgoing_services && object.outgoing_services.length) {
     var uuids = {};
     // Remove duplicates. The API currently allows to add the same service more than once
-    object.outgoings = object.outgoings.map(Service.format).filter(function(service) {
+    object.outgoing_services = object.outgoing_services.map(Service.format).filter(function(service) {
       if (uuids[service.uuid]) return false;
       uuids[service.uuid] = true;
       return true;
     });
   } else {
-    object.outgoings = null; // Be safe
+    object.outgoing_services = null; // Be safe
   }
 
   if (object.algorithms) {

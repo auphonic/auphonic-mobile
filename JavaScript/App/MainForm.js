@@ -79,14 +79,14 @@ module.exports = new Class({
     var click;
 
     if (dataObject) {
-      var outgoings = {};
-      if (dataObject.outgoings) dataObject.outgoings.each(function(outgoing) {
-        outgoings['outgoings.' + outgoing.uuid] = true;
+      var outgoing_services = {};
+      if (dataObject.outgoing_services) dataObject.outgoing_services.each(function(outgoing) {
+        outgoing_services['outgoing_services.' + outgoing.uuid] = true;
       });
 
       dataStore
         .set('metadata', Object.flatten({metadata: dataObject.metadata}))
-        .set('outgoings', outgoings);
+        .set('outgoing_services', outgoing_services);
 
       if (dataObject.output_files) outputFileElements = dataObject.output_files.map(function(output_file) {
         return OutputFiles.createUIElement(baseURL + 'new/output_file/{id}', dataStore, output_file);
@@ -132,7 +132,7 @@ module.exports = new Class({
           var element = object.toElement();
           var data = object.serialize();
 
-          // Always reset output_files/outgoings/chapters
+          // Always reset output_files/outgoing_services/chapters
           data.reset_data = true;
 
           dataStore.eachView(function(view, type) {
@@ -176,7 +176,7 @@ module.exports = new Class({
 
         var countElement = parent.getElement('.servicesCount');
         if (countElement) {
-          var count = Service.getData(dataStore).outgoings.length;
+          var count = Service.getData(dataStore).outgoing_services.length;
           countElement.set('text', count ? count + ' selected' : '');
         }
 

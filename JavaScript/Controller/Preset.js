@@ -122,6 +122,6 @@ Controller.define('/preset/new/output_file/:id:', function(req) {
   form.show('output_files', req.id);
 });
 
-Controller.define('/preset/new/outgoings', function() {
-  form.show('outgoings');
+Controller.define('/preset/new/outgoing_services', function() {
+  form.show('outgoing_services');
 });

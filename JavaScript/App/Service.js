@@ -21,17 +21,17 @@ API.on('services', {
 });
 
 exports.getType = function() {
-  return 'outgoings';
+  return 'outgoing_services';
 };
 
 exports.getData = function(dataStore) {
   var list = [];
-  var outgoings = Object.expand(Object.append({}, dataStore.get('outgoings', {})));
-  Object.each(outgoings.outgoings, function(value, service) {
-    if (value) list.push(service);
+  var object = Object.expand(Object.append({}, dataStore.get('outgoing_services', {})));
+  Object.each(object.outgoing_services, function(value, service) {
+    if (value) list.push({uuid: service});
   });
   return {
-    outgoings: list
+    outgoing_services: list
   };
 };
 
@@ -58,7 +58,7 @@ exports.createView = function(dataStore) {
         title: 'Done',
         back: true,
         onClick: function() {
-          dataStore.set('outgoings', View.getMain().getCurrentView().serialize());
+          dataStore.set('outgoing_services', View.getMain().getCurrentView().serialize());
         }
       },
       back: {
@@ -66,7 +66,7 @@ exports.createView = function(dataStore) {
       },
 
       onShow: function() {
-        this.unserialize(dataStore.get('outgoings'));
+        this.unserialize(dataStore.get('outgoing_services'));
       }
     }));
   });

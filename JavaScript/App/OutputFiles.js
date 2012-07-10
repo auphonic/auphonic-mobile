@@ -92,7 +92,7 @@ exports.getType = function() {
 
 exports.getData = function(dataSource, container) {
   return {
-    output_files: parseFromContainer(container.getElement('ul.output_formats'))
+    output_files: parseFromContainer(container.getElement('ul.output_files'))
   };
 };
 

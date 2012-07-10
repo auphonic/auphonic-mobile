@@ -193,10 +193,10 @@
     </ul>
   {{/if}}
 
-  {{#if outgoings}}
+  {{#if outgoing_services}}
     <h1>Outgoing File Transfers</h1>
     <ul>
-      {{#each outgoings}}
+      {{#each outgoing_services}}
         <li><label><span class="light">{{display_type}}</span> <small>{{display_name}}</small></label></li>
       {{/each}}
     </ul>
@@ -253,7 +253,7 @@
     {{/if}}
 
     <li><a href="{{baseURL}}new/metadata" class="arrow"><span></span>Metadata</a></li>
-    <li><a href="{{baseURL}}new/outgoings" class="arrow"><span></span>Outgoing Transfers <small class="servicesCount light"></small></a></li>
+    <li><a href="{{baseURL}}new/outgoing_services" class="arrow"><span></span>Outgoing Transfers <small class="servicesCount light"></small></a></li>
   </ul>
 
   <h1>Output Files {{#if production}}<small class="output_files_required">(one is required)</small>{{/if}}</h1>
@@ -445,7 +445,7 @@
           <div class="right">
             <div class="checkbox">
               <span class="left"></span><span class="thumb" data-on="ON" data-off="OFF"></span>
-              <input type="checkbox" name="outgoings.{{uuid}}" value="1" />
+              <input type="checkbox" name="outgoing_services.{{uuid}}" value="1" />
             </div>
           </div>
           <small><span class="light">{{display_type}}</span> {{display_name}}</small>
