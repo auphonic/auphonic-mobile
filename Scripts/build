@@ -21,7 +21,7 @@ packager build Custom-Event/* +use-only Custom-Event > "$DIR/$JS/PowerTools/Cust
 #packager build Mootilities/Accessor +use-only Mootilities > "$DIR/$JS/PowerTools/Mootilities.js"
 
 # Mobile
-packager build Mobile/Browser.Mobile Mobile/Click Mobile/Swipe Mobile/Mouse +use-only Mobile > "$DIR/$JS/PowerTools/Mobile.js"
+packager build Mobile/Browser.Mobile Mobile/Swipe Mobile/Click +use-only Mobile > "$DIR/$JS/PowerTools/Mobile.js"
 
 # EventStack
 packager build EventStack/* +use-only EventStack EventStack.OuterClick > "$DIR/$JS/PowerTools/EventStack.js"
