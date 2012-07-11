@@ -7,23 +7,20 @@ var View = require('View');
 
 var SwipeAble = require('UI/Actions/SwipeAble');
 
-var chapter = null;
-var chapterID = null;
-
-var createUIElement = exports.createUIElement = function(href, dataStore, content, id) {
+var createUIElement = function(baseURL, store, content, id) {
   if (!id) id = String.uniqueID();
 
   var element = Element.from(UI.render('ui-removable-chapter-list-item',
     Object.append({
       label: 'Remove',
-      href: href.substitute({id: id})
+      href: baseURL.substitute({id: id})
     }, content)
   )).set('data-chapter-id', id).store('value', content);
 
   UI.update(element);
 
   // Store for editing
-  var chapters = dataStore.get('chapters', {});
+  var chapters = store.get('chapters', {});
   chapters[id] = content;
 
   var instance = element.getInstanceOf(SwipeAble);
@@ -34,12 +31,22 @@ var createUIElement = exports.createUIElement = function(href, dataStore, conten
   return element;
 };
 
-exports.add = function(dataStore, container, baseURL) {
-  if (!chapter) return;
+var createUIElements = function(baseURL, store, list) {
+  if (!list) return null;
 
-  var id = chapterID;
+  list.sort(function(a, b) {
+    if (a.start == b.start) return 0;
+    return a.start > b.start ? 1 : -1;
+  });
+
+  return list.map(function(chapter) {
+    return createUIElement(baseURL + 'new/chapter/{id}', store, chapter);
+  });
+};
+
+var add = function(baseURL, store, container, chapter, id) {
   var previous = id ? container.getElement('[data-chapter-id=' + id + ']') : null;
-  var element = createUIElement(baseURL + 'new/chapter/{id}', dataStore, chapter, id);
+  var element = createUIElement(baseURL + 'new/chapter/{id}', store, chapter, id);
 
   if (previous) previous.dispose();
 
@@ -54,17 +61,22 @@ exports.add = function(dataStore, container, baseURL) {
   // No elements found or add as last
   if (!element.getParent())
     element.inject(container);
-
-  chapter = null;
-  chapterID = null;
 };
 
 var parseFromContainer = function(container) {
   return container.getChildren().retrieve('value').clean();
 };
 
+var showAction = function(store, id) {
+  store.get('chapters:createAction')(id);
+};
+
+var hideAction = function() {
+  View.getMain().updateElement('action', {}, null);
+};
+
 exports.getType = function() {
-  return 'chapter';
+  return 'chapters';
 };
 
 exports.getData = function(dataSource, container) {
@@ -73,27 +85,32 @@ exports.getData = function(dataSource, container) {
   };
 };
 
-var showAction = function(id) {
-  View.getMain().updateElement('action', {}, {
-    title: id ? 'Done' : 'Add',
-    back: true,
-    onClick: function() {
-      chapter = View.getMain().getCurrentView().serialize();
-      if (id) chapterID = id;
-    }
+exports.setData = function(store, list, baseURL, object) {
+  var elements = createUIElements(baseURL, store, list);
+  var getContainer = function() {
+    return object.toElement().getElement('ul.chapter_marks');
+  };
+
+  if (elements) object.addEvent('show:once', function() {
+    getContainer().adopt(elements);
+  });
+
+  store.set('chapters:createAction', function(id) {
+    View.getMain().updateElement('action', {}, {
+      title: id ? 'Done' : 'Add',
+      back: true,
+      onClick: function() {
+        add(baseURL, store, getContainer(), View.getMain().getCurrentView().serialize(), id);
+      }
+    });
   });
 };
 
-var hideAction = function() {
-  View.getMain().updateElement('action', {}, null);
-};
-
-exports.createView = function(dataStore, editId) {
-  var chapterData = dataStore.get('chapters', {});
+exports.createView = function(store, editId) {
+  var chapterData = store.get('chapters', {});
   var id = (editId && chapterData[editId]) ? editId : null;
 
-  var object;
-  View.getMain().push(object = new View.Object({
+  var object = new View.Object({
     title: id ? 'Edit Chapter' : 'Add Chapter',
     content: UI.render('form-new-chapter'),
     back: {
@@ -101,9 +118,10 @@ exports.createView = function(dataStore, editId) {
     },
 
     onShow: function() {
-      this.unserialize(dataStore.get('chapter'));
+      this.unserialize(store.get('chapters'));
     }
-  }));
+  });
+  View.getMain().push(object);
 
   var active = false;
   var inputs = object.toElement().getElements('input[data-required]');
@@ -124,7 +142,7 @@ exports.createView = function(dataStore, editId) {
 
     if (hasValues && !active) {
       active = true;
-      showAction(id);
+      showAction(store, id);
     } else if (!hasValues && active) {
       active = false;
       hideAction();
@@ -151,6 +169,6 @@ exports.createView = function(dataStore, editId) {
   // editing
   if (id) {
     object.unserialize(chapterData[id]);
-    showAction(id);
+    showAction(store, id);
   }
 };

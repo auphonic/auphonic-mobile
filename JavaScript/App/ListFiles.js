@@ -6,30 +6,30 @@ var Source = require('./Source');
 
 var files = {};
 
+var setFile = exports.setFile = function(store, filename) {
+  store.set('audiofile', filename);
+  return filename;
+};
+
 exports.getType = function() {
   return 'listFiles';
 };
 
-exports.getData = function(dataStore) {
+exports.getData = function(store) {
   return {
-    audiofile: dataStore.get('audiofile')
+    audiofile: store.get('audiofile')
   };
 };
 
-var setFile = exports.setFile = function(dataStore, filename) {
-  dataStore.set('audiofile', filename);
-  return filename;
-};
-
-exports.setData = function(dataStore, index) {
+exports.setData = function(store, index) {
   if (!files[index]) return;
 
-  return setFile(dataStore, files[index]);
+  return setFile(store, files[index]);
 };
 
-exports.createView = function(dataStore) {
+exports.createView = function(store) {
 
-  var service = Source.getData(dataStore).service;
+  var service = Source.getData(store).service;
   if (!service) return;
 
   View.getMain().showIndicator();
@@ -47,9 +47,8 @@ exports.createView = function(dataStore) {
         };
       });
 
-      var serviceObject = Source.getObject(dataStore);
-      var object;
-      View.getMain().push(object = new View.Object({
+      var serviceObject = Source.getObject(store);
+      var object = new View.Object({
         title: serviceObject.display_type + ' ' + serviceObject.display_name,
         backTitle: serviceObject.display_type,
         content: UI.render('service-list', {
@@ -58,7 +57,8 @@ exports.createView = function(dataStore) {
         onHide: function() {
           object.invalidate();
         }
-      }));
+      });
+      View.getMain().push(object);
     }
 
   });

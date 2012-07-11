@@ -175,7 +175,7 @@ Controller.define('/production/new/output_file/:id:', function(req) {
 });
 
 Controller.define('/production/new/chapter/:id:', function(req) {
-  form.show('chapter', req.id);
+  form.show('chapters', req.id);
 });
 
 Controller.define('/production/new/outgoing_services', function() {

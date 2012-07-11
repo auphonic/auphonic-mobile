@@ -14,11 +14,12 @@ var Chapter = require('./Chapter');
 var Metadata = require('./Metadata');
 var OutputFiles = require('./OutputFiles');
 var Service = require('./Service');
+var Source = require('./Source');
 var ListFiles = require('./ListFiles');
 
 module.exports = new Class({
 
-  Implements: [Options],
+  Implements: [Options, Class.Binds],
 
   options: {
     displayName: '',
@@ -62,160 +63,109 @@ module.exports = new Class({
     return 'main';
   },
 
-  onSave: function(object) {
-    this.options.onSave(object);
-  },
+  createView: function(store, data, presets) {
+    var isEditMode = this.isEditMode = !!data;
+    this.store = store;
 
-  createView: function(dataStore, dataObject) {
-    var baseURL = this.getBaseURL();
-    var saveURL = this.getSaveURL();
-    var displayName = this.getDisplayName();
-    var displayType = this.getDisplayType();
-    var onSave = this.onSave.bind(this);
-
-    var outputFileElements = null;
-    var chapterElements = null;
-
-    var click;
-
-    if (dataObject) {
-      var outgoing_services = {};
-      if (dataObject.outgoing_services) dataObject.outgoing_services.each(function(outgoing) {
-        outgoing_services['outgoing_services.' + outgoing.uuid] = true;
+    var service = Source.getObject(store);
+    var algorithms = Object.values(Object.map(API.getInfo('algorithms'), function(content, algorithm) {
+      return Object.append({key: algorithm}, content, {
+        value: (isEditMode ? data.algorithms[algorithm] : content.default_value)
       });
+    }));
 
-      dataStore
-        .set('metadata', Object.flatten({metadata: dataObject.metadata}))
-        .set('outgoing_services', outgoing_services);
-
-      if (dataObject.output_files) outputFileElements = dataObject.output_files.map(function(output_file) {
-        return OutputFiles.createUIElement(baseURL + 'new/output_file/{id}', dataStore, output_file);
-      });
-
-      if (dataObject.chapters) {
-        dataObject.chapters.sort(function(a, b) {
-          if (a.start == b.start) return 0;
-          return a.start > b.start ? 1 : -1;
-        });
-        chapterElements = dataObject.chapters.map(function(chapter) {
-          return Chapter.createUIElement(baseURL + 'new/chapter/{id}', dataStore, chapter);
-        });
-      }
-    }
-
-    var service = dataStore.get('serviceObject');
     var uiData = {
+      algorithm: algorithms,
+      baseURL: this.getBaseURL(),
+      name: this.getObjectName(data),
+      output_basename: isEditMode && data.output_basename,
+      presets: presets,
       service: (service ? service.display_type : null),
-      audiofile: ListFiles.getData(dataStore).audiofile
+      audiofile: ListFiles.getData(store).audiofile
     };
-    uiData[displayType] = true;
+    uiData[this.getDisplayType()] = true;
 
-    var object;
-    View.getMain().push(object = new View.Object({
-      title: this.getObjectName(dataObject) ||  'New ' + displayName,
-      content: UI.render('form-main-new', Object.append({
-        algorithm: Object.values(Object.map(API.getInfo('algorithms'), function(content, algorithm) {
-          return Object.append({key: algorithm}, content, {
-            value: (dataObject ? dataObject.algorithms[algorithm] : content.default_value)
-          });
-        })),
-        baseURL: baseURL,
-        name: this.getObjectName(dataObject),
-        output_basename: dataObject && dataObject.output_basename
-      }, uiData)),
-      back: (dataObject ? {title: 'Cancel'} : null),
+    var object = this.object = new View.Object({
+      title: this.getObjectName(data) ||  'New ' + this.getDisplayName(),
+      content: UI.render('form-main-new', uiData),
+      back: (isEditMode ? {title: 'Cancel'} : null),
       action: {
         title: 'Save',
-        onClick: function(event) {
-          event.preventDefault();
-
-          var element = object.toElement();
-          var data = object.serialize();
-
-          // Always reset output_files/outgoing_services/chapters
-          data.reset_data = true;
-
-          dataStore.eachView(function(view, type) {
-            if (view.getData)
-              Object.append(data, view.getData(dataStore, element));
-          });
-
-          // Use Title from productions
-          if (data.title && data.title !== '') data['metadata.title'] = data.title;
-          delete data.title;
-
-          View.getMain().showIndicator();
-
-          API.call(saveURL, 'post', JSON.stringify(Object.expand(data))).on({
-            success: function(response) {
-              var stack = View.getMain().getStack();
-              var baseObject = stack.getByURL(baseURL);
-              stack.invalidate(baseObject);
-
-              if (dataObject) stack.invalidate(baseURL + response.data.uuid);
-
-              // Current object should get removed after sliding it out
-              object.addEvent('hide:once', function() {
-                this.getStack().remove(this);
-                if (baseObject)
-                  this.getStack().getCurrent().setBack(baseObject.getBackTemplate());
-              });
-
-              onSave(response.data);
-            }
-          });
-        }
+        onClick: this.bound('onActionClick')
       },
 
       onShow: function() {
-        var parent = object.toElement();
-
         // Title is used twice in productions
-        var title = Metadata.getData(dataStore)['metadata.title'];
-        object.unserialize({title: title});
+        object.unserialize({title: Metadata.getData(store)['metadata.title']});
 
-        var countElement = parent.getElement('.servicesCount');
-        if (countElement) {
-          var count = Service.getData(dataStore).outgoing_services.length;
-          countElement.set('text', count ? count + ' selected' : '');
-        }
-
-        var indicatorElement = parent.getElement('.output_files_required');
-        var container = parent.getElement('ul.output_files');
-        if (outputFileElements) {
-          container.adopt(outputFileElements);
-          outputFileElements = null;
-        } else {
-          OutputFiles.add(dataStore, container, baseURL);
-        }
-
-        if (indicatorElement) {
-          if (!click) click = function() {
-            OutputFiles.updateRequiredIndicator(dataStore, indicatorElement);
-          };
-
-          OutputFiles.updateRequiredIndicator(dataStore, indicatorElement);
-          container.getChildren().getInstanceOf(SwipeAble).clean().each(function(instance) {
-            instance.addEvent('click', click);
-          });
-        }
-
-        container = parent.getElement('ul.chapter_marks');
-        if (chapterElements) {
-          container.adopt(chapterElements);
-          chapterElements = null;
-        } else {
-          Chapter.add(dataStore, container, baseURL);
-        }
+        Service.updateCounter(store, object);
       },
 
       onHide: function(direction) {
         // Use metadata.title in both forms in productions.
         var data = object.serialize();
-        if (data.title && data.title !== '') Metadata.getData(dataStore)['metadata.title'] = data.title;
+        if (data.title && data.title !== '') Metadata.getData(store)['metadata.title'] = data.title;
 
-        if (direction == 'left') dataStore.erase();
+        if (direction == 'left') store.erase();
       }
-    }));
+    });
+
+    if (isEditMode) store.eachView(function(view, type) {
+      if (view.setData)
+        view.setData(store, data[type], this.getBaseURL(), object);
+    }, this);
+
+    View.getMain().push(object);
+  },
+
+  onActionClick: function(event) {
+    event.preventDefault();
+
+    var object = this.object;
+    var store = this.store;
+    var element = object.toElement();
+    var data = object.serialize();
+
+    // Always reset output_files/outgoing_services/chapters
+    data.reset_data = true;
+
+    store.eachView(function(view, type) {
+      if (view.getData) Object.append(data, view.getData(store, element));
+    });
+
+    // Use Title from productions
+    if (data.title && data.title !== '') data['metadata.title'] = data.title;
+    delete data.title;
+
+    View.getMain().showIndicator();
+
+    API.call(this.getSaveURL(), 'post', JSON.stringify(Object.expand(data))).on({
+      success: this.bound('onSaveSuccess')
+    });
+  },
+
+  onSave: function(object) {
+    this.options.onSave(object);
+  },
+
+  onSaveSuccess: function(response) {
+    var baseURL = this.getBaseURL();
+    var object = this.object;
+
+    var stack = View.getMain().getStack();
+    var baseObject = stack.getByURL(baseURL);
+    stack.invalidate(baseObject);
+
+    if (this.isEditMode) stack.invalidate(baseURL + response.data.uuid);
+
+    // Current object should get removed after sliding it out
+    object.addEvent('hide:once', function() {
+      this.getStack().remove(this);
+      if (baseObject)
+        this.getStack().getCurrent().setBack(baseObject.getBackTemplate());
+    });
+
+    this.onSave(response.data);
   }
+
 });

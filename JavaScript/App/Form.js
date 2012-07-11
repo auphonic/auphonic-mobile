@@ -35,8 +35,8 @@ var Form = module.exports = new Class({
     return this;
   },
 
-  eachView: function(fn) {
-    Object.each(this.views, fn);
+  eachView: function(fn, thisValue) {
+    Object.each(this.views, fn, thisValue);
   }
 
 });

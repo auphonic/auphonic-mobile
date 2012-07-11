@@ -13,6 +13,21 @@ var format = exports.format = function(service) {
   return service;
 };
 
+var getData = exports.getData = function(store) {
+  var list = [];
+  var object = Object.expand(Object.clone(store.get('outgoing_services', {})));
+  Object.each(object.outgoing_services, function(service, uuid) {
+    if (!service.checked) return;
+
+    service = Object.clone(service);
+    delete service.checked;
+    list.push(service);
+  });
+  return {
+    outgoing_services: list
+  };
+};
+
 API.on('services', {
   formatter: function(response) {
     response.data = response.data.map(format);
@@ -24,15 +39,24 @@ exports.getType = function() {
   return 'outgoing_services';
 };
 
-exports.getData = function(dataStore) {
-  var list = [];
-  var object = Object.expand(Object.append({}, dataStore.get('outgoing_services', {})));
-  Object.each(object.outgoing_services, function(value, service) {
-    if (value) list.push({uuid: service});
+exports.setData = function(store, outgoing_services) {
+  if (!outgoing_services) return;
+
+  var services = {};
+  outgoing_services.each(function(service) {
+    services['outgoing_services.' + service.uuid + '.checked'] = true;
+    services['outgoing_services.' + service.uuid + '.uuid'] = service.uuid;
   });
-  return {
-    outgoing_services: list
-  };
+
+  store.set('outgoing_services', services);
+};
+
+exports.updateCounter = function(store, object) {
+  var container = object.toElement().getElement('.servicesCount');
+  if (!container) return;
+
+  var count = getData(store).outgoing_services.length;
+  container.set('text', count ? count + ' selected' : '');
 };
 
 var get = exports.get = function(callback) {
@@ -45,7 +69,7 @@ var get = exports.get = function(callback) {
   });
 };
 
-exports.createView = function(dataStore) {
+exports.createView = function(store) {
   View.getMain().showIndicator();
 
   get(function(services) {
@@ -58,7 +82,7 @@ exports.createView = function(dataStore) {
         title: 'Done',
         back: true,
         onClick: function() {
-          dataStore.set('outgoing_services', View.getMain().getCurrentView().serialize());
+          store.set('outgoing_services', View.getMain().getCurrentView().serialize());
         }
       },
       back: {
@@ -66,7 +90,7 @@ exports.createView = function(dataStore) {
       },
 
       onShow: function() {
-        this.unserialize(dataStore.get('outgoing_services'));
+        this.unserialize(store.get('outgoing_services'));
       }
     }));
   });

@@ -5,11 +5,15 @@ exports.getType = function() {
   return 'metadata';
 };
 
-exports.getData = function(dataStore) {
-  return dataStore.get('metadata', {});
+exports.getData = function(store) {
+  return store.get('metadata', {});
 };
 
-exports.createView = function(dataStore) {
+exports.setData = function(store, metadata) {
+  store.set('metadata', Object.flatten({metadata: metadata}));
+};
+
+exports.createView = function(store) {
   View.getMain().push(new View.Object({
     title: 'Metadata',
     content: UI.render('form-new-metadata'),
@@ -17,7 +21,7 @@ exports.createView = function(dataStore) {
       title: 'Done',
       back: true,
       onClick: function() {
-        dataStore.set('metadata', View.getMain().getCurrentView().serialize());
+        store.set('metadata', View.getMain().getCurrentView().serialize());
       }
     },
     back: {
@@ -25,7 +29,7 @@ exports.createView = function(dataStore) {
     },
 
     onShow: function() {
-      var metadata = dataStore.get('metadata');
+      var metadata = store.get('metadata');
       this.unserialize(Object.append({
         'metadata.year': (new Date).getFullYear(),
         'metadata.genre': 'Podcast'

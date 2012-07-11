@@ -10,23 +10,23 @@ exports.getType = function() {
   return 'source';
 };
 
-exports.getData = function(dataStore) {
+exports.getData = function(store) {
   return {
-    service: dataStore.get('service')
+    service: store.get('service')
   };
 };
 
-exports.setData = function(dataStore, id) {
+exports.setData = function(store, id) {
   var service = services[id];
   if (!service) return;
 
-  dataStore.set('service', service.uuid);
-  dataStore.set('serviceObject', service);
+  store.set('service', service.uuid);
+  store.set('serviceObject', service);
   return service;
 };
 
-exports.getObject = function(dataStore) {
-  return dataStore.get('serviceObject', {});
+exports.getObject = function(store) {
+  return store.get('serviceObject', {});
 };
 
 var get = exports.get = function(callback) {
@@ -47,7 +47,7 @@ var get = exports.get = function(callback) {
   });
 };
 
-exports.createView = function(dataStore) {
+exports.createView = function(store) {
   View.getMain().showIndicator();
 
   get(function(list) {

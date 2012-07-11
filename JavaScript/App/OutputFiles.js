@@ -6,12 +6,11 @@ var API = require('API');
 var UI = require('UI');
 var View = require('View');
 
+var OutputFiles = require('./OutputFiles');
+
 var SwipeAble = require('UI/Actions/SwipeAble');
 
-var outputFile = null;
-var outputFileID = null;
-
-exports.createUIElement = function(href, dataStore, content, id) {
+var createUIElement = function(href, store, content, id) {
   if (!id) id = String.uniqueID();
 
   var element = Element.from(UI.render('ui-removable-list-item',
@@ -24,7 +23,7 @@ exports.createUIElement = function(href, dataStore, content, id) {
   UI.update(element);
 
   // Store for editing
-  var outputFiles = dataStore.get('output_files', {});
+  var outputFiles = store.get('output_files', {});
   outputFiles[id] = content;
 
   var instance = element.getInstanceOf(SwipeAble);
@@ -35,29 +34,31 @@ exports.createUIElement = function(href, dataStore, content, id) {
   return element;
 };
 
-var updateRequiredIndicator = exports.updateRequiredIndicator = function(dataStore, element) {
-  var outputFiles = dataStore.get('output_files', {});
+var createUIElements = function(baseURL, store, list) {
+  if (!list) return null;
+
+  return list.map(function(chapter) {
+    return createUIElement(baseURL + 'new/output_file/{id}', store, chapter);
+  });
+};
+
+var updateRequiredIndicator = function(store, element) {
+  var outputFiles = store.get('output_files', {});
 
   if (Object.keys(outputFiles).length) element.addClass('hidden');
   else element.removeClass('hidden');
 };
 
-exports.add = function(dataStore, container, baseURL) {
-  if (!outputFile) return;
-
+var add = function(baseURL, store, container, outputFile, id) {
   // Select-Values are Arrays but we only need the first and only value
   outputFile.format = outputFile.format[0];
   if (outputFile.bitrate) outputFile.bitrate = outputFile.bitrate[0];
 
-  var id = outputFileID;
   var previous = id ? container.getElement('[data-output-file-id=' + id + ']') : null;
-  var element = exports.createUIElement(baseURL + 'new/output_file/{id}', dataStore, outputFile, id);
+  var element = createUIElement(baseURL + 'new/output_file/{id}', store, outputFile, id);
 
   if (previous) element.replaces(previous);
   else element.inject(container);
-
-  outputFile = null;
-  outputFileID = null;
 };
 
 var createUIData = exports.createUIData = function(content) {
@@ -86,6 +87,10 @@ var parseFromContainer = function(container) {
   });
 };
 
+var showAction = function(store, id) {
+  store.get('output_files:createAction')(id);
+};
+
 exports.getType = function() {
   return 'output_files';
 };
@@ -96,8 +101,43 @@ exports.getData = function(dataSource, container) {
   };
 };
 
-exports.createView = function(dataStore, editId) {
-  var outputFiles = dataStore.get('output_files', {});
+exports.setData = function(store, list, baseURL, object) {
+  var elements = createUIElements(baseURL, store, list);
+  var getContainer = function() {
+    return object.toElement().getElement('ul.output_files');
+  };
+
+  object.addEvent('show:once', function() {
+    if (elements) getContainer().adopt(elements);
+  });
+
+  object.addEvent('show', function() {
+    var indicatorElement = object.toElement().getElement('.output_files_required');
+    if (indicatorElement) {
+      var click = store.get('output_files:click', function() {
+        updateRequiredIndicator(store, indicatorElement);
+      });
+
+      updateRequiredIndicator(store, indicatorElement);
+      getContainer().getChildren().getInstanceOf(SwipeAble).clean().each(function(instance) {
+        instance.addEvent('click', click);
+      });
+    }
+  });
+
+  store.set('output_files:createAction', function(id) {
+    View.getMain().updateElement('action', {}, {
+      title: id ? 'Done' : 'Add',
+      back: true,
+      onClick: function() {
+        add(baseURL, store, getContainer(), View.getMain().getCurrentView().serialize(), id);
+      }
+    });
+  });
+};
+
+exports.createView = function(store, editId) {
+  var outputFiles = store.get('output_files', {});
   var id = (editId && outputFiles[editId]) ? editId : null;
 
   var list = [];
@@ -121,8 +161,7 @@ exports.createView = function(dataStore, editId) {
     list.push(value);
   });
 
-  var object;
-  View.getMain().push(object = new View.Object({
+  var object = new View.Object({
     title: id ? 'Edit Format' : 'Add Format',
     content: UI.render('form-new-output-file', {
       format: list
@@ -130,21 +169,15 @@ exports.createView = function(dataStore, editId) {
     back: {
       title: 'Cancel'
     }
-  }));
+  });
+  View.getMain().push(object);
 
   var bitrateContainer = object.toElement().getElement('.bitrates').dispose();
   var selects = object.toElement().getElements('select.empty');
   selects.addEvents({
 
     'change:once': function() {
-      View.getMain().updateElement('action', {}, {
-        title: id ? 'Done' : 'Add',
-        back: true,
-        onClick: function() {
-          outputFile = View.getMain().getCurrentView().serialize();
-          if (id) outputFileID = id;
-        }
-      });
+      showAction(store, id);
     },
 
     change: function() {

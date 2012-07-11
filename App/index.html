@@ -441,11 +441,12 @@
   <ul class="formcontent">
     {{#each service}}
       <li class="wide">
+        <input type="hidden" name="outgoing_services.{{uuid}}.uuid" value="{{uuid}}" />
         <label class="left">
           <div class="right">
             <div class="checkbox">
               <span class="left"></span><span class="thumb" data-on="ON" data-off="OFF"></span>
-              <input type="checkbox" name="outgoing_services.{{uuid}}" value="1" />
+              <input type="checkbox" name="outgoing_services.{{uuid}}.checked" value="1" />
             </div>
           </div>
           <small><span class="light">{{display_type}}</span> {{display_name}}</small>
