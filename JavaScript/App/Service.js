@@ -35,28 +35,34 @@ API.on('services', {
   }
 });
 
-exports.getType = function() {
-  return 'outgoing_services';
-};
-
-exports.setData = function(store, outgoing_services) {
-  if (!outgoing_services) return;
-
-  var services = {};
-  outgoing_services.each(function(service) {
-    services['outgoing_services.' + service.uuid + '.checked'] = true;
-    services['outgoing_services.' + service.uuid + '.uuid'] = service.uuid;
-  });
-
-  store.set('outgoing_services', services);
-};
-
-exports.updateCounter = function(store, object) {
+var updateCounter = function(store, object) {
   var container = object.toElement().getElement('.servicesCount');
   if (!container) return;
 
   var count = getData(store).outgoing_services.length;
   container.set('text', count ? count + ' selected' : '');
+};
+
+exports.getType = function() {
+  return 'outgoing_services';
+};
+
+exports.setData = function(store, outgoing_services, baseURL, object, immediate) {
+  var services = {};
+  if (outgoing_services) outgoing_services.each(function(service) {
+    services['outgoing_services.' + service.uuid + '.checked'] = true;
+    services['outgoing_services.' + service.uuid + '.uuid'] = service.uuid;
+  });
+
+  store.set('outgoing_services', services);
+
+  if (immediate) updateCounter(store, object);
+};
+
+exports.setup = function(store, outgoing_services, object) {
+  object.addEvent('show', function() {
+    updateCounter(store, object);
+  });
 };
 
 var get = exports.get = function(callback) {

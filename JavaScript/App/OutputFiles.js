@@ -42,13 +42,6 @@ var createUIElements = function(baseURL, store, list) {
   });
 };
 
-var updateRequiredIndicator = function(store, element) {
-  var outputFiles = store.get('output_files', {});
-
-  if (Object.keys(outputFiles).length) element.addClass('hidden');
-  else element.removeClass('hidden');
-};
-
 var add = function(baseURL, store, container, outputFile, id) {
   // Select-Values are Arrays but we only need the first and only value
   outputFile.format = outputFile.format[0];
@@ -87,50 +80,72 @@ var parseFromContainer = function(container) {
   });
 };
 
-var showAction = function(store, id) {
-  store.get('output_files:createAction')(id);
+var showAction = function(object, id) {
+  object.fireEvent('output_files-createAction', [id]);
+};
+
+var updateIndicator = function(store, element) {
+  var outputFiles = store.get('output_files', {});
+
+  if (Object.keys(outputFiles).length) element.addClass('hidden');
+  else element.removeClass('hidden');
+};
+
+var setupIndicator = function(store, object) {
+  var indicator = object.toElement().getElement('.output_files_required');
+  if (indicator) {
+    var click = store.get('output_files:click', function() {
+      updateIndicator(store, indicator);
+    });
+
+    updateIndicator(store, indicator);
+    getContainer(object).getChildren().getInstanceOf(SwipeAble).clean().each(function(instance) {
+      instance.addEvent('click', click);
+    });
+  }
+};
+
+var getContainer = function(element) {
+  return document.id(element).getElement('ul.output_files');
 };
 
 exports.getType = function() {
   return 'output_files';
 };
 
-exports.getData = function(dataSource, container) {
+exports.getData = function(dataSource, element) {
   return {
-    output_files: parseFromContainer(container.getElement('ul.output_files'))
+    output_files: parseFromContainer(getContainer(element))
   };
 };
 
-exports.setData = function(store, list, baseURL, object) {
+exports.setData = function(store, list, baseURL, object, immediate) {
+  store.set('output_files', {});
+
   var elements = createUIElements(baseURL, store, list);
-  var getContainer = function() {
-    return object.toElement().getElement('ul.output_files');
+  var fn = function() {
+    var container = getContainer(object);
+    container.getElements('[data-output-file-id]').dispose();
+    container.adopt(elements);
+
+    setupIndicator(store, object);
   };
 
-  object.addEvent('show:once', function() {
-    if (elements) getContainer().adopt(elements);
-  });
+  if (immediate) fn();
+  else object.addEvent('show:once', fn);
+};
 
+exports.setup = function(store, baseURL, object) {
   object.addEvent('show', function() {
-    var indicatorElement = object.toElement().getElement('.output_files_required');
-    if (indicatorElement) {
-      var click = store.get('output_files:click', function() {
-        updateRequiredIndicator(store, indicatorElement);
-      });
-
-      updateRequiredIndicator(store, indicatorElement);
-      getContainer().getChildren().getInstanceOf(SwipeAble).clean().each(function(instance) {
-        instance.addEvent('click', click);
-      });
-    }
+    setupIndicator(store, object);
   });
 
-  store.set('output_files:createAction', function(id) {
+  object.addEvent('output_files-createAction', function(id) {
     View.getMain().updateElement('action', {}, {
       title: id ? 'Done' : 'Add',
       back: true,
       onClick: function() {
-        add(baseURL, store, getContainer(), View.getMain().getCurrentView().serialize(), id);
+        add(baseURL, store, getContainer(object), View.getMain().getCurrentView().serialize(), id);
       }
     });
   });
@@ -161,6 +176,7 @@ exports.createView = function(store, editId) {
     list.push(value);
   });
 
+  var mainObject = View.getMain().getCurrentView();
   var object = new View.Object({
     title: id ? 'Edit Format' : 'Add Format',
     content: UI.render('form-new-output-file', {
@@ -177,7 +193,7 @@ exports.createView = function(store, editId) {
   selects.addEvents({
 
     'change:once': function() {
-      showAction(store, id);
+      showAction(mainObject, id);
     },
 
     change: function() {

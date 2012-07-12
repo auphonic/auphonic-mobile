@@ -67,40 +67,49 @@ var parseFromContainer = function(container) {
   return container.getChildren().retrieve('value').clean();
 };
 
-var showAction = function(store, id) {
-  store.get('chapters:createAction')(id);
+var showAction = function(object, id) {
+  object.fireEvent('chapters-createAction', [id]);
 };
 
 var hideAction = function() {
   View.getMain().updateElement('action', {}, null);
 };
 
+var getContainer = function(element) {
+  return document.id(element).getElement('ul.chapter_marks');
+};
+
 exports.getType = function() {
   return 'chapters';
 };
 
-exports.getData = function(dataSource, container) {
+exports.getData = function(dataSource, element) {
   return {
-    chapters: parseFromContainer(container.getElement('ul.chapter_marks'))
+    chapters: parseFromContainer(getContainer(element))
   };
 };
 
-exports.setData = function(store, list, baseURL, object) {
+exports.setData = function(store, list, baseURL, object, immediate) {
+  store.set('chapters', {});
+
   var elements = createUIElements(baseURL, store, list);
-  var getContainer = function() {
-    return object.toElement().getElement('ul.chapter_marks');
+  var fn = function() {
+    var container = getContainer(object);
+    container.getElements('[data-chapter-id]').dispose();
+    container.adopt(elements);
   };
 
-  if (elements) object.addEvent('show:once', function() {
-    getContainer().adopt(elements);
-  });
+  if (immediate) fn();
+  else object.addEvent('show:once', fn);
+};
 
-  store.set('chapters:createAction', function(id) {
+exports.setup = function(store, baseURL, object) {
+  object.addEvent('chapters-createAction', function(id) {
     View.getMain().updateElement('action', {}, {
       title: id ? 'Done' : 'Add',
       back: true,
       onClick: function() {
-        add(baseURL, store, getContainer(), View.getMain().getCurrentView().serialize(), id);
+        add(baseURL, store, getContainer(object), View.getMain().getCurrentView().serialize(), id);
       }
     });
   });
@@ -110,6 +119,7 @@ exports.createView = function(store, editId) {
   var chapterData = store.get('chapters', {});
   var id = (editId && chapterData[editId]) ? editId : null;
 
+  var mainObject = View.getMain().getCurrentView();
   var object = new View.Object({
     title: id ? 'Edit Chapter' : 'Add Chapter',
     content: UI.render('form-new-chapter'),
@@ -142,7 +152,7 @@ exports.createView = function(store, editId) {
 
     if (hasValues && !active) {
       active = true;
-      showAction(store, id);
+      showAction(mainObject, id);
     } else if (!hasValues && active) {
       active = false;
       hideAction();

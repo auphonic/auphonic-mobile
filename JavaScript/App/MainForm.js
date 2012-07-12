@@ -26,6 +26,7 @@ module.exports = new Class({
     displayType: '',
     baseURL: null,
     saveURL: null,
+    presetChooserSelector: '.preset-chooser',
     getObjectName: function(object) {
       return '';
     },
@@ -63,15 +64,50 @@ module.exports = new Class({
     return 'main';
   },
 
+  update: function(data) {
+    var object = this.object;
+    var store = this.store;
+
+    store.eachView(function(view, type) {
+      if (view.setData)
+        view.setData(store, data && data[type], this.getBaseURL(), object, this.isRendered);
+    }, this);
+
+    if (this.isRendered) {
+      this.updateTitle();
+      this.updateAlgorithms(data);
+    }
+  },
+
+  // Title is used twice in productions
+  updateTitle: function() {
+    this.object.unserialize({title: Metadata.getData(this.store)['metadata.title']});
+  },
+
+  updateMetadataTitle: function() {
+    // Use metadata.title in both forms in productions.
+    var data = this.object.serialize();
+    if (data.title && data.title !== '') Metadata.getData(this.store)['metadata.title'] = data.title;
+  },
+
+  updateAlgorithms: function(data) {
+    // Use default values
+    if (!data) data = {algorithms: Object.map(API.getInfo('algorithms'), function(algorithm) {
+      return algorithm.default_value;
+    })};
+
+    this.object.unserialize(Object.flatten({algorithms: data.algorithms}));
+  },
+
   createView: function(store, data, presets) {
     var isEditMode = this.isEditMode = !!data;
+    var isNewProduction = (this.getDisplayType() == 'production' && !isEditMode);
     this.store = store;
+    this.presets = presets;
 
     var service = Source.getObject(store);
     var algorithms = Object.values(Object.map(API.getInfo('algorithms'), function(content, algorithm) {
-      return Object.append({key: algorithm}, content, {
-        value: (isEditMode ? data.algorithms[algorithm] : content.default_value)
-      });
+      return Object.append({key: algorithm}, content);
     }));
 
     var uiData = {
@@ -79,9 +115,10 @@ module.exports = new Class({
       baseURL: this.getBaseURL(),
       name: this.getObjectName(data),
       output_basename: isEditMode && data.output_basename,
-      presets: presets,
+      presets: presets && Object.values(presets),
       service: (service ? service.display_type : null),
-      audiofile: ListFiles.getData(store).audiofile
+      audiofile: ListFiles.getData(store).audiofile,
+      isNewProduction: isNewProduction
     };
     uiData[this.getDisplayType()] = true;
 
@@ -94,28 +131,46 @@ module.exports = new Class({
         onClick: this.bound('onActionClick')
       },
 
-      onShow: function() {
-        // Title is used twice in productions
-        object.unserialize({title: Metadata.getData(store)['metadata.title']});
-
-        Service.updateCounter(store, object);
-      },
-
-      onHide: function(direction) {
-        // Use metadata.title in both forms in productions.
-        var data = object.serialize();
-        if (data.title && data.title !== '') Metadata.getData(store)['metadata.title'] = data.title;
-
-        if (direction == 'left') store.erase();
-      }
+      onShow: this.bound('onShow'),
+      onHide: this.bound('onHide')
     });
 
-    if (isEditMode) store.eachView(function(view, type) {
-      if (view.setData)
-        view.setData(store, data[type], this.getBaseURL(), object);
+    store.eachView(function(view, type) {
+      if (view.setup)
+        view.setup(store, this.getBaseURL(), object);
     }, this);
 
+    this.update(data);
+
+    if (this.isEditMode) object.addEvent('show:once', (function() {
+      this.updateAlgorithms(data);
+    }).bind(this));
+
+    if (isNewProduction) object.addEvent('show:once', (function() {
+      var select = object.toElement().getElement(this.options.presetChooserSelector);
+      if (select) select.addEvent('change', this.bound('onPresetSelect'));
+    }).bind(this));
+
     View.getMain().push(object);
+
+    this.isRendered = true;
+  },
+
+  onShow: function() {
+    this.updateTitle();
+  },
+
+  onHide: function(direction) {
+    if (direction == 'left') this.store.erase();
+    else this.updateMetadataTitle();
+  },
+
+  onPresetSelect: function() {
+    this.store.erase();
+
+    var select = this.object.toElement().getElement(this.options.presetChooserSelector);
+    // Worst case this is null and it deletes all input
+    this.update(this.presets[select.get('value')]);
   },
 
   onActionClick: function(event) {

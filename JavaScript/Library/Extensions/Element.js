@@ -116,8 +116,8 @@ Element.implement({
         });
       } else if (type == 'radio' || type == 'checkbox') {
         el.set('checked', !!value);
-      } else if (value) {
-        el.set('value', value);
+      } else {
+        el.set('value', value || '');
       }
     });
   }

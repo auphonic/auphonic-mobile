@@ -136,7 +136,8 @@ var boot = function() {
     }),
     'div.checkbox': Class.Instantiate(Form.Checkbox),
     'select.empty': Class.Instantiate(Form.EmptySelect, {
-      placeholder: '! > .placeholder'
+      placeholderPosition: '!',
+      placeholder: '.placeholder',
     }),
     '.swipeable': Class.Instantiate(SwipeAble, {
 

@@ -235,6 +235,22 @@
     {{/if}}
 
     {{#if production}}
+      {{#if isNewProduction}}
+        {{#if presets}}
+          <li>
+            <label class="left">
+              <select name="format" class="preset-chooser right empty" data-select-type="preserve-null-state">
+                <option value="" selected>No Preset</option>
+                {{#each presets}}
+                  <option value="{{uuid}}">{{preset_name}}</option>
+                {{/each}}
+              </select>
+              <span class="right placeholder">choose a preset</span>
+              Preset
+            </label>
+          </li>
+        {{/if}}
+      {{/if}}
       <li>
         <label class="left">
           <input type="text" name="title" value="{{name}}" placeholder="choose production title" class="right" />
@@ -281,7 +297,7 @@
         <div class="right">
           <div class="checkbox">
             <span class="left"></span><span class="thumb" data-on="ON" data-off="OFF"></span>
-            <input type="checkbox" name="algorithms.{{key}}" value="1"{{#if value}} checked="checked"{{/if}} />
+            <input type="checkbox" name="algorithms.{{key}}" value="1"{{#if default_value}} checked="checked"{{/if}} />
           </div>
         </div>
         <label class="left info">

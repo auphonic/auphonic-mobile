@@ -127,6 +127,18 @@ Controller.define('/production/{uuid}/summary', function(req) {
 
 });
 
+var getPresets = function(callback) {
+  API.call('presets').on({
+    success: function(response) {
+      var presets = {};
+      response.data.each(function(preset) {
+        presets[preset.uuid] = preset;
+      });
+      callback(presets);
+    }
+  });
+};
+
 Controller.define('/production/edit/{uuid}', function(req) {
 
   var production = productions[req.uuid];
@@ -140,13 +152,17 @@ Controller.define('/production/edit/{uuid}', function(req) {
     Source.setData(form, production.service);
     ListFiles.setFile(form, production.audiofile);
 
-    form.show('main', production);
+    getPresets(function(presets) {
+      form.show('main', production, presets);
+    });
   });
 
 });
 
 Controller.define('/production/new', {priority: 1, isGreedy: true}, function() {
+  getPresets(function(presets) {
     form.show('main', null, presets);
+  });
 });
 
 Controller.define('/production/source', {priority: 1, isGreedy: true}, function() {

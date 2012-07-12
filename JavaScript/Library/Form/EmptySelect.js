@@ -8,7 +8,9 @@ module.exports = new Class({
   Implements: [Class.Singleton, Class.Binds, Options],
 
   options: {
-    placeholder: '! > .placeholder'
+    placeholderPosition: '!',
+    placeholder: '.placeholder',
+    type: 'default'
   },
 
   initialize: function(element, options) {
@@ -24,29 +26,62 @@ module.exports = new Class({
   },
 
   setup: function() {
+    var type = this.element.get('data-select-type');
+    if (type) this.options.type = type;
+
     this.attach();
   },
 
   attach: function() {
+    if (this.options.type == 'preserve-null-state')
+      this.element.addEvent('change', this.bound('change'));
+    else
+      this.element.addEvent('focus:once', this.bound('focusOnce'));
+
     this.element.addEvents({
-      'focus:once': this.bound('focusOnce'),
       focus: this.bound('focus'),
       blur: this.bound('blur')
     });
   },
 
   detach: function() {
+    if (this.options.type == 'preserve-null-state')
+      this.element.removeEvent('change', this.bound('change'));
+    else
+      this.element.removeEvent('focus:once', this.bound('focusOnce'));
     this.element.removeEvents({
-      'focus:once': this.bound('focusOnce'),
       focus: this.bound('focus'),
       blur: this.bound('blur')
     });
   },
 
+  removeElement: function() {
+    var element = this.element.getElement(this.options.placeholderPosition).getElement(this.options.placeholder);
+    if (element) {
+      element.dispose();
+      this.placeholder = element;
+    }
+
+    this.element.removeClass('empty');
+  },
+
+  // Only needed in preserve-null-state mode
+  recoverElement: function() {
+    if (!this.placeholder) return;
+
+    this.placeholder.inject(this.element.getElement(this.options.placeholderPosition));
+    this.element.addClass('empty');
+  },
+
+  // Only needed in preserve-null-state mode
+  change: function() {
+    if (this.element.get('value')) this.removeElement();
+    else this.recoverElement();
+  },
+
   focusOnce: function() {
-    var element = this.element.getElement(this.options.placeholder);
-    if (element) element.dispose();
-    this.element.removeClass('empty').fireEvent('change');
+    this.removeElement();
+    this.element.fireEvent('change');
   },
 
   focus: function() {
