@@ -7,7 +7,7 @@ var Source = require('./Source');
 var files = {};
 
 var setFile = exports.setFile = function(store, filename) {
-  store.set('audiofile', filename);
+  store.set('input_file', filename);
   return filename;
 };
 
@@ -17,7 +17,7 @@ exports.getType = function() {
 
 exports.getData = function(store) {
   return {
-    audiofile: store.get('audiofile')
+    input_file: store.get('input_file')
   };
 };
 

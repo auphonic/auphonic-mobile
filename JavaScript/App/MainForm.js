@@ -117,7 +117,7 @@ module.exports = new Class({
       output_basename: isEditMode && data.output_basename,
       presets: presets && Object.values(presets),
       service: (service ? service.display_type : null),
-      audiofile: ListFiles.getData(store).audiofile,
+      input_file: ListFiles.getData(store).input_file,
       isNewProduction: isNewProduction
     };
     uiData[this.getDisplayType()] = true;
