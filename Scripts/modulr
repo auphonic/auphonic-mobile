@@ -32,6 +32,9 @@ while (args.length) {
     case '--watch':
       watchers = {};
       break;
+    case '--no-watch':
+      watchers = null;
+      break;
     case '-m':
     case '--minify':
       options.minify = true;

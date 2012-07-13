@@ -25,6 +25,7 @@ Run
 PhoneGap Upgrade Notes for iOS
 ------------------------------
 
+```javascript
   // Add
   location = 'gap://ready';
   return;
@@ -34,6 +35,7 @@ PhoneGap Upgrade Notes for iOS
       createGapBridge();
   }
   gapBridge.src = "gap://ready";
+```
 
 Logo
 ----
