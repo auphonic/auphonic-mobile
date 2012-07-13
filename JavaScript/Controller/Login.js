@@ -3,9 +3,11 @@ var Form = require('Form');
 var LocalStorage = require('Utility/LocalStorage');
 var Spinner = require('ThirdParty/Spinner');
 
-var API = require('../API');
+var API = require('API');
 var Controller = require('./');
-var UI = require('../UI');
+var UI = require('UI');
+
+var APIKeys = require('APIKeys');
 
 var spinnerOptions = {
   lines: 12,
@@ -26,7 +28,11 @@ Controller.define('/login', function() {
   UI.Chrome.hide();
 
   var login = document.id('login');
-  login.set('html', UI.render('login'));
+  login.set('html', UI.render('login', {
+    client_id: APIKeys.ID,
+    client_secret: APIKeys.secret
+  }));
+
   login.getElement('a.button').addEvent('click', function(event) {
     event.preventDefault();
 

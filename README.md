@@ -10,6 +10,7 @@ Install
 * Install [Cordova (PhoneGap)](http://phonegap.com/)
 * Install NodeJS and npm (`brew install node npm` on OS X using [Homebrew](http://mxcl.github.com/homebrew/))
 * `npm install` in the root folder
+* Create an App at https://auphonic.com/api/apps/ and insert your API Keys in `JavaScript/APIKeys.js`
 * Use `Scripts/compile` to compile JavaScript and `Scripts/stylus` to compile Stylus to CSS
 
 Run
@@ -21,18 +22,18 @@ Run
  * *Note:* If developing locally in a browser adjust the relative path of the project in `App/index.html
 * The Android version is not functional yet
 
-Phonegap Upgrade Notes for iOS
+PhoneGap Upgrade Notes for iOS
 ------------------------------
 
-    // Add
-    location = 'gap://ready';
-    return;
+  // Add
+  location = 'gap://ready';
+  return;
 
-    // Before
-    if (!gapBridge) {
-        createGapBridge();
-    }
-    gapBridge.src = "gap://ready";
+  // Before
+  if (!gapBridge) {
+      createGapBridge();
+  }
+  gapBridge.src = "gap://ready";
 
 Logo
 ----
