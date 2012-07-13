@@ -64,6 +64,7 @@ var Request = module.exports = new Class({
 		if (!this.running) return;
 		this.xhr.abort();
 		this.xhr.removeEventListener('readystatechange', this.bound('onReadyStateChange'), false);
+		this.fireEvent('cancel');
 	},
 
 	isRunning: function() {

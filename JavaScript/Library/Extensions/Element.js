@@ -2,7 +2,7 @@ var Core = require('Core');
 var Element = Core.Element;
 var Elements = Core.Elements;
 
-if (!Element.prototype.classList) Element.implement({
+if (document.createElement('div').classList) Element.implement({
 
   addClass: function(className) {
     this.classList.add(className);

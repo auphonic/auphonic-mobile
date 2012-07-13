@@ -2,9 +2,9 @@
 
 // Watch Script for Modulr-Node based on Stylus by @cpojer
 
-var fs = require('fs'),
-  modulr = require('modulr'),
-  path = require('path');
+var fs = require('fs');
+var modulr = require('modulr');
+var path = require('path');
 
 var options = {
   allowDirModules: true,
