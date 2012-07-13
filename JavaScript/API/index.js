@@ -51,6 +51,15 @@ var listenersFor = function(url) {
   }};
 };
 
+var getURL = function(url) {
+  return window.__API_DOMAIN + 'api/' + url + '.json';
+};
+
+var getAuthorization = function() {
+  var user = LocalStorage.get('User');
+  return (user ? 'OAuth ' + user.access_token : '');
+};
+
 API.call = function(url, method, requestData) {
   if (request && request.isRunning() && request.getOption('method').toLowerCase() == 'get') {
     request.cancel();
@@ -69,14 +78,12 @@ API.call = function(url, method, requestData) {
     }
   }
 
-  var user = LocalStorage.get('User');
-
   request = new Request.JSON({
 
-    url: window.__API_DOMAIN + 'api/' + url + '.json',
+    url: getURL(url),
     method: method,
     headers: {
-      'Authorization': (user ? 'OAuth ' + user.access_token : ''),
+      'Authorization': getAuthorization(),
       'Content-Type': 'application/json'
     },
 
@@ -95,6 +102,35 @@ API.call = function(url, method, requestData) {
     }
 
   }).send(requestData);
+
+  return listenersFor(url);
+};
+
+API.upload = function(url, file) {
+  var success = function(response) {
+    API.on(url).fireEvent('success', [response]);
+    console.log('Code = ' + response.responseCode);
+    console.log('Response = ' + response.response);
+    console.log('Sent = ' + response.bytesSent);
+  };
+
+  var error = function(error) {
+    API.on(url).fireEvent('error', [error]);
+    console.log(error.code);
+  };
+
+  var options = new window.FileUploadOptions();
+  options.fileKey = 'input_file';
+  options.fileName = file.fullPath.substr(file.fullPath.lastIndexOf('/') + 1);
+  options.mimeType = file.type;
+  options.params = {
+    headers: {
+      Authorization: getAuthorization()
+    }
+  };
+
+  var transfer = new window.FileTransfer();
+  transfer.upload(file.fullPath, getURL(url), success, error, options);
 
   return listenersFor(url);
 };
