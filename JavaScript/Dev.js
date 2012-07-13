@@ -7,7 +7,7 @@ var onChange = History.onChange;
 var getPath = History.getPath;
 
 var baseURL = window.__baseURL;
-var base = window.__base;
+var base = new RegExp('^' + baseURL);
 var clean = function(url) {
   return base.test(url) ? url.substr(baseURL.length) : url;
 };

@@ -19,7 +19,7 @@ Run
 * Use the Xcode project in `iOS/` to run the App on the iPhone
 * Use Google Chrome and open `App/` on a local server.
  * Be sure to enable touch events in Web Inspector (see: Web Inspector Settings)
- * *Note:* If developing locally in a browser adjust the relative path of the project in `App/index.html
+ * *Note:* If developing locally in a browser adjust the relative path of the project in `App/index.html`
 * The Android version is not functional yet
 
 PhoneGap Upgrade Notes for iOS
