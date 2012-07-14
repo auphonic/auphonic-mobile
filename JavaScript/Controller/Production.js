@@ -146,7 +146,7 @@ Controller.define('/production/edit/{uuid}', function(req) {
 
   View.getMain().showIndicator({stack: 'production'});
 
-  Source.get(function() {
+  Source.fetch(function() {
     form = createForm(production ? {saveURL: 'production/' + production.uuid} : null);
 
     Source.setData(form, production.service);

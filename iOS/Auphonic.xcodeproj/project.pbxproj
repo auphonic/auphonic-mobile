@@ -65,11 +65,7 @@
 		3DC722EA15B05B5400D2D71C /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = Resources/es.lproj/Localizable.strings; sourceTree = "<group>"; };
 		3DC722EE15B05B5400D2D71C /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = Resources/de.lproj/Localizable.strings; sourceTree = "<group>"; };
 		3DC722F215B05B5400D2D71C /* se */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = se; path = Resources/se.lproj/Localizable.strings; sourceTree = "<group>"; };
-		3DC722F515B05B5400D2D71C /* icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = icon.png; path = Resources/icons/icon.png; sourceTree = "<group>"; };
-		3DC722F715B05B5400D2D71C /* icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "icon@2x.png"; path = "Resources/icons/icon@2x.png"; sourceTree = "<group>"; };
 		3DC722F915B05B5400D2D71C /* icon-72.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "icon-72.png"; path = "Resources/icons/icon-72.png"; sourceTree = "<group>"; };
-		3DC722FC15B05B5400D2D71C /* Default~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Default~iphone.png"; path = "Resources/splash/Default~iphone.png"; sourceTree = "<group>"; };
-		3DC722FE15B05B5400D2D71C /* Default@2x~iphone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Default@2x~iphone.png"; path = "Resources/splash/Default@2x~iphone.png"; sourceTree = "<group>"; };
 		3DC7230015B05B5400D2D71C /* Capture.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; name = Capture.bundle; path = Resources/Capture.bundle; sourceTree = "<group>"; };
 		3DC7230215B05B5400D2D71C /* Cordova.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Cordova.plist; sourceTree = "<group>"; };
 		3DC7230515B05B5400D2D71C /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = AppDelegate.h; path = Classes/AppDelegate.h; sourceTree = "<group>"; };
@@ -78,7 +74,6 @@
 		3DC7230915B05B5400D2D71C /* MainViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = MainViewController.m; path = Classes/MainViewController.m; sourceTree = "<group>"; };
 		3DC7230B15B05B5400D2D71C /* MainViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = MainViewController.xib; path = Classes/MainViewController.xib; sourceTree = "<group>"; };
 		3DC7230E15B05B5400D2D71C /* README */ = {isa = PBXFileReference; lastKnownFileType = text; name = README; path = Plugins/README; sourceTree = "<group>"; };
-		3DC7230F15B05B5400D2D71C /* verify.sh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; path = verify.sh; sourceTree = "<group>"; };
 		3DC7231515B05B6A00D2D71C /* App */ = {isa = PBXFileReference; lastKnownFileType = folder; name = App; path = ../App; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -177,7 +172,6 @@
 				3DC722E015B05B5400D2D71C /* Auphonic-Prefix.pch */,
 				3DC7230215B05B5400D2D71C /* Cordova.plist */,
 				3DC7230B15B05B5400D2D71C /* MainViewController.xib */,
-				3DC7230F15B05B5400D2D71C /* verify.sh */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -191,7 +185,6 @@
 				3DC722EC15B05B5400D2D71C /* de.lproj */,
 				3DC722F015B05B5400D2D71C /* se.lproj */,
 				3DC722F415B05B5400D2D71C /* icons */,
-				3DC722FB15B05B5400D2D71C /* splash */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -231,20 +224,9 @@
 		3DC722F415B05B5400D2D71C /* icons */ = {
 			isa = PBXGroup;
 			children = (
-				3DC722F515B05B5400D2D71C /* icon.png */,
-				3DC722F715B05B5400D2D71C /* icon@2x.png */,
 				3DC722F915B05B5400D2D71C /* icon-72.png */,
 			);
 			name = icons;
-			sourceTree = "<group>";
-		};
-		3DC722FB15B05B5400D2D71C /* splash */ = {
-			isa = PBXGroup;
-			children = (
-				3DC722FC15B05B5400D2D71C /* Default~iphone.png */,
-				3DC722FE15B05B5400D2D71C /* Default@2x~iphone.png */,
-			);
-			name = splash;
 			sourceTree = "<group>";
 		};
 		3DC7230415B05B5400D2D71C /* Classes */ = {
