@@ -1,7 +1,12 @@
 <?php
 
 $api = 'https://auphonic.com/';
-$url = $api . (!empty($_GET['call']) ? $_GET['call'] : '');
+$call = $_SERVER['REQUEST_URI'];
+$call = substr($call, strpos($call, '?') + 1);
+$queryStringStart = strpos($call, '&');
+if ($queryStringStart !== false) $call[$queryStringStart] = '?';
+
+$url = $api . $call;
 $method = $_SERVER['REQUEST_METHOD'];
 $data = file_get_contents('php://input');
 $headers = apache_request_headers();
