@@ -64,6 +64,14 @@ module.exports = new Class({
     return 'main';
   },
 
+  reset: function() {
+    this.store.erase();
+    this.isRendered = false;
+    this.isEditMode = false;
+    this.object = null;
+    this.presets = null;
+  },
+
   update: function(data) {
     var object = this.object;
     var store = this.store;
@@ -168,7 +176,7 @@ module.exports = new Class({
   },
 
   onHide: function(direction) {
-    if (direction == 'left') this.store.erase();
+    if (direction == 'left') this.reset();
     else this.updateMetadataTitle();
   },
 
