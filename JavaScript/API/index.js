@@ -55,6 +55,11 @@ var getURL = function(url) {
   return window.__API_DOMAIN + 'api/' + url + '.json';
 };
 
+var formatGetURL = function(url, data) {
+  if (!data) return url;
+  return url + (url.contains('?') ? '&' : '?') + data;
+};
+
 var getAuthorization = function() {
   var user = LocalStorage.get('User');
   return (user ? 'OAuth ' + user.access_token : '');
@@ -66,9 +71,11 @@ API.call = function(url, method, requestData) {
     API.on(url).removeEvents('success:once').removeEvents('error:once');
   }
 
+  if (typeof requestData != 'string') requestData = Object.toQueryString(requestData);
+
   method = (method || 'get').toLowerCase();
   if (method == 'get') {
-    var data = getCache(url);
+    var data = getCache(formatGetURL(url, requestData));
     if (data) {
       // Must be async
       (function() {
@@ -97,7 +104,7 @@ API.call = function(url, method, requestData) {
       var options = API.on(url).options;
       if (options && options.formatter) data = options.formatter(data);
 
-      if (method == 'get') setCache(url, data, options && options.lifetime);
+      if (method == 'get') setCache(formatGetURL(url, requestData), data, options && options.lifetime);
       API.on(url).fireEvent('success', [data]);
     }
 

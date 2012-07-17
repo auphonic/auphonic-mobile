@@ -28,8 +28,14 @@ var Request = module.exports = new Class({
 
 	send: function(data) {
 		var method = this.options.method.toUpperCase();
+		var url = this.options.url;
+
 		if (typeof data != 'string') data = Object.toQueryString(data);
-		this.xhr.open(method, this.options.url, true);
+		if (data && method == 'GET') {
+			url += (url.contains('?') ? '&' : '?') + data;
+			data = null;
+		}
+		this.xhr.open(method, url, true);
 
 		// Set Headers
 		var headers = this.options.headers;
