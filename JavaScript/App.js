@@ -203,12 +203,16 @@ var boot = function() {
     }),
     indicatorDelay: 500,
 
+    onChange: function() {
+      var stackName = this.getStack().getName();
+      UI.highlight(document.getElement('footer .' + stackName));
+    },
+
     onTransitionEnd: function() {
       var stack = this.getStack();
       var previous = stack && stack.getPrevious();
-      if (!stack || !previous) return;
-
-      previous.toElement().getElements('ul li a.selected').removeClass('selected');
+      if (previous)
+        previous.toElement().getElements('ul li a.selected').removeClass('selected');
     }
   }));
 

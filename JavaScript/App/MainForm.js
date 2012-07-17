@@ -158,7 +158,7 @@ module.exports = new Class({
       if (select) select.addEvent('change', this.bound('onPresetSelect'));
     }).bind(this));
 
-    View.getMain().push(object);
+    View.getMain().push(this.getDisplayType(), object);
 
     this.isRendered = true;
   },

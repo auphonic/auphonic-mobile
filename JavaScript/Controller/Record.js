@@ -5,15 +5,28 @@ var Controller = require('./');
 var UI = require('UI');
 var View = require('View');
 
+var LocalStorage = require('Utility/LocalStorage');
+
 var CordovaAudioRecorder = require('Recording/CordovaAudioRecorder');
 var CordovaVideoRecorder = require('Recording/CordovaVideoRecorder');
 
 var recorder;
 var upload = function(file) {
-  var data = {metadata: {title: 'Mobile App: New Production'}};
+  LocalStorage.push('recordings', file);
 
+  var data = {metadata: {title: 'Mobile App: New Production'}};
   var onCreateSuccess = function(response) {
-    API.upload('production/{uuid}/upload'.substitute(response.data), file);
+    LocalStorage.set('currentUpload', {
+      uuid: response.data.uuid,
+      input_file: file.name
+    });
+
+    API.upload('production/{uuid}/upload'.substitute(response.data), file).on({
+      success: function() {
+        LocalStorage.erase('currentUpload');
+      }
+    });
+
     History.push('/production/edit/{uuid}'.substitute(response.data));
   };
 
@@ -31,31 +44,52 @@ Controller.define('/record', function() {
 
   View.getMain().push('record', new View.Object({
     title: 'Recordings',
-    content: UI.render('record')
+    content: UI.render('record', {
+      recordings: LocalStorage.get('recordings')
+    })
   }));
 
 });
 
+Controller.define('/record/new-video', {priority: 1, isGreedy: true}, function() {
+  var videoRecorder = new CordovaVideoRecorder();
+
+  videoRecorder.addEvents({
+    success: upload
+  });
+
+  videoRecorder.start();
+});
+
 Controller.define('/record/new-audio', {priority: 1, isGreedy: true}, function() {
-  recorder = new CordovaAudioRecorder();
+  View.getMain().push('record', new View.Object({
+    title: 'Audio Recording',
+    content: UI.render('record-audio')
+  }));
+});
+
+Controller.define('/record/new-audio-start', {priority: 1, isGreedy: true}, function() {
+  var recordings = LocalStorage.get('recordings') || [];
+
+  recorder = new CordovaAudioRecorder('mobile-recording-' + (recordings.length + 1));
 
   var status = document.getElement('.record_status');
   var time;
 
   recorder.addEvents({
-    onStart: function() {
+    start: function() {
       time = 0;
       document.getElement('.record_button').hide();
       document.getElement('.stop_record_button').show();
     },
 
-    onSuccess: upload,
+    success: upload,
 
-    onUpdate: function() {
+    update: function() {
       status.set('text', (++time) + ' second' + (time == 1 ? '' : 's'));
     },
 
-    onCancel: function() {
+    cancel: function() {
       document.getElement('.record_button').show();
       document.getElement('.stop_record_button').hide();
     }
@@ -67,14 +101,4 @@ Controller.define('/record/new-audio', {priority: 1, isGreedy: true}, function()
 
 Controller.define('/record/stop', {priority: 1, isGreedy: true}, function() {
   recorder.stop();
-});
-
-Controller.define('/record/new-video', {priority: 1, isGreedy: true}, function() {
-  var videoRecorder = new CordovaVideoRecorder();
-
-  videoRecorder.addEvents({
-    onSuccess: upload
-  });
-
-  videoRecorder.start();
 });

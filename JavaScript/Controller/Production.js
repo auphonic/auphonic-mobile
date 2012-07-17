@@ -5,6 +5,8 @@ var Controller = require('./');
 var View = require('../View');
 var UI = require('../UI');
 
+var LocalStorage = require('Utility/LocalStorage');
+
 var Chapter = require('App/Chapter');
 var Data = require('App/Data');
 var ListFiles = require('App/ListFiles');
@@ -142,16 +144,27 @@ var getPresets = function(callback) {
 var edit = function(production) {
   View.getMain().showIndicator({stack: 'production'});
 
-  Source.fetch(function() {
+  var show = function() {
     form = createForm(production ? {saveURL: 'production/' + production.uuid} : null);
 
-    Source.setData(form, production.service);
+    if (production.service) Source.setData(form, production.service);
+
+    // Check if we are currently uploading
+    if (!production.input_file) {
+      var currentUpload = LocalStorage.get('currentUpload');
+      if (currentUpload && currentUpload.uuid == production.uuid)
+        production.input_file = currentUpload.input_file;
+    }
+
     ListFiles.setFile(form, production.input_file);
 
     getPresets(function(presets) {
       form.show('main', production, presets);
     });
-  });
+  };
+
+  if (production.service) Source.fetch(show);
+  else show();
 };
 
 Controller.define('/production/edit/{uuid}', function(req) {

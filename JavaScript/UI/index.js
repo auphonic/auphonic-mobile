@@ -59,6 +59,7 @@ Object.append(UI, {
 
   highlight: function(element) {
     element = document.id(element);
+    if (!element || this.isHighlighted(element)) return;
 
     element.addClass('selected');
     var parent = element.getParent('li');

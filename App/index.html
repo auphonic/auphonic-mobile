@@ -40,7 +40,7 @@
     <ul>
       <li><a href="/production" class="production"><span></span><span>Productions</span></a></li>
       <li><a href="/preset" class="preset"><span></span><span>Presets</span></a></li>
-      <li><a href="/record" class="microphone"><span></span><span>Recordings</span></a></li>
+      <li><a href="/record" class="record"><span></span><span>Recordings</span></a></li>
       <li><a href="/settings" class="settings"><span></span><span>Settings</span></a></li>
     </ul>
   </footer>
@@ -508,9 +508,23 @@
 </script>
 
 <script id="record-template" type="text/x-handlebars-template">
-  <ul class="record_button">
+  <ul>
     <li><a href="/record/new-audio">New Audio Recording</a></li>
     <li><a href="/record/new-video">New Video Recording</a></li>
+  </ul>
+  {{#if recordings}}
+    <h1>Recent Recordings</h1>
+    <ul>
+    {{#each recordings}}
+      <li><a href="/record/{{name}}" class="arrow"><span></span>{{name}}</a></li>
+    {{/each}}
+    </ul>
+  {{/if}}
+</script>
+
+<script id="record-audio-template" type="text/x-handlebars-template">
+  <ul class="record_button">
+    <li><a href="/record/new-audio-start">Start Recording</a></li>
   </ul>
   <ul class="stop_record_button hidden">
     <li><span class="record_status right light"></span><a href="/record/stop">Stop recording</a></li>
