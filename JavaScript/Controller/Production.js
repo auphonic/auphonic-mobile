@@ -17,7 +17,7 @@ var Source = require('App/Source');
 var Form = require('App/Form');
 var form;
 
-var productions = null;
+var productions = {};
 var list = null;
 
 var createForm = function(options) {
@@ -139,11 +139,7 @@ var getPresets = function(callback) {
   });
 };
 
-Controller.define('/production/edit/{uuid}', function(req) {
-
-  var production = productions[req.uuid];
-  if (!production) return;
-
+var edit = function(production) {
   View.getMain().showIndicator({stack: 'production'});
 
   Source.fetch(function() {
@@ -155,6 +151,25 @@ Controller.define('/production/edit/{uuid}', function(req) {
     getPresets(function(presets) {
       form.show('main', production, presets);
     });
+  });
+};
+
+Controller.define('/production/edit/{uuid}', function(req) {
+
+  var production = productions[req.uuid];
+  if (production) {
+    edit(production);
+    return;
+  }
+
+  View.getMain().showIndicator({stack: 'production'});
+
+  // Maybe we haven't loaded productions yet
+  API.call('production/{uuid}'.substitute(req)).on({
+    success: function(response) {
+      // We are not bothering with the list of productions
+      edit(response.data);
+    }
   });
 
 });

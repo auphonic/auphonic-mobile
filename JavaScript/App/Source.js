@@ -29,7 +29,7 @@ exports.getObject = function(store) {
   return store.get('serviceObject', {});
 };
 
-var get = exports.get = function(callback) {
+var fetch = exports.fetch = function(callback) {
   API.call('services').on({
 
     success: function(response) {
@@ -50,7 +50,7 @@ var get = exports.get = function(callback) {
 exports.createView = function(store) {
   View.getMain().showIndicator();
 
-  get(function(list) {
+  fetch(function(list) {
     View.getMain().push(new View.Object({
       title: 'Input Source',
       backTitle: 'Source',

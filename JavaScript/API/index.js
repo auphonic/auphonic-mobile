@@ -121,7 +121,7 @@ API.upload = function(url, file) {
 
   var options = new window.FileUploadOptions();
   options.fileKey = 'input_file';
-  options.fileName = file.fullPath.substr(file.fullPath.lastIndexOf('/') + 1);
+  options.fileName = file.name;
   options.mimeType = file.type;
   options.params = {
     headers: {

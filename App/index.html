@@ -230,7 +230,7 @@
   <ul class="formcontent">
     {{#if input_file}}
       <li>
-        <label><span class="light">{{service}}</span> <small>{{input_file}}</small></label>
+        <label><span class="light">{{#if service}}{{service}}{{else}}Upload{{/if}}</span> <small>{{input_file}}</small></label>
       </li>
     {{/if}}
 
@@ -504,6 +504,16 @@
     <li>
       <label class="left"><input type="text" name="start" placeholder="00:00:00" class="right" />Start Time</label>
     </li>
+  </ul>
+</script>
+
+<script id="record-template" type="text/x-handlebars-template">
+  <ul class="record_button">
+    <li><a href="/record/new-audio">New Audio Recording</a></li>
+    <li><a href="/record/new-video">New Video Recording</a></li>
+  </ul>
+  <ul class="stop_record_button hidden">
+    <li><span class="record_status right light"></span><a href="/record/stop">Stop recording</a></li>
   </ul>
 </script>
 

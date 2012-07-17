@@ -100,10 +100,17 @@ module.exports = new Class({
   },
 
   createView: function(store, data, presets) {
+    var isProduction = (this.getDisplayType() == 'production');
     var isEditMode = this.isEditMode = !!data;
-    var isNewProduction = (this.getDisplayType() == 'production' && !isEditMode);
+    var isNewProduction = (isProduction && !isEditMode);
     this.store = store;
     this.presets = presets;
+
+    // This is a placeholder title created by the mobile app, remove it if possible
+    if (isEditMode && isProduction && data.metadata.title == 'Mobile App: New Production') {
+      data.metadata.title = '';
+      isNewProduction = true;
+    }
 
     var service = Source.getObject(store);
     var algorithms = Object.values(Object.map(API.getInfo('algorithms'), function(content, algorithm) {
