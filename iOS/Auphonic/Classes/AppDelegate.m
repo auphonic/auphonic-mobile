@@ -111,9 +111,6 @@
     [self.window addSubview:self.viewController.view];
     [self.window makeKeyAndVisible];
     
-    // TODO(cpojer): Remove me after debugging
-    [NSClassFromString(@"WebView") _enableRemoteInspector];
-    
     return YES;
 }
 
