@@ -22,4 +22,5 @@ var View = module.exports = {
 
 View.Controller = require('./Controller');
 View.Object = require('./Object');
+View.Object.LoadMore = require('./Object-LoadMore');
 View.Stack = require('./Stack');

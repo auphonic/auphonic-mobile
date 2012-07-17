@@ -20,7 +20,6 @@ var Form = require('App/Form');
 var form;
 
 var productions = {};
-var list = null;
 
 var createForm = function(options) {
   return new Form({
@@ -62,31 +61,45 @@ var createForm = function(options) {
 
 Controller.define('/production', function() {
 
+  productions = {};
+
+  var options = {
+    offset: 0,
+    limit: 20
+  };
+
+  var load = function(options, onSuccess) {
+    API.call('productions', 'get', options).on({success: onSuccess});
+  };
+
+  var add = function(data) {
+    data.each(function(item) {
+      productions[item.uuid] = item;
+    });
+  };
+
   View.getMain().showIndicator({stack: 'production'});
 
-  API.call('productions').on({
+  load(options, function(response) {
+    Source.fetch(function(sources) {
+      add(response.data);
 
-    success: function(response) {
-      Source.fetch(function(sources) {
-        list = response.data;
-
-        productions = {};
-        list.each(function(production) {
-          productions[production.uuid] = production;
-        });
-
-        View.getMain().push('production', new View.Object({
-          title: 'Productions',
-          content: UI.render('production', {production: list}),
-          action: {
-            title: 'New',
-            // If there are no services we skip the service chooser interface
-            url: (sources && sources.length ? '/production/source' : '/record')
-          }
-        }));
-      });
-    }
-
+      View.getMain().push('production', new View.Object.LoadMore({
+        title: 'Productions',
+        content: UI.render('production', {production: response.data}),
+        action: {
+          title: 'New',
+          // If there are no services we skip the service chooser interface
+          url: (sources && sources.length ? '/production/source' : '/record')
+        },
+        loadMoreFunction: load,
+        loadMoreOptions: options,
+        loadedItems: response.data.length,
+        addItemsFunction: add,
+        itemContainer: '.production_container',
+        templateId: 'production-single'
+      }));
+    });
   });
 
 });

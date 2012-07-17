@@ -79,7 +79,7 @@
 
 <script id="production-template" type="text/x-handlebars-template">
   {{#if production}}
-    <ul>
+    <ul class="production_container">
       {{#each production}}
         <li><a href="/production/{{uuid}}" class="arrow"><span></span>{{metadata.title}}</a></li>
       {{/each}}
@@ -93,9 +93,13 @@
   {{/if}}
 </script>
 
+<script id="production-single-template" type="text/x-handlebars-template">
+  <li><a href="/production/{{uuid}}" class="arrow"><span></span>{{metadata.title}}</a></li>
+</script>
+
 <script id="preset-template" type="text/x-handlebars-template">
   {{#if preset}}
-    <ul>
+    <ul class="preset_container">
       {{#each preset}}
       <li class="swipeable" data-api-url="preset/{{uuid}}" data-method="delete">
         <span class="right removable">
@@ -112,6 +116,15 @@
       <li><a href="/preset/new" class="arrow"><span></span>Define a new Preset</a></li>
     </ul>
   {{/if}}
+</script>
+
+<script id="preset-single-template" type="text/x-handlebars-template">
+  <li class="swipeable" data-api-url="preset/{{uuid}}" data-method="delete">
+    <span class="right removable">
+      <span><a href="#" class="button red small">Delete</a></span>
+    </span>
+    <a href="/preset/{{uuid}}" class="arrow"><span></span>{{preset_name}}</a></li>
+  </li>
 </script>
 
 <script id="data-detail-template" type="text/x-handlebars-template">

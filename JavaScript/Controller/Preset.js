@@ -19,7 +19,6 @@ var Form = require('App/Form');
 var form;
 
 var presets = null;
-var list = null;
 
 var createForm = function(options) {
   return new Form({
@@ -47,33 +46,43 @@ var createForm = function(options) {
 
 Controller.define('/preset', function() {
 
-  View.getMain().showIndicator({stack: 'preset'});
-
-  list = [];
   presets = {};
 
-  API.call('presets').on({
+  var options = {
+    offset: 0,
+    limit: 10
+  };
 
-    success: function(response) {
-      list = response.data;
+  var load = function(options, onSuccess) {
+    API.call('presets', 'get', options).on({success: onSuccess});
+  };
 
-      presets = {};
-      list.each(function(preset) {
-        presets[preset.uuid] = preset;
-      });
+  var add = function(data) {
+    data.each(function(item) {
+      presets[item.uuid] = item;
+    });
+  };
 
-      View.getMain().push('preset', new View.Object({
-        title: 'Presets',
-        content: UI.render('preset', {preset: list}),
-        action: {
-          title: 'New',
-          url: '/preset/new'
-        }
-      }));
-    }
+  View.getMain().showIndicator({stack: 'preset'});
 
+  load(options, function(response) {
+    add(response.data);
+
+    View.getMain().push('preset', new View.Object.LoadMore({
+      title: 'Presets',
+      content: UI.render('preset', {preset: response.data}),
+      action: {
+        title: 'New',
+        url: '/preset/new'
+      },
+      loadMoreFunction: load,
+      loadMoreOptions: options,
+      loadedItems: response.data.length,
+      addItemsFunction: add,
+      itemContainer: '.preset_container',
+      templateId: 'preset-single'
+    }));
   });
-
 });
 
 Controller.define('/preset/{uuid}', function(req) {
