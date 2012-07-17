@@ -155,12 +155,31 @@ exports.createView = function(store, editId) {
   var outputFiles = store.get('output_files', {});
   var id = (editId && outputFiles[editId]) ? editId : null;
 
-  var list = [];
   var files = {};
+  var formats = {
+    lossy: {
+      display_name: 'Lossy Audio',
+      items: []
+    },
+    lossless: {
+      display_name: 'Lossless Audio',
+      items: []
+    },
+    video: {
+      display_name: 'Video',
+      items: []
+    },
+    dflt: {
+      display_name: 'Other',
+      items: []
+    }
+  };
+
   Object.each(API.getInfo('output_files'), function(value, key) {
+    var type = value.type;
     value = Object.append({}, value);
     value.value = key;
-    if (value.type != 'description' && value.bitrate_strings) {
+    if (type != 'description' && value.bitrate_strings) {
       value.has_options = true;
       value.bitrate_format = [];
         value.bitrate_strings.each(function(string, index) {
@@ -173,14 +192,18 @@ exports.createView = function(store, editId) {
       });
     }
     files[key] = value;
-    list.push(value);
+    (formats[type] || formats.dflt).items.push(value);
+  });
+
+  Object.each(formats, function(format) {
+    format.items.sortByKey('display_name');
   });
 
   var mainObject = View.getMain().getCurrentView();
   var object = new View.Object({
     title: id ? 'Edit Format' : 'Add Format',
     content: UI.render('form-new-output-file', {
-      format: list
+      formats: Object.values(formats)
     }),
     back: {
       title: 'Cancel'

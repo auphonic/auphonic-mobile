@@ -380,8 +380,12 @@
     <li>
       <label class="left">
         <select name="format" class="right empty">
-          {{#each format}}
-            <option value="{{value}}">{{display_name}}</option>
+          {{#each formats}}
+            <optgroup label="{{display_name}}">
+              {{#each items}}
+                <option value="{{value}}">{{display_name}}</option>
+              {{/each}}
+            </optgroup>
           {{/each}}
         </select>
         <span class="right placeholder">choose a format</span>
@@ -391,19 +395,21 @@
   </ul>
 
   <ul class="bitrates hidden">
-    {{#each format}}
-      {{#if has_options}}
-        <li data-output-file="{{value}}">
-          <label class="left">
-            <select name="bitrate" class="right small">
-              {{#each bitrate_format}}
-                <option value="{{value}}"{{#if selected}}selected="selected"{{/if}}>{{title}}</option>
-              {{/each}}
-            </select>
-            Bitrate
-          </label>
-        </li>
-      {{/if}}
+    {{#each formats}}
+      {{#each items}}
+        {{#if has_options}}
+          <li data-output-file="{{value}}">
+            <label class="left">
+              <select name="bitrate" class="right small">
+                {{#each bitrate_format}}
+                  <option value="{{value}}"{{#if selected}}selected="selected"{{/if}}>{{title}}</option>
+                {{/each}}
+              </select>
+              Bitrate
+            </label>
+          </li>
+        {{/if}}
+      {{/each}}
     {{/each}}
   </ul>
 </script>
