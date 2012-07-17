@@ -51,7 +51,7 @@ exports.createView = function(store) {
   View.getMain().showIndicator();
 
   fetch(function(list) {
-    View.getMain().push(new View.Object({
+    View.getMain().push('production', new View.Object({
       title: 'Input Source',
       backTitle: 'Source',
       content: UI.render('service-choose', {
