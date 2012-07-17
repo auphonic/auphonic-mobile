@@ -15,7 +15,15 @@ exports.getType = function() {
   return 'listFiles';
 };
 
+exports.getObject = function(store) {
+  return store.get('input_file');
+};
+
 exports.getData = function(store) {
+  // If there is no service (ie. an upload) we don't send the input_file name as string
+  var service = Source.getData(store).service;
+  if (!service) return null;
+
   return {
     input_file: store.get('input_file')
   };

@@ -124,7 +124,7 @@ module.exports = new Class({
       output_basename: isEditMode && data.output_basename,
       presets: presets && Object.values(presets),
       service: (service ? service.display_type : null),
-      input_file: ListFiles.getData(store).input_file,
+      input_file: ListFiles.getObject(store),
       isNewProduction: isNewProduction
     };
     uiData[this.getDisplayType()] = true;

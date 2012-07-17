@@ -67,21 +67,24 @@ Controller.define('/production', function() {
   API.call('productions').on({
 
     success: function(response) {
-      list = response.data;
+      Source.fetch(function(sources) {
+        list = response.data;
 
-      productions = {};
-      list.each(function(production) {
-        productions[production.uuid] = production;
+        productions = {};
+        list.each(function(production) {
+          productions[production.uuid] = production;
+        });
+
+        View.getMain().push('production', new View.Object({
+          title: 'Productions',
+          content: UI.render('production', {production: list}),
+          action: {
+            title: 'New',
+            // If there are no services we skip the service chooser interface
+            url: (sources && sources.length ? '/production/source' : '/record')
+          }
+        }));
       });
-
-      View.getMain().push('production', new View.Object({
-        title: 'Productions',
-        content: UI.render('production', {production: list}),
-        action: {
-          title: 'New',
-          url: '/production/source'
-        }
-      }));
     }
 
   });

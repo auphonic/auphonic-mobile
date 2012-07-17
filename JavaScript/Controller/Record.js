@@ -31,7 +31,7 @@ var upload = function(file) {
   };
 
   // TODO(cpojer): use a new production instead of the same one
-  var object = {uuid: 'hA68J6ZxFoYwjYZrAdEZpE'};
+  var object = {uuid: 'MCjr3YYo3d7rypS5trzKJ9'};
   onCreateSuccess.call(null, {data: object});
   return;
 
