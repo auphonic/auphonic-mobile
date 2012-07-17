@@ -9,6 +9,7 @@ require('Custom-Event');
 require('Mobile');
 
 // Load Extensions
+require('Extensions/Array');
 require('Extensions/Element');
 require('Extensions/HandlebarsHelper');
 require('Extensions/Transition');

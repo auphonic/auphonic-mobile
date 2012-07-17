@@ -12,11 +12,7 @@ exports.prepare = function(object) {
   object.hasDetails = metadata.summary || metadata.publisher || metadata.url || metadata.hasLicense;
   object.hasChapters = object.chapters && object.chapters.length;
 
-  if (object.hasChapters) object.chapters.sort(function(a, b) {
-    if (a.start == b.start) return 0;
-    return a.start > b.start ? 1 : -1;
-  });
-
+  if (object.hasChapters) object.chapters.sortByKey('start');
 
   if (object.outgoing_services && object.outgoing_services.length) {
     var uuids = {};

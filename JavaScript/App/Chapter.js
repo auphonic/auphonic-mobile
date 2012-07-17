@@ -34,12 +34,7 @@ var createUIElement = function(baseURL, store, content, id) {
 var createUIElements = function(baseURL, store, list) {
   if (!list) return null;
 
-  list.sort(function(a, b) {
-    if (a.start == b.start) return 0;
-    return a.start > b.start ? 1 : -1;
-  });
-
-  return list.map(function(chapter) {
+  return list.sortByKey('start').map(function(chapter) {
     return createUIElement(baseURL + 'new/chapter/{id}', store, chapter);
   });
 };
