@@ -173,7 +173,11 @@ API.authenticate = function(requestData) {
 
 API.invalidate = function(url) {
   if (!url) cache = {};
-  delete cache[url];
+
+  Object.each(cache, function(value, key) {
+    if (key.indexOf(url) === 0)
+      delete cache[key];
+  });
 };
 
 API.cacheInfo = function(url) {
