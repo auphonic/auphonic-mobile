@@ -40,7 +40,7 @@
     <ul>
       <li><a href="/production" class="production"><span></span><span>Productions</span></a></li>
       <li><a href="/preset" class="preset"><span></span><span>Presets</span></a></li>
-      <li><a href="/record" class="record"><span></span><span>Recordings</span></a></li>
+      <li><a href="/recording" class="record"><span></span><span>Recordings</span></a></li>
       <li><a href="/settings" class="settings"><span></span><span>Settings</span></a></li>
     </ul>
   </footer>
@@ -61,7 +61,7 @@
 <script id="default-template" type="text/x-handlebars-template">
   <div class="logo"></div>
   <ul>
-    <li><a href="/record/new-audio" class="arrow"><span></span>Start a new Recording</a></li>
+    <li><a href="/production/recording/new-audio" class="arrow"><span></span>Start a new Recording</a></li>
     <li><a href="/production/source" class="arrow"><span></span>Create a new Production</a></li>
     <li><a href="/preset/new" class="arrow"><span></span>Define a Preset</a></li>
  </ul>
@@ -87,7 +87,7 @@
   {{else}}
     <h1 class="null">You have not created any productions yet</h1>
     <ul>
-      <li><a href="/record/new-audio" class="arrow"><span></span>Start a new Recording</a></li>
+      <li><a href="/production/recording/new-audio" class="arrow"><span></span>Start a new Recording</a></li>
       <li><a href="/production/source" class="arrow"><span></span>Create a new Production</a></li>
     </ul>
   {{/if}}
@@ -505,8 +505,8 @@
 
 <script id="service-choose-template" type="text/x-handlebars-template">
   <ul>
-    <li><a href="/record/new-audio" class="arrow"><span></span>New Audio Recording</a></li>
-    <li><a href="/record/new-video" class="arrow"><span></span>New Video Recording</a></li>
+    <li><a href="/production/recording/new-audio" class="arrow"><span></span>New Audio Recording</a></li>
+    <li><a href="/production/recording/new-video" class="arrow"><span></span>New Video Recording</a></li>
     {{#each source}}
       <li><a href="/production/source/{{uuid}}" class="arrow"><span></span><span class="light">{{display_type}}</span> <small>{{display_name}}</small></a></li>
     {{/each}}
@@ -525,7 +525,7 @@
     <p class="null">There are no files on this input source. Please upload a file to this service or start a new recording from within the application.</p>
     <ul>
       <li><a href="/production/source" class="arrow"><span></span>Select an input source</a></li>
-      <li><a href="/record/new-audio" class="arrow"><span></span>Start a new Recording</a></li>
+      <li><a href="/production/recording/new-audio" class="arrow"><span></span>Start a new Recording</a></li>
     </ul>
   {{/if}}
 </script>
@@ -541,23 +541,27 @@
   </ul>
 </script>
 
-<script id="record-template" type="text/x-handlebars-template">
+<script id="recording-template" type="text/x-handlebars-template">
   {{#if recordings}}
-    <h1>Recent Recordings</h1>
     <ul>
     {{#each recordings}}
-      <li><a href="/record/{{name}}" class="arrow"><span></span>{{name}}</a></li>
+      <li><a href="/production/recording/{{name}}" class="arrow"><span></span>{{name}}</a></li>
     {{/each}}
+    </ul>
+  {{else}}
+    <h1 class="null">You have no recent recordings.</h1>
+    <ul>
+      <li><a href="/production/recording/new-audio" class="arrow"><span></span>Start a new Recording</a></li>
     </ul>
   {{/if}}
 </script>
 
 <script id="record-audio-template" type="text/x-handlebars-template">
   <ul class="record_button">
-    <li><a href="/record/new-audio-start">Start Recording</a></li>
+    <li><a href="/production/recording/new-audio-start">Start Recording</a></li>
   </ul>
   <ul class="stop_record_button hidden">
-    <li><span class="record_status right light"></span><a href="/record/stop">Stop recording</a></li>
+    <li><span class="record_status right light"></span><a href="/production/recording/stop">Stop recording</a></li>
   </ul>
 </script>
 

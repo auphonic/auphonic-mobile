@@ -30,7 +30,7 @@ History.getPath = function() {
 require('Controller/Login');
 require('Controller/Preset');
 require('Controller/Production');
-require('Controller/Record');
+require('Controller/Recording');
 require('Controller/Settings');
 
 var Form = require('Form');
