@@ -124,7 +124,7 @@ module.exports = new Class({
 
   invalidate: function() {
     this.isInvalidated = true;
-
+    this.fireEvent('invalidate');
     return this;
   },
 

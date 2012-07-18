@@ -36,7 +36,6 @@ var createForm = function(options) {
           return object && object.metadata && object.metadata.title;
         },
         onSave: function(object) {
-          API.invalidate('productions');
           productions[object.uuid] = object;
           History.push('/production/' + object.uuid);
         }
@@ -83,7 +82,6 @@ Controller.define('/production', function() {
 
   load(options, function(response) {
     add(response.data);
-
     View.getMain().push('production', new View.Object.LoadMore({
       title: 'Productions',
       content: UI.render('production', {production: response.data}),
@@ -97,6 +95,8 @@ Controller.define('/production', function() {
       addItemsFunction: add,
       itemContainer: '.production_container',
       templateId: 'production-single'
+    }).addEvent('invalidate', function() {
+      API.invalidate('productions');
     }));
   });
 });

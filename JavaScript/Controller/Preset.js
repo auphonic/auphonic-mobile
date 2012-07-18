@@ -32,7 +32,6 @@ var createForm = function(options) {
           return object && object.preset_name;
         },
         onSave: function(object) {
-          API.invalidate('presets');
           presets[object.uuid] = object;
           History.push('/preset/' + object.uuid);
         }
@@ -90,6 +89,8 @@ Controller.define('/preset', function() {
       addItemsFunction: add,
       itemContainer: '.preset_container',
       templateId: 'preset-single'
+    }).addEvent('invalidate', function() {
+      API.invalidate('presets');
     }));
   });
 });

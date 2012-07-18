@@ -60,7 +60,11 @@ var click = function(event) {
     if (!this.getParent('footer')) return;
 
     // Tap on footer icon
-    if (History.getPath() == href) return;
+    if (History.getPath() == href) {
+      // Invalidate and rename stack to force re-evaluation
+      View.getMain().getCurrentView().invalidate();
+      View.getMain().getStack().setName('default');
+    }
   }
 
   UI.highlight(this);
