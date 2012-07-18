@@ -69,6 +69,11 @@ Object.append(UI, {
     Elements.removeClass(lists.flatten(), 'selected');
   },
 
+  unhighlight: function(element) {
+    element = document.id(element);
+    if (element && this.isHighlighted(element)) element.removeClass('selected');
+  },
+
   isHighlighted: function(element) {
     return document.id(element).hasClass('selected'); // oh no, state management!
   },

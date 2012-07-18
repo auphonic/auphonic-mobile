@@ -21,7 +21,7 @@ var upload = function(file) {
       input_file: file.name
     });
 
-    API.upload('production/{uuid}/upload'.substitute(response.data), file).on({
+    API.upload('production/{uuid}/upload'.substitute(response.data), file, 'input_file').on({
       success: function() {
         LocalStorage.erase('currentUpload');
       }

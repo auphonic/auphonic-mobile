@@ -113,7 +113,7 @@ API.call = function(url, method, requestData) {
   return listenersFor(url);
 };
 
-API.upload = function(url, file) {
+API.upload = function(url, file, field) {
   var success = function(response) {
     API.on(url).fireEvent('success', [response]);
     console.log('Code = ' + response.responseCode);
@@ -127,7 +127,7 @@ API.upload = function(url, file) {
   };
 
   var options = new window.FileUploadOptions();
-  options.fileKey = 'input_file';
+  options.fileKey = field;
   options.fileName = file.name;
   options.mimeType = file.type;
   options.params = {

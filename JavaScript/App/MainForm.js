@@ -56,6 +56,11 @@ module.exports = new Class({
     return this.options.saveURL;
   },
 
+  setSaveURL: function(url) {
+    this.options.saveURL = url;
+    return this;
+  },
+
   getObjectName: function(object) {
     return this.options.getObjectName(object);
   },
@@ -70,6 +75,7 @@ module.exports = new Class({
     this.isEditMode = false;
     this.object = null;
     this.presets = null;
+    this.uploadFile = null;
   },
 
   update: function(data) {
@@ -166,9 +172,15 @@ module.exports = new Class({
       if (select) select.addEvent('change', this.bound('onPresetSelect'));
     }).bind(this));
 
+    store.addEvent('upload', this.bound('onUpload'));
+
     View.getMain().push(this.getDisplayType(), object);
 
     this.isRendered = true;
+  },
+
+  upload: function(file) {
+    return API.upload(this.getSaveURL() + '/upload', file, 'image');
   },
 
   onShow: function() {
@@ -235,7 +247,29 @@ module.exports = new Class({
         this.getStack().getCurrent().setBack(baseObject.getBackTemplate());
     });
 
+    // If the production is new and a cover photo is selected we need to upload it now.
+    if (this.uploadFile) {
+      if (!this.isEditMode)
+        this.setSaveURL((this.getBaseURL() + '{uuid}').substitute(response.data));
+
+      this.upload(this.uploadFile).on({
+        success: (function() {
+          this.uploadFile = null;
+        }).bind(this)
+      });
+    }
+
     this.onSave(response.data);
+  },
+
+  onUpload: function(file) {
+    if (this.isEditMode) {
+      this.upload(file);
+      return;
+    }
+
+    // defer until after save
+    this.uploadFile = file;
   }
 
 });
