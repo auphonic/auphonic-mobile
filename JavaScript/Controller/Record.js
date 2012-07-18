@@ -46,7 +46,11 @@ Controller.define('/record', function() {
     title: 'Recordings',
     content: UI.render('record', {
       recordings: LocalStorage.get('recordings')
-    })
+    }),
+    action: {
+      title: 'New',
+      url: '/production/source'
+    },
   }));
 
 });
@@ -62,7 +66,7 @@ Controller.define('/record/new-video', {priority: 1, isGreedy: true}, function()
 });
 
 Controller.define('/record/new-audio', {priority: 1, isGreedy: true}, function() {
-  View.getMain().push('record', new View.Object({
+  View.getMain().push('production', new View.Object({
     title: 'Audio Recording',
     content: UI.render('record-audio')
   }));

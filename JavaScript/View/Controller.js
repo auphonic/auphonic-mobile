@@ -65,7 +65,8 @@ module.exports = new Class({
       this.rotate(stack);
     }
 
-    object.setURL(History.getPath());
+    if (!object.getURL())
+      object.setURL(History.getPath());
 
     var current = this._current;
     var isImmediate = rotated;
@@ -73,9 +74,16 @@ module.exports = new Class({
     var previous;
     if (!isImmediate) previous = this.getCurrentView().rememberScroll();
 
+    // If the only item on the stack is invalid don't do a transition
+    if (previous && previous.isInvalid() && this._current.getLength() == 1)
+      isImmediate = true;
+
     current.push(object);
     this.fireEvent('change');
     if (previous) previous.fireEvent('hide', [direction]);
+
+    // Pushing an invalid item on the stack, don't start a transition
+    if (object.isInvalid()) return;
 
     var options = {
       immediate: isImmediate,

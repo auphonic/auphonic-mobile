@@ -17,8 +17,8 @@ var Service = require('App/Service');
 var Source = require('App/Source');
 
 var Form = require('App/Form');
-var form;
 
+var form;
 var productions = {};
 
 var createForm = function(options) {
@@ -35,17 +35,6 @@ var createForm = function(options) {
         onSave: function(object) {
           API.invalidate('productions');
           productions[object.uuid] = object;
-
-          // Remove all objects except the current one
-          // and /production
-          var stack = View.getMain().getStack();
-          var previous;
-          while ((previous = stack.getPrevious())) {
-            stack.remove(previous);
-            if (stack.getLength() == 2)
-              break;
-          }
-
           History.push('/production/' + object.uuid);
         }
       }, options)),
@@ -59,8 +48,17 @@ var createForm = function(options) {
   });
 };
 
-Controller.define('/production', function() {
+var addPlaceholder = function() {
+  var stack = View.getMain().getStack();
+  if (stack.getLength() > 1 || stack.getByURL('/production')) return;
 
+  View.getMain().push('production', new View.Object({
+    url: '/production',
+    title: 'Productions'
+  }).invalidate());
+};
+
+Controller.define('/production', function() {
   productions = {};
 
   var options = {
@@ -81,27 +79,23 @@ Controller.define('/production', function() {
   View.getMain().showIndicator({stack: 'production'});
 
   load(options, function(response) {
-    Source.fetch(function(sources) {
-      add(response.data);
+    add(response.data);
 
-      View.getMain().push('production', new View.Object.LoadMore({
-        title: 'Productions',
-        content: UI.render('production', {production: response.data}),
-        action: {
-          title: 'New',
-          // If there are no services we skip the service chooser interface
-          url: (sources && sources.length ? '/production/source' : '/record')
-        },
-        loadMoreFunction: load,
-        loadMoreOptions: options,
-        loadedItems: response.data.length,
-        addItemsFunction: add,
-        itemContainer: '.production_container',
-        templateId: 'production-single'
-      }));
-    });
+    View.getMain().push('production', new View.Object.LoadMore({
+      title: 'Productions',
+      content: UI.render('production', {production: response.data}),
+      action: {
+        title: 'New',
+        url: '/production/source'
+      },
+      loadMoreFunction: load,
+      loadMoreOptions: options,
+      loadedItems: response.data.length,
+      addItemsFunction: add,
+      itemContainer: '.production_container',
+      templateId: 'production-single'
+    }));
   });
-
 });
 
 var click = function(event) {
@@ -115,14 +109,13 @@ var click = function(event) {
 };
 
 Controller.define('/production/{uuid}', function(req) {
-
-  var production = Data.prepare(productions[req.uuid]);
-  production.production = true;
-  production.baseURL = 'production';
+  var production = Data.prepare(productions[req.uuid], 'production');
 
   UI.register('a.startProduction', function(elements) {
     elements.addEvent('click', click);
   });
+
+  addPlaceholder();
 
   View.getMain().push('production', new View.Object({
     title: production.metadata.title,
@@ -132,17 +125,14 @@ Controller.define('/production/{uuid}', function(req) {
       url: '/production/edit/' + production.uuid
     }
   }));
-
 });
 
 Controller.define('/production/{uuid}/summary', function(req) {
-
   var production = productions[req.uuid];
   View.getMain().push('production', new View.Object({
     title: production.metadata.title,
     content: UI.render('data-detail-summary', production)
   }));
-
 });
 
 var getPresets = function(callback) {
@@ -210,6 +200,7 @@ Controller.define('/production/new', {priority: 1, isGreedy: true}, function() {
 });
 
 Controller.define('/production/source', {priority: 1, isGreedy: true}, function() {
+  addPlaceholder();
   form = createForm();
   form.show('source');
 });

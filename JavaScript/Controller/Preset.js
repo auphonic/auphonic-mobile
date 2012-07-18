@@ -16,9 +16,9 @@ var OutputFiles = require('App/OutputFiles');
 var Service = require('App/Service');
 
 var Form = require('App/Form');
-var form;
 
-var presets = null;
+var form;
+var presets = {};
 
 var createForm = function(options) {
   return new Form({
@@ -44,8 +44,17 @@ var createForm = function(options) {
   });
 };
 
-Controller.define('/preset', function() {
+var addPlaceholder = function() {
+  var stack = View.getMain().getStack();
+  if (stack.getLength() > 1 || stack.getByURL('/preset')) return;
 
+  View.getMain().push('preset', new View.Object({
+    url: '/preset',
+    title: 'Presets'
+  }).invalidate());
+};
+
+Controller.define('/preset', function() {
   presets = {};
 
   var options = {
@@ -86,11 +95,9 @@ Controller.define('/preset', function() {
 });
 
 Controller.define('/preset/{uuid}', function(req) {
+  var preset = Data.prepare(presets[req.uuid], 'preset');
 
-  var preset = Data.prepare(presets[req.uuid]);
-  preset.preset = true;
-  preset.baseURL = 'preset';
-
+  addPlaceholder();
   View.getMain().push('preset', new View.Object({
     title: preset.preset_name,
     content: UI.render('data-detail', preset),
@@ -99,20 +106,18 @@ Controller.define('/preset/{uuid}', function(req) {
       url: '/preset/edit/' + preset.uuid
     }
   }));
-
 });
 
 Controller.define('/preset/{uuid}/summary', function(req) {
-
   var preset = presets[req.uuid];
   View.getMain().push('preset', new View.Object({
     title: preset.preset_name,
     content: UI.render('preset-detail-summary', preset)
   }));
-
 });
 
 Controller.define('/preset/new', {priority: 1, isGreedy: true}, function(req) {
+  addPlaceholder();
   form = createForm();
   form.show('main');
 });

@@ -222,29 +222,16 @@ module.exports = new Class({
     View.getMain().showIndicator();
 
     API.call(this.getSaveURL(), 'post', JSON.stringify(Object.expand(data))).on({
-      success: this.bound('onSaveSuccess')
+      success: this.bound('onSave')
     });
   },
 
-  onSave: function(object) {
-    this.options.onSave(object);
-  },
+  onSave: function(response) {
+    var baseObject = View.getMain().getStack().getByURL(this.getBaseURL());
+    if (baseObject) baseObject.invalidate();
 
-  onSaveSuccess: function(response) {
-    var baseURL = this.getBaseURL();
-    var object = this.object;
-
-    var stack = View.getMain().getStack();
-    var baseObject = stack.getByURL(baseURL);
-    stack.invalidate(baseObject);
-
-    if (this.isEditMode) stack.invalidate(baseURL + response.data.uuid);
-
-    // Current object should get removed after sliding it out
-    object.addEvent('hide:once', function() {
-      this.getStack().remove(this);
-      if (baseObject)
-        this.getStack().getCurrent().setBack(baseObject.getBackTemplate());
+    this.object.addEvent('hide:once', function() {
+      View.getMain().getStack().prune();
     });
 
     // If the production is new and a cover photo is selected we need to upload it now.
@@ -252,14 +239,11 @@ module.exports = new Class({
       if (!this.isEditMode)
         this.setSaveURL((this.getBaseURL() + '{uuid}').substitute(response.data));
 
-      this.upload(this.uploadFile).on({
-        success: (function() {
-          this.uploadFile = null;
-        }).bind(this)
-      });
+      this.upload(this.uploadFile);
+      this.uploadFile = null;
     }
 
-    this.onSave(response.data);
+    this.options.onSave.call(this, response.data);
   },
 
   onUpload: function(file) {

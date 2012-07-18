@@ -3,9 +3,12 @@ var API = require('API');
 var OutputFiles = require('./OutputFiles');
 var Service = require('./Service');
 
-exports.prepare = function(object) {
+exports.prepare = function(object, type) {
   // We need to create a new object that can be transformed for viewing
   object = Object.append({}, object);
+  object[type] = true;
+  object.baseURL = type;
+
   var metadata = object.metadata;
 
   metadata.hasLicense = !!(metadata.license || metadata.license_url);

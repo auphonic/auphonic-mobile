@@ -50,8 +50,10 @@ module.exports = new Class({
     return this;
   },
 
-  remove: function(object) {
-    this.stack.erase(object);
+  // This method erases all but the first and last element in the stack
+  prune: function() {
+    var stack = this.stack;
+    this.stack = [stack[0], stack[stack.length - 1]];
   },
 
   rewind: function(index, object) {
@@ -59,10 +61,6 @@ module.exports = new Class({
     this.stack = this.stack.slice(0, index + 1);
 
     return this;
-  },
-
-  hasObject: function(needle) {
-    return !!this.getByURL(needle.getURL());
   },
 
   getByURL: function(url) {
@@ -76,9 +74,8 @@ module.exports = new Class({
     return null;
   },
 
-  invalidate: function(object) {
-    if (typeof object == 'string') object = this.getByURL(object);
-    if (object) object.invalidate();
+  hasObject: function(needle) {
+    return !!this.getByURL(needle.getURL());
   },
 
   getLength: function(){
