@@ -7,8 +7,8 @@ var View = require('View');
 
 var LocalStorage = require('Utility/LocalStorage');
 
-var CordovaAudioRecorder = require('Recording/CordovaAudioRecorder');
-var CordovaVideoRecorder = require('Recording/CordovaVideoRecorder');
+var CordovaAudioRecorder = require('Capture/CordovaAudioRecorder');
+var CordovaVideoRecorder = require('Capture/CordovaVideoRecorder');
 
 var recorder;
 var upload = function(file) {
