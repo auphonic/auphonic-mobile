@@ -1,0 +1,108 @@
+<div class="white"></div>
+<div class="content detail expand">
+  {{#if thumbnail}}
+    <img src="{{thumbnail}}" class="thumbnail" />
+  {{/if}}
+  {{#metadata}}
+    {{#if track}}<span class="track">#{{track}}</span>{{/if}}
+    <h1>{{title}}</h1>
+    {{#if genre}}<span class="genre">{{genre}}</span>{{/if}}
+    {{#if album}}<span class="album">{{album}}</span>{{/if}}
+    {{#if year}}<span class="year">{{year}}</span>{{/if}}
+    {{#if artist}}<span class="artist small light">{{artist}}</span>{{/if}}
+    {{#if subtitle}}<div class="clear-left small light">{{subtitle}}</div>{{/if}}
+  {{/metadata}}
+</div>
+
+{{#if start_allowed}}
+  <a href="#" data-api-url="/production/{{uuid}}/start" data-method="post" class="button green expand startProduction">Start Production</a>
+{{/if}}
+
+{{#if hasDetails}}
+  <h1>Details</h1>
+  <ul>
+    {{#if metadata.summary}}<li><a href="{{baseURL}}/{{uuid}}/summary" class="arrow"><span></span>Summary</a></li>{{/if}}
+
+
+  {{#metadata}}
+    {{#if publisher}}<li><label>Publisher <span class="light">{{publisher}}</label></li>{{/if}}
+    {{#if url}}
+      <li><a href="{{url}}" class="share"><span></span>URL <span class="light">{{{format-url url}}}<span></a></li>
+    {{/if}}
+    {{#if hasLicense}}
+      <li>
+        {{#if license_url}}
+          <a href="{{license_url}}" class="share"><span></span>
+        {{else}}
+          <label>
+        {{/if}}
+
+        License <span class="light">{{#if license}}{{license}}{{else}}{{{format-url license_url}}}{{/if}}</span>
+
+        {{#if license_url}}
+          </a>
+        {{else}}
+          </label>
+        {{/if}}
+      </li>
+    {{/if}}
+  {{/metadata}}
+  </ul>
+{{/if}}
+
+{{#if output_files}}
+  <h1>Output Files</h1>
+  <ul>
+    {{#if output_basename}}
+      <li>
+        <label class="left">
+          Prefix <small class="light">{{output_basename}}</small>
+        </label>
+      </li>
+    {{/if}}
+    {{#each output_files}}
+      <li>
+        <label>{{title}}{{#if detail}} <small class="light">{{detail}}</small>{{/if}}</label>
+      </li>
+    {{/each}}
+  </ul>
+{{/if}}
+
+{{#if hasChapters}}
+  <h1>Chapter Marks</h1>
+  <ul>
+    {{#each chapters}}
+      <li>
+        <label>
+          <small class="light">{{start}}</small> {{title}}
+        </label>
+      </li>
+    {{/each}}
+  </ul>
+{{/if}}
+
+{{#if outgoing_services}}
+  <h1>Outgoing File Transfers</h1>
+  <ul>
+    {{#each outgoing_services}}
+      <li><label><span class="light">{{display_type}}</span> <small>{{display_name}}</small></label></li>
+    {{/each}}
+  </ul>
+{{/if}}
+
+{{#if hasAlgorithms}}
+  <h1>Algorithms</h1>
+  <ul>
+  {{#each algorithms}}
+    <li>
+      <label class="info">
+        <span></span>{{display_name}}
+        <div class="hidden popover top justify" data-position="top">
+          <h1>{{display_name}}</h1>
+          {{description}}
+        </div>
+      </label>
+    </li>
+  {{/each}}
+  </ul>
+{{/if}}

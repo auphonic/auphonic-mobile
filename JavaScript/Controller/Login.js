@@ -1,7 +1,7 @@
 var History = require('History');
 var Form = require('Form');
 var LocalStorage = require('Utility/LocalStorage');
-var Spinner = require('ThirdParty/Spinner');
+var Spinner = require('Spinner');
 
 var API = require('API');
 var Controller = require('./');

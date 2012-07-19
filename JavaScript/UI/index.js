@@ -10,9 +10,8 @@ UI.BackButton = require('./Elements/BackButton');
 UI.ActionButton = require('./Elements/ActionButton');
 UI.Title = require('./Elements/Title');
 
-var Handlebars = require('Library/ThirdParty/Handlebars');
+var Handlebars = require('Handlebars');
 
-var cache = {};
 var locked = false;
 
 var preventDefault = function(event) {
@@ -22,9 +21,8 @@ var preventDefault = function(event) {
 Object.append(UI, {
 
   render: function(name, data) {
-    if (!cache[name]) cache[name] = Handlebars.compile(document.id(name + '-template').get('html'));
     if (!data) data = '';
-    return cache[name](typeof data == 'string' ? {content: data} : data);
+    return Handlebars.templates[name](typeof data == 'string' ? {content: data} : data);
   },
 
   transition: function(container, previous, current, options) {

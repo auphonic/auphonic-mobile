@@ -1,0 +1,30 @@
+{{#if has_options}}
+  <li class="wide">
+    <label class="left">
+      <div class="right">
+        <div class="checkbox">
+          <span class="left"></span><span class="thumb" data-on="YES" data-off="NO"></span>
+          <input type="checkbox" name="mono_mixdown" value="1" />
+        </div>
+      </div>
+      Mono Mixdown
+    </label>
+  </li>
+  <li class="wide">
+    <label class="left">
+      <div class="right">
+        <div class="checkbox">
+          <span class="left"></span><span class="thumb" data-on="YES" data-off="NO"></span>
+          <input type="checkbox" name="split_on_chapters" value="1" />
+        </div>
+      </div>
+      Split on Chapters
+    </label>
+  </li>
+{{/if}}
+<li>
+  <label class="left">
+    <input type="text" name="filename" placeholder="optional" class="right" />
+    Filename
+  </label>
+</li>

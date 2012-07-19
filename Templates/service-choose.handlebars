@@ -1,0 +1,7 @@
+<ul>
+  <li><a href="/production/recording/new-audio" class="arrow"><span></span>New Audio Recording</a></li>
+  <li><a href="/production/recording/new-video" class="arrow"><span></span>New Video Recording</a></li>
+  {{#each source}}
+    <li><a href="/production/source/{{uuid}}" class="arrow"><span></span><span class="light">{{display_type}}</span> <small>{{display_name}}</small></a></li>
+  {{/each}}
+</ul>

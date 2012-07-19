@@ -1,0 +1,83 @@
+<ul class="formcontent">
+  {{#if input_file}}
+    <li>
+      <label><span class="light">{{#if service}}{{service}}{{else}}Upload{{/if}}</span> <small>{{input_file}}</small></label>
+    </li>
+  {{/if}}
+
+  {{#if production}}
+    {{#if isNewProduction}}
+      {{#if presets}}
+        <li>
+          <label class="left">
+            <select name="format" class="preset-chooser right empty" data-select-type="preserve-null-state">
+              <option value="" selected>No Preset</option>
+              {{#each presets}}
+                <option value="{{uuid}}">{{preset_name}}</option>
+              {{/each}}
+            </select>
+            <span class="right placeholder">choose a preset</span>
+            Preset
+          </label>
+        </li>
+      {{/if}}
+    {{/if}}
+    <li>
+      <label class="left">
+        <input type="text" name="title" value="{{name}}" placeholder="choose production title" class="right" />
+        Title
+      </label>
+    </li>
+  {{/if}}
+
+  {{#if preset}}
+    <li>
+      <label class="left">
+        <input type="text" name="preset_name" value="{{name}}" placeholder="choose a preset name" class="right" />
+        Name
+      </label>
+    </li>
+  {{/if}}
+
+  <li><a href="{{baseURL}}new/metadata" class="arrow"><span></span>Metadata</a></li>
+  <li><a href="{{baseURL}}new/outgoing_services" class="arrow"><span></span>Outgoing Transfers <small class="servicesCount light"></small></a></li>
+</ul>
+
+<h1>Output Files {{#if production}}<small class="output_files_required">(one is required)</small>{{/if}}</h1>
+<ul class="output_files">
+  <li>
+    <label class="left">
+      <input type="text" name="output_basename" value="{{output_basename}}" placeholder="file name prefix" class="right" />
+      Prefix
+    </label>
+  </li>
+  <li><a href="{{baseURL}}new/output_file" class="plus"><span></span>Add Audio Format</a></li>
+</ul>
+
+{{#if production}}
+<h1>Chapter Marks</h1>
+<ul class="chapter_marks">
+  <li><a href="{{baseURL}}new/chapter" class="plus"><span></span>Add Chapter Mark</a></li>
+</ul>
+{{/if}}
+
+<h1>Algorithms</h1>
+<ul class="formcontent">
+  {{#each algorithm}}
+    <li class="wide">
+      <div class="right">
+        <div class="checkbox">
+          <span class="left"></span><span class="thumb" data-on="ON" data-off="OFF"></span>
+          <input type="checkbox" name="algorithms.{{key}}" value="1"{{#if default_value}} checked="checked"{{/if}} />
+        </div>
+      </div>
+      <label class="left info">
+        {{display_name}}
+        <div class="hidden popover top justify" data-position="top">
+          <h1>{{display_name}}</h1>
+          {{description}}
+        </div>
+      </label>
+    </li>
+  {{/each}}
+</ul>

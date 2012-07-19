@@ -3,6 +3,8 @@ var Class = Core.Class;
 var Element = Core.Element;
 var Browser = Core.Browser;
 
+require('Templates');
+
 // Load PowerTools! Extensions
 require('Class-Extras');
 require('Custom-Event');
@@ -44,7 +46,7 @@ var View = require('View');
 var Controller = require('Controller');
 var SwipeAble = require('UI/Actions/SwipeAble');
 var Popover = require('UI/Actions/Popover');
-var Spinner = require('ThirdParty/Spinner');
+var Spinner = require('Spinner');
 
 var preventDefault = function(event) {
   event.preventDefault();

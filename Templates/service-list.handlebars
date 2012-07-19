@@ -1,0 +1,14 @@
+{{#if files}}
+  <ul>
+    {{#each files}}
+      <li><a href="/production/selectFile/{{index}}" class="arrow"><span></span>{{display_name}}</a></li>
+    {{/each}}
+  </ul>
+{{else}}
+  <h1 class="null">No files found</h1>
+  <p class="null">There are no files on this input source. Please upload a file to this service or start a new recording from within the application.</p>
+  <ul>
+    <li><a href="/production/source" class="arrow"><span></span>Select an input source</a></li>
+    <li><a href="/production/recording/new-audio" class="arrow"><span></span>Start a new Recording</a></li>
+  </ul>
+{{/if}}
