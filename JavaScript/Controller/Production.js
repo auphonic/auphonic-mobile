@@ -159,11 +159,9 @@ var edit = function(production) {
     if (production.service) Source.setData(form, production.service);
 
     // Check if we are currently uploading
-    if (!production.input_file) {
-      var currentUpload = LocalStorage.get('currentUpload');
-      if (currentUpload && currentUpload.uuid == production.uuid)
-        production.input_file = currentUpload.input_file;
-    }
+    var currentUpload = LocalStorage.get('currentUpload');
+    if (currentUpload && currentUpload.uuid == production.uuid)
+      production.input_file = currentUpload.input_file;
 
     ListFiles.setFile(form, production.input_file);
 
