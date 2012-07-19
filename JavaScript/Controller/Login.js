@@ -44,12 +44,10 @@ Controller.define('/login', function() {
 
     var error = function() {
       spinner.stop();
-
       login.empty().adopt(children);
     };
 
-    var name = data.username;
-
+    var name = data.name;
     API.authenticate(data).on({
 
       success: function(response) {

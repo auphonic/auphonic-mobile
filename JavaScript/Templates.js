@@ -1,13 +1,21 @@
 var Handlebars = require("Handlebars"); var template = Handlebars.template, templates = Handlebars.templates = Handlebars.templates || {};
 templates['about'] = template(function (Handlebars,depth0,helpers,partials,data) {
   helpers = helpers || Handlebars.helpers;
-  var buffer = "", stack1, functionType="function", escapeExpression=this.escapeExpression;
+  var buffer = "", stack1, foundHelper, functionType="function", escapeExpression=this.escapeExpression, helperMissing=helpers.helperMissing;
 
 
   buffer += "<ul>\n  <li><span class=\"right\">";
   stack1 = depth0.version;
   stack1 = typeof stack1 === functionType ? stack1() : stack1;
-  buffer += escapeExpression(stack1) + "</span><label class=\"left\">Version</label></li>\n</ul>\n";
+  buffer += escapeExpression(stack1) + "</span><label class=\"left\">Version</label></li>\n  <li><a href=\"";
+  stack1 = depth0.repository;
+  stack1 = typeof stack1 === functionType ? stack1() : stack1;
+  buffer += escapeExpression(stack1) + "\" class=\"share\"><span></span>Repository <span class=\"light\">";
+  stack1 = depth0.repository;
+  foundHelper = helpers['format-url'];
+  stack1 = foundHelper ? foundHelper.call(depth0, stack1, {hash:{}}) : helperMissing.call(depth0, "format-url", stack1, {hash:{}});
+  if(stack1 || stack1 === 0) { buffer += stack1; }
+  buffer += "<span></a></li>\n</ul>\n";
   return buffer;});
 templates['data-detail-summary'] = template(function (Handlebars,depth0,helpers,partials,data) {
   helpers = helpers || Handlebars.helpers;
@@ -927,7 +935,10 @@ templates['settings'] = template(function (Handlebars,depth0,helpers,partials,da
   var buffer = "", stack1, functionType="function", escapeExpression=this.escapeExpression;
 
 
-  buffer += "<ul>\n  <li><a href=\"/settings/about\" class=\"arrow\"><span></span>About</a></li>\n</ul>\n\n<ul>\n  <li><span class=\"right\">";
+  buffer += "<ul>\n  <li><a href=\"/settings/about\" class=\"arrow\"><span></span>About</a></li>\n  <li><a href=\"";
+  stack1 = depth0.feedback;
+  stack1 = typeof stack1 === functionType ? stack1() : stack1;
+  buffer += escapeExpression(stack1) + "\" class=\"share\"><span></span>Feedback</a></li>\n</ul>\n\n<ul>\n  <li><span class=\"right\">";
   stack1 = depth0.user;
   stack1 = stack1 == null || stack1 === false ? stack1 : stack1.name;
   stack1 = typeof stack1 === functionType ? stack1() : stack1;

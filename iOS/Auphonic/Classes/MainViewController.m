@@ -149,8 +149,8 @@
     // This isn't pretty but it works.
     if (([absolute hasSuffix:@"!external"]) && [[UIApplication sharedApplication] canOpenURL:url]) {
         NSString *absolute1 = [absolute substringWithRange: NSMakeRange(0, absolute.length - 9)];
-        if ([absolute1 hasSuffix:@"#"]) {
-            NSURL *URL = [NSURL URLWithString:[absolute1 substringWithRange: NSMakeRange(0, absolute1.length - 1)]];
+        if ([absolute1 hasSuffix:@"%23"]) { // Checks for urlencoded #
+            NSURL *URL = [NSURL URLWithString:[absolute1 substringWithRange: NSMakeRange(0, absolute1.length - 3)]];
             [[UIApplication sharedApplication] openURL: URL];
         } else {
             NSURL *URL = [NSURL URLWithString:absolute1];

@@ -76,7 +76,6 @@ var click = function(event) {
 
 var clickExternal = function(event) {
   event.preventDefault();
-
   var href = this.get('href');
   window.location.href = href + (~href.indexOf('#') ? '' : '#') + '!external';
 };
