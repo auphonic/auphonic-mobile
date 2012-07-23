@@ -2,6 +2,7 @@ var Core = require('Core');
 var Class = Core.Class;
 var Element = Core.Element;
 
+var Spinner = require('Spinner');
 var ScrollLoader = require('Utility/ScrollLoader');
 
 var UI = require('UI');
@@ -43,10 +44,13 @@ module.exports = new Class({
     if (this.finished) return;
 
     this.loadOptions.offset += this.loadOptions.limit;
+    this.getSpinner().spin(this.getItemContainerElement().getParent());
     this.getLoadMoreFunction()(this.loadOptions, this.bound('onLoadMore'));
   },
 
   onLoadMore: function(response) {
+    this.getSpinner().stop();
+
     if (!response.data || !response.data.length) {
       this.finished = true;
       return;
@@ -66,6 +70,18 @@ module.exports = new Class({
 
   getItemContainerElement: function() {
     return document.getElement(this.getItemContainer());
+  },
+
+  getSpinner: function() {
+    return this.spinner || (this.spinner = new Spinner({
+      lines: 9,
+      length: 4,
+      width: 3,
+      radius: 4,
+      trail: 30,
+      color: '#000',
+      className: 'spinner-inline-bottom'
+    }));
   }
 
 });
