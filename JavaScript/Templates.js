@@ -38,6 +38,9 @@ function program1(depth0,data) {
   buffer += "\n    <img src=\"";
   stack1 = depth0.thumbnail;
   stack1 = typeof stack1 === functionType ? stack1() : stack1;
+  buffer += escapeExpression(stack1);
+  stack1 = depth0.access_token;
+  stack1 = typeof stack1 === functionType ? stack1() : stack1;
   buffer += escapeExpression(stack1) + "\" class=\"thumbnail\" />\n  ";
   return buffer;}
 

@@ -1,7 +1,7 @@
 <div class="white"></div>
 <div class="content detail expand">
   {{#if thumbnail}}
-    <img src="{{thumbnail}}" class="thumbnail" />
+    <img src="{{thumbnail}}{{access_token}}" class="thumbnail" />
   {{/if}}
   {{#metadata}}
     {{#if track}}<span class="track">#{{track}}</span>{{/if}}
