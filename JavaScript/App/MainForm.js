@@ -234,7 +234,10 @@ module.exports = new Class({
     var stack = View.getMain().getStack();
     var baseObject = stack.getByURL(baseURL);
     if (baseObject) baseObject.invalidate();
-    if (this.isEditMode) stack.getByURL(baseURL + response.data.uuid).invalidate();
+    if (this.isEditMode) {
+      var object = stack.getByURL(baseURL + response.data.uuid);
+      if (object) object.invalidate();
+    }
 
     this.object.addEvent('hide:once', function() {
       View.getMain().getStack().prune();

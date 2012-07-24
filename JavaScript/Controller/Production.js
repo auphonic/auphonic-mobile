@@ -4,6 +4,7 @@ var API = require('API');
 var Controller = require('./');
 var View = require('View');
 var UI = require('UI');
+var Notice = require('UI/Notice');
 
 var LocalStorage = require('Utility/LocalStorage');
 
@@ -248,6 +249,8 @@ var upload = function(file) {
 
     API.upload('production/{uuid}/upload'.substitute(response.data), file, 'input_file').on({
       success: function() {
+        new Notice('The recording <span class="bold">"' + file.name + '"</span> was successfully uploaded and attached to your production.');
+
         LocalStorage.erase('currentUpload');
       }
     });

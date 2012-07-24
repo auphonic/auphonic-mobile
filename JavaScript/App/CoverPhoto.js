@@ -1,5 +1,7 @@
 var UI = require('UI');
 
+var Notice = require('UI/Notice');
+
 var CordovaImageRecorder = require('Capture/CordovaImageRecorder');
 
 exports.createUI = function(store, object) {
@@ -13,6 +15,8 @@ exports.createUI = function(store, object) {
 
     recorder.addEvents({
       success: function(file) {
+        new Notice('The Cover Photo was successfully uploaded.');
+
         var container = object.toElement();
         container.getElement('img.thumbnail').set('src', file.fullPath).removeClass('hidden');
         container.getElement('.remove_thumbnail').removeClass('hidden');

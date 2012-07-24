@@ -47,6 +47,7 @@ var Controller = require('Controller');
 var AudioPlayer = require('App/AudioPlayer');
 var SwipeAble = require('UI/Actions/SwipeAble');
 var Popover = require('UI/Actions/Popover');
+var Notice = require('UI/Notice');
 var Spinner = require('Spinner');
 
 var preventDefault = function(event) {
@@ -188,6 +189,8 @@ var boot = function() {
     })
 
   }).update();
+
+  Notice.setContainer(document.body);
 
   var header = document.getElement('header');
   var back = new UI.BackButton(header, new Element('a'));
