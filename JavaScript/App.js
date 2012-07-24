@@ -130,9 +130,9 @@ var boot = function() {
       });
     },
 
-    'label.info': Class.Instantiate(Popover, {
+    'label.info, .showPopover': Class.Instantiate(Popover, {
       selector: 'div.popover',
-      scrollSelector: 'div.scroll-content',
+      scrollSelector: 'div.scrollable',
       positionProperty: 'data-position',
       animationClass: 'fade',
       arrowHeight: 14

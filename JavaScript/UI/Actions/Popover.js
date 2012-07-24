@@ -12,7 +12,7 @@ module.exports = new Class({
 
   options: {
     selector: 'div.popover',
-    scrollSelector: 'div.scroll-content',
+    scrollSelector: 'div.scrollable',
     positionProperty: 'data-position',
     animationClass: 'fade',
     arrowHeight: 14
@@ -68,6 +68,12 @@ module.exports = new Class({
   onComplete: function(){
     this.isOpen = false;
     this.popover.dispose();
+
+    // Restore previous settings
+    if (this.toggledTo) {
+      this.toggle(this.toggledTo == 'bottom' ? 'top' : 'bottom');
+      this.toggledTo = null;
+    }
   },
 
   open: function(content){
@@ -120,20 +126,30 @@ module.exports = new Class({
   },
 
   position: function(){
+    var element = this.getScrollElement();
     var popover = this.popover;
     var top = this.getPosition();
 
-    if (top < 0) {
-      popover.removeClass('top').addClass('bottom');
-      this.pos = 'bottom';
+    if (top < 0 || top < element.scrollTop) {
+      this.toggle('bottom');
       top = this.getPosition();
-    } else if (top + popover.offsetHeight + this.options.arrowHeight > this.getScrollElement().scrollHeight) {
-      popover.removeClass('bottom').addClass('top');
-      this.pos = 'top';
+    } else if (top + popover.offsetHeight + this.options.arrowHeight > element.scrollHeight) {
+      this.toggle('top');
       top = this.getPosition();
     }
 
     this.popover.setStyle('top', top);
+  },
+
+  toggle: function(position) {
+    this.toggledTo = position;
+    if (position == 'bottom') {
+      this.popover.removeClass('top').addClass('bottom');
+      this.pos = 'bottom';
+    } else {
+      this.popover.removeClass('bottom').addClass('top');
+      this.pos = 'top';
+    }
   },
 
   getScrollElement: function() {
