@@ -37,6 +37,14 @@ exports.prepare = function(object, type) {
   })).clean();
 
   object.hasAlgorithms = !!length(object.algorithms);
+
+  if (object.output_files) object.output_files.each(function(file) {
+    if (!file.download_url) return false;
+
+    object.media_file = encodeURI(file.download_url);
+    return true;
+  });
+
   object.output_files = length(object.output_files) ? object.output_files.map(OutputFiles.createUIData) : null;
 
   var user = LocalStorage.get('User');

@@ -85,6 +85,32 @@ var onLabelClick = function() {
   if (input) input.focus();
 };
 
+var playMedia = function(event) {
+  event.preventDefault();
+
+  var media = this.retrieve('media');
+  if (!media) {
+    media = new Media(this.get('data-media'), function() {
+      console.log('success');
+    }, function(error) {
+      console.log(error.code);
+      console.log(error.message);
+    });
+    this.store('media', media);
+  }
+
+  var isPlaying = this.retrieve('media:isPlaying');
+  if (isPlaying) {
+    media.pause();
+    this.removeClass('pause');
+  } else {
+    media.play();
+    this.addClass('pause');
+  }
+
+  this.store('media:isPlaying', !isPlaying);
+};
+
 var boot = function() {
   var isLoggedIn = !!LocalStorage.get('User');
   if (isLoggedIn) UI.Chrome.show({immediate: true});
@@ -180,6 +206,10 @@ var boot = function() {
       elements.each(function(element) {
         element.onclick = onLabelClick;
       });
+    },
+
+    '.player a': function(elements) {
+      elements.addEvent('click', playMedia);
     }
 
   }).update();
