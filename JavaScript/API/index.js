@@ -7,6 +7,8 @@ var Request = require('Request');
 var Base64 = require('Utility/Base64');
 var LocalStorage = require('Utility/LocalStorage');
 
+var Queue = require('Queue').Queue;
+
 var urls = {};
 var cache = {};
 var request;
@@ -113,6 +115,8 @@ API.call = function(url, method, requestData) {
   return listenersFor(url);
 };
 
+var queue = new Queue;
+
 API.upload = function(url, file, field) {
   var success = function(response) {
     API.on(url).fireEvent('success', [response]);
@@ -136,8 +140,12 @@ API.upload = function(url, file, field) {
     }
   };
 
-  var transfer = new window.FileTransfer();
-  transfer.upload(file.fullPath, getURL(url), success, error, options);
+  queue.chain(function() {
+    var transfer = new window.FileTransfer();
+    transfer.upload(file.fullPath, getURL(url), success, error, options);
+
+    this.next();
+  }).call();
 
   return listenersFor(url);
 };

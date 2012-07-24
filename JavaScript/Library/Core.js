@@ -24,7 +24,7 @@ provides: [Core, MooTools, Type, typeOf, instanceOf]
 
 exports.MooTools = {
 	version: '1.4.6-custom',
-	build: '47ddfe5d2a76065a464396afbb5f73d7469f2d92'
+	build: '567baef29c0634f6fd847009df5726e9630cd9f7'
 };
 
 // typeOf, instanceOf
