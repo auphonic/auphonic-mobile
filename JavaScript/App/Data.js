@@ -1,3 +1,5 @@
+var Browser = require('Core').Browser;
+
 var LocalStorage = require('Utility/LocalStorage');
 
 var API = require('API');
@@ -9,9 +11,25 @@ var length = function(object) {
   return object && object.length;
 };
 
+var preferredFormats = {
+  mp3: 1,
+  'mp3-vbr': 1,
+  aac: 2,
+  alac: 3,
+  dflt: 4
+};
+
+if (!Browser.Platform.ios) {
+  preferredFormats.vorbis = 2;
+  preferredFormats.flac = 3;
+}
+
 exports.prepare = function(object, type) {
+  var user = LocalStorage.get('User');
+
   // We need to create a new object that can be transformed for viewing
   object = Object.append({}, object);
+  object.access_token = user && '?access_token=' + user.access_token;
   object[type] = true;
   object.baseURL = type;
 
@@ -38,17 +56,22 @@ exports.prepare = function(object, type) {
 
   object.hasAlgorithms = !!length(object.algorithms);
 
+  var media_files = [];
   if (object.output_files) object.output_files.each(function(file) {
-    if (!file.download_url) return false;
+    if (!file.download_url) return;
 
-    object.media_file = encodeURI(file.download_url);
-    return true;
+    media_files.push({
+      format: parseFloat((preferredFormats[file.format] || preferredFormats.dflt) + '.' + String('000' + (file.bitrate || 0)).slice(-3)),
+      url: encodeURI(file.download_url)
+    });
   });
 
-  object.output_files = length(object.output_files) ? object.output_files.map(OutputFiles.createUIData) : null;
+  media_files = media_files.sortByKey('format').map(function(file) {
+    return file.url + object.access_token;
+  });
 
-  var user = LocalStorage.get('User');
-  object.access_token = user && '?access_token=' + user.access_token;
+  object.media_files = length(media_files) ? JSON.stringify(media_files) : null;
+  object.output_files = length(object.output_files) ? object.output_files.map(OutputFiles.createUIData) : null;
 
   return object;
 };

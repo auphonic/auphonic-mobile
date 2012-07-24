@@ -44,6 +44,7 @@ var API = require('API');
 var UI = require('UI');
 var View = require('View');
 var Controller = require('Controller');
+var AudioPlayer = require('App/AudioPlayer');
 var SwipeAble = require('UI/Actions/SwipeAble');
 var Popover = require('UI/Actions/Popover');
 var Spinner = require('Spinner');
@@ -83,32 +84,6 @@ var clickExternal = function(event) {
 var onLabelClick = function() {
   var input = this.getElement('input, select');
   if (input) input.focus();
-};
-
-var playMedia = function(event) {
-  event.preventDefault();
-
-  var media = this.retrieve('media');
-  if (!media) {
-    media = new Media(this.get('data-media'), function() {
-      console.log('success');
-    }, function(error) {
-      console.log(error.code);
-      console.log(error.message);
-    });
-    this.store('media', media);
-  }
-
-  var isPlaying = this.retrieve('media:isPlaying');
-  if (isPlaying) {
-    media.pause();
-    this.removeClass('pause');
-  } else {
-    media.play();
-    this.addClass('pause');
-  }
-
-  this.store('media:isPlaying', !isPlaying);
 };
 
 var boot = function() {
@@ -208,9 +183,9 @@ var boot = function() {
       });
     },
 
-    '.player a': function(elements) {
-      elements.addEvent('click', playMedia);
-    }
+    '.player a': Class.Instantiate(AudioPlayer, {
+      selector: '[data-media]',
+    })
 
   }).update();
 

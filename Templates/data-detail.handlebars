@@ -14,9 +14,9 @@
   {{/metadata}}
 </div>
 
-{{#if media_file}}
+{{#if media_files}}
   <div class="content full player">
-    <a class="play" data-media="{{media_file}}{{access_token}}"></a>
+    <a class="play" href="#"><span class="hidden" data-media="1">{{media_files}}</span></a>
   </div>
   <div class="content full">
     <img src="{{waveform_image}}{{access_token}}" class="waveform" />
