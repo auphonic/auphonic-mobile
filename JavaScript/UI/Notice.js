@@ -6,7 +6,7 @@ var Browser = Core.Browser;
 
 var Queue = require('Queue').Queue;
 
-var templateElement = new Element('div.notice');
+var templateElement = new Element('div.notice').adopt(new Element('div.close'), new Element('div.text'));
 var queue = new Queue;
 var stack = [];
 var container;
@@ -32,7 +32,7 @@ module.exports = new Class({
 
     if (type == 'error') duration = 0;
 
-    element.set('html', message);
+    element.getElement('.text').set('html', message);
     this.duration = duration;
     this.element.addEvent('transformComplete:once', queue.bound('next'));
     queue.chain(this.bound('open')).call();
