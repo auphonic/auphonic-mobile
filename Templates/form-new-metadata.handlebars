@@ -11,16 +11,26 @@
   <li>
     <label class="left"><input type="tel" name="metadata.track" class="right" />Track</label>
   </li>
+</ul>
+
+<h1>Cover Photo</h1>
+<img src="{{thumbnail}}{{access_token}}" class="thumbnail{{#unless thumbnail}} hidden{{/unless}}" />
+<ul>
   <li>
-    <label class="info">Upload a Cover Photo
+    <label class="showPopover">
+      Upload
       <div class="hidden popover top justify" data-position="top">
         <a href="#" class="button expand upload_take_photo">Take a Photo</a>
         <a href="#" class="button expand upload_from_library">Choose from Libraray</a>
       </div>
     </label>
   </li>
+  <li class="remove_thumbnail{{#unless thumbnail}} hidden{{/unless}}">
+    <a href="#">Remove</a>
+  </li>
 </ul>
-<h1>Details</h1>
+
+<h1 class="clear">Details</h1>
 <ul class="formcontent">
   <li>
     <label class="left"><input type="text" name="metadata.genre" class="right" />Genre</label>

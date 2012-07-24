@@ -11,7 +11,9 @@ module.exports = new Class({
     quality: 80,
     source: 'CAMERA',
     encoding: 'JPEG',
-    correctOrientation: true
+    correctOrientation: true,
+    saveToPhotoAlbum: false,
+    allowEdit: true
   },
 
   initialize: function(options) {
@@ -29,6 +31,7 @@ module.exports = new Class({
 
     camera.getPicture(this.bound('onCaptureSuccess'), this.bound('onCaptureError'), {
       quality: this.options.quality,
+      allowEdit: this.options.allowEdit,
       saveToPhotoAlbum: this.options.saveToPhotoAlbum,
       destinationType: camera.DestinationType.FILE_URI,
       encodingType: camera.EncodingType[this.options.encoding],

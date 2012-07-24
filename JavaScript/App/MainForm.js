@@ -163,9 +163,12 @@ module.exports = new Class({
 
     this.update(data);
 
-    if (this.isEditMode) object.addEvent('show:once', (function() {
-      this.updateAlgorithms(data);
-    }).bind(this));
+    if (this.isEditMode) {
+      object.addEvent('show:once', (function() {
+        this.updateAlgorithms(data);
+      }).bind(this));
+      store.set('thumbnail', data.thumbnail);
+    }
 
     if (isNewProduction) object.addEvent('show:once', (function() {
       var select = object.toElement().getElement(this.options.presetChooserSelector);
