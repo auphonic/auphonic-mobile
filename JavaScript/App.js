@@ -3,6 +3,7 @@ var Class = Core.Class;
 var Element = Core.Element;
 var Browser = Core.Browser;
 
+var Handlebars = require('Handlebars');
 require('Templates');
 
 // Load PowerTools! Extensions
@@ -50,10 +51,15 @@ var Popover = require('UI/Actions/Popover');
 var Notice = require('UI/Notice');
 var Spinner = require('Spinner');
 
+// Register Partials for Handlebars
+Handlebars.registerPartial('preset', Handlebars.templates.preset);
+Handlebars.registerPartial('production', Handlebars.templates.production);
+
 var preventDefault = function(event) {
   event.preventDefault();
 };
 
+var popoverSelector = 'div.popover';
 var click = function(event) {
   event.preventDefault();
   var href = this.get('href');
@@ -71,7 +77,8 @@ var click = function(event) {
     }
   }
 
-  UI.highlight(this);
+  if (!this.getParent(popoverSelector))
+    UI.highlight(this);
 
   History.push(href);
 };
@@ -85,6 +92,25 @@ var clickExternal = function(event) {
 var onLabelClick = function() {
   var input = this.getElement('input, select');
   if (input) input.focus();
+};
+
+var onDeleteClick = function(event) {
+  if (event) event.preventDefault();
+
+  removeItem(Popover.getBaseElement(this.getParent(popoverSelector)));
+};
+
+var removeItem = function(element) {
+  element.addClass('fade');
+  (function() {
+    element.addEvent('transitionComplete:once', function() {
+      this.destroy();
+    }).addClass('out');
+  }).delay(10);
+
+  var url = element.get('data-api-url');
+  var method = element.get('data-method');
+  if (url && method) API.call(url, method);
 };
 
 var boot = function() {
@@ -132,38 +158,37 @@ var boot = function() {
       });
     },
 
-    'label.info, .showPopover': Class.Instantiate(Popover, {
-      selector: 'div.popover',
+    'a.deleteable': function(elements) {
+      elements.addEvent('click', onDeleteClick);
+    },
+
+    'label.info, .show-popover': Class.Instantiate(Popover, {
+      selector: popoverSelector,
       scrollSelector: 'div.scrollable',
       positionProperty: 'data-position',
+      eventProperty: 'data-popover-event',
       animationClass: 'fade',
       arrowHeight: 14
     }),
+
     'textarea.autogrow': Class.Instantiate(Form.AutoGrow, {
       margin: 12
     }),
+
     'div.checkbox': Class.Instantiate(Form.Checkbox),
+
     'select.empty': Class.Instantiate(Form.EmptySelect, {
       placeholderPosition: '!',
       placeholder: '.placeholder',
     }),
+
     '.swipeable': Class.Instantiate(SwipeAble, {
 
       selector: '.removable > span',
       scrollableSelector: 'div.scrollable',
 
       onClick: function() {
-        var container = this.container;
-        container.addClass('fade');
-        (function() {
-          container.addEvent('transitionComplete:once', function() {
-            this.destroy();
-          }).addClass('out');
-        }).delay(10);
-
-        var url = container.get('data-api-url');
-        var method = container.get('data-method');
-        if (url && method) API.call(url, method);
+        removeItem(this.container);
       },
 
       onSwipe: function() {

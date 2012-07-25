@@ -1,18 +1,10 @@
-{{#if preset}}
-  <ul class="preset_container">
-    {{#each preset}}
-    <li class="swipeable" data-api-url="preset/{{uuid}}" data-method="delete">
-      <span class="right removable">
-        <span><a href="#" class="button red small">Delete</a></span>
-      </span>
-      <a href="/preset/{{uuid}}" class="arrow"><span></span>{{preset_name}}</a></li>
-    </li>
-    {{/each}}
-  </ul>
-{{else}}
-  <h1 class="null">You have no presets yet.</h1>
-  <p class="null">A preset helps you predefine settings like metadata or output files for new productions, speeding up the production-flow when only few values change.</p>
-  <ul>
-    <li><a href="/preset/new" class="arrow"><span></span>Define a new Preset</a></li>
-  </ul>
-{{/if}}
+<li class="swipeable show-popover" data-popover-event="touchhold" data-api-url="preset/{{uuid}}" data-method="delete">
+  <span class="right removable">
+    <span><a href="#" class="button red small">Delete</a></span>
+  </span>
+  <div class="hidden popover top justify" data-position="top">
+    <a href="/preset/edit/{{uuid}}" class="button expand">Edit</a>
+    <a href="#" class="button expand red deleteable">Delete</a>
+  </div>
+  <a href="/preset/{{uuid}}" class="arrow"><span></span>{{preset_name}}</a></li>
+</li>

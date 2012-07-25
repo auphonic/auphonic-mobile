@@ -23,9 +23,6 @@ exports.createUI = function(store, object) {
 
         store.fireEvent('upload', [file]);
         store.set('thumbnail', file.fullPath);
-      },
-      cancel: function() {
-        UI.unhighlight(element);
       }
     });
 

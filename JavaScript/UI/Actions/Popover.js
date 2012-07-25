@@ -6,6 +6,10 @@ var Element = Core.Element;
 
 var OuterClickStack = require('OuterClickStack');
 
+var UI = require('UI');
+
+var baseKey = 'popover:baseElement';
+
 module.exports = new Class({
 
   Implements: [Class.Singleton, Class.Binds, Options],
@@ -14,6 +18,7 @@ module.exports = new Class({
     selector: 'div.popover',
     scrollSelector: 'div.scrollable',
     positionProperty: 'data-position',
+    eventProperty: 'data-popover-event',
     animationClass: 'fade',
     arrowHeight: 14
   },
@@ -31,18 +36,20 @@ module.exports = new Class({
   setup: function(){
     var popover = this.popover = this.element.getElement(this.options.selector);
     popover.dispose().removeClass('hidden').addClass(this.options.animationClass);
+    popover.store(baseKey, this.element);
     this.pos = popover.get(this.options.positionProperty);
+    this.event = this.element.get(this.options.eventProperty) || 'click';
 
     this.attach();
   },
 
   attach: function(){
-    this.element.addEvent('click', this.bound('onClick'));
+    this.element.addEvent(this.event, this.bound('onClick'));
     this.popover.addEvent('click', this.bound('onPopoverClick'));
   },
 
   detach: function(){
-    this.element.removeEvent('click', this.bound('onClick'));
+    this.element.removeEvent(this.event, this.bound('onClick'));
     this.popover.removeEvent('click', this.bound('onPopoverClick'));
   },
 
@@ -86,6 +93,11 @@ module.exports = new Class({
 
     window.addEventListener('orientationchange', this.bound('position'), false);
 
+    if (this.shouldDisableElement()) {
+      UI.disable(this.element);
+      window.addEvent('touchend', this.bound('enableElement'));
+    }
+
     (function(){
       // Delay because the event probably still bubbles and would cause 'close' to be called via OuterClickStack
       OuterClickStack.push(this.bound('close'), popover);
@@ -117,12 +129,14 @@ module.exports = new Class({
   getPosition: function() {
     var element = this.element;
     var popover = this.popover;
-    var parent = element.getParent();
+    var container = element;
+
+    if (!container.offsetTop) container = element.getParent();
 
     if (this.pos == 'top')
-      return parent.offsetTop - popover.offsetHeight - this.options.arrowHeight;
+      return container.offsetTop - popover.offsetHeight - this.options.arrowHeight;
 
-    return parent.offsetTop + element.offsetHeight + this.options.arrowHeight;
+    return container.offsetTop + element.offsetHeight + this.options.arrowHeight;
   },
 
   position: function(){
@@ -154,6 +168,20 @@ module.exports = new Class({
 
   getScrollElement: function() {
     return this.element.getParent(this.options.scrollSelector);
+  },
+
+  enableElement: function() {
+    (function() {
+      UI.enable(this.element);
+    }).delay(10, this);
+  },
+
+  shouldDisableElement: function() {
+    return (this.event != 'click');
   }
 
 });
+
+module.exports.getBaseElement = function(element) {
+  return element.retrieve(baseKey);
+};

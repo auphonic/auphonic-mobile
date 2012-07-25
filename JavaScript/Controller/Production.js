@@ -85,7 +85,7 @@ Controller.define('/production', function() {
     add(response.data);
     View.getMain().push('production', new View.Object.LoadMore({
       title: 'Productions',
-      content: UI.render('production', {production: response.data}),
+      content: UI.render('productions', {production: response.data}),
       action: {
         title: 'New',
         url: '/production/source'
@@ -95,7 +95,7 @@ Controller.define('/production', function() {
       loadedItems: response.data.length,
       addItemsFunction: add,
       itemContainer: '.production_container',
-      templateId: 'production-single'
+      templateId: 'production'
     }).addEvent('invalidate', function() {
       API.invalidate('productions');
     }));

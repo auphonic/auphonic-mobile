@@ -619,7 +619,7 @@ function program3(depth0,data) {
   stack1 = depth0.thumbnail;
   stack1 = helpers.unless.call(depth0, stack1, {hash:{},inverse:self.noop,fn:self.program(1, program1, data)});
   if(stack1 || stack1 === 0) { buffer += stack1; }
-  buffer += "\" />\n<ul>\n  <li>\n    <label class=\"showPopover\">\n      Upload\n      <div class=\"hidden popover top justify\" data-position=\"top\">\n        <a href=\"#\" class=\"button expand upload_take_photo\">Take a Photo</a>\n        <a href=\"#\" class=\"button expand upload_from_library\">Choose from Libraray</a>\n      </div>\n    </label>\n  </li>\n  <li class=\"remove_thumbnail";
+  buffer += "\" />\n<ul>\n  <li>\n    <label class=\"show-popover\">\n      Upload\n      <div class=\"hidden popover top justify\" data-position=\"top\">\n        <a href=\"#\" class=\"button expand upload_take_photo\">Take a Photo</a>\n        <a href=\"#\" class=\"button expand upload_from_library\">Choose from Libraray</a>\n      </div>\n    </label>\n  </li>\n  <li class=\"remove_thumbnail";
   stack1 = depth0.thumbnail;
   stack1 = helpers.unless.call(depth0, stack1, {hash:{},inverse:self.noop,fn:self.program(3, program3, data)});
   if(stack1 || stack1 === 0) { buffer += stack1; }
@@ -771,15 +771,18 @@ templates['login'] = template(function (Handlebars,depth0,helpers,partials,data)
   stack1 = typeof stack1 === functionType ? stack1() : stack1;
   buffer += escapeExpression(stack1) + "\" />\n  <input type=\"text\" name=\"name\" placeholder=\"email or username\" autocapitalize=\"off\" />\n  <input type=\"password\" name=\"password\" placeholder=\"password\" />\n</div>\n<a href=\"#\" class=\"button expand\">Login</a>\n";
   return buffer;});
-templates['preset-single'] = template(function (Handlebars,depth0,helpers,partials,data) {
+templates['preset'] = template(function (Handlebars,depth0,helpers,partials,data) {
   helpers = helpers || Handlebars.helpers;
   var buffer = "", stack1, functionType="function", escapeExpression=this.escapeExpression;
 
 
-  buffer += "<li class=\"swipeable\" data-api-url=\"preset/";
+  buffer += "<li class=\"swipeable show-popover\" data-popover-event=\"touchhold\" data-api-url=\"preset/";
   stack1 = depth0.uuid;
   stack1 = typeof stack1 === functionType ? stack1() : stack1;
-  buffer += escapeExpression(stack1) + "\" data-method=\"delete\">\n  <span class=\"right removable\">\n    <span><a href=\"#\" class=\"button red small\">Delete</a></span>\n  </span>\n  <a href=\"/preset/";
+  buffer += escapeExpression(stack1) + "\" data-method=\"delete\">\n  <span class=\"right removable\">\n    <span><a href=\"#\" class=\"button red small\">Delete</a></span>\n  </span>\n  <div class=\"hidden popover top justify\" data-position=\"top\">\n    <a href=\"/preset/edit/";
+  stack1 = depth0.uuid;
+  stack1 = typeof stack1 === functionType ? stack1() : stack1;
+  buffer += escapeExpression(stack1) + "\" class=\"button expand\">Edit</a>\n    <a href=\"#\" class=\"button expand red deleteable\">Delete</a>\n  </div>\n  <a href=\"/preset/";
   stack1 = depth0.uuid;
   stack1 = typeof stack1 === functionType ? stack1() : stack1;
   buffer += escapeExpression(stack1) + "\" class=\"arrow\"><span></span>";
@@ -787,9 +790,9 @@ templates['preset-single'] = template(function (Handlebars,depth0,helpers,partia
   stack1 = typeof stack1 === functionType ? stack1() : stack1;
   buffer += escapeExpression(stack1) + "</a></li>\n</li>\n";
   return buffer;});
-templates['preset'] = template(function (Handlebars,depth0,helpers,partials,data) {
-  helpers = helpers || Handlebars.helpers;
-  var buffer = "", stack1, functionType="function", escapeExpression=this.escapeExpression, self=this;
+templates['presets'] = template(function (Handlebars,depth0,helpers,partials,data) {
+  helpers = helpers || Handlebars.helpers; partials = partials || Handlebars.partials;
+  var buffer = "", stack1, self=this;
 
 function program1(depth0,data) {
   
@@ -803,16 +806,11 @@ function program1(depth0,data) {
 function program2(depth0,data) {
   
   var buffer = "", stack1;
-  buffer += "\n    <li class=\"swipeable\" data-api-url=\"preset/";
-  stack1 = depth0.uuid;
-  stack1 = typeof stack1 === functionType ? stack1() : stack1;
-  buffer += escapeExpression(stack1) + "\" data-method=\"delete\">\n      <span class=\"right removable\">\n        <span><a href=\"#\" class=\"button red small\">Delete</a></span>\n      </span>\n      <a href=\"/preset/";
-  stack1 = depth0.uuid;
-  stack1 = typeof stack1 === functionType ? stack1() : stack1;
-  buffer += escapeExpression(stack1) + "\" class=\"arrow\"><span></span>";
-  stack1 = depth0.preset_name;
-  stack1 = typeof stack1 === functionType ? stack1() : stack1;
-  buffer += escapeExpression(stack1) + "</a></li>\n    </li>\n    ";
+  buffer += "\n      ";
+  stack1 = depth0;
+  stack1 = self.invokePartial(partials.preset, 'preset', stack1, helpers, partials);;
+  if(stack1 || stack1 === 0) { buffer += stack1; }
+  buffer += "\n    ";
   return buffer;}
 
 function program4(depth0,data) {
@@ -825,23 +823,26 @@ function program4(depth0,data) {
   if(stack1 || stack1 === 0) { buffer += stack1; }
   buffer += "\n";
   return buffer;});
-templates['production-single'] = template(function (Handlebars,depth0,helpers,partials,data) {
+templates['production'] = template(function (Handlebars,depth0,helpers,partials,data) {
   helpers = helpers || Handlebars.helpers;
   var buffer = "", stack1, functionType="function", escapeExpression=this.escapeExpression;
 
 
-  buffer += "<li><a href=\"/production/";
+  buffer += "<li class=\"show-popover\" data-popover-event=\"touchhold\">\n  <div class=\"hidden popover top justify\" data-position=\"top\">\n    <a href=\"/production/edit/";
+  stack1 = depth0.uuid;
+  stack1 = typeof stack1 === functionType ? stack1() : stack1;
+  buffer += escapeExpression(stack1) + "\" class=\"button expand\">Edit</a>\n  </div>\n  <a href=\"/production/";
   stack1 = depth0.uuid;
   stack1 = typeof stack1 === functionType ? stack1() : stack1;
   buffer += escapeExpression(stack1) + "\" class=\"arrow\"><span></span>";
   stack1 = depth0.metadata;
   stack1 = stack1 == null || stack1 === false ? stack1 : stack1.title;
   stack1 = typeof stack1 === functionType ? stack1() : stack1;
-  buffer += escapeExpression(stack1) + "</a></li>\n";
+  buffer += escapeExpression(stack1) + "</a>\n</li>\n";
   return buffer;});
-templates['production'] = template(function (Handlebars,depth0,helpers,partials,data) {
-  helpers = helpers || Handlebars.helpers;
-  var buffer = "", stack1, functionType="function", escapeExpression=this.escapeExpression, self=this;
+templates['productions'] = template(function (Handlebars,depth0,helpers,partials,data) {
+  helpers = helpers || Handlebars.helpers; partials = partials || Handlebars.partials;
+  var buffer = "", stack1, self=this;
 
 function program1(depth0,data) {
   
@@ -855,14 +856,11 @@ function program1(depth0,data) {
 function program2(depth0,data) {
   
   var buffer = "", stack1;
-  buffer += "\n      <li><a href=\"/production/";
-  stack1 = depth0.uuid;
-  stack1 = typeof stack1 === functionType ? stack1() : stack1;
-  buffer += escapeExpression(stack1) + "\" class=\"arrow\"><span></span>";
-  stack1 = depth0.metadata;
-  stack1 = stack1 == null || stack1 === false ? stack1 : stack1.title;
-  stack1 = typeof stack1 === functionType ? stack1() : stack1;
-  buffer += escapeExpression(stack1) + "</a></li>\n    ";
+  buffer += "\n      ";
+  stack1 = depth0;
+  stack1 = self.invokePartial(partials.production, 'production', stack1, helpers, partials);;
+  if(stack1 || stack1 === 0) { buffer += stack1; }
+  buffer += "\n    ";
   return buffer;}
 
 function program4(depth0,data) {
@@ -1024,10 +1022,13 @@ templates['ui-removable-chapter-list-item'] = template(function (Handlebars,dept
   var buffer = "", stack1, functionType="function", escapeExpression=this.escapeExpression;
 
 
-  buffer += "<li class=\"swipeable\">\n  <span class=\"right removable\">\n    <span><a href=\"#\" class=\"button red small\">";
+  buffer += "<li class=\"swipeable show-popover\" data-popover-event=\"touchhold\">\n  <span class=\"right removable\">\n    <span><a href=\"#\" class=\"button red small\">";
   stack1 = depth0.label;
   stack1 = typeof stack1 === functionType ? stack1() : stack1;
-  buffer += escapeExpression(stack1) + "</a></span>\n  </span>\n  <a href=\"";
+  buffer += escapeExpression(stack1) + "</a></span>\n  </span>\n  <div class=\"hidden popover top justify\" data-position=\"top\">\n    <a href=\"#\" class=\"button expand red deleteable\">";
+  stack1 = depth0.label;
+  stack1 = typeof stack1 === functionType ? stack1() : stack1;
+  buffer += escapeExpression(stack1) + "</a>\n  </div>\n  <a href=\"";
   stack1 = depth0.href;
   stack1 = typeof stack1 === functionType ? stack1() : stack1;
   buffer += escapeExpression(stack1) + "\" class=\"arrow\"><span></span><small class=\"light\">";
@@ -1051,10 +1052,13 @@ function program1(depth0,data) {
   buffer += escapeExpression(stack1) + "</small>";
   return buffer;}
 
-  buffer += "<li class=\"swipeable\">\n  <span class=\"right removable\">\n    <span><a href=\"#\" class=\"button red small\">";
+  buffer += "<li class=\"swipeable show-popover\" data-popover-event=\"touchhold\">\n  <span class=\"right removable\">\n    <span><a href=\"#\" class=\"button red small\">";
   stack1 = depth0.label;
   stack1 = typeof stack1 === functionType ? stack1() : stack1;
-  buffer += escapeExpression(stack1) + "</a></span>\n  </span>\n  <a href=\"";
+  buffer += escapeExpression(stack1) + "</a></span>\n  </span>\n  <div class=\"hidden popover top justify\" data-position=\"top\">\n    <a href=\"#\" class=\"button expand red deleteable\">";
+  stack1 = depth0.label;
+  stack1 = typeof stack1 === functionType ? stack1() : stack1;
+  buffer += escapeExpression(stack1) + "</a>\n  </div>\n  <a href=\"";
   stack1 = depth0.href;
   stack1 = typeof stack1 === functionType ? stack1() : stack1;
   buffer += escapeExpression(stack1) + "\" class=\"arrow\"><span></span>";

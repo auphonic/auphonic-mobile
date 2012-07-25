@@ -78,7 +78,7 @@ Controller.define('/preset', function() {
 
     View.getMain().push('preset', new View.Object.LoadMore({
       title: 'Presets',
-      content: UI.render('preset', {preset: response.data}),
+      content: UI.render('presets', {preset: response.data}),
       action: {
         title: 'New',
         url: '/preset/new'
@@ -88,7 +88,7 @@ Controller.define('/preset', function() {
       loadedItems: response.data.length,
       addItemsFunction: add,
       itemContainer: '.preset_container',
-      templateId: 'preset-single'
+      templateId: 'preset'
     }).addEvent('invalidate', function() {
       API.invalidate('presets');
     }));
