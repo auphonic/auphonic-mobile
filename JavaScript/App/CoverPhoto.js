@@ -47,16 +47,33 @@ exports.createView = function(store, object) {
     record.call(this, event, 'PHOTOLIBRARY');
   };
 
+  var eraseFromStore;
+  var removeListeners;
+
+  removeListeners = function() {
+    object.getView().getAction().toElement().removeEvent('click:once', eraseFromStore);
+    object.getView().getBack().toElement().removeEvent('click:once', removeListeners);
+  };
+
+  eraseFromStore = function() {
+    removeListeners();
+    store.set('thumbnail', null);
+    store.set('reset_cover_image', true);
+  };
+
   var removeCoverPhoto = function(event) {
-     // Stop because sometimes on iOS a "ghost click" focuses elements below after the hidden classes are applied
-    event.stop();
+    event.preventDefault();
 
     var container = object.toElement();
     container.getElement('img.thumbnail').addClass('hidden');
     container.getElement('.remove_thumbnail').addClass('hidden');
 
-    store.set('thumbnail', null);
-    store.set('reset_cover_image', true);
+    // This is nasty but prevents ghost clicks on iOS properly
+    UI.disable(container);
+    UI.enable.delay(300, null, container);
+
+    object.getView().getAction().toElement().addEvent('click:once', eraseFromStore);
+    object.getView().getBack().toElement().addEvent('click:once', removeListeners);
   };
 
   var attachListeners = function() {

@@ -29,6 +29,11 @@ module.exports = new Class({
     onTransitionEnd: null
   },
 
+  Properties: {
+    action: null,
+    back: null,
+    title: null
+  },
 
   initialize: function(element, options) {
     if (!options) options = {};
