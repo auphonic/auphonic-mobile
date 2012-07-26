@@ -55,6 +55,12 @@ var Spinner = require('Spinner');
 Handlebars.registerPartial('preset', Handlebars.templates.preset);
 Handlebars.registerPartial('production', Handlebars.templates.production);
 
+// These are cached during the lifetime of the app so the data
+// can be accessed synchronously.
+API.cacheInfo('algorithms');
+API.cacheInfo('output_files');
+API.cacheInfo('service_types');
+
 var preventDefault = function(event) {
   event.preventDefault();
 };
@@ -256,11 +262,6 @@ var boot = function() {
   }));
 
   Controller.define('/', function() {
-
-    // These are cached during the lifetime of the app so the data
-    // can be accessed synchronously.
-    API.cacheInfo('algorithms');
-    API.cacheInfo('output_files');
 
     UI.Chrome.show();
 

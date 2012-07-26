@@ -11,7 +11,6 @@ var Queue = require('Queue').Queue;
 
 var urls = {};
 var cache = {};
-var request;
 
 var setCache = function(type, data, lifetime) {
   cache[type] = {
@@ -68,11 +67,6 @@ var getAuthorization = function() {
 };
 
 API.call = function(url, method, requestData) {
-  if (request && request.isRunning() && request.getOption('method').toLowerCase() == 'get') {
-    request.cancel();
-    API.on(url).removeEvents('success:once').removeEvents('error:once');
-  }
-
   if (typeof requestData != 'string') requestData = Object.toQueryString(requestData);
 
   method = (method || 'get').toLowerCase();
@@ -87,7 +81,7 @@ API.call = function(url, method, requestData) {
     }
   }
 
-  request = new Request.JSON({
+  new Request.JSON({
 
     url: getURL(url),
     method: method,
