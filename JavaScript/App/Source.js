@@ -2,8 +2,6 @@ var API = require('API');
 var UI = require('UI');
 var View = require('View');
 
-var Service = require('./Service');
-
 var services = {};
 
 exports.getType = function() {

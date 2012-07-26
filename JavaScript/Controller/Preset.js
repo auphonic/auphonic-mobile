@@ -14,7 +14,7 @@ var CoverPhoto = require('App/CoverPhoto');
 var MainForm = require('App/MainForm');
 var Metadata = require('App/Metadata');
 var OutputFiles = require('App/OutputFiles');
-var Service = require('App/Service');
+var OutgoingService = require('App/OutgoingService');
 
 var Form = require('App/Form');
 
@@ -38,7 +38,7 @@ var createForm = function(options) {
         }
       }, options)),
       Metadata,
-      Service,
+      OutgoingService,
       OutputFiles,
       CoverPhoto
     ]

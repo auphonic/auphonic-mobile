@@ -5,7 +5,7 @@ var LocalStorage = require('Utility/LocalStorage');
 var API = require('API');
 
 var OutputFiles = require('./OutputFiles');
-var Service = require('./Service');
+var OutgoingService = require('./OutgoingService');
 
 var length = function(object) {
   return object && object.length;
@@ -45,7 +45,7 @@ exports.prepare = function(object, type) {
 
   // Remove duplicates. The API currently allows to add the same service more than once
   var uuids = {};
-  object.outgoing_services = length(object.outgoing_services) ? object.outgoing_services.map(Service.format).filter(function(service) {
+  object.outgoing_services = length(object.outgoing_services) ? object.outgoing_services.map(OutgoingService.format).filter(function(service) {
     if (uuids[service.uuid]) return false;
     uuids[service.uuid] = true;
     return true;

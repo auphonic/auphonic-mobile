@@ -13,7 +13,6 @@ var SwipeAble = require('UI/Actions/SwipeAble');
 var Chapter = require('./Chapter');
 var Metadata = require('./Metadata');
 var OutputFiles = require('./OutputFiles');
-var Service = require('./Service');
 var Source = require('./Source');
 var ListFiles = require('./ListFiles');
 
