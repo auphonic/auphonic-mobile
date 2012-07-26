@@ -30,6 +30,8 @@ exports.prepare = function(object, type) {
   // We need to create a new object that can be transformed for viewing
   object = Object.append({}, object);
   object.access_token = user && '?access_token=' + user.access_token;
+  object.random = '&' + Date.now(); // Used for cache invalidation
+
   object[type] = true;
   object.baseURL = type;
 

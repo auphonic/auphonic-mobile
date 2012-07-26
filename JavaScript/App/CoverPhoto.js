@@ -4,9 +4,18 @@ var Notice = require('UI/Notice');
 
 var CordovaImageRecorder = require('Capture/CordovaImageRecorder');
 
-exports.createUI = function(store, object) {
+exports.getType = function() {
+  return 'cover-photo';
+};
+
+exports.getData = function(store) {
+  return {
+    reset_cover_image: store.get('reset_cover_image')
+  };
+};
+
+exports.createView = function(store, object) {
   var record = function(event, source) {
-    var element = this;
     event.preventDefault();
 
     var recorder = new CordovaImageRecorder({
@@ -23,6 +32,7 @@ exports.createUI = function(store, object) {
 
         store.fireEvent('upload', [file]);
         store.set('thumbnail', file.fullPath);
+        store.set('reset_cover_image', false);
       }
     });
 
@@ -46,8 +56,7 @@ exports.createUI = function(store, object) {
     container.getElement('.remove_thumbnail').addClass('hidden');
 
     store.set('thumbnail', null);
-
-    // TODO(cpojer): Actually delete the image when the API for it becomes available
+    store.set('reset_cover_image', true);
   };
 
   var attachListeners = function() {

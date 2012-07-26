@@ -26,7 +26,8 @@ exports.createView = function(store, data) {
     title: 'Metadata',
     content: UI.render('form-new-metadata', {
       thumbnail: store.get('thumbnail'),
-      access_token: user && '?access_token=' + user.access_token
+      access_token: user && '?access_token=' + user.access_token,
+      random: '&' + Date.now() // Used for cache invalidation
     }),
     action: {
       title: 'Done',
@@ -48,7 +49,7 @@ exports.createView = function(store, data) {
     }
   });
 
-  CoverPhoto.createUI(store, object);
+  CoverPhoto.createView(store, object);
 
   View.getMain().push(object);
 };

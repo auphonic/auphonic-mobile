@@ -13,6 +13,7 @@ var CordovaVideoRecorder = require('Capture/CordovaVideoRecorder');
 
 var Chapter = require('App/Chapter');
 var Data = require('App/Data');
+var CoverPhoto = require('App/CoverPhoto');
 var ListFiles = require('App/ListFiles');
 var MainForm = require('App/MainForm');
 var Metadata = require('App/Metadata');
@@ -46,7 +47,8 @@ var createForm = function(options) {
       Source,
       Service,
       ListFiles,
-      OutputFiles
+      OutputFiles,
+      CoverPhoto
     ]
   });
 };

@@ -167,6 +167,7 @@ module.exports = new Class({
       object.addEvent('show:once', (function() {
         this.updateAlgorithms(data);
       }).bind(this));
+
       store.set('thumbnail', data.thumbnail);
     }
 

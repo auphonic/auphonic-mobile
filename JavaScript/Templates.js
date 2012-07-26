@@ -41,6 +41,9 @@ function program1(depth0,data) {
   buffer += escapeExpression(stack1);
   stack1 = depth0.access_token;
   stack1 = typeof stack1 === functionType ? stack1() : stack1;
+  buffer += escapeExpression(stack1);
+  stack1 = depth0.random;
+  stack1 = typeof stack1 === functionType ? stack1() : stack1;
   buffer += escapeExpression(stack1) + "\" class=\"thumbnail\" />\n  ";
   return buffer;}
 
@@ -141,6 +144,9 @@ function program16(depth0,data) {
   stack1 = typeof stack1 === functionType ? stack1() : stack1;
   buffer += escapeExpression(stack1);
   stack1 = depth0.access_token;
+  stack1 = typeof stack1 === functionType ? stack1() : stack1;
+  buffer += escapeExpression(stack1);
+  stack1 = depth0.random;
   stack1 = typeof stack1 === functionType ? stack1() : stack1;
   buffer += escapeExpression(stack1) + "\" class=\"waveform\" />\n  </div>\n";
   return buffer;}
@@ -614,6 +620,9 @@ function program3(depth0,data) {
   stack1 = typeof stack1 === functionType ? stack1() : stack1;
   buffer += escapeExpression(stack1);
   stack1 = depth0.access_token;
+  stack1 = typeof stack1 === functionType ? stack1() : stack1;
+  buffer += escapeExpression(stack1);
+  stack1 = depth0.random;
   stack1 = typeof stack1 === functionType ? stack1() : stack1;
   buffer += escapeExpression(stack1) + "\" class=\"thumbnail";
   stack1 = depth0.thumbnail;
