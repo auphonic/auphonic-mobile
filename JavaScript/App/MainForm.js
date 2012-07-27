@@ -8,6 +8,7 @@ var API = require('API');
 var UI = require('UI');
 var View = require('View');
 
+var Notice = require('UI/Notice');
 var SwipeAble = require('UI/Actions/SwipeAble');
 
 var Chapter = require('./Chapter');
@@ -183,7 +184,11 @@ module.exports = new Class({
   },
 
   upload: function(file) {
-    return API.upload(this.getSaveURL() + '/upload', file, 'image');
+    return API.upload(this.getSaveURL() + '/upload', file, 'image').on({
+      success: function() {
+        new Notice('The Cover Photo was successfully uploaded.');
+      }
+    });
   },
 
   onShow: function() {
