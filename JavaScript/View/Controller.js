@@ -109,6 +109,7 @@ module.exports = new Class({
       onTransitionEnd: this.bound('onTransitionEnd')
     });
 
+    object.fireEvent('insert', [direction]);
     object.revertScrollTop();
 
     return this;

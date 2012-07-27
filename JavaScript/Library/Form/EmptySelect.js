@@ -49,6 +49,7 @@ module.exports = new Class({
       this.element.removeEvent('change', this.bound('change'));
     else
       this.element.removeEvent('focus:once', this.bound('focusOnce'));
+
     this.element.removeEvents({
       focus: this.bound('focus'),
       blur: this.bound('blur')

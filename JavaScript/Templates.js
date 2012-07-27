@@ -752,7 +752,10 @@ function program1(depth0,data) {
   buffer += escapeExpression(stack1) + "\" />\n      <label class=\"left\">\n        <div class=\"right\">\n          <div class=\"checkbox\">\n            <span class=\"left\"></span><span class=\"thumb\" data-on=\"ON\" data-off=\"OFF\"></span>\n            <input type=\"checkbox\" name=\"outgoing_services.";
   stack1 = depth0.uuid;
   stack1 = typeof stack1 === functionType ? stack1() : stack1;
-  buffer += escapeExpression(stack1) + ".checked\" value=\"1\" />\n          </div>\n        </div>\n        <small><span class=\"light\">";
+  buffer += escapeExpression(stack1) + ".checked\" data-uuid=\"";
+  stack1 = depth0.uuid;
+  stack1 = typeof stack1 === functionType ? stack1() : stack1;
+  buffer += escapeExpression(stack1) + "\" value=\"1\" />\n          </div>\n        </div>\n        <small><span class=\"light\">";
   stack1 = depth0.display_type;
   stack1 = typeof stack1 === functionType ? stack1() : stack1;
   buffer += escapeExpression(stack1) + "</span> ";
@@ -761,11 +764,165 @@ function program1(depth0,data) {
   buffer += escapeExpression(stack1) + "</small>\n      </label>\n    </li>\n  ";
   return buffer;}
 
+function program3(depth0,data) {
+  
+  var buffer = "", stack1;
+  buffer += "\n  ";
+  stack1 = depth0.parameters;
+  stack1 = helpers['if'].call(depth0, stack1, {hash:{},inverse:self.noop,fn:self.program(4, program4, data)});
+  if(stack1 || stack1 === 0) { buffer += stack1; }
+  buffer += "\n";
+  return buffer;}
+function program4(depth0,data) {
+  
+  var buffer = "", stack1;
+  buffer += "\n    <div class=\"fade\" data-service-uuid=\"";
+  stack1 = depth0.uuid;
+  stack1 = typeof stack1 === functionType ? stack1() : stack1;
+  buffer += escapeExpression(stack1) + "\">\n      <h1>";
+  stack1 = depth0.display_type;
+  stack1 = typeof stack1 === functionType ? stack1() : stack1;
+  buffer += escapeExpression(stack1) + " ";
+  stack1 = depth0.display_name;
+  stack1 = typeof stack1 === functionType ? stack1() : stack1;
+  buffer += escapeExpression(stack1) + "</h1>\n      <ul>\n        ";
+  stack1 = depth0.parameters;
+  stack1 = helpers.each.call(depth0, stack1, {hash:{},inverse:self.noop,fn:self.program(5, program5, data)});
+  if(stack1 || stack1 === 0) { buffer += stack1; }
+  buffer += "\n      </ul>\n    </div>\n  ";
+  return buffer;}
+function program5(depth0,data) {
+  
+  var buffer = "", stack1;
+  buffer += "\n          ";
+  stack1 = depth0.checkbox;
+  stack1 = helpers['if'].call(depth0, stack1, {hash:{},inverse:self.noop,fn:self.program(6, program6, data)});
+  if(stack1 || stack1 === 0) { buffer += stack1; }
+  buffer += "\n          ";
+  stack1 = depth0.select;
+  stack1 = helpers['if'].call(depth0, stack1, {hash:{},inverse:self.noop,fn:self.program(9, program9, data)});
+  if(stack1 || stack1 === 0) { buffer += stack1; }
+  buffer += "\n          ";
+  stack1 = depth0.input;
+  stack1 = helpers['if'].call(depth0, stack1, {hash:{},inverse:self.noop,fn:self.program(19, program19, data)});
+  if(stack1 || stack1 === 0) { buffer += stack1; }
+  buffer += "\n        ";
+  return buffer;}
+function program6(depth0,data) {
+  
+  var buffer = "", stack1;
+  buffer += "\n            <li class=\"wide\">\n              <label class=\"left\">\n                <div class=\"right\">\n                  <div class=\"checkbox\">\n                    <span class=\"left\"></span><span class=\"thumb\" data-on=\"YES\" data-off=\"NO\"></span>\n                    <input type=\"checkbox\" name=\"outgoing_services.";
+  stack1 = depth0.uuid;
+  stack1 = typeof stack1 === functionType ? stack1() : stack1;
+  buffer += escapeExpression(stack1) + ".";
+  stack1 = depth0.key;
+  stack1 = typeof stack1 === functionType ? stack1() : stack1;
+  buffer += escapeExpression(stack1) + "\" value=\"1\" ";
+  stack1 = depth0.default_value;
+  stack1 = helpers['if'].call(depth0, stack1, {hash:{},inverse:self.noop,fn:self.program(7, program7, data)});
+  if(stack1 || stack1 === 0) { buffer += stack1; }
+  buffer += "/>\n                  </div>\n                </div>\n                ";
+  stack1 = depth0.display_name;
+  stack1 = typeof stack1 === functionType ? stack1() : stack1;
+  buffer += escapeExpression(stack1) + "\n              </label>\n            </li>\n          ";
+  return buffer;}
+function program7(depth0,data) {
+  
+  
+  return "checked=\"checked\"";}
+
+function program9(depth0,data) {
+  
+  var buffer = "", stack1;
+  buffer += "\n            <li>\n              <label class=\"left\">\n                <select name=\"outgoing_services.";
+  stack1 = depth0.uuid;
+  stack1 = typeof stack1 === functionType ? stack1() : stack1;
+  buffer += escapeExpression(stack1) + ".";
+  stack1 = depth0.key;
+  stack1 = typeof stack1 === functionType ? stack1() : stack1;
+  buffer += escapeExpression(stack1) + "\" class=\"right";
+  stack1 = depth0.default_value;
+  stack1 = helpers.unless.call(depth0, stack1, {hash:{},inverse:self.noop,fn:self.program(10, program10, data)});
+  if(stack1 || stack1 === 0) { buffer += stack1; }
+  buffer += "\"";
+  stack1 = depth0.hasEmptyOption;
+  stack1 = helpers['if'].call(depth0, stack1, {hash:{},inverse:self.noop,fn:self.program(12, program12, data)});
+  if(stack1 || stack1 === 0) { buffer += stack1; }
+  buffer += ">\n                  ";
+  stack1 = depth0.options;
+  stack1 = helpers.each.call(depth0, stack1, {hash:{},inverse:self.noop,fn:self.program(14, program14, data)});
+  if(stack1 || stack1 === 0) { buffer += stack1; }
+  buffer += "\n                </select>\n                ";
+  stack1 = depth0.default_value;
+  stack1 = helpers.unless.call(depth0, stack1, {hash:{},inverse:self.noop,fn:self.program(17, program17, data)});
+  if(stack1 || stack1 === 0) { buffer += stack1; }
+  buffer += "\n                ";
+  stack1 = depth0.display_name;
+  stack1 = typeof stack1 === functionType ? stack1() : stack1;
+  buffer += escapeExpression(stack1) + "\n              </label>\n            </li>\n          ";
+  return buffer;}
+function program10(depth0,data) {
+  
+  
+  return " empty";}
+
+function program12(depth0,data) {
+  
+  
+  return " data-select-type=\"preserve-null-state\"";}
+
+function program14(depth0,data) {
+  
+  var buffer = "", stack1;
+  buffer += "\n                    <option value=\"";
+  stack1 = depth0.value;
+  stack1 = typeof stack1 === functionType ? stack1() : stack1;
+  buffer += escapeExpression(stack1) + "\"";
+  stack1 = depth0.selected;
+  stack1 = helpers['if'].call(depth0, stack1, {hash:{},inverse:self.noop,fn:self.program(15, program15, data)});
+  if(stack1 || stack1 === 0) { buffer += stack1; }
+  buffer += ">";
+  stack1 = depth0.display_name;
+  stack1 = typeof stack1 === functionType ? stack1() : stack1;
+  buffer += escapeExpression(stack1) + "</option>\n                  ";
+  return buffer;}
+function program15(depth0,data) {
+  
+  
+  return "selected=\"selected\"";}
+
+function program17(depth0,data) {
+  
+  
+  return "\n                  <span class=\"right placeholder\">select a value</span>\n                ";}
+
+function program19(depth0,data) {
+  
+  var buffer = "", stack1;
+  buffer += "\n            <li>\n              <label class=\"left\">\n                <input type=\"text\" name=\"outgoing_services.";
+  stack1 = depth0.uuid;
+  stack1 = typeof stack1 === functionType ? stack1() : stack1;
+  buffer += escapeExpression(stack1) + ".";
+  stack1 = depth0.key;
+  stack1 = typeof stack1 === functionType ? stack1() : stack1;
+  buffer += escapeExpression(stack1) + "\" value=\"";
+  stack1 = depth0.default_value;
+  stack1 = typeof stack1 === functionType ? stack1() : stack1;
+  buffer += escapeExpression(stack1) + "\"  class=\"right\" />\n                ";
+  stack1 = depth0.display_name;
+  stack1 = typeof stack1 === functionType ? stack1() : stack1;
+  buffer += escapeExpression(stack1) + "\n              </label>\n            </li>\n          ";
+  return buffer;}
+
   buffer += "<ul class=\"formcontent\">\n  ";
   stack1 = depth0.service;
   stack1 = helpers.each.call(depth0, stack1, {hash:{},inverse:self.noop,fn:self.program(1, program1, data)});
   if(stack1 || stack1 === 0) { buffer += stack1; }
-  buffer += "\n</ul>\n";
+  buffer += "\n</ul>\n\n";
+  stack1 = depth0.service;
+  stack1 = helpers.each.call(depth0, stack1, {hash:{},inverse:self.noop,fn:self.program(3, program3, data)});
+  if(stack1 || stack1 === 0) { buffer += stack1; }
+  buffer += "\n";
   return buffer;});
 templates['login'] = template(function (Handlebars,depth0,helpers,partials,data) {
   helpers = helpers || Handlebars.helpers;

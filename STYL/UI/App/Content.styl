@@ -29,3 +29,17 @@ div.formcontent, ul.formcontent
   height 200px
 
   background #fff
+
+div.fade
+  overflow hidden
+
+  transition-property -webkit-transform, opacity, height
+  transition-timing-function ease-in-out
+  transition-duration 350ms
+
+  transform translate3d(0, 0, 0)
+  opacity 1
+
+  &.out
+    transform translate3d(0, -20px, 0)
+    opacity 0

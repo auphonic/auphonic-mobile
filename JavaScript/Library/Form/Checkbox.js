@@ -1,6 +1,7 @@
 var Core = require('Core');
 var Class = Core.Class;
 var Options = Core.Options;
+var Browser = Core.Browser;
 var Element = Core.Element;
 
 module.exports = new Class({
@@ -79,7 +80,7 @@ module.exports = new Class({
   },
 
   preventDefault: function(event) {
-    event.preventDefault();
+    if (event) event.preventDefault();
   },
 
   touchstart: function(event) {
@@ -117,6 +118,8 @@ module.exports = new Class({
 
     (function() {
       this.element.set('checked', checked);
+      // iOS doesn't fire the change event when setting the checked attribute manually.
+      if (Browser.Platform.ios) this.element.fireEvent('change');
       this.update();
     }).delay(10, this);
   }

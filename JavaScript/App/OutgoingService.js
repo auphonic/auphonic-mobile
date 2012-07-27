@@ -4,12 +4,18 @@ var View = require('View');
 
 var services = {};
 
+// Oh well...
+var names = {
+  soundcloud: 'SoundCloud',
+  dropbox: 'Dropbox',
+  youtube: 'YouTube',
+  ftp: 'FTP',
+  sftp: 'SFTP'
+};
+
 var format = exports.format = function(service) {
   var type = service.type;
-  if (type == 'dropbox') type = type.charAt(0).toUpperCase() + type.slice(1);
-  else type = service.type.toUpperCase();
-  service.display_type = type;
-
+  service.display_type = names[type] || type.charAt(0).toUpperCase() + type.slice(1);
   return service;
 };
 
@@ -51,7 +57,9 @@ exports.setData = function(store, outgoing_services, baseURL, object, immediate)
   var services = {};
   if (outgoing_services) outgoing_services.each(function(service) {
     services['outgoing_services.' + service.uuid + '.checked'] = true;
-    services['outgoing_services.' + service.uuid + '.uuid'] = service.uuid;
+    Object.each(service, function(value, key) {
+      services['outgoing_services.' + service.uuid + '.' + key] = service[key];
+    });
   });
 
   store.set('outgoing_services', services);
@@ -79,7 +87,33 @@ exports.createView = function(store) {
   View.getMain().showIndicator();
 
   get(function(services) {
-    View.getMain().push(new View.Object({
+    var types = API.getInfo('service_types');
+    services.each(function(service) {
+      var type = types[service.type];
+      if (!type.parameters) return;
+
+      Object.each(type.parameters, function(info, parameter) {
+        info.key = parameter;
+        info.uuid = service.uuid; // Handlebars sucks
+        info[info.type] = true;
+
+        if (info.type == 'select') info.options.each(function(option) {
+          if (!option.value && !info.default_value) {
+            option.selected = true;
+            info.hasEmptyOption = true;
+            if (!option.display_name) option.display_name = 'None';
+            return;
+          }
+
+          if (option.value == info.default_value)
+            option.selected = true;
+        });
+      });
+
+      service.parameters = Object.values(type.parameters);
+    });
+
+    var object = new View.Object({
       title: 'Transfers',
       content: UI.render('form-new-service', {
         service: services
@@ -98,6 +132,46 @@ exports.createView = function(store) {
       onShow: function() {
         this.unserialize(store.get('outgoing_services'));
       }
-    }));
+    });
+
+    var onChange = function() {
+      var uuid = this.get('data-uuid');
+      var container = object.toElement().getElement('[data-service-uuid="' + uuid + '"]');
+      if (!container) return;
+
+      container.removeEvents('transitionComplete:once');
+      if (this.get('checked')) {
+        container.removeClass('hidden');
+        (function() {
+          container.setStyle('height', container.retrieve('offsetHeight')).removeClass('out');
+        }).delay(50);
+      } else {
+        container.setStyle('height', 0).addClass('out').addEvent('transitionComplete:once', function() {
+          container.addClass('hidden');
+        });
+      }
+    };
+
+    object.addEvent('insert:once', function() {
+      var parent = object.toElement();
+      var elements = parent.getElements('input[type=checkbox][data-uuid]');
+      elements.addEvent('change', onChange);
+
+      elements.each(function(element) {
+        var uuid = element.get('data-uuid');
+        var container = parent.getElement('[data-service-uuid="' + uuid + '"]');
+        if (!container) return;
+
+        container.store('offsetHeight', container.offsetHeight);
+        if (element.get('checked')) {
+          container.setStyle('height', container.offsetHeight);
+          container.getElements('select').fireEvent('focus:once').fireEvent('change');
+        } else {
+          container.addClass('hidden').addClass('out');
+        }
+      });
+    });
+
+    View.getMain().push(object);
   });
 };
