@@ -43,10 +43,6 @@ var createUIElements = function(baseURL, store, list) {
 };
 
 var add = function(baseURL, store, container, outputFile, id) {
-  // Select-Values are Arrays but we only need the first and only value
-  outputFile.format = outputFile.format[0];
-  if (outputFile.bitrate) outputFile.bitrate = outputFile.bitrate[0];
-
   var previous = id ? container.getElement('[data-output-file-id=' + id + ']') : null;
   var element = createUIElement(baseURL + 'new/output_file/{id}', store, outputFile, id);
 

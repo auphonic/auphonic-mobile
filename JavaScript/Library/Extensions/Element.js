@@ -93,6 +93,7 @@ Element.implement({
         return document.id(opt).get('value');
       }) : ((type == 'radio' || type == 'checkbox') && !el.checked) ? (type == 'checkbox' ? false : null) : el.get('value');
 
+      if (el.get('tag') == 'select' && !el.get('multiple')) value = value[0];
       if (typeof value != 'undefined') object[el.name] = value;
     });
 
