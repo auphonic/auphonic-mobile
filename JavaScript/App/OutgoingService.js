@@ -4,18 +4,9 @@ var View = require('View');
 
 var services = {};
 
-// Oh well...
-var names = {
-  soundcloud: 'SoundCloud',
-  dropbox: 'Dropbox',
-  youtube: 'YouTube',
-  ftp: 'FTP',
-  sftp: 'SFTP'
-};
-
 var format = exports.format = function(service) {
-  var type = service.type;
-  service.display_type = names[type] || type.charAt(0).toUpperCase() + type.slice(1);
+  var type = API.getInfo('service_types')[service.type];
+  service.display_type = type && type.display_name;
   return service;
 };
 
