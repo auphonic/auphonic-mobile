@@ -2,24 +2,6 @@ var Core = require('Core');
 var Element = Core.Element;
 var Elements = Core.Elements;
 
-if (document.createElement('div').classList) Element.implement({
-
-  addClass: function(className) {
-    this.classList.add(className);
-    return this;
-  },
-
-  removeClass: function(className) {
-    this.classList.remove(className);
-    return this;
-  },
-
-  hasClass: function(className) {
-    return this.classList.contains(className);
-  }
-
-});
-
 Element.implement({
 
   setStyle: function(property, value) {
