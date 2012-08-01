@@ -224,6 +224,22 @@ var boot = function() {
   Notice.setContainer(document.body);
   Notice.setTemplate(new Element('div.notice').adopt(new Element('div.close'), new Element('div.text')));
 
+  var notice;
+  var noticeText;
+  API.setErrorHandler(function(data) {
+    var text = '';
+    if (data && data.status_code) text = '<h1>An error occurred</h1> Please try again or report a bug so we can fix this as soon as possible.';
+    else text = '<h1>A network error ocurred</h1> Please put your device in some elevated position to regain Internet access. If the problem lies on our end we\'ll make sure to fix the problem quickly :)';
+
+    View.getMain().hideIndicator();
+
+    // If the last notice with the same text is still visible we'll not show another one.
+    if (notice && notice.isOpen() && noticeText == text) return;
+
+    noticeText = text;
+    notice = new Notice(text, {type: 'error'});
+  });
+
   var header = document.getElement('header');
   var back = new UI.BackButton(header, new Element('a'));
   var action = new UI.ActionButton(header, new Element('a'), {

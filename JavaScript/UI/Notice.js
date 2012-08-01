@@ -22,6 +22,7 @@ module.exports = new Class({
 
   x: 0,
   y: 0,
+  opened: false,
 
   initialize: function(message, instanceOptions) {
     this.setOptions(instanceOptions);
@@ -49,6 +50,9 @@ module.exports = new Class({
   },
 
   open: function() {
+    if (this.opened) return this;
+
+    this.opened = true;
     stack.unshift(this);
     this.element.inject(container);
 
@@ -61,6 +65,8 @@ module.exports = new Class({
   },
 
   close: function(direction) {
+    if (!this.opened) return this;
+
     this.element.addEvent('transformComplete:once', this.bound('repositionOnClose'));
     this.detach().setPosition((direction == 'right') ? '100%' : '-100%');
 
@@ -99,6 +105,7 @@ module.exports = new Class({
   repositionOnClose: function() {
     this.element.dispose();
     stack.erase(this).invoke('position');
+    this.opened = false;
   },
 
   setPosition: function(x, y) {
@@ -116,6 +123,10 @@ module.exports = new Class({
 
   getHeight: function() {
     return this.element.offsetHeight;
+  },
+
+  isOpen: function() {
+    return this.opened;
   }
 
 });
