@@ -67,7 +67,7 @@ var showAction = function(object, id) {
 };
 
 var hideAction = function() {
-  View.getMain().updateElement('action', {}, null);
+  View.getMain().updateElement('action');
 };
 
 var getContainer = function(element) {
@@ -100,7 +100,7 @@ exports.setData = function(store, list, baseURL, object, immediate) {
 
 exports.setup = function(store, baseURL, object) {
   object.addEvent('chapters-createAction', function(id) {
-    View.getMain().updateElement('action', {}, {
+    View.getMain().updateElement('action', null, {
       title: id ? 'Done' : 'Add',
       back: true,
       onClick: function() {
@@ -128,7 +128,7 @@ exports.createView = function(store, editId) {
   });
   View.getMain().push(object);
 
-  var active = false;
+  var isActive = false;
   var inputs = object.toElement().getElements('input[data-required]');
   var matches = function(element) {
     var regex = element.get('data-matches');
@@ -138,18 +138,14 @@ exports.createView = function(store, editId) {
   inputs.addEvent('input', function() {
     // Cheap validation
     var hasValues = Array.every(inputs, function(element) {
-      var value = element.get('value');
-      if (!value || value === '') return false;
-      if (!matches(element)) return false;
-
-      return true;
+      return (element.get('value') && matches(element));
     });
 
-    if (hasValues && !active) {
-      active = true;
+    if (hasValues && !isActive) {
+      isActive = true;
       showAction(mainObject, id);
-    } else if (!hasValues && active) {
-      active = false;
+    } else if (!hasValues && isActive) {
+      isActive = false;
       hideAction();
     }
   });
@@ -173,7 +169,8 @@ exports.createView = function(store, editId) {
 
   // editing
   if (id) {
+    isActive = true;
     object.unserialize(chapterData[id]);
-    showAction(store, id);
+    showAction(mainObject, id);
   }
 };
