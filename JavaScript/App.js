@@ -222,6 +222,7 @@ var boot = function() {
   }).update();
 
   Notice.setContainer(document.body);
+  Notice.setTemplate(new Element('div.notice').adopt(new Element('div.close'), new Element('div.text')));
 
   var header = document.getElement('header');
   var back = new UI.BackButton(header, new Element('a'));

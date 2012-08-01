@@ -6,7 +6,7 @@ var Browser = Core.Browser;
 
 var Queue = require('Queue').Queue;
 
-var templateElement = new Element('div.notice').adopt(new Element('div.close'), new Element('div.text'));
+var templateElement = new Element('div');
 var queue = new Queue;
 var stack = [];
 var container;
@@ -122,4 +122,8 @@ module.exports = new Class({
 
 module.exports.setContainer = function(c) {
   container = c;
+};
+
+module.exports.setTemplate = function(element) {
+  templateElement = element;
 };

@@ -782,7 +782,7 @@ function program4(depth0,data) {
   buffer += escapeExpression(stack1) + "\">\n      <h1>";
   stack1 = depth0.display_type;
   stack1 = typeof stack1 === functionType ? stack1() : stack1;
-  buffer += escapeExpression(stack1) + " ";
+  buffer += escapeExpression(stack1) + " - ";
   stack1 = depth0.display_name;
   stack1 = typeof stack1 === functionType ? stack1() : stack1;
   buffer += escapeExpression(stack1) + "</h1>\n      <ul>\n        ";
