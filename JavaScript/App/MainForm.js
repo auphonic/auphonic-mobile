@@ -78,6 +78,27 @@ module.exports = new Class({
     this.uploadFile = null;
   },
 
+  showAction: function() {
+    this.object.getView().updateElement('action', null, {
+      title: 'Save',
+      onClick: this.bound('onActionClick')
+    });
+  },
+
+  hideAction: function() {
+    this.object.getView().updateElement('action');
+  },
+
+  updateAction: function(hasValue) {
+    if (hasValue && !this.actionIsVisible) {
+      this.showAction();
+      this.actionIsVisible = true;
+    } else if (!hasValue && this.actionIsVisible) {
+      this.hideAction();
+      this.actionIsVisible = false;
+    }
+  },
+
   update: function(data) {
     var object = this.object;
     var store = this.store;
@@ -95,10 +116,13 @@ module.exports = new Class({
 
   // Title is used twice in productions
   updateTitle: function() {
-    this.object.unserialize({title: Metadata.getData(this.store)['metadata.title']});
+    if (!this.isProduction) return;
+    var title = Metadata.getData(this.store)['metadata.title'];
+    this.object.unserialize({title: title});
   },
 
   updateMetadataTitle: function() {
+    if (!this.isProduction) return;
     // Use metadata.title in both forms in productions.
     var data = this.object.serialize();
     if (data.title && data.title !== '') Metadata.getData(this.store)['metadata.title'] = data.title;
@@ -114,7 +138,7 @@ module.exports = new Class({
   },
 
   createView: function(store, data, presets) {
-    var isProduction = (this.getDisplayType() == 'production');
+    var isProduction = this.isProduction = (this.getDisplayType() == 'production');
     var isEditMode = this.isEditMode = !!data;
     var isNewProduction = (isProduction && !isEditMode);
     this.store = store;
@@ -147,10 +171,6 @@ module.exports = new Class({
       title: this.getObjectName(data) ||  'New ' + this.getDisplayName(),
       content: UI.render('form-main-new', uiData),
       back: (isEditMode ? {title: 'Cancel'} : null),
-      action: {
-        title: 'Save',
-        onClick: this.bound('onActionClick')
-      },
 
       onShow: this.bound('onShow'),
       onHide: this.bound('onHide')
@@ -162,6 +182,15 @@ module.exports = new Class({
     }, this);
 
     this.update(data);
+
+    this.actionIsVisible = (isEditMode && !!this.getObjectName(data));
+    var updateAction = this.bound('updateAction');
+    object.addEvent('show:once', function() {
+      // This only affects either preset_name or metadata.title
+      object.toElement().getElement('[data-required]').addEvent('input', function() {
+        updateAction(!!this.get('value'));
+      });
+    });
 
     if (this.isEditMode) {
       object.addEvent('show:once', (function() {
@@ -179,7 +208,6 @@ module.exports = new Class({
     store.addEvent('upload', this.bound('onUpload'));
 
     View.getMain().push(this.getDisplayType(), object);
-
     this.isRendered = true;
   },
 
@@ -193,6 +221,9 @@ module.exports = new Class({
 
   onShow: function() {
     this.updateTitle();
+
+    this.actionIsVisible = false;
+    this.updateAction(!!this.object.toElement().getElement('[data-required]').get('value'));
   },
 
   onHide: function(direction) {

@@ -473,7 +473,7 @@ function program6(depth0,data) {
   stack1 = depth0.isNewProduction;
   stack1 = helpers['if'].call(depth0, stack1, {hash:{},inverse:self.noop,fn:self.program(7, program7, data)});
   if(stack1 || stack1 === 0) { buffer += stack1; }
-  buffer += "\n    <li>\n      <label class=\"left\">\n        <input type=\"text\" name=\"title\" value=\"";
+  buffer += "\n    <li>\n      <label class=\"left\">\n        <input type=\"text\" name=\"title\" data-required=\"1\" value=\"";
   stack1 = depth0.name;
   stack1 = typeof stack1 === functionType ? stack1() : stack1;
   buffer += escapeExpression(stack1) + "\" placeholder=\"choose production title\" class=\"right\" />\n        Title\n      </label>\n    </li>\n  ";
@@ -511,7 +511,7 @@ function program9(depth0,data) {
 function program11(depth0,data) {
   
   var buffer = "", stack1;
-  buffer += "\n    <li>\n      <label class=\"left\">\n        <input type=\"text\" name=\"preset_name\" value=\"";
+  buffer += "\n    <li>\n      <label class=\"left\">\n        <input type=\"text\" name=\"preset_name\" data-required=\"1\" value=\"";
   stack1 = depth0.name;
   stack1 = typeof stack1 === functionType ? stack1() : stack1;
   buffer += escapeExpression(stack1) + "\" placeholder=\"choose a preset name\" class=\"right\" />\n        Name\n      </label>\n    </li>\n  ";
