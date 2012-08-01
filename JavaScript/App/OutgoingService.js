@@ -158,7 +158,7 @@ exports.createView = function(store) {
           container.setStyle('height', container.offsetHeight);
           container.getElements('select').fireEvent('focus:once').fireEvent('change');
         } else {
-          container.addClass('hidden').addClass('out');
+          container.setStyle('height', 0).addClass('hidden').addClass('out');
         }
       });
     });
