@@ -13,7 +13,7 @@ var length = function(object) {
 
 var preferredFormats = {
   mp3: 1,
-  'mp3-vbr': 1,
+  'mp3-vbr': 3, // Variable Bitrate mp3's sometime cause issues
   aac: 2,
   alac: 3,
   dflt: 4
