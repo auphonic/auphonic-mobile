@@ -156,6 +156,12 @@ module.exports = new Class({
   },
 
   showIndicator: function(options) {
+    if (options && options.immediate) {
+      UI.disable();
+      this._showIndicator(options);
+      return;
+    }
+
     // Don't disable the UI if we have cached API resources
     this.disableUITimer = (function() {
       UI.disable();
@@ -173,13 +179,9 @@ module.exports = new Class({
     this.indicatorIsVisible = true;
     var current = this.getCurrentObject();
     var element = current.toElement();
-    var fade = options && options.fade;
 
     // Fade if the stack is different.
-    if (!fade && options && options.stack != this.getStack().getName())
-        fade = true;
-
-    if (fade) {
+    if (options && options.stack != this.getStack().getName()) {
       document.id(this.title).addClass('fade');
       document.id(this.action).addClass('fade');
       document.id(this.back).addClass('fade');

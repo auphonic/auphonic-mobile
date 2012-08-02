@@ -136,10 +136,10 @@ function program14(depth0,data) {
 function program16(depth0,data) {
   
   var buffer = "", stack1;
-  buffer += "\n  <div class=\"content full player\">\n    <a class=\"play\" href=\"#\"><span class=\"hidden\" data-media=\"1\">";
+  buffer += "\n  <div class=\"player\">\n    <div class=\"play-button content full\">\n      <a class=\"play\" href=\"#\"><span class=\"hidden\" data-media=\"1\">";
   stack1 = depth0.media_files;
   stack1 = typeof stack1 === functionType ? stack1() : stack1;
-  buffer += escapeExpression(stack1) + "</span></a>\n  </div>\n  <div class=\"content full\">\n    <img src=\"";
+  buffer += escapeExpression(stack1) + "</span></a>\n    </div>\n    <div class=\"waveform content full\">\n      <img src=\"";
   stack1 = depth0.waveform_image;
   stack1 = typeof stack1 === functionType ? stack1() : stack1;
   buffer += escapeExpression(stack1);
@@ -148,7 +148,7 @@ function program16(depth0,data) {
   buffer += escapeExpression(stack1);
   stack1 = depth0.random;
   stack1 = typeof stack1 === functionType ? stack1() : stack1;
-  buffer += escapeExpression(stack1) + "\" class=\"waveform\" />\n  </div>\n";
+  buffer += escapeExpression(stack1) + "\" />\n      <div class=\"position\"></div>\n    </div>\n  </div>\n";
   return buffer;}
 
 function program18(depth0,data) {

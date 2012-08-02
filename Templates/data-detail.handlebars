@@ -15,11 +15,14 @@
 </div>
 
 {{#if media_files}}
-  <div class="content full player">
-    <a class="play" href="#"><span class="hidden" data-media="1">{{media_files}}</span></a>
-  </div>
-  <div class="content full">
-    <img src="{{waveform_image}}{{access_token}}{{random}}" class="waveform" />
+  <div class="player">
+    <div class="play-button content full">
+      <a class="play" href="#"><span class="hidden" data-media="1">{{media_files}}</span></a>
+    </div>
+    <div class="waveform content full">
+      <img src="{{waveform_image}}{{access_token}}{{random}}" />
+      <div class="position"></div>
+    </div>
   </div>
 {{/if}}
 

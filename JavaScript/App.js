@@ -215,8 +215,26 @@ var boot = function() {
       });
     },
 
-    '.player a': Class.Instantiate(AudioPlayer, {
+    '.player': Class.Instantiate(AudioPlayer, {
       selector: '[data-media]',
+      playSelector: 'a.play',
+      waveformSelector: 'div.waveform',
+      positionSelector: 'div.waveform div.position',
+
+      onSetup: function() {
+        View.getMain().getCurrentObject().addEvent('hide:once', this.bound('stop'));
+      },
+
+      onLoad: function() {
+        View.getMain().showIndicator({
+          immediate: true,
+          stack: View.getMain().getStack().getName()
+        });
+      },
+
+      onLoadFinished: function() {
+        View.getMain().hideIndicator();
+      }
     })
 
   }).update();
