@@ -78,7 +78,7 @@ var click = function(event) {
     // Tap on footer icon
     if (History.getPath() == href) {
       // Invalidate and rename stack to force re-evaluation
-      View.getMain().getCurrentView().invalidate();
+      View.getMain().getCurrentObject().invalidate();
       View.getMain().getStack().setName('default');
     }
   }

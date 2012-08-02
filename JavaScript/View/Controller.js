@@ -65,7 +65,7 @@ module.exports = new Class({
 
     var rotated = false;
     if (!this.isCurrentStack(stack)) {
-      if (this._current) this.getCurrentView().fireEvent('hide', ['left']);
+      if (this._current) this.getCurrentObject().fireEvent('hide', ['left']);
       rotated = true;
       this.rotate(stack);
     }
@@ -77,7 +77,7 @@ module.exports = new Class({
     var isImmediate = rotated;
     var direction = current.hasObject(object) ? 'left' : 'right';
     var previous;
-    if (!isImmediate) previous = this.getCurrentView().rememberScroll();
+    if (!isImmediate) previous = this.getCurrentObject().rememberScroll();
 
     // If the only item on the stack is invalid don't do a transition
     if (previous && previous.isInvalid() && this._current.getLength() == 1)
@@ -137,7 +137,7 @@ module.exports = new Class({
     return this._current;
   },
 
-  getCurrentView: function() {
+  getCurrentObject: function() {
     return this._current && this._current.getCurrent();
   },
 
@@ -171,12 +171,12 @@ module.exports = new Class({
     if (this.indicatorIsVisible) return;
 
     this.indicatorIsVisible = true;
-    var current = this.getCurrentView();
+    var current = this.getCurrentObject();
     var element = current.toElement();
     var fade = options && options.fade;
 
     // Fade if the stack is different.
-    if (options && !fade && options.stack != this.getStack().getName())
+    if (!fade && options && options.stack != this.getStack().getName())
         fade = true;
 
     if (fade) {

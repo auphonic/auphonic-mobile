@@ -113,7 +113,7 @@ exports.createView = function(store) {
         title: 'Done',
         back: true,
         onClick: function() {
-          store.set('outgoing_services', View.getMain().getCurrentView().serialize());
+          store.set('outgoing_services', View.getMain().getCurrentObject().serialize());
         }
       },
       back: {

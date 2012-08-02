@@ -141,7 +141,7 @@ exports.setup = function(store, baseURL, object) {
       title: id ? 'Done' : 'Add',
       back: true,
       onClick: function() {
-        add(baseURL, store, getContainer(object), View.getMain().getCurrentView().serialize(), id);
+        add(baseURL, store, getContainer(object), View.getMain().getCurrentObject().serialize(), id);
       }
     });
   });
@@ -195,7 +195,7 @@ exports.createView = function(store, editId) {
     format.items.sortByKey('display_name');
   });
 
-  var mainObject = View.getMain().getCurrentView();
+  var mainObject = View.getMain().getCurrentObject();
   var object = new View.Object({
     title: id ? 'Edit Format' : 'Add Format',
     content: UI.render('form-new-output-file', {

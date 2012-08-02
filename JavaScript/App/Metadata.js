@@ -33,7 +33,7 @@ exports.createView = function(store, data) {
       title: 'Done',
       back: true,
       onClick: function() {
-        store.set('metadata', View.getMain().getCurrentView().serialize());
+        store.set('metadata', View.getMain().getCurrentObject().serialize());
       }
     },
     back: {
