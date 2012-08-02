@@ -21,8 +21,14 @@ module.exports = {
       var stack = main.getStack();
       var object = stack && stack.getByURL(History.getPath());
 
-      if (object && !object.isInvalid()) main.push(stack.getName(), object);
-      else fn.apply(null, arguments);
+      if (object && !object.isInvalid()) {
+        // We don't want to push the same element again if it is the one that is currently shown
+        // This is mostly a fix for a browser issue where pushState is being called twice on domready
+        if (stack.getLength() == 1) return;
+        main.push(stack.getName(), object);
+      } else {
+        fn.apply(null, arguments);
+      }
     }, options && options.priority).setGreedy(options && options.isGreedy);
   }
 

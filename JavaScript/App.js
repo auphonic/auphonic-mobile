@@ -123,12 +123,6 @@ var boot = function() {
   var isLoggedIn = !!LocalStorage.get('User');
   if (isLoggedIn) UI.Chrome.show({immediate: true});
 
-  // Browser bug in both Chrome and iOS. This delay is necessary
-  // at the startup of the app.
-  setTimeout(function() {
-    History.push(isLoggedIn ? '/' : '/login');
-  }, 350);
-
   var activeState = (new ActiveState({
     active: 'active',
     hit: 'hit',
@@ -297,15 +291,16 @@ var boot = function() {
   }));
 
   Controller.define('/', function() {
-
     UI.Chrome.show();
 
     View.getMain().push('default', new View.Object({
       title: 'Home',
       content: UI.render('default')
     }));
-
   });
+
+  History.push(isLoggedIn ? '/' : '/login');
+
 };
 
 var fired;
