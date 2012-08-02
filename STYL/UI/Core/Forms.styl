@@ -122,9 +122,12 @@ textarea.autogrow
   float right
   height 28px
   width 77px
+  margin-top -6px
+
   border 1px solid #979797
   border-radius 20px
-  margin-top -6px
+  -webkit-mask-image url(../Images/CheckBoxMask.png)
+  -webkit-mask-size 77px 28px
   box-shadow inset 0 1px 3px #BABABA, inset 0 12px 3px 2px rgba(232, 232, 232, 0.5)
   cursor pointer
   overflow hidden
@@ -138,13 +141,12 @@ textarea.autogrow
     top 0
     bottom 0
     left 0
-    right 13px
+    right 0
 
     transition-duration 200ms
     transition-timing-function ease-in-out
-    transform translate3d(0, 0, 0)
+    transform translate3d(-100%, 0, 0)
 
-    border-radius 20px
     border-top-right-radius 0
     border-bottom-right-radius 0
 
@@ -165,7 +167,7 @@ textarea.autogrow
     transform translate3d(0, 0, 0)
 
     border solid 1px #919191
-    border-radius 28px
+    border-radius 50%
 
     box-shadow inset 0 2px 1px white, inset 0 -2px 1px white
     background-color #CECECE

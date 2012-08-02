@@ -75,8 +75,10 @@ module.exports = new Class({
     var style = this.thumb.style;
     style.webkitTransform = style.transform = 'translate3d(' + delta + 'px, 0, 0)';
 
-    delta = (this.options.max - delta);
-    this.left.style.right = delta + 13 + 'px';
+    delta = -(this.options.max - delta);
+    var half = this.thumb.offsetWidth / 2;
+    style = this.left.style;
+    style.webkitTransform = style.transform = 'translate3d(' + (delta - half) + 'px, 0, 0)';
   },
 
   preventDefault: function(event) {
