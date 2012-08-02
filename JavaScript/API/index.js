@@ -99,7 +99,12 @@ API.call = function(url, method, requestData) {
 
     onFailure: function(data) {
       // Delete requests don't return anything
-      if (__DEV__ && method != 'delete') console.log(data);
+      if (method == 'delete') {
+        fire(url, 'success', null);
+        return;
+      }
+
+      if (__DEV__) console.log(data);
       if (errorFn) errorFn(data);
       fire(url, 'error', data);
     },
