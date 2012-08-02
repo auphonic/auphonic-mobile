@@ -163,10 +163,7 @@ module.exports = new Class({
     }
 
     // Don't disable the UI if we have cached API resources
-    this.disableUITimer = (function() {
-      UI.disable();
-    }).delay(50);
-
+    this.disableUITimer = UI.disable.delay(1, UI);
     this.timer = (function() {
       this._showIndicator(options);
     }).delay(this.options.indicatorDelay, this);
