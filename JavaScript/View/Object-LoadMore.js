@@ -23,7 +23,11 @@ module.exports = new Class({
 
   initialize: function(options) {
     if (!options.uses) options.uses = [];
-    options.uses.push(Class.Instantiate(ScrollLoader, {onScroll: this.bound('onScroll')}));
+
+    var scroll = this.bound('onScroll');
+    options.uses.push(Class.Instantiate(ScrollLoader, {onScroll: function() {
+      scroll(this);
+    }}));
 
     this.parent(options);
 
@@ -40,15 +44,19 @@ module.exports = new Class({
       this.finished = true;
   },
 
-  onScroll: function() {
+  onScroll: function(loader) {
     if (this.finished) return;
 
     this.loadOptions.offset += this.loadOptions.limit;
     this.getSpinner().spin(this.getItemContainerElement().getParent());
     this.getLoadMoreFunction()(this.loadOptions, this.bound('onLoadMore'));
+
+    this.loader = loader;
+    loader.detach();
   },
 
   onLoadMore: function(response) {
+    this.loader.attach();
     this.getSpinner().stop();
 
     if (!response.data || !response.data.length) {
