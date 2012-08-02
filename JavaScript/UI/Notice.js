@@ -35,8 +35,7 @@ module.exports = new Class({
 
     element.getElement('.text').set('html', message);
     this.duration = duration;
-    this.element.addEvent('transformComplete:once', queue.bound('next'));
-    queue.chain(this.bound('open')).call();
+    this.push();
   },
 
   attach: function() {
@@ -47,6 +46,23 @@ module.exports = new Class({
   detach: function() {
     this.element.removeEvent('click', this.bound('closeHandler'));
     return this;
+  },
+
+  reset: function() {
+    this.x = 0;
+    this.y = 0;
+
+    var style = this.element.style;
+    style.webkitTransform = style.transform = null;
+    style.opacity = null;
+    this.opened = false;
+  },
+
+  push: function() {
+    if (this.opened) return this;
+
+    this.element.addEvent('transformComplete:once', queue.bound('next'));
+    queue.chain(this.bound('open')).call();
   },
 
   open: function() {
@@ -104,8 +120,8 @@ module.exports = new Class({
 
   repositionOnClose: function() {
     this.element.dispose();
+    this.reset();
     stack.erase(this).invoke('position');
-    this.opened = false;
   },
 
   setPosition: function(x, y) {
