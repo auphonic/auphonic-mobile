@@ -43,14 +43,9 @@ textarea.autogrow
   text-shadow 0 1px 0 #333
   -webkit-appearance none
 
-  border-radius 5px
+  border-radius 10px
   border-style solid
   border-width 1px
-
-  border-color #555 #555 #333
-  background-color #555
-  background-image  linear-gradient(center top, #666, #444)
-  box-shadow inset 0 1px 0 rgba(255, 255, 255, 0.45)
 
   &.expand
     display block
@@ -66,48 +61,47 @@ textarea.autogrow
     height 28px
     line-height 28px
 
+  border-color #111 #222 #333
+  background-color #444
+  background-image linear-gradient(top, #555 0%, #111 100%)
+  box-shadow inset 0 1px 1px #666
+
   &.active, &.selected, .active &, .selected &
-    border-color #444 #222 #222
-    background-color #353535
-    background-image linear-gradient(center top, #444, #222)
+    border-color #111 #222 #333
+    background-color #333
+    background-image linear-gradient(center top, #444 0%, #111 100%)
+    box-shadow inset 0 -1px 1px #111
 
   &.red
-    text-shadow 0 1px 0 #7B3737
-    border-color #cd5c5c #cd5c5c #904040
-    background-color #cd5c5c
-    background-image linear-gradient(center top, #dc8d8d, #cd5c5c)
+    border-color #A24141 #962B2B #641F1F
+    background-color #df5d5d
+    background-image linear-gradient(top, #df5d5d 0%, #642121 100%)
+    box-shadow inset 0 0 10px rgba(255, 255, 255, 0.3)
 
     &.active, &.selected, .active &, .selected &
-      border-color #a44a4a #cd5c5c #cd5c5c
-      background-color #dc8d8d
-      background-image linear-gradient(center top, #a44a4a, #cd5c5c)
-      box-shadow inset 0 2px 4px rgba(0, 0, 0, 0.45)
+      border-color #A24141 #962B2B #641F1F
+      background-color #C25252
+      background-image linear-gradient(top, #C25252 0%, #702424 100%)
+      box-shadow none
 
   &.green
-    text-shadow 0 1px 0 #397b37
-    border-color #64c464 #64c464 #3a973a
-    background-color #64c464
-    background-image linear-gradient(center top, #66c566, #64c464)
+    border-color #549B46 #3E942D #215218
+    background-color #73de5d
+    background-image linear-gradient(top, #73de5d 0%, #2c6321 100%)
+    box-shadow inset 0 0 10px rgba(255, 255, 255, 0.3)
 
     &.active, &.selected, .active &, .selected &
-      border-color #52a44a #64c464 #64c464
-      background-color #8ddc8f
-      background-image linear-gradient(center top, #8ddc8f, #64c464)
-      box-shadow inset 0 2px 4px rgba(0, 0, 0, 0.45)
+      border-color #549B46 #3E942D #215218
+      background-color #64c251
+      background-image linear-gradient(top, #64c251 0%, #317024 100%)
+      box-shadow none
 
   &.gradient
-    border-color #444 #222 #222
-    background-color #666
-    background-image linear-gradient(top, #666 0%, #444 50%, #333 51%, #333 100%)
-    box-shadow inset 0 1px 0 rgba(0, 0, 0, 0.6)
-
-    &.active, &.selected, .active &, .selected &
-      border-color #444 #222 #222
-      background-color #353535
-      background-image linear-gradient(center top, #444 0%, #222 50%, #111 51%, #111 100%)
-      box-shadow inset 0 2px 2px rgba(0, 0, 0, 0.45), 0 0 2px rgba(255, 255, 255, 0.3)
+    border-radius 5px
 
   .popover &
+    border-radius 10px
+    box-shadow none
     margin 10px 0
 
     &:first-child
