@@ -13,6 +13,7 @@ UI.Title = require('./Elements/Title');
 var Handlebars = require('Handlebars');
 
 var locked = false;
+var isVisible = false;
 
 var preventDefault = function(event) {
   event.preventDefault();
@@ -92,49 +93,49 @@ Object.append(UI, {
       .removeClass('disable-events');
 
     if (exception) exception.removeClass('enable-events');
-  }
+  },
 
-});
-
-var isVisible = false;
-
-UI.Chrome = {
-
-  show: function(options) {
+  showChrome: function(options) {
     if (isVisible) return;
+    isVisible = true;
 
     var main = document.id('ui');
     var login = document.id('login');
     var splash = document.id('splash');
 
     main.show();
-    login.transition(options).addClass('fade');
+    login.transition(options);
     splash.transition(options, function() {
-      isVisible = true;
+      document.body.removeClass('chrome-invisible').addClass('chrome-visible');
       login.hide();
       splash.hide();
-    }).addClass('fade');
+    });
+
+    (function() {
+      login.addClass('fade');
+      splash.addClass('fade');
+    }).delay(50);
   },
 
-  hide: function(options) {
+  hideChrome: function(options) {
     if (!isVisible) return;
+    isVisible = false;
 
     var main = document.id('ui');
     var login = document.id('login');
     var splash = document.id('splash');
 
-    login.show();
-    splash.show();
+    login.show().transition(options);
+    splash.show().transition(options, function() {
+      document.body.removeClass('chrome-visible').addClass('chrome-invisible');
+      document.getElements('footer a.selected').removeClass('selected');
+      main.hide();
+    });
+
     (function() {
-      login.transition(options).removeClass('fade');
-      splash.transition(options, function() {
-        isVisible = false;
-
-        document.getElements('footer a.selected').removeClass('selected');
-
-        main.hide();
-      }).removeClass('fade');
+      login.removeClass('fade');
+      splash.removeClass('fade');
     }).delay(50);
   }
 
-};
+});

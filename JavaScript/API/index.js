@@ -38,6 +38,9 @@ var API = module.exports = {
     if (!object) {
       object = urls[url] = new Events;
       object.call = API.call.bind(API, url);
+      object.getLifetime = function() {
+        return object.options && object.options.lifetime;
+      };
     }
     if (options) object.options = options;
     return object;
@@ -192,11 +195,11 @@ API.authenticate = function(requestData) {
 };
 
 API.invalidate = function(url) {
-  if (!url) cache = {};
-
   Object.each(cache, function(value, key) {
-    if (key.indexOf(url) === 0)
-      delete cache[key];
+    if (url && key.indexOf(url) !== 0) return;
+    if (!url && API.on(key).getLifetime() == -1) return;
+
+    delete cache[key];
   });
 };
 

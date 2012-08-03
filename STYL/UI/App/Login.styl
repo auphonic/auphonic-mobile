@@ -5,20 +5,37 @@ div.login
   z-index 21
   expand()
 
-  > div
-    box-shadow 0 1px 3px rgba(0, 0, 0, 1)
-    width 90%
-    margin 196px auto 0
-
-  input
-    box-sizing border-box
-    font-size 1.3em
-
-  a.button
+  > form > div
     width 90%
     margin 15px auto
+
+  > form > div.formcontent
+    margin 170px auto 0
+    box-shadow 0 1px 3px rgba(0, 0, 0, 1)
+
+  input[type=text], input[type=password]
+    font-size 1.3em
+    box-sizing border-box
+
+  input[type=text]
+    border-bottom-left-radius 0
+    border-bottom-right-radius 0
+    border-bottom 1px solid #eee
+
+  input[type=submit], a.register
+    width 47%
     height 39px
     line-height 39px
+
+  input[type=submit]
+    float right
+
+  // submit buttons and anchors have a few weird style differences
+  a.register
+    width 46%
+    height 37px
+    line-height 37px
+    padding 0
 
   transition-property transform
   transition-duration 500ms

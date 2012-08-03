@@ -6,8 +6,10 @@ var Spinner = require('Spinner');
 var API = require('API');
 var Controller = require('./');
 var UI = require('UI');
+var Notice = require('UI/Notice');
 
 var APIKeys = require('APIKeys');
+var Auphonic = require('Auphonic');
 
 var spinnerOptions = {
   lines: 12,
@@ -17,6 +19,7 @@ var spinnerOptions = {
   trail: 30,
   color: '#fff'
 };
+var notice;
 var spinner;
 
 Controller.define('/login', function() {
@@ -25,15 +28,23 @@ Controller.define('/login', function() {
     return;
   }
 
-  UI.Chrome.hide();
+  UI.hideChrome();
 
   var login = document.id('login');
   login.set('html', UI.render('login', {
     client_id: APIKeys.ID,
-    client_secret: APIKeys.secret
+    client_secret: APIKeys.secret,
+    registerURL: Auphonic.RegisterURL
   }));
 
-  login.getElement('a.button').addEvent('click', function(event) {
+  UI.update(login);
+
+  var form = login.getElement('form');
+  form.addEvent('submit', function(event) {
+    event.preventDefault();
+  });
+
+  var submit = function(event) {
     event.preventDefault();
 
     if (!spinner) spinner = new Spinner(spinnerOptions);
@@ -43,13 +54,18 @@ Controller.define('/login', function() {
     spinner.spin(login);
 
     var error = function() {
+      if (!notice) notice = new Notice('Invalid username or password. Please try again.', {
+        type: 'error'
+      });
+
+      if (!notice.isOpen()) notice.push();
+
       spinner.stop();
       login.empty().adopt(children);
     };
 
     var name = data.name;
     API.authenticate(data).on({
-
       success: function(response) {
         spinner.stop();
 
@@ -58,6 +74,7 @@ Controller.define('/login', function() {
           return;
         }
 
+        if (notice) notice.close();
         login.empty();
         API.invalidate();
         LocalStorage.set('User', {
@@ -68,8 +85,16 @@ Controller.define('/login', function() {
       },
 
       error: error
-
     });
+  };
+
+  login.getElement('input[type=submit]').addEvent('click', function(event) {
+    submit(event);
+  });
+
+  login.getElements('input[type=text], input[type=password]').addEvent('keyup', function(event) {
+    if (event.key != 'enter') return;
+    submit(event);
   });
 
   login.show();

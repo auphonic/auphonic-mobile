@@ -121,7 +121,7 @@ var removeItem = function(element) {
 
 var boot = function() {
   var isLoggedIn = !!LocalStorage.get('User');
-  if (isLoggedIn) UI.Chrome.show({immediate: true});
+  if (isLoggedIn) UI.showChrome({immediate: true});
 
   var activeState = (new ActiveState({
     active: 'active',
@@ -143,7 +143,7 @@ var boot = function() {
 
   UI.register({
 
-    '#main a:external': function(elements) {
+    '#main a:external, a.register': function(elements) {
       elements.addEvent('click', clickExternal);
     },
 
@@ -291,7 +291,7 @@ var boot = function() {
   }));
 
   Controller.define('/', function() {
-    UI.Chrome.show();
+    UI.showChrome();
 
     View.getMain().push('default', new View.Object({
       title: 'Home',

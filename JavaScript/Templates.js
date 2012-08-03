@@ -929,13 +929,16 @@ templates['login'] = template(function (Handlebars,depth0,helpers,partials,data)
   var buffer = "", stack1, functionType="function", escapeExpression=this.escapeExpression;
 
 
-  buffer += "<div class=\"formcontent\">\n  <input type=\"hidden\" name=\"client_id\" value=\"";
+  buffer += "<form action=\"#\" method=\"post\">\n  <input type=\"hidden\" name=\"client_id\" value=\"";
   stack1 = depth0.client_id;
   stack1 = typeof stack1 === functionType ? stack1() : stack1;
   buffer += escapeExpression(stack1) + "\" />\n  <input type=\"hidden\" name=\"client_secret\" value=\"";
   stack1 = depth0.client_secret;
   stack1 = typeof stack1 === functionType ? stack1() : stack1;
-  buffer += escapeExpression(stack1) + "\" />\n  <input type=\"text\" name=\"name\" placeholder=\"email or username\" autocapitalize=\"off\" />\n  <input type=\"password\" name=\"password\" placeholder=\"password\" />\n</div>\n<a href=\"#\" class=\"button expand\">Login</a>\n";
+  buffer += escapeExpression(stack1) + "\" />\n  <div class=\"formcontent\">\n    <input type=\"text\" name=\"name\" placeholder=\"email or username\" autocapitalize=\"off\" />\n    <input type=\"password\" name=\"password\" placeholder=\"password\" />\n  </div>\n  <div>\n    <input type=\"submit\" name=\"submit\" value=\"Login\" />\n    <a href=\"";
+  stack1 = depth0.registerURL;
+  stack1 = typeof stack1 === functionType ? stack1() : stack1;
+  buffer += escapeExpression(stack1) + "\" value=\"Register\" class=\"register button\">Register</a>\n  </div>\n</form>\n";
   return buffer;});
 templates['preset'] = template(function (Handlebars,depth0,helpers,partials,data) {
   helpers = helpers || Handlebars.helpers;
