@@ -233,8 +233,8 @@ var boot = function() {
 
   }).update();
 
-  Notice.setContainer(document.body);
-  Notice.setTemplate(new Element('div.notice').adopt(new Element('div.close'), new Element('div.text')));
+  Notice.setContainer(document.body)
+    .setTemplate(new Element('div.notice').adopt(new Element('div.close'), new Element('div.text')));
 
   var notice;
   var noticeText;
@@ -246,7 +246,10 @@ var boot = function() {
     View.getMain().hideIndicator();
 
     // If the last notice with the same text is still visible we'll not show another one.
-    if (notice && notice.isOpen() && noticeText == text) return;
+    if (notice && notice.isOpen() && noticeText == text) {
+      notice.push();
+      return;
+    }
 
     noticeText = text;
     notice = new Notice(text, {type: 'error'});

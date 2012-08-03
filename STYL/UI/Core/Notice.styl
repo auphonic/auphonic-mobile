@@ -13,13 +13,16 @@
   background #333
   border-bottom 1px solid #222
 
-  transition-property opacity, -webkit-transform
+  transition-property opacity, -webkit-transform, background
   transition-duration 400ms
   transform scale(1) translate3d(0, -100%, 0)
   opacity 0
 
   .chrome-invisible &
     top 0
+
+  &.highlight
+    background #555
 
   h1
     margin-left 0

@@ -54,11 +54,10 @@ Controller.define('/login', function() {
     spinner.spin(login);
 
     var error = function() {
-      if (!notice) notice = new Notice('Invalid username or password. Please try again.', {
+      if (notice) notice.push();
+      else notice = new Notice('Invalid username or password. Please try again.', {
         type: 'error'
       });
-
-      if (!notice.isOpen()) notice.push();
 
       spinner.stop();
       login.empty().adopt(children);

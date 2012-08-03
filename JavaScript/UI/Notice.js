@@ -59,7 +59,12 @@ module.exports = new Class({
   },
 
   push: function() {
-    if (this.opened) return this;
+    if (this.opened) {
+      this.element.addClass('highlight').addEvent('transitionComplete:once', function() {
+        this.removeClass('highlight');
+      });
+      return this;
+    }
 
     this.element.addEvent('transformComplete:once', queue.bound('next'));
     queue.chain(this.bound('open')).call();
@@ -147,10 +152,17 @@ module.exports = new Class({
 
 });
 
-module.exports.setContainer = function(c) {
-  container = c;
+module.exports.setContainer = function(newContainer) {
+  container = newContainer;
+  return this;
 };
 
 module.exports.setTemplate = function(element) {
   templateElement = element;
+  return this;
+};
+
+module.exports.closeAll = function() {
+  stack.invoke('close');
+  return this;
 };
