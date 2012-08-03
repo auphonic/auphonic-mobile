@@ -29,6 +29,11 @@ module.exports = new Class({
     onTransitionEnd: null
   },
 
+  Properties: {
+    action: null,
+    back: null,
+    title: null
+  },
 
   initialize: function(element, options) {
     if (!options) options = {};
@@ -50,27 +55,40 @@ module.exports = new Class({
   },
 
   push: function(stack, object) {
+    if (!object) {
+      object = stack;
+      stack = this.getStack().getName();
+    }
     if (!object) return this;
 
-    this.hideLoadingIndicator();
+    this.hideIndicator();
 
     var rotated = false;
     if (!this.isCurrentStack(stack)) {
-      if (this._current) this.getCurrentView().fireEvent('hide', ['left']);
+      if (this._current) this.getCurrentObject().fireEvent('hide', ['left']);
       rotated = true;
       this.rotate(stack);
     }
 
-    object.setURL(History.getPath());
+    if (!object.getURL())
+      object.setURL(History.getPath());
 
     var current = this._current;
     var isImmediate = rotated;
     var direction = current.hasObject(object) ? 'left' : 'right';
     var previous;
-    if (!isImmediate) previous = this.getCurrentView().rememberScroll();
+    if (!isImmediate) previous = this.getCurrentObject().rememberScroll();
+
+    // If the only item on the stack is invalid don't do a transition
+    if (previous && previous.isInvalid() && this._current.getLength() == 1)
+      isImmediate = true;
 
     current.push(object);
+    this.fireEvent('change');
     if (previous) previous.fireEvent('hide', [direction]);
+
+    // Pushing an invalid item on the stack, don't start a transition
+    if (object.isInvalid()) return;
 
     var options = {
       immediate: isImmediate,
@@ -91,6 +109,7 @@ module.exports = new Class({
       onTransitionEnd: this.bound('onTransitionEnd')
     });
 
+    object.fireEvent('insert', [direction]);
     object.revertScrollTop();
 
     return this;
@@ -118,7 +137,7 @@ module.exports = new Class({
     return this._current;
   },
 
-  getCurrentView: function() {
+  getCurrentObject: function() {
     return this._current && this._current.getCurrent();
   },
 
@@ -136,23 +155,30 @@ module.exports = new Class({
     return this;
   },
 
-  showLoadingIndicator: function(options) {
-    UI.disable();
+  showIndicator: function(options) {
+    if (options && options.immediate) {
+      UI.disable();
+      this._showIndicator(options);
+      return;
+    }
 
+    // Don't disable the UI if we have cached API resources
+    this.disableUITimer = UI.disable.delay(1, UI);
     this.timer = (function() {
-      this._showLoadingIndicator(options);
+      this._showIndicator(options);
     }).delay(this.options.indicatorDelay, this);
   },
 
-  _showLoadingIndicator: function(options) {
+  _showIndicator: function(options) {
     if (!this.getStack()) return;
     if (this.indicatorIsVisible) return;
 
     this.indicatorIsVisible = true;
-    var current = this.getCurrentView();
+    var current = this.getCurrentObject();
     var element = current.toElement();
 
-    if (options && options.fade) {
+    // Fade if the stack is different.
+    if (options && options.stack != this.getStack().getName()) {
       document.id(this.title).addClass('fade');
       document.id(this.action).addClass('fade');
       document.id(this.back).addClass('fade');
@@ -162,10 +188,12 @@ module.exports = new Class({
         document.id(this.back).dispose();
       }).bind(this));
     }
+
     this.indicator.spin(element.getParent());
   },
 
-  hideLoadingIndicator: function() {
+  hideIndicator: function() {
+    clearTimeout(this.disableUITimer);
     clearTimeout(this.timer);
     this.indicatorIsVisible = false;
     UI.enable();

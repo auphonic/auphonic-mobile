@@ -1,0 +1,64 @@
+<ul class="formcontent">
+  {{#each service}}
+    <li class="wide">
+      <input type="hidden" name="outgoing_services.{{uuid}}.uuid" value="{{uuid}}" />
+      <label class="left">
+        <div class="right">
+          <div class="checkbox">
+            <span class="left"></span><span class="thumb" data-on="ON" data-off="OFF"></span>
+            <input type="checkbox" name="outgoing_services.{{uuid}}.checked" data-uuid="{{uuid}}" value="1" />
+          </div>
+        </div>
+        <small><span class="light">{{display_type}}</span> {{display_name}}</small>
+      </label>
+    </li>
+  {{/each}}
+</ul>
+
+{{#each service}}
+  {{#if parameters}}
+    <div class="fade" data-service-uuid="{{uuid}}">
+      <h1>{{display_type}} - {{display_name}}</h1>
+      <ul>
+        {{#each parameters}}
+          {{#if checkbox}}
+            <li class="wide">
+              <label class="left">
+                <div class="right">
+                  <div class="checkbox">
+                    <span class="left"></span><span class="thumb" data-on="YES" data-off="NO"></span>
+                    <input type="checkbox" name="outgoing_services.{{uuid}}.{{key}}" value="1" {{#if default_value}}checked="checked"{{/if}}/>
+                  </div>
+                </div>
+                {{display_name}}
+              </label>
+            </li>
+          {{/if}}
+          {{#if select}}
+            <li>
+              <label class="left">
+                <select name="outgoing_services.{{uuid}}.{{key}}" class="right{{#unless default_value}} empty{{/unless}}"{{#if hasEmptyOption}} data-select-type="preserve-null-state"{{/if}}>
+                  {{#each options}}
+                    <option value="{{value}}"{{#if selected}}selected="selected"{{/if}}>{{display_name}}</option>
+                  {{/each}}
+                </select>
+                {{#unless default_value}}
+                  <span class="right placeholder">select a value</span>
+                {{/unless}}
+                {{display_name}}
+              </label>
+            </li>
+          {{/if}}
+          {{#if input}}
+            <li>
+              <label class="left">
+                <input type="text" name="outgoing_services.{{uuid}}.{{key}}" value="{{default_value}}"  class="right" />
+                {{display_name}}
+              </label>
+            </li>
+          {{/if}}
+        {{/each}}
+      </ul>
+    </div>
+  {{/if}}
+{{/each}}

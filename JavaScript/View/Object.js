@@ -15,8 +15,10 @@ module.exports = new Class({
 
     action: null,
     back: null,
+    backTitle: null,
 
     scrollTop: 0,
+    uses: null
 
     /*
     onShow: function() {},
@@ -33,9 +35,11 @@ module.exports = new Class({
     this
       .setURL(options.url)
       .setTitle(options.title)
+      .setBackTitle(options.backTitle)
       .setContent(options.content)
       .setAction(options.action)
-      .setBack(options.back);
+      .setBack(options.back)
+      .setUses(options.uses);
   },
 
   toElement: function() {
@@ -53,6 +57,11 @@ module.exports = new Class({
 
     var element = document.id(template).getFirst().clone();
     element.getElement(selector).set('html', this.getContent());
+
+    var uses = this.getUses();
+    Array.each(Array.from(uses), function(klass) {
+      klass([element]);
+    });
 
     return this.element = element;
   },
@@ -96,7 +105,7 @@ module.exports = new Class({
 
     var previous = this.getStack().getPrevious();
     return {
-      title: (previous && previous.getTitle()) || 'Back'
+      title: (previous && (previous.getBackTitle() || previous.getTitle())) || 'Back'
     };
   },
 
@@ -115,7 +124,7 @@ module.exports = new Class({
 
   invalidate: function() {
     this.isInvalidated = true;
-
+    this.fireEvent('invalidate');
     return this;
   },
 

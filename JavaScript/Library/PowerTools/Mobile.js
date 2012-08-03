@@ -286,61 +286,72 @@ Element.defineCustomEvent(name, {
 /*
 ---
 
-name: Mouse
+name: Touchhold
 
-description: Maps mouse events to their touch counterparts
+description: Provides a custom touchhold event for touch devices
 
 authors: Christoph Pojer (@cpojer)
 
 license: MIT-style license.
 
-requires: [Custom-Event/Element.defineCustomEvent, Browser.Features.Touch]
+requires: [Core/Element.Event, Custom-Event/Element.defineCustomEvent, Browser.Features.Touch]
 
-provides: Mouse
+provides: Touchhold
 
 ...
 */
 
 var Core = require('Core');
-var Browser = Core.Browser;
 var Element = Core.Element;
 
-if (!Browser.Features.Touch) (function(){
+(function(){
 
-var down = false;
-var condition = function(event, type){
-	if (type == 'touchstart') down = true;
-	else if (type == 'touchend') down = false;
-	else if (type == 'touchmove' && !down) return false;
+var name = 'touchhold',
+	delayKey = name + ':delay',
+	disabled, timer;
 
-	event.targetTouches = [];
-	event.changedTouches = event.touches = [{
-		pageX: event.page.x, pageY: event.page.y,
-		clientX: event.client.x, clientY: event.client.y
-	}];
-
-	return true;
+var clear = function(e){
+	clearTimeout(timer);
 };
 
-Element.defineCustomEvent('touchstart', {
+var events = {
 
-	base: 'mousedown',
-	condition: condition
+	touchstart: function(event){
+		if (event.touches.length > 1){
+			clear();
+			return;
+		}
 
-}).defineCustomEvent('touchmove', {
+		timer = (function(){
+			this.fireEvent(name, event);
+		}).delay(this.retrieve(delayKey) || 750, this);
+	},
 
-	base: 'mousemove',
-	condition: condition
+	touchmove: clear,
+	touchcancel: clear,
+	touchend: clear
 
-}).defineCustomEvent('touchend', {
+};
 
-	base: 'mouseup',
-	condition: condition
+Element.defineCustomEvent(name, {
 
-});
+	onSetup: function(){
+		this.addEvents(events);
+	},
 
-document.addEvent('mouseup', function() {
-	down = false;
+	onTeardown: function(){
+		this.removeEvents(events);
+	},
+
+	onEnable: function(){
+		disabled = false;
+	},
+
+	onDisable: function(){
+		disabled = true;
+		clear();
+	}
+
 });
 
 })();

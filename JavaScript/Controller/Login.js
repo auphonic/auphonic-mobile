@@ -1,46 +1,26 @@
 var History = require('History');
 var Form = require('Form');
 var LocalStorage = require('Utility/LocalStorage');
-var Spinner = require('ThirdParty/Spinner');
+var Spinner = require('Spinner');
 
-var API = require('../API');
+var API = require('API');
 var Controller = require('./');
-var UI = require('../UI');
+var UI = require('UI');
+var Notice = require('UI/Notice');
 
-var spinner, children, form;
+var APIKeys = require('APIKeys');
+var Auphonic = require('Auphonic');
 
-API.on('login/submit', function() {
-  if (!spinner) spinner = new Spinner({
-    lines: 12,
-    length: 10,
-    width: 7,
-    radius: 13,
-    trail: 30,
-    color: '#fff'
-  });
-
-  var login = document.id('login');
-  children = login.getChildren().dispose();
-  spinner.spin(login);
-}).addEvents({
-
-  success: function() {
-    var login = document.id('login');
-
-    spinner.stop();
-    login.empty();
-
-    LocalStorage.set('User', form.serialize());
-    History.push('/');
-  },
-
-  error: function() {
-    spinner.stop();
-    var login = document.id('login');
-    login.empty().adopt(children);
-  }
-
-});
+var spinnerOptions = {
+  lines: 12,
+  length: 10,
+  width: 7,
+  radius: 13,
+  trail: 30,
+  color: '#fff'
+};
+var notice;
+var spinner;
 
 Controller.define('/login', function() {
   if (LocalStorage.get('User')) {
@@ -48,12 +28,75 @@ Controller.define('/login', function() {
     return;
   }
 
-  UI.Chrome.hide();
+  UI.hideChrome();
 
   var login = document.id('login');
-  login.set('html', UI.render('login'));
-  form = login.getElement('form');
-  new Form.Element(form, 'login/submit');
+  login.set('html', UI.render('login', {
+    client_id: APIKeys.ID,
+    client_secret: APIKeys.secret,
+    registerURL: Auphonic.RegisterURL
+  }));
+
+  UI.update(login);
+
+  var form = login.getElement('form');
+  form.addEvent('submit', function(event) {
+    event.preventDefault();
+  });
+
+  var submit = function(event) {
+    event.preventDefault();
+
+    if (!spinner) spinner = new Spinner(spinnerOptions);
+
+    var data = login.serialize();
+    var children = login.getChildren().dispose();
+    spinner.spin(login);
+
+    var error = function() {
+      if (!notice) notice = new Notice('Invalid username or password. Please try again.', {
+        type: 'error'
+      });
+
+      if (!notice.isOpen()) notice.push();
+
+      spinner.stop();
+      login.empty().adopt(children);
+    };
+
+    var name = data.name;
+    API.authenticate(data).on({
+      success: function(response) {
+        spinner.stop();
+
+        if (!/^access_token=/.test(response)) {
+          error();
+          return;
+        }
+
+        if (notice) notice.close();
+        login.empty();
+        API.invalidate();
+        LocalStorage.set('User', {
+          name: name,
+          access_token: response.substr(13) // minus access_token
+        });
+        History.push('/');
+      },
+
+      error: error
+    });
+  };
+
+  login.getElement('input[type=submit]').addEvent('click', function(event) {
+    submit(event);
+  });
+
+  login.getElements('input[type=text], input[type=password]').addEvent('keyup', function(event) {
+    if (event.key != 'enter') return;
+    submit(event);
+  });
+
   login.show();
 
 });

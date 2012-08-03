@@ -15,7 +15,7 @@ header
   height $header-height - $border-bottom - $border-top
 
   background-color #444
-  background-image linear-gradient(top, #555 0%, #333 50%, #111 51%, #111 100%)
+  background-image linear-gradient(top, #555 0%, #111 100%)
   border-top rgba(155, 155, 155, 1) $border-top solid
   border-bottom rgba(0, 0, 0, 1) $border-bottom solid
 
@@ -37,7 +37,7 @@ header
     overflow ellipsis
     text-shadow none
     text-transform none
-    text-shadow-inset($headline-offset, rgba(0, 0, 0, 1), rgba(255, 255, 255, 1))
+    text-shadow-inset($headline-offset, rgba(0, 0, 0, 1), #e9e9e9)
 
     &:before
       overflow ellipsis
@@ -124,7 +124,7 @@ header
 
       font-size 12px
       overflow ellipsis
-      text-shadow-inset($headline-offset, rgba(0, 0, 0, 0.8), rgba(255, 255, 255, 1))
+      text-shadow-inset($headline-offset, rgba(0, 0, 0, 0.8), #e9e9e9)
 
       &:before
         overflow ellipsis

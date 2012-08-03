@@ -6,14 +6,19 @@ var Element = Core.Element;
 
 var OuterClickStack = require('OuterClickStack');
 
+var UI = require('UI');
+
+var baseKey = 'popover:baseElement';
+
 module.exports = new Class({
 
   Implements: [Class.Singleton, Class.Binds, Options],
 
   options: {
     selector: 'div.popover',
-    scrollSelector: 'div.scroll-content',
+    scrollSelector: 'div.scrollable',
     positionProperty: 'data-position',
+    eventProperty: 'data-popover-event',
     animationClass: 'fade',
     arrowHeight: 14
   },
@@ -31,18 +36,20 @@ module.exports = new Class({
   setup: function(){
     var popover = this.popover = this.element.getElement(this.options.selector);
     popover.dispose().removeClass('hidden').addClass(this.options.animationClass);
+    popover.store(baseKey, this.element);
     this.pos = popover.get(this.options.positionProperty);
+    this.event = this.element.get(this.options.eventProperty) || 'click';
 
     this.attach();
   },
 
   attach: function(){
-    this.element.addEvent('click', this.bound('onClick'));
+    this.element.addEvent(this.event, this.bound('onClick'));
     this.popover.addEvent('click', this.bound('onPopoverClick'));
   },
 
   detach: function(){
-    this.element.removeEvent('click', this.bound('onClick'));
+    this.element.removeEvent(this.event, this.bound('onClick'));
     this.popover.removeEvent('click', this.bound('onPopoverClick'));
   },
 
@@ -68,6 +75,12 @@ module.exports = new Class({
   onComplete: function(){
     this.isOpen = false;
     this.popover.dispose();
+
+    // Restore previous settings
+    if (this.toggledTo) {
+      this.toggle(this.toggledTo == 'bottom' ? 'top' : 'bottom');
+      this.toggledTo = null;
+    }
   },
 
   open: function(content){
@@ -79,6 +92,11 @@ module.exports = new Class({
     this.position();
 
     window.addEventListener('orientationchange', this.bound('position'), false);
+
+    if (this.shouldDisableElement()) {
+      UI.disable(this.element);
+      window.addEvent('touchend', this.bound('enableElement'));
+    }
 
     (function(){
       // Delay because the event probably still bubbles and would cause 'close' to be called via OuterClickStack
@@ -111,33 +129,59 @@ module.exports = new Class({
   getPosition: function() {
     var element = this.element;
     var popover = this.popover;
-    var parent = element.getParent();
+    var container = element;
+
+    if (!container.offsetTop) container = element.getParent();
 
     if (this.pos == 'top')
-      return parent.offsetTop - popover.offsetHeight - this.options.arrowHeight;
+      return container.offsetTop - popover.offsetHeight - this.options.arrowHeight;
 
-    return parent.offsetTop + element.offsetHeight + this.options.arrowHeight;
+    return container.offsetTop + element.offsetHeight + this.options.arrowHeight;
   },
 
   position: function(){
+    var element = this.getScrollElement();
     var popover = this.popover;
     var top = this.getPosition();
 
-    if (top < 0) {
-      popover.removeClass('top').addClass('bottom');
-      this.pos = 'bottom';
+    if (top < 0 || top < element.scrollTop) {
+      this.toggle('bottom');
       top = this.getPosition();
-    } else if (top + popover.offsetHeight + this.options.arrowHeight > this.getScrollElement().scrollHeight) {
-      popover.removeClass('bottom').addClass('top');
-      this.pos = 'top';
+    } else if (top + popover.offsetHeight + this.options.arrowHeight > element.scrollHeight) {
+      this.toggle('top');
       top = this.getPosition();
     }
 
     this.popover.setStyle('top', top);
   },
 
+  toggle: function(position) {
+    this.toggledTo = position;
+    if (position == 'bottom') {
+      this.popover.removeClass('top').addClass('bottom');
+      this.pos = 'bottom';
+    } else {
+      this.popover.removeClass('bottom').addClass('top');
+      this.pos = 'top';
+    }
+  },
+
   getScrollElement: function() {
     return this.element.getParent(this.options.scrollSelector);
+  },
+
+  enableElement: function() {
+    (function() {
+      UI.enable(this.element);
+    }).delay(10, this);
+  },
+
+  shouldDisableElement: function() {
+    return (this.event != 'click');
   }
 
 });
+
+module.exports.getBaseElement = function(element) {
+  return element.retrieve(baseKey);
+};

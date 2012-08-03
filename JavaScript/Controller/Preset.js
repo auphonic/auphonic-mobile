@@ -4,422 +4,141 @@ var Elements = Core.Elements;
 
 var History = require('History');
 
-var API = require('../API');
+var API = require('API');
 var Controller = require('./');
-var View = require('../View');
-var UI = require('../UI');
+var View = require('View');
+var UI = require('UI');
 
-var SwipeAble = require('../UI/Actions/SwipeAble');
+var Data = require('App/Data');
+var CoverPhoto = require('App/CoverPhoto');
+var MainForm = require('App/MainForm');
+var Metadata = require('App/Metadata');
+var OutputFiles = require('App/OutputFiles');
+var OutgoingService = require('App/OutgoingService');
 
-var presets = null;
-var list = null;
-var formdata = {};
+var Form = require('App/Form');
 
-var formatServices = function(services) {
-  services.each(function(service) {
-    var type = service.type;
-    if (type == 'dropbox') type = type.charAt(0).toUpperCase() + type.slice(1);
-    else type = service.type.toUpperCase();
-    service.display_type = type;
+var form;
+var presets = {};
+
+var createForm = function(options) {
+  return new Form({
+    use: [
+      new MainForm(Object.append({
+        displayName: 'Preset',
+        displayType: 'preset',
+        baseURL: '/preset/',
+        saveURL: 'presets',
+        getObjectName: function(object) {
+          return object && object.preset_name;
+        },
+        onSave: function(object) {
+          presets[object.uuid] = object;
+          History.push('/preset/' + object.uuid);
+        }
+      }, options)),
+      Metadata,
+      OutgoingService,
+      OutputFiles,
+      CoverPhoto
+    ]
   });
-
-  return services;
 };
 
-var createFormatUIElement = function(content, id) {
-  if (!id) id = String.uniqueID();
+var addPlaceholder = function() {
+  var stack = View.getMain().getStack();
+  if (stack.getLength() > 1 || stack.getByURL('/preset')) return;
 
-  var element = Element.from(UI.render('ui-removable-list-item',
-    Object.append(createFormatUIData(content), {
-      label: 'Remove',
-      href: '/preset/new/format/' + id
-    })
-  )).set('data-format-id', id).store('value', content);
-
-  UI.update(element);
-
-  // Store for editing
-  if (!formdata.formats) formdata.formats = {};
-  formdata.formats[id] = content;
-
-  var instance = element.getInstanceOf(SwipeAble);
-  if (instance) instance.addEvent('click', function() {
-    if (formdata.formats) delete formdata.formats[id];
-  });
-
-  return element;
-};
-
-var createFormatUIData = function(content) {
-  var formats = API.getInfo('formats');
-  var item = formats[content.format];
-  var index = (item.bitrates ? item.bitrates.indexOf('' + content.bitrate) : 0); // Needs to be String
-  return {
-    title: item.display_name.replace(/\((.+?)\)/, '').trim(), // Remove parenthesis
-    detail: item.bitrate_strings[index].replace(/\((.+?)\)/, '').trim(), // Remove parenthesis,
-  };
-};
-
-var parseFormatsFromContainer = function(container) {
-  var formats = API.getInfo('formats');
-  return container.getChildren().retrieve('value').clean().map(function(format) {
-    // Add filename if necessary
-    var file = format.filename;
-    var endings = formats[format.format].endings;
-    var check = function(ending) {
-      return file.indexOf('.' + ending) == file.length - 1 - ending.length;
-    };
-    if (file && !endings.some(check))
-      format.filename += '.' + endings[0];
-
-    return format;
-  });
+  View.getMain().push('preset', new View.Object({
+    url: '/preset',
+    title: 'Presets'
+  }).invalidate());
 };
 
 Controller.define('/preset', function() {
-
-  View.get('Main').showLoadingIndicator({fade: true});
-
-  list = [];
   presets = {};
 
-  API.call('presets').on({
+  var options = {
+    offset: 0,
+    limit: 10
+  };
 
-  success: function(result) {
-    list = result.data;
+  var load = function(options, onSuccess) {
+    API.call('presets', 'get', options).on({success: onSuccess});
+  };
 
-    presets = {};
-    list.each(function(preset) {
-      presets[preset.uuid] = preset;
+  var add = function(data) {
+    data.each(function(item) {
+      presets[item.uuid] = item;
     });
+  };
 
-    View.get('Main').push('preset', new View.Object({
+  View.getMain().showIndicator({stack: 'preset'});
+
+  load(options, function(response) {
+    add(response.data);
+
+    View.getMain().push('preset', new View.Object.LoadMore({
       title: 'Presets',
-      content: UI.render('preset', {preset: list}),
+      content: UI.render('presets', {preset: response.data}),
       action: {
         title: 'New',
         url: '/preset/new'
-      }
+      },
+      loadMoreFunction: load,
+      loadMoreOptions: options,
+      loadedItems: response.data.length,
+      addItemsFunction: add,
+      itemContainer: '.preset_container',
+      templateId: 'preset'
+    }).addEvent('invalidate', function() {
+      API.invalidate('presets');
     }));
-  }
-
   });
-
 });
 
 Controller.define('/preset/{uuid}', function(req) {
+  var preset = Data.prepare(presets[req.uuid], 'preset');
 
-  // We need to create a new object that can be transformed for viewing
-  var preset = Object.append({}, presets[req.uuid]);
-  var metadata = preset.metadata;
-
-  metadata.hasLicense = !!(metadata.license || metadata.license_url);
-  preset.hasDetails = metadata.summary || metadata.publisher || metadata.url || metadata.hasLicense;
-
-  if (preset.outgoings && preset.outgoings.length) {
-    var uuids = {};
-    // Remove duplicates. The API currently allows to add the same service more than once
-    preset.outgoings = formatServices(preset.outgoings).filter(function(service) {
-      if (uuids[service.uuid]) return false;
-      uuids[service.uuid] = true;
-      return true;
-    });
-  } else {
-    preset.outgoings = null; // Be safe
-  }
-
-  if (preset.algorithms) {
-    var list = [];
-    var algorithms = API.getInfo('algorithms');
-    Object.each(preset.algorithms, function(value, algorithm) {
-      if (!value) return;
-      preset.hasAlgorithms = true;
-      list.push(algorithms[algorithm]);
-    });
-    preset.algorithms = list;
-  }
-
-  if (preset.formats && preset.formats.length) {
-    preset.formats = preset.formats.map(function(content) {
-      return createFormatUIData(content);
-    });
-  } else {
-    preset.formats = null;
-  }
-
-  View.get('Main').push('preset', new View.Object({
+  addPlaceholder();
+  View.getMain().push('preset', new View.Object({
     title: preset.preset_name,
-    content: UI.render('preset-detail', preset),
+    content: UI.render('data-detail', preset),
     action: {
       title: 'Edit',
       url: '/preset/edit/' + preset.uuid
     }
   }));
-
 });
 
 Controller.define('/preset/{uuid}/summary', function(req) {
-
   var preset = presets[req.uuid];
-  View.get('Main').push('preset', new View.Object({
+  View.getMain().push('preset', new View.Object({
     title: preset.preset_name,
     content: UI.render('preset-detail-summary', preset)
   }));
-
 });
-
-var showPresetForm = function(preset) {
-  var formatElements = null;
-
-  if (preset) {
-    var outgoings = {};
-    if (preset.outgoings) preset.outgoings.each(function(outgoing) {
-      outgoings['outgoings.' + outgoing.uuid] = true;
-    });
-
-    formdata = {
-      metadata: Object.flatten({metadata: preset.metadata}),
-      outgoings: outgoings
-    };
-
-    if (preset.formats) formatElements = preset.formats.map(function(format) {
-      return createFormatUIElement(format);
-    });
-  }
-
-  var object;
-  View.get('Main').push('preset', object = new View.Object({
-    title: 'New Preset',
-    content: UI.render('preset-new', {
-      algorithm: Object.values(Object.map(API.getInfo('algorithms'), function(content, algorithm) {
-        // TODO(cpojer): fix this once the API is fixed
-        var key = (algorithm == 'filtering') ? key = 'hipfilter' : algorithm;
-
-        return Object.append({key: key}, content, {
-          value: (preset ? preset.algorithms[algorithm] : content.default_value)
-        });
-      })),
-      preset_name: (preset ? preset.preset_name : '')
-    }),
-    back: (preset ? {title: 'Cancel'} : null),
-    action: {
-      title: 'Save',
-      onClick: function(event) {
-        event.preventDefault();
-
-        var data = Object.append(object.serialize(), formdata.metadata, formdata.outgoings);
-        data.formats = parseFormatsFromContainer(object.toElement().getElement('ul.output_formats'));
-
-        View.get('Main').showLoadingIndicator();
-
-        var url = (preset ? 'preset/' + preset.uuid : 'presets');
-        API.call(url, 'post', JSON.stringify(Object.expand(data))).on({
-          success: function(response) {
-            var stack = View.get('Main').getStack();
-            var obj = stack.getByURL('preset');
-            if (obj) obj.invalidate();
-            if (preset) {
-              obj = stack.getByURL('preset/' + preset.uuid);
-              if (obj) obj.invalidate();
-            }
-
-            // Current object should get removed after sliding it out
-            object.addEvent('hide:once', function() {
-              this.getStack().remove(this);
-              this.getStack().getCurrent().setBack({
-                title: 'Presets'
-              });
-            });
-            API.invalidate('presets');
-            presets[response.data.uuid] = response.data;
-            History.push('/preset/' + response.data.uuid);
-          }
-        });
-      }
-    },
-
-    onShow: function() {
-      var parent = object.toElement();
-
-      var countElement = parent.getElement('.servicesCount');
-      if (countElement) {
-        var count = Object.values(formdata.outgoings).erase(false).length;
-        countElement.set('text', count ? count + ' selected' : '');
-      }
-
-      var container = parent.getElement('ul.output_formats');
-      if (formatElements) {
-        container.adopt(formatElements);
-        formatElements = null;
-      } else if (formdata.format) {
-        var content = formdata.format;
-        // Select-Values are Arrays but we only need the first and only value
-        content.format = content.format[0];
-        content.bitrate = content.bitrate[0];
-
-        var id = formdata.formatID;
-        var previous = id ? container.getElement('[data-format-id=' + id + ']') : null;
-        var element = createFormatUIElement(content, id);
-
-        if (previous) element.replaces(previous);
-        else element.inject(container);
-
-        delete formdata.formatID;
-        delete formdata.format;
-      }
-    },
-
-    onHide: function(direction) {
-      if (direction == 'left') formdata = {};
-    }
-  }));
-
-};
 
 Controller.define('/preset/new', {priority: 1, isGreedy: true}, function(req) {
-  showPresetForm();
+  addPlaceholder();
+  form = createForm();
+  form.show('main');
 });
+
 Controller.define('/preset/edit/{uuid}', {priority: 1, isGreedy: true}, function(req) {
-  showPresetForm(presets[req.uuid]);
+  var preset = presets[req.uuid];
+  form = createForm(preset ? {saveURL: 'preset/' + preset.uuid} : null);
+  form.show('main', preset);
 });
 
-Controller.define('/preset/new/metadata', function(req) {
-
-  View.get('Main').push('preset', new View.Object({
-    title: 'Metadata',
-    content: UI.render('preset-new-metadata'),
-    action: {
-      title: 'Done',
-      back: true,
-      onClick: function() {
-        formdata.metadata = View.get('Main').getCurrentView().serialize();
-      }
-    },
-    back: {
-      title: 'Cancel'
-    },
-
-    onShow: function() {
-      var metadata = formdata.metadata;
-      if (!metadata) metadata = {
-        'metadata.year': (new Date).getFullYear(),
-        'metadata.genre': 'Podcast'
-      };
-
-      this.unserialize(metadata);
-    }
-  }));
-
+Controller.define('/preset/new/metadata', function() {
+  form.show('metadata');
 });
 
-Controller.define('/preset/new/format/:id:', function(req) {
-
-  var id = (req.id && formdata.formats[req.id]) ? req.id : null;
-
-  var list = [];
-  var formats = API.getInfo('formats');
-  Object.each(formats, function(value, key) {
-    value = Object.append({}, value);
-    value.value = key;
-    value.bitrate_format = [];
-    value.bitrate_strings.each(function(string, index) {
-      var bitrate = (value.bitrates ? value.bitrates[index] : 0);
-      value.bitrate_format.push({
-        value: bitrate,
-        title: string,
-        selected: (!bitrate || bitrate == value.default_bitrate)
-      });
-    });
-    list.push(value);
-  });
-
-  var object;
-  View.get('Main').push('preset', object = new View.Object({
-    title: id ? 'Edit Format' : 'Add Format',
-    content: UI.render('preset-new-format', {
-      format: list
-    }),
-    back: {
-      title: 'Cancel'
-    }
-  }));
-
-  var bitrateContainer = object.toElement().getElement('.bitrates').dispose();
-  var selects = object.toElement().getElements('select.empty');
-  selects.addEvents({
-
-    'change:once': function() {
-      View.get('Main').updateElement('action', {}, {
-        title: id ? 'Done' : 'Add',
-        back: true,
-        onClick: function() {
-          formdata.format = View.get('Main').getCurrentView().serialize();
-          if (id) formdata.formatID = id;
-        }
-      });
-    },
-
-    change: function() {
-      var data = object.serialize();
-      delete data.bitrate;
-      delete data.format;
-
-      var option = this.getSelected()[0];
-      var value = option.get('value');
-      var parent = this.getParent('ul');
-      var item = bitrateContainer.getElement('[data-format=' + value + ']').clone();
-
-      parent.getElements('> :not(li:first-child)').dispose();
-      parent.adopt(item);
-
-      Elements.from(UI.render('preset-new-format-detail')).inject(parent);
-
-      // Restore previous values
-      object.unserialize(data);
-      UI.update(parent);
-    }
-
-  });
-
-  // editing
-  if (id) {
-    object.unserialize({format: formdata.formats[id].format});
-    selects.fireEvent('focus:once').fireEvent('change');
-    object.unserialize(formdata.formats[id]);
-  }
+Controller.define('/preset/new/output_file/:id:', function(req) {
+  form.show('output_files', req.id);
 });
 
-Controller.define('/preset/new/service', function(req) {
-
-  View.get('Main').showLoadingIndicator();
-
-  API.call('services').on({
-
-    success: function(result) {
-      var services = formatServices(result.data);
-
-      View.get('Main').push('preset', new View.Object({
-        title: 'Transfers',
-        content: UI.render('preset-new-service', {
-          service: services
-        }),
-        action: {
-          title: 'Done',
-          back: true,
-          onClick: function() {
-            formdata.outgoings = View.get('Main').getCurrentView().serialize();
-          }
-        },
-        back: {
-          title: 'Cancel'
-        },
-
-        onShow: function() {
-          this.unserialize(formdata.outgoings);
-        }
-      }));
-
-    }
-  });
-
+Controller.define('/preset/new/outgoing_services', function() {
+  form.show('outgoing_services');
 });

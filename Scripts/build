@@ -18,10 +18,10 @@ packager build Router/Router +use-only Router > "$DIR/$JS/PowerTools/Router.js"
 packager build Custom-Event/* +use-only Custom-Event > "$DIR/$JS/PowerTools/Custom-Event.js"
 
 # Mootilities
-#packager build Mootilities/Accessor +use-only Mootilities > "$DIR/$JS/PowerTools/Mootilities.js"
+packager build Mootilities/Queue +use-only Mootilities > "$DIR/$JS/PowerTools/Queue.js"
 
 # Mobile
-packager build Mobile/Browser.Mobile Mobile/Click Mobile/Swipe Mobile/Mouse +use-only Mobile > "$DIR/$JS/PowerTools/Mobile.js"
+packager build Mobile/Browser.Mobile Mobile/Click Mobile/Swipe Mobile/Touchhold +use-only Mobile > "$DIR/$JS/PowerTools/Mobile.js"
 
 # EventStack
 packager build EventStack/* +use-only EventStack EventStack.OuterClick > "$DIR/$JS/PowerTools/EventStack.js"

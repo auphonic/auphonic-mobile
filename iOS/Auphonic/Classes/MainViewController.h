@@ -21,8 +21,8 @@
 //  MainViewController.h
 //  Auphonic
 //
-//  Created by Christoph Pojer on 6/18/12.
-//  Copyright __MyCompanyName__ 2012. All rights reserved.
+//  Created by Christoph Pojer on 7/13/12.
+//  Copyright Christoph Pojer 2012. All rights reserved.
 //
 
 #ifdef CORDOVA_FRAMEWORK

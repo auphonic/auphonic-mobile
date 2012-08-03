@@ -4,32 +4,28 @@
 	<meta charset="utf-8" />
 	<title>Auphonic</title>
 	<meta name="viewport" content="initial-scale=1.0 maximum-scale=1.0 user-scalable=no" />
-
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
 
   <script type="text/javascript">
-
   (function() {
-    window.__VERSION = '0.01';
-    window.__API_DOMAIN = 'https://auphonic.com/api/';
+    window.__API_DOMAIN = 'https://auphonic.com/';
 
-    var base = /^\/Thesis\/App\//;
-    if (base.test(location.pathname)) {
+    // Update this if you are testing the application locally.
+    var DEVbaseURL = '/Thesis/App/';
+    if (new RegExp('^' + DEVbaseURL).test(location.pathname)) {
       window.__LOCALHOST__ = true;
-      window.__baseURL = '/Thesis/App/';
-      window.__base = base;
-      window.__API_DOMAIN = '../wrapper.php?call=';
+      window.__baseURL = DEVbaseURL;
+      window.__API_DOMAIN = '../wrapper.php?';
 
-      document.write('<base href="' + this.__baseURL + '" />');
+      document.write('<base href="' + DEVbaseURL + '" />');
     }
   })();
-
   </script>
 
 	<link rel="stylesheet" media="all" type="text/css" href="CSS/Style.css" />
 </head>
-<body>
+<body class="chrome-invisible">
 
 <div id="splash" class="splash"></div>
 <div id="login" class="login hidden"></div>
@@ -38,433 +34,24 @@
   <header></header>
   <footer>
     <ul>
-      <li><a href="/production" class="production"><span></span></a></li>
-      <li><a href="/preset" class="preset"><span></span></a></li>
-      <li><a href="/record" class="microphone"><span></span></a></li>
-      <li><a href="/settings" class="settings"><span></span></a></li>
+      <li><a href="/production" class="production"><span></span><span>Productions</span></a></li>
+      <li><a href="/preset" class="preset"><span></span><span>Presets</span></a></li>
+      <li><a href="/recording" class="record"><span></span><span>Recordings</span></a></li>
+      <li><a href="/settings" class="settings"><span></span><span>Settings</span></a></li>
     </ul>
   </footer>
   <div class="footerBackground"></div>
-
   <div id="main"></div>
 </div>
 
 <div id="container-template" class="hidden">
   <div class="container scrolling scrollable">
     <div class="scroll-content"></div>
+  </div>
 </div>
 
-<script type="text/javascript" src="JavaScript/cordova-1.8.1.js"></script>
+<script type="text/javascript" src="JavaScript/cordova-1.9.0.js"></script>
 <script type="text/javascript" src="JavaScript/build.js"></script>
-
-<script id="default-template" type="text/x-handlebars-template">
-
-  <h1>A List</h1>
-    <ul>
-      <li><a href="#">List Item List Item List Item List Item List Item List Item List Item</a></li>
-      <li><label class="info">
-        <span></span>This is an Info Link
-        <div class="hidden popover top justify" data-position="top">
-          <h1>Global Loudness Normalization</h1>Adjusts the global, overall loudness to a value of -18 LUFS (see EBU R128), so that all processed files have a similar average loudness.</div>
-      </label></li>
-      <li><a href="#" class="share"><span></span>This is a Share Link</a></li>
-      <li><a href="#" class="plus"><span></span>This is a Plus</a></li>
-      <li><a href="#" class="arrow"><span></span>Another awesome list item with a really long text</a></li>
-    </ul>
-    <h1>Auphonic</h1>
-    <div class="content">
-      <p>Oh hey!</p>
-      <p>Hey Ho, lets go!</p>
-      <p>Oh hey!</p>
-      <p>Hey Ho, lets go!</p>
-      <p>Oh hey!</p>
-      <p>Hey Ho, lets go!</p>
-      <p>Oh hey!</p>
-      <p>Hey Ho, lets go!</p>
-      <p>Oh hey!</p>
-      <p>Hey Ho, lets go!</p>
-    </div>
-</script>
-
-<script id="login-template" type="text/x-handlebars-template">
-  <form>
-    <div class="formcontent">
-      <input type="text" name="name" placeholder="email or username" autocapitalize="off" />
-      <input type="password" name="password" placeholder="password" />
-    </div>
-    <input type="submit" value="Login" />
-  </form>
-</script>
-
-<script id="preset-template" type="text/x-handlebars-template">
-  <ul>
-    {{#each preset}}
-    <li class="swipeable" data-api-url="preset/{{uuid}}" data-method="delete">
-      <span class="right removable">
-        <span><a href="#" class="button red small">Delete</a></span>
-      </span>
-      <a href="preset/{{uuid}}" class="arrow"><span></span>{{preset_name}}</a></li>
-    </li>
-    {{/each}}
-  </ul>
-</script>
-
-<script id="preset-detail-template" type="text/x-handlebars-template">
-  <div class="white"></div>
-  <div class="content detail expand">
-    {{#if thumbnail}}
-      <img src="{{thumbnail}}" class="thumbnail" />
-    {{/if}}
-    {{#metadata}}
-      {{#if track}}<span class="track">#{{track}}</span>{{/if}}
-      <h1>{{title}}</h1>
-      {{#if genre}}<span class="genre">{{genre}}</span>{{/if}}
-      {{#if album}}<span class="album">{{album}}</span>{{/if}}
-      {{#if year}}<span class="year">{{year}}</span>{{/if}}
-      {{#if artist}}<span class="artist small light">{{artist}}</span>{{/if}}
-      {{#if subtitle}}<div class="clear-left small light">{{subtitle}}</div>{{/if}}
-    {{/metadata}}
-  </div>
-
-  {{#if hasDetails}}
-    <h1>Details</h1>
-    <ul>
-      {{#if metadata.summary}}<li><a href="preset/{{uuid}}/summary" class="arrow"><span></span>Summary</a></li>{{/if}}
-
-
-    {{#metadata}}
-      {{#if publisher}}<li><label>Publisher <span class="light">{{publisher}}</label></li>{{/if}}
-      {{#if url}}
-        <li><a href="{{url}}" class="share"><span></span>URL <span class="light">{{{format-url url}}}<span></a></li>
-      {{/if}}
-      {{#if hasLicense}}
-        <li>
-          {{#if license_url}}
-            <a href="{{license_url}}" class="share"><span></span>
-          {{else}}
-            <label>
-          {{/if}}
-
-          License <span class="light">{{#if license}}{{license}}{{else}}{{{format-url license_url}}}{{/if}}</span>
-
-          {{#if license_url}}
-            </a>
-          {{else}}
-            </label>
-          {{/if}}
-        </li>
-      {{/if}}
-    {{/metadata}}
-    </ul>
-  {{/if}}
-
-  {{#if formats}}
-    <h1>Output Formats</h1>
-    <ul>
-      {{#each formats}}
-        <li>
-          <label>{{title}}{{#if detail}} <small class="light">{{detail}}</small>{{/if}}</label>
-        </li>
-      {{/each}}
-    </ul>
-  {{/if}}
-
-  {{#if outgoings}}
-    <h1>Outgoing File Transfers</h1>
-    <ul>
-      {{#each outgoings}}
-        <li><label><small><span class="light">{{display_type}}</span> {{display_name}}</small></label></li>
-      {{/each}}
-    </ul>
-  {{/if}}
-
-  {{#if hasAlgorithms}}
-    <h1>Algorithms</h1>
-    <ul>
-    {{#each algorithms}}
-      <li>
-        <label class="info">
-          <span></span>{{display_name}}
-          <div class="hidden popover top justify" data-position="top">
-            <h1>{{display_name}}</h1>
-            {{description}}
-          </div>
-        </label>
-      </li>
-    {{/each}}
-    </ul>
-  {{/if}}
-</script>
-
-<script id="preset-detail-summary-template" type="text/x-handlebars-template">
-  <div class="content detail">
-    {{metadata.summary}}
-  </div>
-</script>
-
-<script id="preset-new-template" type="text/x-handlebars-template">
-  <ul class="formcontent">
-    <li>
-      <label class="left">
-        <input type="text" name="preset_name" value="{{preset_name}}" placeholder="choose a preset name" class="right" />
-        Name
-      </label>
-    </li>
-    <li><a href="/preset/new/metadata" class="arrow"><span></span>Metadata</a></li>
-    <li><a href="/preset/new/service" class="arrow"><span></span>Outgoing Transfers <small class="servicesCount light"></small></a></li>
-  </ul>
-
-  <h1>Output Formats</h1>
-  <ul class="output_formats">
-    <li><a href="/preset/new/format" class="plus"><span></span>Add Audio Format</a></li>
-  </ul>
-
-  <h1>Algorithms</h1>
-  <ul class="formcontent">
-    {{#each algorithm}}
-      <li class="wide">
-        <div class="right">
-          <div class="checkbox">
-            <span class="left"></span><span class="thumb" data-on="ON" data-off="OFF"></span>
-            <input type="checkbox" name="algorithms.{{key}}" value="1"{{#if value}} checked="checked"{{/if}} />
-          </div>
-        </div>
-        <label class="left info">
-          {{display_name}}
-          <div class="hidden popover top justify" data-position="top">
-            <h1>{{display_name}}</h1>
-            {{description}}
-          </div>
-        </label>
-      </li>
-    {{/each}}
-  </ul>
-</script>
-
-<script id="preset-new-metadata-template" type="text/x-handlebars-template">
-  <ul class="formcontent">
-    <li>
-      <label class="left">
-        <input type="text" name="metadata.title" class="right" />
-        Title
-      </label>
-    </li>
-    <li>
-      <label class="left">
-        <input type="text" name="metadata.album" class="right" />
-        Album
-      </label>
-    </li>
-    <li>
-      <label class="left">
-        <input type="text" name="metadata.artist" class="right" />
-        Artist
-      </label>
-    </li>
-    <li>
-      <label class="left">
-        <input type="tel" name="metadata.track" class="right" />
-        Track
-      </label>
-    </li>
-  </ul>
-  <h1>Details</h1>
-  <ul class="formcontent">
-    <li>
-      <label class="left">
-        <input type="text" name="metadata.genre" class="right" />
-        Genre
-      </label>
-    </li>
-    <li>
-      <label class="left">
-        <input type="tel" name="metadata.year" class="right" />
-        Year
-      </label>
-    </li>
-    <li>
-      <label class="left">
-        <input type="text" name="metadata.publisher" class="right" />
-        Publisher
-      </label>
-    </li>
-    <li>
-      <label class="left">
-        <input type="text" name="metadata.url" class="right" />
-        URL
-      </label>
-    </li>
-    <li>
-      <label class="left">
-        <input type="text" name="metadata.license" placeholder="License etc." class="right" />
-        Copyright
-      </label>
-    </li>
-    <li>
-      <label class="left">
-        <input type="text" name="metadata.license_url" placeholder="URL" class="right" />
-        License
-      </label>
-    </li>
-    <li class="wide">
-      <label class="left">
-        <div class="right">
-          <div class="checkbox">
-            <span class="left"></span><span class="thumb" data-on="YES" data-off="NO"></span>
-            <input type="checkbox" name="metadata.append_chapters" value="1" />
-          </div>
-        </div>
-        Append Chapters
-      </label>
-    </li>
-  </ul>
-
-  <h1>Subtitle <small>(max 255 characters)</small></h1>
-  <ul class="formcontent">
-    <li>
-      <textarea class="autogrow" name="metadata.subtitle"/></textarea>
-    </li>
-  </ul>
-  <h1>Summary</h1>
-  <ul class="formcontent">
-    <li>
-      <textarea class="autogrow" name="metadata.summary"/></textarea>
-    </li>
-  </ul>
-</script>
-
-<script id="preset-new-format-template" type="text/x-handlebars-template">
-  <ul class="formcontent">
-    <li>
-      <label class="left">
-        <select name="format" class="right empty">
-          {{#each format}}
-            <option value="{{value}}">{{display_name}}</option>
-          {{/each}}
-        </select>
-        <span class="right placeholder">choose a format</span>
-        Format
-      </label>
-    </li>
-  </ul>
-
-  <ul class="bitrates hidden">
-    {{#each format}}
-      <li data-format="{{value}}">
-        <label class="left">
-          <select name="bitrate" class="right small">
-            {{#each bitrate_format}}
-              <option value="{{value}}"{{#if selected}}selected="selected"{{/if}}>{{title}}</option>
-            {{/each}}
-          </select>
-          Bitrate
-        </label>
-      </li>
-    {{/each}}
-  </ul>
-</script>
-
-<script id="preset-new-format-detail-template" type="text/x-handlebars-template">
-  <li class="wide">
-    <label class="left">
-      <div class="right">
-        <div class="checkbox">
-          <span class="left"></span><span class="thumb" data-on="YES" data-off="NO"></span>
-          <input type="checkbox" name="mono_mixdown" value="1" />
-        </div>
-      </div>
-      Mono Mixdown
-    </label>
-  </li>
-  <li class="wide">
-    <label class="left">
-      <div class="right">
-        <div class="checkbox">
-          <span class="left"></span><span class="thumb" data-on="YES" data-off="NO"></span>
-          <input type="checkbox" name="split_on_chapters" value="1" />
-        </div>
-      </div>
-      Split on Chapters
-    </label>
-  </li>
-  <li>
-    <label class="left">
-      <input type="text" name="filename" placeholder="optional" class="right" />
-      Filename
-    </label>
-  </li>
-</script>
-
-<script id="preset-new-service-template" type="text/x-handlebars-template">
-  <ul class="formcontent">
-    {{#each service}}
-      <li class="wide">
-        <label class="left">
-          <div class="right">
-            <div class="checkbox">
-              <span class="left"></span><span class="thumb" data-on="ON" data-off="OFF"></span>
-              <input type="checkbox" name="outgoings.{{uuid}}" value="1" />
-            </div>
-          </div>
-          <small><span class="light">{{display_type}}</span> {{display_name}}</small>
-        </label>
-      </li>
-    {{/each}}
-</script>
-
-<script id="production-template" type="text/x-handlebars-template">
-  <ul>
-    {{#each production}}
-      <li><a href="production/{{uuid}}" class="arrow"><span></span>{{metadata.title}}</a></li>
-    {{/each}}
-  </ul>
-</script>
-
-<script id="production-detail-template" type="text/x-handlebars-template">
-  <div class="content">
-    <p>{{metadata.track}} - {{metadata.album}}<p/>
-    <p>{{metadata.license}}</p>
-  </div>
-</script>
-
-<script id="settings-template" type="text/x-handlebars-template">
-  <ul>
-    <li><a href="/settings/about" class="arrow"><span></span>About</a></li>
-  </ul>
-
-  <ul>
-    <li><span class="right">{{user.name}}</span><label class="left">User</label></li>
-  </ul>
-
-  <a href="/logout" class="button red expand">Logout</a>
-</script>
-
-<script id="about-template" type="text/x-handlebars-template">
-  <ul>
-    <li><span class="right">{{version}}</span><label class="left">Version</label></li>
-  </ul>
-</script>
-
-<script id="ui-back-template" type="text/x-handlebars-template">
-  <a href="#" class="button-left" data-hit-target="1"><span class="button gradient" title="{{title}}">{{title}}</span></a>
-</script>
-
-<script id="ui-title-template" type="text/x-handlebars-template">
-  <h1 title="{{title}}">{{title}}</h1>
-</script>
-
-<script id="ui-action-template" type="text/x-handlebars-template">
-  <a href="{{url}}" class="button-right hidden" data-hit-target="1"><span class="button gradient" title="{{title}}">{{title}}</span></a>
-</script>
-
-<script id="ui-removable-list-item-template" type="text/x-handlebars-template">
-  <li class="swipeable">
-    <span class="right removable">
-      <span><a href="#" class="button red small">{{label}}</a></span>
-    </span>
-    <a href="{{href}}" class="arrow"><span></span>{{title}}{{#if detail}} <small class="light">{{detail}}</small>{{/if}}</a>
-  </li>
-</script>
 
 </body>
 </html>

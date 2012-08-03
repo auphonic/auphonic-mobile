@@ -1,4 +1,4 @@
-var Handlebars = require('ThirdParty/Handlebars');
+var Handlebars = require('Handlebars');
 
 Handlebars.registerHelper('format-url', function(url) {
   return new Handlebars.SafeString(url.replace(/https?\:\/\//, '').replace(/\/$/, ''));

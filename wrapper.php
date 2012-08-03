@@ -1,22 +1,25 @@
 <?php
 
-$api = 'https://auphonic.com/api/';
-$url = $api . (!empty($_GET['call']) ? $_GET['call'] : '');
+$api = 'https://auphonic.com/';
+$call = $_SERVER['REQUEST_URI'];
+$call = substr($call, strpos($call, '?') + 1);
+$queryStringStart = strpos($call, '&');
+if ($queryStringStart !== false) $call[$queryStringStart] = '?';
+
+$url = $api . $call;
 $method = $_SERVER['REQUEST_METHOD'];
-$data = file_get_contents("php://input");
-$auth = !empty($_SERVER['PHP_AUTH_USER']) ? CURLAUTH_BASIC : null;
-$user = $auth ? $_SERVER['PHP_AUTH_USER'] . ':' . $_SERVER['PHP_AUTH_PW'] : null;
+$data = file_get_contents('php://input');
+$headers = apache_request_headers();
 
 // Simulate latency between 100-600 ms
 srand();
 usleep(rand(1, 6) * 100000);
 
 $response = CURLRequest::create(array(
-  'userpwd' => $user,
-  'httpauth' => $auth,
   'headers' => array(
     'Accept' => 'application/json',
-    'Content-Type' => 'application/json'
+    'Content-Type' => 'application/json',
+    'Authorization' => $headers['Authorization']
   )
 ))->request($url, $method, $data);
 

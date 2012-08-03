@@ -50,8 +50,10 @@ module.exports = new Class({
     return this;
   },
 
-  remove: function(object) {
-    this.stack.erase(object);
+  // This method erases all but the first and last element in the stack
+  prune: function() {
+    var stack = this.stack;
+    this.stack = [stack[0], stack[stack.length - 1]];
   },
 
   rewind: function(index, object) {
@@ -61,19 +63,19 @@ module.exports = new Class({
     return this;
   },
 
-  hasObject: function(needle) {
-    return !!this.getByURL(needle.getURL());
-  },
-
   getByURL: function(url) {
-    url = url.replace(/^\//, '');
+    url = url.replace(/^\/|\/$/g, '');
     var stack = this.stack;
     for (var index = 0; index < stack.length; index++) {
-      if (stack[index].getURL().replace(/^\//, '') == url)
+      if (stack[index].getURL().replace(/^\/|\/$/g, '') == url)
         return stack[index];
     }
 
     return null;
+  },
+
+  hasObject: function(needle) {
+    return !!this.getByURL(needle.getURL());
   },
 
   getLength: function(){

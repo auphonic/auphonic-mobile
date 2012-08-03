@@ -11,6 +11,7 @@ body
 @import 'UI/Core/Container' // includes Header, Footer
 @import 'UI/Core/Scroll'
 @import 'UI/Core/Popover'
+@import 'UI/Core/Notice'
 @import 'UI/Core/Forms'
 @import 'UI/Core/Pointer'
 @import 'UI/Core/Transition'
@@ -19,6 +20,8 @@ body
 @import 'UI/App/Splash'
 @import 'UI/App/Lists'
 @import 'UI/App/Login'
+@import 'UI/App/NullState'
+@import 'UI/App/Player'
 @import 'UI/App/SwipeAble'
 @import 'UI/App/Spinner'
 
@@ -35,9 +38,6 @@ body
 .placeholder
   color $color-placeholder
 
-.hidden
-  display none
-
 .small
   font-size 12px
 
@@ -52,3 +52,19 @@ body
 
 .justify
   text-align justify
+
+.bold
+  font-weight bold
+
+.logo
+  margin 20px auto
+  width 180px
+  height 124px
+  background-size 180px 124px
+  background-image url('../Images/Logo.png')
+
+@css {
+  .hidden {
+    display: none !important;
+  }
+}

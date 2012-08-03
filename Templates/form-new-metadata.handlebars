@@ -1,0 +1,73 @@
+<ul class="formcontent">
+  <li>
+    <label class="left"><input type="text" name="metadata.title" class="right" />Title</label>
+  </li>
+  <li>
+    <label class="left"><input type="text" name="metadata.album" class="right" />Album</label>
+  </li>
+  <li>
+    <label class="left"><input type="text" name="metadata.artist" class="right" />Artist</label>
+  </li>
+  <li>
+    <label class="left"><input type="tel" name="metadata.track" class="right" />Track</label>
+  </li>
+</ul>
+
+<h1>Cover Photo</h1>
+<img src="{{thumbnail}}{{access_token}}{{random}}" class="thumbnail{{#unless thumbnail}} hidden{{/unless}}" />
+<ul>
+  <li>
+    <label class="show-popover">
+      Upload
+      <div class="hidden popover top justify" data-position="top">
+        <a href="#" class="button expand upload_take_photo">Take a Photo</a>
+        <a href="#" class="button expand upload_from_library">Choose from Libraray</a>
+      </div>
+    </label>
+  </li>
+  <li class="remove_thumbnail{{#unless thumbnail}} hidden{{/unless}}">
+    <a href="#">Remove</a>
+  </li>
+</ul>
+
+<h1 class="clear">Details</h1>
+<ul class="formcontent">
+  <li>
+    <label class="left"><input type="text" name="metadata.genre" class="right" />Genre</label>
+  </li>
+  <li>
+    <label class="left"><input type="tel" name="metadata.year" class="right" />Year</label>
+  </li>
+  <li>
+    <label class="left"><input type="text" name="metadata.publisher" class="right" />Publisher</label>
+  </li>
+  <li>
+    <label class="left"><input type="text" name="metadata.url" class="right" />URL</label>
+  </li>
+  <li>
+    <label class="left"><input type="text" name="metadata.license" placeholder="License etc." class="right" />Copyright</label>
+  </li>
+  <li>
+    <label class="left"><input type="text" name="metadata.license_url" placeholder="URL" class="right" />License</label>
+  </li>
+  <li class="wide">
+    <label class="left">
+      <div class="right">
+        <div class="checkbox">
+          <span class="left"></span><span class="thumb" data-on="YES" data-off="NO"></span>
+          <input type="checkbox" name="metadata.append_chapters" value="1" />
+        </div>
+      </div>
+      Append Chapters
+    </label>
+  </li>
+</ul>
+
+<h1>Subtitle <small>(max 255 characters)</small></h1>
+<ul class="formcontent">
+  <li><textarea class="autogrow" name="metadata.subtitle"/></textarea></li>
+</ul>
+<h1>Summary</h1>
+<ul class="formcontent">
+  <li><textarea class="autogrow" name="metadata.summary"/></textarea></li>
+</ul>

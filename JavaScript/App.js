@@ -3,12 +3,16 @@ var Class = Core.Class;
 var Element = Core.Element;
 var Browser = Core.Browser;
 
+var Handlebars = require('Handlebars');
+require('Templates');
+
 // Load PowerTools! Extensions
 require('Class-Extras');
 require('Custom-Event');
 require('Mobile');
 
 // Load Extensions
+require('Extensions/Array');
 require('Extensions/Element');
 require('Extensions/HandlebarsHelper');
 require('Extensions/Transition');
@@ -29,7 +33,7 @@ History.getPath = function() {
 require('Controller/Login');
 require('Controller/Preset');
 require('Controller/Production');
-require('Controller/Record');
+require('Controller/Recording');
 require('Controller/Settings');
 
 var Form = require('Form');
@@ -41,14 +45,27 @@ var API = require('API');
 var UI = require('UI');
 var View = require('View');
 var Controller = require('Controller');
+var AudioPlayer = require('App/AudioPlayer');
 var SwipeAble = require('UI/Actions/SwipeAble');
 var Popover = require('UI/Actions/Popover');
-var Spinner = require('ThirdParty/Spinner');
+var Notice = require('UI/Notice');
+var Spinner = require('Spinner');
+
+// Register Partials for Handlebars
+Handlebars.registerPartial('preset', Handlebars.templates.preset);
+Handlebars.registerPartial('production', Handlebars.templates.production);
+
+// These are cached during the lifetime of the app so the data
+// can be accessed synchronously.
+API.cacheInfo('algorithms');
+API.cacheInfo('output_files');
+API.cacheInfo('service_types');
 
 var preventDefault = function(event) {
   event.preventDefault();
 };
 
+var popoverSelector = 'div.popover';
 var click = function(event) {
   event.preventDefault();
   var href = this.get('href');
@@ -59,17 +76,21 @@ var click = function(event) {
     if (!this.getParent('footer')) return;
 
     // Tap on footer icon
-    if (History.getPath() == href) return;
+    if (History.getPath() == href) {
+      // Invalidate and rename stack to force re-evaluation
+      View.getMain().getCurrentObject().invalidate();
+      View.getMain().getStack().setName('default');
+    }
   }
 
-  UI.highlight(this);
+  if (!this.getParent(popoverSelector))
+    UI.highlight(this);
 
   History.push(href);
 };
 
 var clickExternal = function(event) {
   event.preventDefault();
-
   var href = this.get('href');
   window.location.href = href + (~href.indexOf('#') ? '' : '#') + '!external';
 };
@@ -79,22 +100,28 @@ var onLabelClick = function() {
   if (input) input.focus();
 };
 
+var onDeleteClick = function(event) {
+  if (event) event.preventDefault();
+
+  removeItem(Popover.getBaseElement(this.getParent(popoverSelector)));
+};
+
+var removeItem = function(element) {
+  element.addClass('fade');
+  (function() {
+    element.addEvent('transitionComplete:once', function() {
+      this.destroy();
+    }).addClass('out');
+  }).delay(10);
+
+  var url = element.get('data-api-url');
+  var method = element.get('data-method');
+  if (url && method) API.call(url, method);
+};
+
 var boot = function() {
-  LocalStorage.set('User', {
-    name: 'cpojer',
-    password: 'cpojer-pw',
-    email: 'christoph.pojer@gmail.com'
-  });
-  LocalStorage.erase('User');
-
   var isLoggedIn = !!LocalStorage.get('User');
-  if (isLoggedIn) UI.Chrome.show({immediate: true});
-
-  // Browser bug in both Chrome and iOS. This delay is necessary
-  // at the startup of the app.
-  setTimeout(function() {
-    History.push(isLoggedIn ? '/' : '/login');
-  }, 350);
+  if (isLoggedIn) UI.showChrome({immediate: true});
 
   var activeState = (new ActiveState({
     active: 'active',
@@ -116,7 +143,7 @@ var boot = function() {
 
   UI.register({
 
-    '#main a:external': function(elements) {
+    '#main a:external, a.register': function(elements) {
       elements.addEvent('click', clickExternal);
     },
 
@@ -131,37 +158,37 @@ var boot = function() {
       });
     },
 
-    'label.info': Class.Instantiate(Popover, {
-      selector: 'div.popover',
-      scrollSelector: 'div.scroll-content',
+    'a.deleteable': function(elements) {
+      elements.addEvent('click', onDeleteClick);
+    },
+
+    'label.info, .show-popover': Class.Instantiate(Popover, {
+      selector: popoverSelector,
+      scrollSelector: 'div.scrollable',
       positionProperty: 'data-position',
+      eventProperty: 'data-popover-event',
       animationClass: 'fade',
       arrowHeight: 14
     }),
+
     'textarea.autogrow': Class.Instantiate(Form.AutoGrow, {
       margin: 12
     }),
+
     'div.checkbox': Class.Instantiate(Form.Checkbox),
+
     'select.empty': Class.Instantiate(Form.EmptySelect, {
-      placeholder: '! > .placeholder'
+      placeholderPosition: '!',
+      placeholder: '.placeholder',
     }),
+
     '.swipeable': Class.Instantiate(SwipeAble, {
 
       selector: '.removable > span',
       scrollableSelector: 'div.scrollable',
 
       onClick: function() {
-        var container = this.container;
-        container.addClass('fade');
-        (function() {
-          container.addEvent('transitionComplete:once', function() {
-            this.destroy();
-          }).addClass('out');
-        }).delay(10);
-
-        var url = container.get('data-api-url');
-        var method = container.get('data-method');
-        if (url && method) API.call(url, method);
+        removeItem(this.container);
       },
 
       onSwipe: function() {
@@ -180,9 +207,50 @@ var boot = function() {
       elements.each(function(element) {
         element.onclick = onLabelClick;
       });
-    }
+    },
+
+    '.player': Class.Instantiate(AudioPlayer, {
+      selector: '[data-media]',
+      playSelector: 'a.play',
+      waveformSelector: 'div.waveform',
+      positionSelector: 'div.waveform div.position',
+
+      onSetup: function() {
+        View.getMain().getCurrentObject().addEvent('hide:once', this.bound('stop'));
+      },
+
+      onLoad: function() {
+        View.getMain().showIndicator({
+          immediate: true,
+          stack: View.getMain().getStack().getName()
+        });
+      },
+
+      onLoadFinished: function() {
+        View.getMain().hideIndicator();
+      }
+    })
 
   }).update();
+
+  Notice.setContainer(document.body);
+  Notice.setTemplate(new Element('div.notice').adopt(new Element('div.close'), new Element('div.text')));
+
+  var notice;
+  var noticeText;
+  API.setErrorHandler(function(data) {
+    var text = '';
+    if (data && data.status_code) text = '<h1>An error occurred</h1> Please try again or report a bug so we can fix this as soon as possible.';
+    else text = '<h1>A network error ocurred</h1> Please put your device in some elevated position to regain Internet access. If the problem lies on our end we\'ll make sure to fix the problem quickly :)';
+
+    View.getMain().hideIndicator();
+
+    // If the last notice with the same text is still visible we'll not show another one.
+    if (notice && notice.isOpen() && noticeText == text) return;
+
+    noticeText = text;
+    notice = new Notice(text, {type: 'error'});
+  });
 
   var header = document.getElement('header');
   var back = new UI.BackButton(header, new Element('a'));
@@ -191,7 +259,7 @@ var boot = function() {
   });
   var title = new UI.Title(header, new Element('h1'));
 
-  View.set('Main', new View.Controller('main', {
+  View.setMain(new View.Controller('main', {
     template: 'container-template',
     contentSelector: 'div.scroll-content',
     scrollableSelector: 'div.scrollable',
@@ -209,30 +277,30 @@ var boot = function() {
     }),
     indicatorDelay: 500,
 
+    onChange: function() {
+      var stackName = this.getStack().getName();
+      UI.highlight(document.getElement('footer .' + stackName));
+    },
+
     onTransitionEnd: function() {
       var stack = this.getStack();
       var previous = stack && stack.getPrevious();
-      if (!stack || !previous) return;
-
-      previous.toElement().getElements('ul li a.selected').removeClass('selected');
+      if (previous)
+        previous.toElement().getElements('ul li a.selected').removeClass('selected');
     }
   }));
 
   Controller.define('/', function() {
+    UI.showChrome();
 
-    UI.Chrome.show();
-
-    View.get('Main').push('default', new View.Object({
+    View.getMain().push('default', new View.Object({
       title: 'Home',
       content: UI.render('default')
     }));
-
   });
 
-  // These are cached during the lifetime of the app so the data
-  // can be accessed synchronously.
-  API.cacheInfo('info/algorithms');
-  API.cacheInfo('info/formats');
+  History.push(isLoggedIn ? '/' : '/login');
+
 };
 
 var fired;

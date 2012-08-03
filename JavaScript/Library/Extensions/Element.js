@@ -54,11 +54,11 @@ Element.implement({
 });
 
 Element.from = function(string) {
-  return new Element('div', {html: string}).getFirst();
+  return new Element('div', {html: string}).getFirst().dispose();
 };
 
 Elements.from = function(string) {
-  return new Element('div', {html: string}).getChildren();
+  return new Element('div', {html: string}).getChildren().dispose();
 };
 
 Element.implement({
@@ -75,6 +75,7 @@ Element.implement({
         return document.id(opt).get('value');
       }) : ((type == 'radio' || type == 'checkbox') && !el.checked) ? (type == 'checkbox' ? false : null) : el.get('value');
 
+      if (el.get('tag') == 'select' && !el.get('multiple')) value = value[0];
       if (typeof value != 'undefined') object[el.name] = value;
     });
 
@@ -86,10 +87,11 @@ Element.implement({
 
     this.getElements(':input').each(function(el) {
       var name = el.name;
+      if (!(name in object)) return;
+
       var value = object[name];
       var type = el.type;
-
-      if (type == 'select' && value) {
+      if (type == 'select') {
         var values = Array.from(value);
         el.getElements('option', function(element) {
           if (~values.indexOf(element.get('value')))
@@ -97,8 +99,8 @@ Element.implement({
         });
       } else if (type == 'radio' || type == 'checkbox') {
         el.set('checked', !!value);
-      } else if (value) {
-        el.set('value', value);
+      } else {
+        el.set('value', value || '');
       }
     });
   }

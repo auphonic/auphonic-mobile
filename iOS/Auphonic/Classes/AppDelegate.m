@@ -21,8 +21,8 @@
 //  AppDelegate.m
 //  Auphonic
 //
-//  Created by Christoph Pojer on 6/18/12.
-//  Copyright __MyCompanyName__ 2012. All rights reserved.
+//  Created by Christoph Pojer on 7/13/12.
+//  Copyright Christoph Pojer 2012. All rights reserved.
 //
 
 #import "AppDelegate.h"
@@ -110,9 +110,6 @@
     
     [self.window addSubview:self.viewController.view];
     [self.window makeKeyAndVisible];
-    
-    // TODO(cpojer): Remove me after debugging
-    [NSClassFromString(@"WebView") _enableRemoteInspector];
     
     return YES;
 }

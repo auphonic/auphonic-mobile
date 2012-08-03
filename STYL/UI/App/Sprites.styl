@@ -1,3 +1,15 @@
+.close
+  background-size 16px
+  background-image url(../Images/Cross.png)
+
+.play
+  background-size 16px
+  background-image url(../Images/Media/Play.png)
+
+.pause
+  background-size 16px
+  background-image url(../Images/Media/Pause.png)
+
 label, a
   &.arrow
     > span:first-child
@@ -34,17 +46,17 @@ label, a
 
 footer
   ul > li > a
-    > span
+    > span:first-child
       background-size 32px
 
-    &.production > span
+    &.production > span:first-child
       background-image url(../Images/Tabbar/Production.png)
 
-    &.preset > span
+    &.preset > span:first-child
       background-image url(../Images/Tabbar/Preset.png)
 
-    &.microphone > span
+    &.record > span:first-child
       background-image url(../Images/Tabbar/Microphone.png)
 
-    &.settings > span
+    &.settings > span:first-child
       background-image url(../Images/Tabbar/Settings.png)
