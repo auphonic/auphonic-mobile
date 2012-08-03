@@ -55,12 +55,6 @@ var Spinner = require('Spinner');
 Handlebars.registerPartial('preset', Handlebars.templates.preset);
 Handlebars.registerPartial('production', Handlebars.templates.production);
 
-// These are cached during the lifetime of the app so the data
-// can be accessed synchronously.
-API.cacheInfo('algorithms');
-API.cacheInfo('output_files');
-API.cacheInfo('service_types');
-
 var preventDefault = function(event) {
   event.preventDefault();
 };
@@ -119,10 +113,46 @@ var removeItem = function(element) {
   if (url && method) API.call(url, method);
 };
 
-var boot = function() {
-  var isLoggedIn = !!LocalStorage.get('User');
-  if (isLoggedIn) UI.showChrome({immediate: true});
+// Make the info API calls and show the UI on success, or else provide a reload button
+var infoURLs = ['algorithms', 'output_files', 'service_types'];
+var isLoggedIn = !!LocalStorage.get('User');
+var loaded = 0;
+var load = function(event) {
+  isLoggedIn = !!LocalStorage.get('User');
+  if (loaded == infoURLs.length) {
+    UI.showChrome();
+    return;
+  }
 
+  if (event) event.preventDefault();
+
+  Notice.closeAll();
+  var retry = document.id('retry');
+  if (retry) retry.hide();
+
+  loaded = 0;
+  infoURLs.each(function(info) {
+    API.cacheInfo(info, {
+      silent: !isLoggedIn
+    }).on({
+      success: function() {
+        if (++loaded < infoURLs.length || !isLoggedIn) return;
+
+        UI.showChrome();
+        History.push('/');
+      },
+      error: function() {
+        var retry = document.id('retry').show();
+        retry.getElement('a').addEvent('click', load);
+      }
+    });
+  });
+};
+
+load();
+
+// This is a lot of glue code !
+var boot = function() {
   var activeState = (new ActiveState({
     active: 'active',
     hit: 'hit',
@@ -294,7 +324,9 @@ var boot = function() {
   }));
 
   Controller.define('/', function() {
-    UI.showChrome();
+     // Call this so in case of a login with a failed attempt to load the infos we attempt to load them again.
+     // It'll also take care of showing the UI.
+    load();
 
     View.getMain().push('default', new View.Object({
       title: 'Home',
@@ -302,8 +334,7 @@ var boot = function() {
     }));
   });
 
-  History.push(isLoggedIn ? '/' : '/login');
-
+  if (!isLoggedIn) History.push('/login');
 };
 
 var fired;

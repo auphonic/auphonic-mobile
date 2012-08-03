@@ -108,6 +108,9 @@ API.call = function(url, method, requestData) {
       }
 
       if (__DEV__) console.log(data);
+
+      var options = API.on(url).options;
+      if (options && options.silent) return;
       if (errorFn) errorFn(data);
       fire(url, 'error', data);
     },
@@ -203,10 +206,10 @@ API.invalidate = function(url) {
   });
 };
 
-API.cacheInfo = function(url) {
-  API.on('info/' + url, {
+API.cacheInfo = function(url, options) {
+  return API.on('info/' + url, Object.append({
     lifetime: -1
-  }).call();
+  }, options)).call();
 };
 
 API.getInfo = function(type) {
