@@ -51,7 +51,7 @@ var instanceOf = exports.instanceOf = function(item, object){
 		if (constructor === object) return true;
 		constructor = constructor.parent;
 	}
-	
+
 	return item instanceof object;
 };
 
@@ -309,7 +309,7 @@ Object.each = Object.forEach;
 
 Array.implement({
 
-	
+
 
 	each: function(fn, bind){
 		Array.forEach(this, fn, bind);
@@ -413,7 +413,7 @@ var instanceOf = exports.instanceOf;
 
 Array.implement({
 
-	
+
 
 	clean: function(){
 		return this.filter(function(item){
@@ -2293,7 +2293,7 @@ Document.implement({
 
 	newElement: function(tag, props){
 		if (props && props.checked != null) props.defaultChecked = props.checked;
-		
+
 		return this.id(this.createElement(tag)).set(props);
 	}
 
@@ -2604,14 +2604,14 @@ Element.implement({
 		if (setter){
 			setter(this, value);
 		} else {
-			
+
 
 			if (value == null){
 				this.removeAttribute(name);
-				
+
 			} else {
 				this.setAttribute(name, '' + value);
-				
+
 			}
 		}
 		return this;
@@ -2625,7 +2625,7 @@ Element.implement({
 	getProperty: function(name){
 		var getter = propertyGetters[name.toLowerCase()];
 		if (getter) return getter(this);
-		
+
 		var result = Slick.getAttribute(this, name);
 		return (!result && !Slick.hasAttribute(this, name)) ? null : result;
 	},
@@ -2802,12 +2802,12 @@ Element.implement({
 		for (i = ce.length; i--;){
 			var node = ce[i], element = te[i];
 			if (!keepid) node.removeAttribute('id');
-			
+
 			var prop = formProps[element.tagName.toLowerCase()];
 			if (prop && element[prop]) node[prop] = element[prop];
 		}
 
-		
+
 		return document.id(clone);
 	}
 
