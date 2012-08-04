@@ -28,7 +28,7 @@ exports.prepare = function(object, type) {
   var user = LocalStorage.get('User');
 
   // We need to create a new object that can be transformed for viewing
-  object = Object.append({}, object);
+  object = Object.clone(object);
   object.access_token = user && '?access_token=' + user.access_token;
   object.random = '&' + Date.now(); // Used for cache invalidation
 
@@ -38,7 +38,7 @@ exports.prepare = function(object, type) {
   var metadata = object.metadata;
 
   metadata.hasLicense = !!(metadata.license || metadata.license_url);
-  object.hasDetails = metadata.summary || metadata.publisher || metadata.url || metadata.hasLicense;
+  object.hasDetails = metadata.summary || metadata.publisher || metadata.url || metadata.hasLicense || length(metadata.tags);
   object.hasChapters = length(object.chapters);
 
   if (object.hasChapters) object.chapters.sortByKey('start');
@@ -67,6 +67,8 @@ exports.prepare = function(object, type) {
       url: encodeURI(file.download_url)
     });
   });
+
+  if (length(metadata.tags)) metadata.tags = metadata.tags.join(', ');
 
   media_files = media_files.sortByKey('format').map(function(file) {
     return file.url + object.access_token;
