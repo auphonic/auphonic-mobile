@@ -85,10 +85,14 @@ Controller.define('/preset', function() {
         title: 'New',
         url: '/preset/new'
       },
+      type: 'white',
       loadMoreFunction: load,
       loadMoreOptions: options,
       loadedItems: response.data.length,
       addItemsFunction: add,
+      onLoadFinished: function() {
+        this.getItemContainerElement().removeClass('load-more');
+      },
       itemContainer: '.preset_container',
       templateId: 'preset'
     }).addEvent('invalidate', function() {

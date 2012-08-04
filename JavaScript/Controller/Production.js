@@ -92,10 +92,14 @@ Controller.define('/production', function() {
         title: 'New',
         url: '/production/source'
       },
+      type: 'white',
       loadMoreFunction: load,
       loadMoreOptions: options,
       loadedItems: response.data.length,
       addItemsFunction: add,
+      onLoadFinished: function() {
+        this.getItemContainerElement().removeClass('load-more');
+      },
       itemContainer: '.production_container',
       templateId: 'production'
     }).addEvent('invalidate', function() {

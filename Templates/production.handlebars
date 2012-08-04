@@ -2,5 +2,11 @@
   <div class="hidden popover top justify" data-position="top">
     <a href="/production/edit/{{uuid}}" class="button expand">Edit</a>
   </div>
-  <a href="/production/{{uuid}}" class="arrow"><span></span>{{metadata.title}}</a>
+  <a href="/production/{{uuid}}" class="arrow expanded">
+    <span></span>
+    {{metadata.title}}<br />
+    <span class="small bold info-left">
+      {{short_status_string}} <span class="light">{{short_info}}</span>
+    </span>
+  </a>
 </li>

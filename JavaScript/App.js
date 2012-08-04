@@ -22,12 +22,9 @@ require('Extensions/Object');
 // Dev Environment setup
 require('Dev');
 
-// Monkey Patch for Cordova which sometimes adds file:///
-var History = require('History');
-var getPath = History.getPath;
-History.getPath = function() {
-  return '/' + getPath.call(this).replace(/^\/|^file\:\/\/\//, '');
-};
+// Set up Formatters
+require('App/Data');
+require('App/OutgoingService');
 
 // Load Controllers
 require('Controller/Login');
@@ -54,6 +51,13 @@ var Spinner = require('Spinner');
 // Register Partials for Handlebars
 Handlebars.registerPartial('preset', Handlebars.templates.preset);
 Handlebars.registerPartial('production', Handlebars.templates.production);
+
+// Monkey Patch for Cordova which sometimes adds file:///
+var History = require('History');
+var getPath = History.getPath;
+History.getPath = function() {
+  return '/' + getPath.call(this).replace(/^\/|^file\:\/\/\//, '');
+};
 
 var preventDefault = function(event) {
   event.preventDefault();

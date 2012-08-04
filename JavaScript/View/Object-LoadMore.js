@@ -59,14 +59,15 @@ module.exports = new Class({
     this.loader.attach();
     this.getSpinner().stop();
 
+    var element = this.getItemContainerElement();
     if (!response.data || !response.data.length) {
       this.finished = true;
+      this.fireEvent('loadFinished');
       return;
     }
 
     this.getAddItemsFunction()(response.data);
 
-    var element = this.getItemContainerElement();
     element.adopt(
       response.data.map(function(item) {
         return Element.from(UI.render(this.getTemplateId(), item));

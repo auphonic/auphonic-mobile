@@ -17,6 +17,7 @@ module.exports = new Class({
     back: null,
     backTitle: null,
 
+    type: null,
     scrollTop: 0,
     uses: null
 
@@ -39,6 +40,7 @@ module.exports = new Class({
       .setContent(options.content)
       .setAction(options.action)
       .setBack(options.back)
+      .setType(options.type)
       .setUses(options.uses);
   },
 
@@ -54,8 +56,10 @@ module.exports = new Class({
 
     var template = view.getOption('template');
     var selector = view.getOption('contentSelector');
+    var type = this.getType();
 
     var element = document.id(template).getFirst().clone();
+    if (type) element.addClass(type);
     element.getElement(selector).set('html', this.getContent());
 
     var uses = this.getUses();

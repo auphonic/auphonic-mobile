@@ -14,14 +14,14 @@ div.container ul
 
     border-bottom 1px solid #eee
 
-    &:last-child
+    ul:not(.expand) &:last-child
       border-bottom 0
 
       > a
         border-bottom-right-radius 10px
         border-bottom-left-radius 10px
 
-    &:first-child
+    ul:not(.expand) &:first-child
       > a
         border-top-right-radius 10px
         border-top-left-radius 10px
@@ -33,6 +33,12 @@ div.container ul
       padding 12px 10px
       font-weight bold
       cursor pointer
+
+      .info-left
+        display block
+        float left
+        margin-top 5px
+        ellipsis()
 
     a
       color $color
@@ -55,6 +61,10 @@ div.container ul
           margin-right -13px
 
           background-repeat no-repeat
+
+        &.expanded > span:first-child
+          height 32px
+          background-position center
 
     label.left
       width 30%

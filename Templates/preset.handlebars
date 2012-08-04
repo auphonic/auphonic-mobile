@@ -6,5 +6,14 @@
     <a href="/preset/edit/{{uuid}}" class="button expand">Edit</a>
     <a href="#" class="button expand red deleteable">Delete</a>
   </div>
-  <a href="/preset/{{uuid}}" class="arrow"><span></span>{{preset_name}}</a></li>
+  <a href="/preset/{{uuid}}" class="arrow {{#if short_info}}expanded{{/if}}">
+    <span></span>
+    {{preset_name}}
+    {{#if short_info}}
+      <br />
+      <span class="light small bold info-left">
+        {{short_info}}
+      </span>
+    {{/if}}
+  </a>
 </li>

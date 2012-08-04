@@ -10,6 +10,13 @@ var format = exports.format = function(service) {
   return service;
 };
 
+API.on('services', {
+  formatter: function(response) {
+    response.data = response.data.map(format);
+    return response;
+  }
+});
+
 var getData = exports.getData = function(store) {
   var list = [];
   var object = Object.expand(Object.clone(store.get('outgoing_services', {})));
@@ -24,13 +31,6 @@ var getData = exports.getData = function(store) {
     outgoing_services: list
   };
 };
-
-API.on('services', {
-  formatter: function(response) {
-    response.data = response.data.map(format);
-    return response;
-  }
-});
 
 var updateCounter = function(store, object) {
   var container = object.toElement().getElement('.servicesCount');

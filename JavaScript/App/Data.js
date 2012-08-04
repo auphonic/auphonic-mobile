@@ -11,6 +11,52 @@ var length = function(object) {
   return object && object.length;
 };
 
+var statuses = {
+  '0': 'Incoming',
+  '1': 'Waiting',
+  '2': 'Error',
+  '3': 'Done',
+  '4': 'Processing',
+  '5': 'Encoding',
+  '6': 'Transferring',
+  '7': 'Encoding',
+  '8': 'Splitting',
+  '9': 'Incomplete',
+  '10': 'Not Started',
+  '11': 'Outdated'
+};
+
+var fields = ['output_files', 'outgoing_services', 'chapters'];
+var singular = ['file', 'service', 'chapter'];
+var format = exports.format = function(production) {
+  production.short_status_string = statuses[production.status];
+
+  var short_info = [];
+  fields.each(function(field, index) {
+    var data = length(production[field]);
+    if (data) short_info.push(data + ' ' + singular[index] + (data == '1' ? '' : 's'));
+  });
+
+  production.short_info = short_info.join(', ');
+  return production;
+};
+
+API.on('productions', {
+  formatter: function(response) {
+    response.data = response.data.map(format);
+    return response;
+  }
+});
+
+API.on('presets', {
+  formatter: function(response) {
+    response.data = response.data.map(format);
+    return response;
+  }
+});
+
+
+
 var preferredFormats = {
   mp3: 1,
   'mp3-vbr': 3, // Variable Bitrate mp3's sometime cause issues
@@ -38,7 +84,13 @@ exports.prepare = function(object, type) {
   var metadata = object.metadata;
 
   metadata.hasLicense = !!(metadata.license || metadata.license_url);
-  object.hasDetails = metadata.summary || metadata.publisher || metadata.url || metadata.hasLicense || length(metadata.tags);
+  object.hasDetails =
+    metadata.summary ||
+    metadata.publisher ||
+    metadata.url ||
+    metadata.hasLicense ||
+    length(metadata.tags && metadata.tags.erase('')); // The API returns an array with one empty string
+
   object.hasChapters = length(object.chapters);
 
   if (object.hasChapters) object.chapters.sortByKey('start');

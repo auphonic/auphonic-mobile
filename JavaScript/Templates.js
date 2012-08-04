@@ -202,6 +202,10 @@ function program23(depth0,data) {
   stack1 = depth0.hasLicense;
   stack1 = helpers['if'].call(depth0, stack1, {hash:{},inverse:self.noop,fn:self.program(28, program28, data)});
   if(stack1 || stack1 === 0) { buffer += stack1; }
+  buffer += "\n    ";
+  stack1 = depth0.tags;
+  stack1 = helpers['if'].call(depth0, stack1, {hash:{},inverse:self.noop,fn:self.program(41, program41, data)});
+  if(stack1 || stack1 === 0) { buffer += stack1; }
   buffer += "\n  ";
   return buffer;}
 function program24(depth0,data) {
@@ -287,17 +291,26 @@ function program39(depth0,data) {
 function program41(depth0,data) {
   
   var buffer = "", stack1;
+  buffer += "\n      <li><label>Tags <span class=\"light\">";
+  stack1 = depth0.tags;
+  stack1 = typeof stack1 === functionType ? stack1() : stack1;
+  buffer += escapeExpression(stack1) + "</label></li>\n    ";
+  return buffer;}
+
+function program43(depth0,data) {
+  
+  var buffer = "", stack1;
   buffer += "\n  <h1>Output Files</h1>\n  <ul>\n    ";
   stack1 = depth0.output_basename;
-  stack1 = helpers['if'].call(depth0, stack1, {hash:{},inverse:self.noop,fn:self.program(42, program42, data)});
+  stack1 = helpers['if'].call(depth0, stack1, {hash:{},inverse:self.noop,fn:self.program(44, program44, data)});
   if(stack1 || stack1 === 0) { buffer += stack1; }
   buffer += "\n    ";
   stack1 = depth0.output_files;
-  stack1 = helpers.each.call(depth0, stack1, {hash:{},inverse:self.noop,fn:self.program(44, program44, data)});
+  stack1 = helpers.each.call(depth0, stack1, {hash:{},inverse:self.noop,fn:self.program(46, program46, data)});
   if(stack1 || stack1 === 0) { buffer += stack1; }
   buffer += "\n  </ul>\n";
   return buffer;}
-function program42(depth0,data) {
+function program44(depth0,data) {
   
   var buffer = "", stack1;
   buffer += "\n      <li>\n        <label class=\"left\">\n          Prefix <small class=\"light\">";
@@ -306,7 +319,7 @@ function program42(depth0,data) {
   buffer += escapeExpression(stack1) + "</small>\n        </label>\n      </li>\n    ";
   return buffer;}
 
-function program44(depth0,data) {
+function program46(depth0,data) {
   
   var buffer = "", stack1;
   buffer += "\n      <li>\n        <label>";
@@ -314,11 +327,11 @@ function program44(depth0,data) {
   stack1 = typeof stack1 === functionType ? stack1() : stack1;
   buffer += escapeExpression(stack1);
   stack1 = depth0.detail;
-  stack1 = helpers['if'].call(depth0, stack1, {hash:{},inverse:self.noop,fn:self.program(45, program45, data)});
+  stack1 = helpers['if'].call(depth0, stack1, {hash:{},inverse:self.noop,fn:self.program(47, program47, data)});
   if(stack1 || stack1 === 0) { buffer += stack1; }
   buffer += "</label>\n      </li>\n    ";
   return buffer;}
-function program45(depth0,data) {
+function program47(depth0,data) {
   
   var buffer = "", stack1;
   buffer += " <small class=\"light\">";
@@ -327,16 +340,16 @@ function program45(depth0,data) {
   buffer += escapeExpression(stack1) + "</small>";
   return buffer;}
 
-function program47(depth0,data) {
+function program49(depth0,data) {
   
   var buffer = "", stack1;
   buffer += "\n  <h1>Chapter Marks</h1>\n  <ul>\n    ";
   stack1 = depth0.chapters;
-  stack1 = helpers.each.call(depth0, stack1, {hash:{},inverse:self.noop,fn:self.program(48, program48, data)});
+  stack1 = helpers.each.call(depth0, stack1, {hash:{},inverse:self.noop,fn:self.program(50, program50, data)});
   if(stack1 || stack1 === 0) { buffer += stack1; }
   buffer += "\n  </ul>\n";
   return buffer;}
-function program48(depth0,data) {
+function program50(depth0,data) {
   
   var buffer = "", stack1;
   buffer += "\n      <li>\n        <label>\n          <small class=\"light\">";
@@ -348,16 +361,16 @@ function program48(depth0,data) {
   buffer += escapeExpression(stack1) + "\n        </label>\n      </li>\n    ";
   return buffer;}
 
-function program50(depth0,data) {
+function program52(depth0,data) {
   
   var buffer = "", stack1;
   buffer += "\n  <h1>Outgoing File Transfers</h1>\n  <ul>\n    ";
   stack1 = depth0.outgoing_services;
-  stack1 = helpers.each.call(depth0, stack1, {hash:{},inverse:self.noop,fn:self.program(51, program51, data)});
+  stack1 = helpers.each.call(depth0, stack1, {hash:{},inverse:self.noop,fn:self.program(53, program53, data)});
   if(stack1 || stack1 === 0) { buffer += stack1; }
   buffer += "\n  </ul>\n";
   return buffer;}
-function program51(depth0,data) {
+function program53(depth0,data) {
   
   var buffer = "", stack1;
   buffer += "\n      <li><label><span class=\"light\">";
@@ -369,16 +382,16 @@ function program51(depth0,data) {
   buffer += escapeExpression(stack1) + "</small></label></li>\n    ";
   return buffer;}
 
-function program53(depth0,data) {
+function program55(depth0,data) {
   
   var buffer = "", stack1;
   buffer += "\n  <h1>Algorithms</h1>\n  <ul>\n  ";
   stack1 = depth0.algorithms;
-  stack1 = helpers.each.call(depth0, stack1, {hash:{},inverse:self.noop,fn:self.program(54, program54, data)});
+  stack1 = helpers.each.call(depth0, stack1, {hash:{},inverse:self.noop,fn:self.program(56, program56, data)});
   if(stack1 || stack1 === 0) { buffer += stack1; }
   buffer += "\n  </ul>\n";
   return buffer;}
-function program54(depth0,data) {
+function program56(depth0,data) {
   
   var buffer = "", stack1;
   buffer += "\n    <li>\n      <label class=\"info\">\n        <span></span>";
@@ -393,7 +406,7 @@ function program54(depth0,data) {
   buffer += escapeExpression(stack1) + "\n        </div>\n      </label>\n    </li>\n  ";
   return buffer;}
 
-  buffer += "<div class=\"white\"></div>\n<div class=\"content detail expand\">\n  ";
+  buffer += "<div class=\"white-above\"></div>\n<div class=\"content detail expand\">\n  ";
   stack1 = depth0.thumbnail;
   stack1 = helpers['if'].call(depth0, stack1, {hash:{},inverse:self.noop,fn:self.program(1, program1, data)});
   if(stack1 || stack1 === 0) { buffer += stack1; }
@@ -416,19 +429,19 @@ function program54(depth0,data) {
   if(stack1 || stack1 === 0) { buffer += stack1; }
   buffer += "\n\n";
   stack1 = depth0.output_files;
-  stack1 = helpers['if'].call(depth0, stack1, {hash:{},inverse:self.noop,fn:self.program(41, program41, data)});
+  stack1 = helpers['if'].call(depth0, stack1, {hash:{},inverse:self.noop,fn:self.program(43, program43, data)});
   if(stack1 || stack1 === 0) { buffer += stack1; }
   buffer += "\n\n";
   stack1 = depth0.hasChapters;
-  stack1 = helpers['if'].call(depth0, stack1, {hash:{},inverse:self.noop,fn:self.program(47, program47, data)});
+  stack1 = helpers['if'].call(depth0, stack1, {hash:{},inverse:self.noop,fn:self.program(49, program49, data)});
   if(stack1 || stack1 === 0) { buffer += stack1; }
   buffer += "\n\n";
   stack1 = depth0.outgoing_services;
-  stack1 = helpers['if'].call(depth0, stack1, {hash:{},inverse:self.noop,fn:self.program(50, program50, data)});
+  stack1 = helpers['if'].call(depth0, stack1, {hash:{},inverse:self.noop,fn:self.program(52, program52, data)});
   if(stack1 || stack1 === 0) { buffer += stack1; }
   buffer += "\n\n";
   stack1 = depth0.hasAlgorithms;
-  stack1 = helpers['if'].call(depth0, stack1, {hash:{},inverse:self.noop,fn:self.program(53, program53, data)});
+  stack1 = helpers['if'].call(depth0, stack1, {hash:{},inverse:self.noop,fn:self.program(55, program55, data)});
   if(stack1 || stack1 === 0) { buffer += stack1; }
   buffer += "\n";
   return buffer;});
@@ -632,7 +645,7 @@ function program3(depth0,data) {
   stack1 = depth0.thumbnail;
   stack1 = helpers.unless.call(depth0, stack1, {hash:{},inverse:self.noop,fn:self.program(3, program3, data)});
   if(stack1 || stack1 === 0) { buffer += stack1; }
-  buffer += "\">\n    <a href=\"#\">Remove</a>\n  </li>\n</ul>\n\n<h1 class=\"clear\">Details</h1>\n<ul class=\"formcontent\">\n  <li>\n    <label class=\"left\"><input type=\"text\" name=\"metadata.genre\" class=\"right\" />Genre</label>\n  </li>\n  <li>\n    <label class=\"left\"><input type=\"tel\" name=\"metadata.year\" class=\"right\" />Year</label>\n  </li>\n  <li>\n    <label class=\"left\"><input type=\"text\" name=\"metadata.publisher\" class=\"right\" />Publisher</label>\n  </li>\n  <li>\n    <label class=\"left\"><input type=\"text\" name=\"metadata.url\" class=\"right\" />URL</label>\n  </li>\n  <li>\n    <label class=\"left\"><input type=\"text\" name=\"metadata.license\" placeholder=\"License etc.\" class=\"right\" />Copyright</label>\n  </li>\n  <li>\n    <label class=\"left\"><input type=\"text\" name=\"metadata.license_url\" placeholder=\"URL\" class=\"right\" />License</label>\n  </li>\n  <li class=\"wide\">\n    <label class=\"left\">\n      <div class=\"right\">\n        <div class=\"checkbox\">\n          <span class=\"left\"></span><span class=\"thumb\" data-on=\"YES\" data-off=\"NO\"></span>\n          <input type=\"checkbox\" name=\"metadata.append_chapters\" value=\"1\" />\n        </div>\n      </div>\n      Append Chapters\n    </label>\n  </li>\n</ul>\n\n<h1>Subtitle <small>(max 255 characters)</small></h1>\n<ul class=\"formcontent\">\n  <li><textarea class=\"autogrow\" name=\"metadata.subtitle\"/></textarea></li>\n</ul>\n<h1>Summary</h1>\n<ul class=\"formcontent\">\n  <li><textarea class=\"autogrow\" name=\"metadata.summary\"/></textarea></li>\n</ul>\n";
+  buffer += "\">\n    <a href=\"#\">Remove</a>\n  </li>\n</ul>\n\n<h1 class=\"clear\">Details</h1>\n<ul class=\"formcontent\">\n  <li>\n    <label class=\"left\"><input type=\"text\" name=\"metadata.genre\" class=\"right\" />Genre</label>\n  </li>\n  <li>\n    <label class=\"left\"><input type=\"tel\" name=\"metadata.year\" class=\"right\" />Year</label>\n  </li>\n  <li>\n    <label class=\"left\"><input type=\"text\" name=\"metadata.publisher\" class=\"right\" />Publisher</label>\n  </li>\n  <li>\n    <label class=\"left\"><input type=\"text\" name=\"metadata.url\" class=\"right\" />URL</label>\n  </li>\n  <li>\n    <label class=\"left\"><input type=\"text\" name=\"metadata.license\" placeholder=\"License etc.\" class=\"right\" />Copyright</label>\n  </li>\n  <li>\n    <label class=\"left\"><input type=\"text\" name=\"metadata.license_url\" placeholder=\"URL\" class=\"right\" />License</label>\n  </li>\n  <li>\n    <label class=\"left\"><input type=\"text\" name=\"metadata.tags\" placeholder=\"comma separated\" class=\"right\" />Tags</label>\n  </li>\n  <li class=\"wide\">\n    <label class=\"left\">\n      <div class=\"right\">\n        <div class=\"checkbox\">\n          <span class=\"left\"></span><span class=\"thumb\" data-on=\"YES\" data-off=\"NO\"></span>\n          <input type=\"checkbox\" name=\"metadata.append_chapters\" value=\"1\" />\n        </div>\n      </div>\n      Append Chapters\n    </label>\n  </li>\n</ul>\n\n<h1>Subtitle <small>(max 255 characters)</small></h1>\n<ul class=\"formcontent\">\n  <li><textarea class=\"autogrow\" name=\"metadata.subtitle\"/></textarea></li>\n</ul>\n<h1>Summary</h1>\n<ul class=\"formcontent\">\n  <li><textarea class=\"autogrow\" name=\"metadata.summary\"/></textarea></li>\n</ul>\n";
   return buffer;});
 templates['form-new-output-file-detail'] = template(function (Handlebars,depth0,helpers,partials,data) {
   helpers = helpers || Handlebars.helpers;
@@ -929,7 +942,7 @@ templates['login'] = template(function (Handlebars,depth0,helpers,partials,data)
   var buffer = "", stack1, functionType="function", escapeExpression=this.escapeExpression;
 
 
-  buffer += "<form action=\"#\" method=\"post\">\n  <input type=\"hidden\" name=\"client_id\" value=\"";
+  buffer += "<form action=\"/asdf/\" method=\"post\">\n  <input type=\"hidden\" name=\"client_id\" value=\"";
   stack1 = depth0.client_id;
   stack1 = typeof stack1 === functionType ? stack1() : stack1;
   buffer += escapeExpression(stack1) + "\" />\n  <input type=\"hidden\" name=\"client_secret\" value=\"";
@@ -942,8 +955,21 @@ templates['login'] = template(function (Handlebars,depth0,helpers,partials,data)
   return buffer;});
 templates['preset'] = template(function (Handlebars,depth0,helpers,partials,data) {
   helpers = helpers || Handlebars.helpers;
-  var buffer = "", stack1, functionType="function", escapeExpression=this.escapeExpression;
+  var buffer = "", stack1, functionType="function", escapeExpression=this.escapeExpression, self=this;
 
+function program1(depth0,data) {
+  
+  
+  return "expanded";}
+
+function program3(depth0,data) {
+  
+  var buffer = "", stack1;
+  buffer += "\n      <br />\n      <span class=\"light small bold info-left\">\n        ";
+  stack1 = depth0.short_info;
+  stack1 = typeof stack1 === functionType ? stack1() : stack1;
+  buffer += escapeExpression(stack1) + "\n      </span>\n    ";
+  return buffer;}
 
   buffer += "<li class=\"swipeable show-popover\" data-popover-event=\"touchhold\" data-api-url=\"preset/";
   stack1 = depth0.uuid;
@@ -954,10 +980,18 @@ templates['preset'] = template(function (Handlebars,depth0,helpers,partials,data
   buffer += escapeExpression(stack1) + "\" class=\"button expand\">Edit</a>\n    <a href=\"#\" class=\"button expand red deleteable\">Delete</a>\n  </div>\n  <a href=\"/preset/";
   stack1 = depth0.uuid;
   stack1 = typeof stack1 === functionType ? stack1() : stack1;
-  buffer += escapeExpression(stack1) + "\" class=\"arrow\"><span></span>";
+  buffer += escapeExpression(stack1) + "\" class=\"arrow ";
+  stack1 = depth0.short_info;
+  stack1 = helpers['if'].call(depth0, stack1, {hash:{},inverse:self.noop,fn:self.program(1, program1, data)});
+  if(stack1 || stack1 === 0) { buffer += stack1; }
+  buffer += "\">\n    <span></span>\n    ";
   stack1 = depth0.preset_name;
   stack1 = typeof stack1 === functionType ? stack1() : stack1;
-  buffer += escapeExpression(stack1) + "</a></li>\n</li>\n";
+  buffer += escapeExpression(stack1) + "\n    ";
+  stack1 = depth0.short_info;
+  stack1 = helpers['if'].call(depth0, stack1, {hash:{},inverse:self.noop,fn:self.program(3, program3, data)});
+  if(stack1 || stack1 === 0) { buffer += stack1; }
+  buffer += "\n  </a>\n</li>\n";
   return buffer;});
 templates['presets'] = template(function (Handlebars,depth0,helpers,partials,data) {
   helpers = helpers || Handlebars.helpers; partials = partials || Handlebars.partials;
@@ -966,7 +1000,7 @@ templates['presets'] = template(function (Handlebars,depth0,helpers,partials,dat
 function program1(depth0,data) {
   
   var buffer = "", stack1;
-  buffer += "\n  <ul class=\"preset_container\">\n    ";
+  buffer += "\n  <ul class=\"preset_container expand load-more\">\n    ";
   stack1 = depth0.preset;
   stack1 = helpers.each.call(depth0, stack1, {hash:{},inverse:self.noop,fn:self.program(2, program2, data)});
   if(stack1 || stack1 === 0) { buffer += stack1; }
@@ -1003,11 +1037,17 @@ templates['production'] = template(function (Handlebars,depth0,helpers,partials,
   buffer += escapeExpression(stack1) + "\" class=\"button expand\">Edit</a>\n  </div>\n  <a href=\"/production/";
   stack1 = depth0.uuid;
   stack1 = typeof stack1 === functionType ? stack1() : stack1;
-  buffer += escapeExpression(stack1) + "\" class=\"arrow\"><span></span>";
+  buffer += escapeExpression(stack1) + "\" class=\"arrow expanded\">\n    <span></span>\n    ";
   stack1 = depth0.metadata;
   stack1 = stack1 == null || stack1 === false ? stack1 : stack1.title;
   stack1 = typeof stack1 === functionType ? stack1() : stack1;
-  buffer += escapeExpression(stack1) + "</a>\n</li>\n";
+  buffer += escapeExpression(stack1) + "<br />\n    <span class=\"small bold info-left\">\n      ";
+  stack1 = depth0.short_status_string;
+  stack1 = typeof stack1 === functionType ? stack1() : stack1;
+  buffer += escapeExpression(stack1) + " <span class=\"light\">";
+  stack1 = depth0.short_info;
+  stack1 = typeof stack1 === functionType ? stack1() : stack1;
+  buffer += escapeExpression(stack1) + "</span>\n    </span>\n  </a>\n</li>\n";
   return buffer;});
 templates['productions'] = template(function (Handlebars,depth0,helpers,partials,data) {
   helpers = helpers || Handlebars.helpers; partials = partials || Handlebars.partials;
@@ -1016,7 +1056,7 @@ templates['productions'] = template(function (Handlebars,depth0,helpers,partials
 function program1(depth0,data) {
   
   var buffer = "", stack1;
-  buffer += "\n  <ul class=\"production_container\">\n    ";
+  buffer += "\n  <ul class=\"production_container expand load-more\">\n    ";
   stack1 = depth0.production;
   stack1 = helpers.each.call(depth0, stack1, {hash:{},inverse:self.noop,fn:self.program(2, program2, data)});
   if(stack1 || stack1 === 0) { buffer += stack1; }
