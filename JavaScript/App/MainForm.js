@@ -17,6 +17,8 @@ var OutputFiles = require('./OutputFiles');
 var Source = require('./Source');
 var ListFiles = require('./ListFiles');
 
+var Auphonic = require('Auphonic');
+
 module.exports = new Class({
 
   Implements: [Options, Class.Binds],
@@ -149,6 +151,10 @@ module.exports = new Class({
       data.metadata.title = '';
       isNewProduction = true;
     }
+
+    var type = OutputFiles.getType();
+    if ((!isEditMode || isNewProduction) && (!data || !data[type] || !data[type].length))
+      (data || (data = {}))[type] = [Auphonic.DefaultOutputFile];
 
     var service = Source.getObject(store);
     var algorithms = Object.values(Object.map(API.getInfo('algorithms'), function(content, algorithm) {
