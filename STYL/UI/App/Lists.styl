@@ -5,6 +5,18 @@ div.container ul
   padding 0
   font-size 1.3em
 
+  &:not(.expand) :last-child
+    border-bottom 0
+
+    > a
+      border-bottom-right-radius 10px
+      border-bottom-left-radius 10px
+
+  &:not(.expand) :first-child
+    > a
+      border-top-right-radius 10px
+      border-top-left-radius 10px
+
   li
     position relative
     margin 0
@@ -13,18 +25,6 @@ div.container ul
     list-style-type none
 
     border-bottom 1px solid #eee
-
-    ul:not(.expand) &:last-child
-      border-bottom 0
-
-      > a
-        border-bottom-right-radius 10px
-        border-bottom-left-radius 10px
-
-    ul:not(.expand) &:first-child
-      > a
-        border-top-right-radius 10px
-        border-top-left-radius 10px
 
     a, label, .right
       ellipsis()
@@ -37,18 +37,23 @@ div.container ul
       .info-left
         display block
         float left
-        margin-top 5px
+        margin-top 3px
+        line-height 14px
         ellipsis()
 
     a
       color $color
 
-    a, label
+      // Sometimes the .active state gets stuck on iOS. This fixes it. Bananas?
+      transform translate3d(0, 0, 0)
+
       &.active, &.selected
         background-image linear-gradient(top, #df5d5d 0%, #9c2e2e 100%)
         color #fff
         text-shadow 0 1px 0 rgba(0, 0, 0, 1)
 
+
+    a, label
       &.arrow, &.plus, &.share, &.info
         padding-right 24px
 

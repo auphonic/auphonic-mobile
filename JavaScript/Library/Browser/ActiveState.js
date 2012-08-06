@@ -101,8 +101,9 @@ module.exports = new Class({
 
   cancel: function(timeout) {
     clearTimeout(this.timer);
-    if (timeout) this.unhighlight.delay(50, this);
-    else this.unhighlight();
+    if (timeout) this.unhighlight.delay(50, this, this.current);
+    else this.unhighlight(this.current);
+    this.current = null;
   },
 
   matches: function(node) {
@@ -122,15 +123,12 @@ module.exports = new Class({
       current.addClass(this.hitClass);
   },
 
-  unhighlight: function() {
-    var current = this.current;
-    if (!current) return;
-
-    this.current = null;
-    current.removeClass(this.activeClass);
+  unhighlight: function(node) {
+    if (!node) return;
+    node.removeClass(this.activeClass);
     // Required to be able to dispatch a click event on the expanded element.
     (function() {
-      current.removeClass(this.hitClass);
+      node.removeClass(this.hitClass);
     }).delay(10, this);
   }
 
