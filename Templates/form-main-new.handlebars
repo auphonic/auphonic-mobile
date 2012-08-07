@@ -67,8 +67,10 @@
     <li class="wide">
       <div class="right">
         <div class="checkbox">
-          <span class="left"></span><span class="thumb" data-on="ON" data-off="OFF"></span>
-          <input type="checkbox" name="algorithms.{{key}}" value="1"{{#if default_value}} checked="checked"{{/if}} />
+          <div>
+            <span class="left"></span><span class="thumb" data-on="ON" data-off="OFF"></span>
+            <input type="checkbox" name="algorithms.{{key}}" value="1"{{#if default_value}} checked="checked"{{/if}} />
+          </div>
         </div>
       </div>
       <label class="left info">

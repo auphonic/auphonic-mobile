@@ -547,14 +547,14 @@ function program15(depth0,data) {
 function program17(depth0,data) {
   
   var buffer = "", stack1;
-  buffer += "\n    <li class=\"wide\">\n      <div class=\"right\">\n        <div class=\"checkbox\">\n          <span class=\"left\"></span><span class=\"thumb\" data-on=\"ON\" data-off=\"OFF\"></span>\n          <input type=\"checkbox\" name=\"algorithms.";
+  buffer += "\n    <li class=\"wide\">\n      <div class=\"right\">\n        <div class=\"checkbox\">\n          <div>\n            <span class=\"left\"></span><span class=\"thumb\" data-on=\"ON\" data-off=\"OFF\"></span>\n            <input type=\"checkbox\" name=\"algorithms.";
   stack1 = depth0.key;
   stack1 = typeof stack1 === functionType ? stack1() : stack1;
   buffer += escapeExpression(stack1) + "\" value=\"1\"";
   stack1 = depth0.default_value;
   stack1 = helpers['if'].call(depth0, stack1, {hash:{},inverse:self.noop,fn:self.program(18, program18, data)});
   if(stack1 || stack1 === 0) { buffer += stack1; }
-  buffer += " />\n        </div>\n      </div>\n      <label class=\"left info\">\n        ";
+  buffer += " />\n          </div>\n        </div>\n      </div>\n      <label class=\"left info\">\n        ";
   stack1 = depth0.display_name;
   stack1 = typeof stack1 === functionType ? stack1() : stack1;
   buffer += escapeExpression(stack1) + "\n        <div class=\"hidden popover top justify\" data-position=\"top\">\n          <h1>";
@@ -645,7 +645,7 @@ function program3(depth0,data) {
   stack1 = depth0.thumbnail;
   stack1 = helpers.unless.call(depth0, stack1, {hash:{},inverse:self.noop,fn:self.program(3, program3, data)});
   if(stack1 || stack1 === 0) { buffer += stack1; }
-  buffer += "\">\n    <a href=\"#\">Remove</a>\n  </li>\n</ul>\n\n<h1 class=\"clear\">Details</h1>\n<ul class=\"formcontent\">\n  <li>\n    <label class=\"left\"><input type=\"text\" name=\"metadata.genre\" class=\"right\" />Genre</label>\n  </li>\n  <li>\n    <label class=\"left\"><input type=\"tel\" name=\"metadata.year\" class=\"right\" />Year</label>\n  </li>\n  <li>\n    <label class=\"left\"><input type=\"text\" name=\"metadata.publisher\" class=\"right\" />Publisher</label>\n  </li>\n  <li>\n    <label class=\"left\"><input type=\"text\" name=\"metadata.url\" class=\"right\" autocapitalize=\"off\" />URL</label>\n  </li>\n  <li>\n    <label class=\"left\"><input type=\"text\" name=\"metadata.license\" placeholder=\"License etc.\" class=\"right\" />Copyright</label>\n  </li>\n  <li>\n    <label class=\"left\"><input type=\"text\" name=\"metadata.license_url\" placeholder=\"URL\" autocapitalize=\"off\" class=\"right\" />License</label>\n  </li>\n  <li>\n    <label class=\"left\"><input type=\"text\" name=\"metadata.tags\" placeholder=\"comma separated\" class=\"right\" />Tags</label>\n  </li>\n  <li class=\"wide\">\n    <label class=\"left\">\n      <div class=\"right\">\n        <div class=\"checkbox\">\n          <span class=\"left\"></span><span class=\"thumb\" data-on=\"YES\" data-off=\"NO\"></span>\n          <input type=\"checkbox\" name=\"metadata.append_chapters\" value=\"1\" />\n        </div>\n      </div>\n      Append Chapters\n    </label>\n  </li>\n</ul>\n\n<h1>Subtitle <small>(max 255 characters)</small></h1>\n<ul class=\"formcontent\">\n  <li><textarea class=\"autogrow\" name=\"metadata.subtitle\"></textarea></li>\n</ul>\n<h1>Summary</h1>\n<ul class=\"formcontent\">\n  <li><textarea class=\"autogrow\" name=\"metadata.summary\"></textarea></li>\n</ul>\n";
+  buffer += "\">\n    <a href=\"#\">Remove</a>\n  </li>\n</ul>\n\n<h1 class=\"clear\">Details</h1>\n<ul class=\"formcontent\">\n  <li>\n    <label class=\"left\"><input type=\"text\" name=\"metadata.genre\" class=\"right\" />Genre</label>\n  </li>\n  <li>\n    <label class=\"left\"><input type=\"tel\" name=\"metadata.year\" class=\"right\" />Year</label>\n  </li>\n  <li>\n    <label class=\"left\"><input type=\"text\" name=\"metadata.publisher\" class=\"right\" />Publisher</label>\n  </li>\n  <li>\n    <label class=\"left\"><input type=\"text\" name=\"metadata.url\" class=\"right\" autocapitalize=\"off\" />URL</label>\n  </li>\n  <li>\n    <label class=\"left\"><input type=\"text\" name=\"metadata.license\" placeholder=\"License etc.\" class=\"right\" />Copyright</label>\n  </li>\n  <li>\n    <label class=\"left\"><input type=\"text\" name=\"metadata.license_url\" placeholder=\"URL\" autocapitalize=\"off\" class=\"right\" />License</label>\n  </li>\n  <li>\n    <label class=\"left\"><input type=\"text\" name=\"metadata.tags\" placeholder=\"comma separated\" class=\"right\" />Tags</label>\n  </li>\n  <li class=\"wide\">\n    <label class=\"left\">\n      <div class=\"right\">\n        <div class=\"checkbox\">\n          <div>\n            <span class=\"left\"></span><span class=\"thumb\" data-on=\"YES\" data-off=\"NO\"></span>\n            <input type=\"checkbox\" name=\"metadata.append_chapters\" value=\"1\" />\n          </div>\n        </div>\n      </div>\n      Append Chapters\n    </label>\n  </li>\n</ul>\n\n<h1>Subtitle <small>(max 255 characters)</small></h1>\n<ul class=\"formcontent\">\n  <li><textarea class=\"autogrow\" name=\"metadata.subtitle\"></textarea></li>\n</ul>\n<h1>Summary</h1>\n<ul class=\"formcontent\">\n  <li><textarea class=\"autogrow\" name=\"metadata.summary\"></textarea></li>\n</ul>\n";
   return buffer;});
 templates['form-new-output-file-detail'] = template(function (Handlebars,depth0,helpers,partials,data) {
   helpers = helpers || Handlebars.helpers;
@@ -654,7 +654,7 @@ templates['form-new-output-file-detail'] = template(function (Handlebars,depth0,
 function program1(depth0,data) {
   
   
-  return "\n  <li class=\"wide\">\n    <label class=\"left\">\n      <div class=\"right\">\n        <div class=\"checkbox\">\n          <span class=\"left\"></span><span class=\"thumb\" data-on=\"YES\" data-off=\"NO\"></span>\n          <input type=\"checkbox\" name=\"mono_mixdown\" value=\"1\" />\n        </div>\n      </div>\n      Mono Mixdown\n    </label>\n  </li>\n  <li class=\"wide\">\n    <label class=\"left\">\n      <div class=\"right\">\n        <div class=\"checkbox\">\n          <span class=\"left\"></span><span class=\"thumb\" data-on=\"YES\" data-off=\"NO\"></span>\n          <input type=\"checkbox\" name=\"split_on_chapters\" value=\"1\" />\n        </div>\n      </div>\n      Split on Chapters\n    </label>\n  </li>\n";}
+  return "\n  <li class=\"wide\">\n    <label class=\"left\">\n      <div class=\"right\">\n        <div class=\"checkbox\">\n          <div>\n            <span class=\"left\"></span><span class=\"thumb\" data-on=\"YES\" data-off=\"NO\"></span>\n            <input type=\"checkbox\" name=\"mono_mixdown\" value=\"1\" />\n          </div>\n        </div>\n      </div>\n      Mono Mixdown\n    </label>\n  </li>\n  <li class=\"wide\">\n    <label class=\"left\">\n      <div class=\"right\">\n        <div class=\"checkbox\">\n          <div>\n            <span class=\"left\"></span><span class=\"thumb\" data-on=\"YES\" data-off=\"NO\"></span>\n            <input type=\"checkbox\" name=\"split_on_chapters\" value=\"1\" />\n          </div>\n        </div>\n      </div>\n      Split on Chapters\n    </label>\n  </li>\n";}
 
   stack1 = depth0.has_options;
   stack1 = helpers['if'].call(depth0, stack1, {hash:{},inverse:self.noop,fn:self.program(1, program1, data)});
@@ -762,13 +762,13 @@ function program1(depth0,data) {
   buffer += escapeExpression(stack1) + ".uuid\" value=\"";
   stack1 = depth0.uuid;
   stack1 = typeof stack1 === functionType ? stack1() : stack1;
-  buffer += escapeExpression(stack1) + "\" />\n      <label class=\"left\">\n        <div class=\"right\">\n          <div class=\"checkbox\">\n            <span class=\"left\"></span><span class=\"thumb\" data-on=\"ON\" data-off=\"OFF\"></span>\n            <input type=\"checkbox\" name=\"outgoing_services.";
+  buffer += escapeExpression(stack1) + "\" />\n      <label class=\"left\">\n        <div class=\"right\">\n          <div class=\"checkbox\">\n            <div>\n              <span class=\"left\"></span><span class=\"thumb\" data-on=\"ON\" data-off=\"OFF\"></span>\n              <input type=\"checkbox\" name=\"outgoing_services.";
   stack1 = depth0.uuid;
   stack1 = typeof stack1 === functionType ? stack1() : stack1;
   buffer += escapeExpression(stack1) + ".checked\" data-uuid=\"";
   stack1 = depth0.uuid;
   stack1 = typeof stack1 === functionType ? stack1() : stack1;
-  buffer += escapeExpression(stack1) + "\" value=\"1\" />\n          </div>\n        </div>\n        <small><span class=\"light\">";
+  buffer += escapeExpression(stack1) + "\" value=\"1\" />\n            </div>\n          </div>\n        </div>\n        <small><span class=\"light\">";
   stack1 = depth0.display_type;
   stack1 = typeof stack1 === functionType ? stack1() : stack1;
   buffer += escapeExpression(stack1) + "</span> ";
@@ -824,7 +824,7 @@ function program5(depth0,data) {
 function program6(depth0,data) {
   
   var buffer = "", stack1;
-  buffer += "\n            <li class=\"wide\">\n              <label class=\"left\">\n                <div class=\"right\">\n                  <div class=\"checkbox\">\n                    <span class=\"left\"></span><span class=\"thumb\" data-on=\"YES\" data-off=\"NO\"></span>\n                    <input type=\"checkbox\" name=\"outgoing_services.";
+  buffer += "\n            <li class=\"wide\">\n              <label class=\"left\">\n                <div class=\"right\">\n                  <div class=\"checkbox\">\n                    <div>\n                      <span class=\"left\"></span><span class=\"thumb\" data-on=\"YES\" data-off=\"NO\"></span>\n                      <input type=\"checkbox\" name=\"outgoing_services.";
   stack1 = depth0.uuid;
   stack1 = typeof stack1 === functionType ? stack1() : stack1;
   buffer += escapeExpression(stack1) + ".";
@@ -834,7 +834,7 @@ function program6(depth0,data) {
   stack1 = depth0.default_value;
   stack1 = helpers['if'].call(depth0, stack1, {hash:{},inverse:self.noop,fn:self.program(7, program7, data)});
   if(stack1 || stack1 === 0) { buffer += stack1; }
-  buffer += "/>\n                  </div>\n                </div>\n                ";
+  buffer += "/>\n                    </div>\n                  </div>\n                </div>\n                ";
   stack1 = depth0.display_name;
   stack1 = typeof stack1 === functionType ? stack1() : stack1;
   buffer += escapeExpression(stack1) + "\n              </label>\n            </li>\n          ";
