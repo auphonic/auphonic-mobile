@@ -1205,7 +1205,7 @@ templates['ui-action'] = template(function (Handlebars,depth0,helpers,partials,d
   buffer += "<a href=\"";
   stack1 = depth0.url;
   stack1 = typeof stack1 === functionType ? stack1() : stack1;
-  buffer += escapeExpression(stack1) + "\" class=\"button-right hidden\" data-hit-target=\"1\"><span class=\"button gradient\" title=\"";
+  buffer += escapeExpression(stack1) + "\" class=\"button-right hidden\" data-hit-target=\"1\"><span class=\"button\" title=\"";
   stack1 = depth0.title;
   stack1 = typeof stack1 === functionType ? stack1() : stack1;
   buffer += escapeExpression(stack1) + "\">";
@@ -1218,7 +1218,7 @@ templates['ui-back'] = template(function (Handlebars,depth0,helpers,partials,dat
   var buffer = "", stack1, functionType="function", escapeExpression=this.escapeExpression;
 
 
-  buffer += "<a href=\"#\" class=\"button-left\" data-hit-target=\"1\"><span class=\"button gradient\" title=\"";
+  buffer += "<a href=\"#\" class=\"button-left\" data-hit-target=\"1\"><span class=\"button\" title=\"";
   stack1 = depth0.title;
   stack1 = typeof stack1 === functionType ? stack1() : stack1;
   buffer += escapeExpression(stack1) + "\">";
