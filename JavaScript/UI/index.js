@@ -84,6 +84,8 @@ Object.append(UI, {
       .addClass('disable-events');
 
     if (exception) exception.addClass('enable-events');
+
+    this.fireEvent('disable');
   },
 
   enable: function(container, exception) {
@@ -93,6 +95,8 @@ Object.append(UI, {
       .removeClass('disable-events');
 
     if (exception) exception.removeClass('enable-events');
+
+    this.fireEvent('enable');
   },
 
   showChrome: function(options) {

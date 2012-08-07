@@ -226,13 +226,11 @@ var boot = function() {
       },
 
       onSwipe: function() {
-        this.container.addClass('wide');
-        this.container.getElement('> a').addClass('left');
+        this.container.getElement('> a').addClass('swiped');
       },
 
       onComplete: function() {
-        this.container.removeClass('wide');
-        this.container.getElement('> a').removeClass('left');
+        this.container.getElement('> a').removeClass('swiped');
       }
 
     }),
@@ -287,6 +285,11 @@ var boot = function() {
 
     noticeText = text;
     notice = new Notice(text, {type: 'error'});
+  });
+
+  UI.addEvents({
+    enable: Popover.enable,
+    disable: Popover.disable
   });
 
   var header = document.getElement('header');

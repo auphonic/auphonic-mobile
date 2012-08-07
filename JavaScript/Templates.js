@@ -960,9 +960,14 @@ templates['preset'] = template(function (Handlebars,depth0,helpers,partials,data
 function program1(depth0,data) {
   
   
-  return "expanded";}
+  return " expanded";}
 
 function program3(depth0,data) {
+  
+  
+  return " expanded";}
+
+function program5(depth0,data) {
   
   var buffer = "", stack1;
   buffer += "\n      <br />\n      <span class=\"light small bold info-left\">\n        ";
@@ -974,7 +979,11 @@ function program3(depth0,data) {
   buffer += "<li class=\"swipeable show-popover\" data-popover-event=\"touchhold\" data-api-url=\"preset/";
   stack1 = depth0.uuid;
   stack1 = typeof stack1 === functionType ? stack1() : stack1;
-  buffer += escapeExpression(stack1) + "\" data-method=\"delete\">\n  <span class=\"right removable\">\n    <span><a href=\"#\" class=\"button red small\">Delete</a></span>\n  </span>\n  <div class=\"hidden popover top justify\" data-position=\"top\">\n    <a href=\"/preset/edit/";
+  buffer += escapeExpression(stack1) + "\" data-method=\"delete\">\n  <span class=\"right removable";
+  stack1 = depth0.short_info;
+  stack1 = helpers['if'].call(depth0, stack1, {hash:{},inverse:self.noop,fn:self.program(1, program1, data)});
+  if(stack1 || stack1 === 0) { buffer += stack1; }
+  buffer += "\">\n    <span><a href=\"#\" class=\"button red small\">Delete</a></span>\n  </span>\n  <div class=\"hidden popover top justify\" data-position=\"top\">\n    <a href=\"/preset/edit/";
   stack1 = depth0.uuid;
   stack1 = typeof stack1 === functionType ? stack1() : stack1;
   buffer += escapeExpression(stack1) + "\" class=\"button expand\">Edit</a>\n    <a href=\"#\" class=\"button expand red deleteable\">Delete</a>\n  </div>\n  <a href=\"/preset/";
@@ -982,14 +991,14 @@ function program3(depth0,data) {
   stack1 = typeof stack1 === functionType ? stack1() : stack1;
   buffer += escapeExpression(stack1) + "\" class=\"arrow ";
   stack1 = depth0.short_info;
-  stack1 = helpers['if'].call(depth0, stack1, {hash:{},inverse:self.noop,fn:self.program(1, program1, data)});
+  stack1 = helpers['if'].call(depth0, stack1, {hash:{},inverse:self.noop,fn:self.program(3, program3, data)});
   if(stack1 || stack1 === 0) { buffer += stack1; }
   buffer += "\">\n    <span></span>\n    ";
   stack1 = depth0.preset_name;
   stack1 = typeof stack1 === functionType ? stack1() : stack1;
   buffer += escapeExpression(stack1) + "\n    ";
   stack1 = depth0.short_info;
-  stack1 = helpers['if'].call(depth0, stack1, {hash:{},inverse:self.noop,fn:self.program(3, program3, data)});
+  stack1 = helpers['if'].call(depth0, stack1, {hash:{},inverse:self.noop,fn:self.program(5, program5, data)});
   if(stack1 || stack1 === 0) { buffer += stack1; }
   buffer += "\n  </a>\n</li>\n";
   return buffer;});

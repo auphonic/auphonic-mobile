@@ -21,6 +21,8 @@ module.exports = new Class({
     */
   },
 
+  hasClick: false,
+
   initialize: function(container, options) {
     this.setOptions(options);
 
@@ -60,6 +62,7 @@ module.exports = new Class({
   },
 
   click: function(event) {
+    this.hasClick = true;
     event.preventDefault();
 
     this.end();
@@ -67,18 +70,30 @@ module.exports = new Class({
   },
 
   touchstart: function(event) {
+    // This is only for cases where the touch is started on the element but no click is registered
+    window.addEvent('touchend:once', this.bound('touchend'));
+
     var node = this.getNode(event.target);
     if (node) return;
 
     event.preventDefault();
-
     this.element.removeClass('visible');
-    window.addEvent('touchend:once', this.bound('end'));
+  },
+
+  touchend: function() {
+    // Delay to see if a click got registered
+    (function() {
+      var hasClick = this.hasClick;
+      this.hasClick = false;
+      if (hasClick) return;
+
+      this.element.removeClass('visible');
+      this.end();
+    }).delay(10, this);
   },
 
   end: function(event) {
     UI.enable(this.getScrollable(), this.element);
-
     this.fireEvent('complete');
   },
 

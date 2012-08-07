@@ -9,6 +9,7 @@ var OuterClickStack = require('OuterClickStack');
 var UI = require('UI');
 
 var baseKey = 'popover:baseElement';
+var enabled = true;
 
 module.exports = new Class({
 
@@ -54,7 +55,7 @@ module.exports = new Class({
   },
 
   onClick: function(event){
-    if (!this.enabled) return;
+    if (!this.enabled || !enabled) return;
 
     event.preventDefault();
 
@@ -184,4 +185,14 @@ module.exports = new Class({
 
 module.exports.getBaseElement = function(element) {
   return element.retrieve(baseKey);
+};
+
+module.exports.enable = function() {
+  enabled = true;
+  return this;
+};
+
+module.exports.disable = function() {
+  enabled = false;
+  return this;
 };
