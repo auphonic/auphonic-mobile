@@ -10,8 +10,15 @@
     {{#if album}}<span class="album">{{album}}</span>{{/if}}
     {{#if year}}<span class="year">{{year}}</span>{{/if}}
     {{#if artist}}<span class="artist small light">{{artist}}</span>{{/if}}
-    {{#if subtitle}}<div class="clear-left small light">{{subtitle}}</div>{{/if}}
   {{/metadata}}
+  {{#if input_file}}
+    <span class="small service">
+      {{#if service_display_type}}<span class="light bold">{{service_display_type}}</span>{{/if}}
+      {{#if service_display_name}}<span class="bold">{{service_display_name}}</span>{{/if}}
+    </span>
+    <span class="small file">{{input_file}}</span>
+  {{/if}}
+  {{#if metadata.subtitle}}<div class="clear-left small light">{{metadata.subtitle}}</div>{{/if}}
 </div>
 
 {{#if media_files}}

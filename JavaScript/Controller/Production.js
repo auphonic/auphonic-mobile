@@ -119,22 +119,22 @@ var click = function(event) {
 };
 
 Controller.define('/production/{uuid}', function(req) {
-  var production = Data.prepare(productions[req.uuid], 'production');
+  Data.prepare(productions[req.uuid], 'production', function(production) {
+    UI.register('a.startProduction', function(elements) {
+      elements.addEvent('click', click);
+    });
 
-  UI.register('a.startProduction', function(elements) {
-    elements.addEvent('click', click);
+    addPlaceholder();
+
+    View.getMain().push('production', new View.Object({
+      title: production.metadata.title,
+      content: UI.render('data-detail', production),
+      action: {
+        title: 'Edit',
+        url: '/production/edit/' + production.uuid
+      }
+    }));
   });
-
-  addPlaceholder();
-
-  View.getMain().push('production', new View.Object({
-    title: production.metadata.title,
-    content: UI.render('data-detail', production),
-    action: {
-      title: 'Edit',
-      url: '/production/edit/' + production.uuid
-    }
-  }));
 });
 
 Controller.define('/production/{uuid}/summary', function(req) {
@@ -182,7 +182,6 @@ var edit = function(production) {
 };
 
 Controller.define('/production/edit/{uuid}', function(req) {
-
   var production = productions[req.uuid];
   if (production) {
     edit(production);
@@ -198,7 +197,6 @@ Controller.define('/production/edit/{uuid}', function(req) {
       edit(response.data);
     }
   });
-
 });
 
 Controller.define('/production/new', {priority: 1, isGreedy: true}, function() {
@@ -263,11 +261,6 @@ var upload = function(file) {
 
     History.push('/production/edit/{uuid}'.substitute(response.data));
   };
-
-  // TODO(cpojer): use a new production instead of the same one
-  var object = {uuid: 'TZVmJfU8bXZMvJsNY7Ngvj'};
-  onCreateSuccess.call(null, {data: object});
-  return;
 
   API.call('productions', 'post', JSON.stringify(data)).on({
     success: onCreateSuccess

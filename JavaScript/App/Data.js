@@ -8,6 +8,7 @@ var API = require('API');
 
 var OutputFiles = require('./OutputFiles');
 var OutgoingService = require('./OutgoingService');
+var Source = require('./Source');
 
 var length = function(object) {
   return object && object.length;
@@ -74,7 +75,24 @@ if (!Browser.Platform.ios) {
   preferredFormats.flac = 3;
 }
 
-exports.prepare = function(object, type) {
+exports.prepare = function(object, type, fn) {
+  Source.fetch(function(sources) {
+    if (object.service) {
+      var source;
+      for (var i = 0; i < sources.length; i++) {
+        source = sources[i];
+        if (source.uuid == object.service) break;
+      }
+
+      if (source) {
+        object.service_display_type = source.display_type;
+        object.service_display_name = source.display_name;
+      }
+    }
+
+    fn(object);
+  });
+
   var user = LocalStorage.get('User');
 
   // We need to create a new object that can be transformed for viewing
@@ -132,6 +150,4 @@ exports.prepare = function(object, type) {
 
   object.media_files = length(media_files) ? JSON.stringify(media_files) : null;
   object.output_files = length(object.output_files) ? object.output_files.map(OutputFiles.createUIData) : null;
-
-  return object;
 };
