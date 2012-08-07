@@ -1,4 +1,6 @@
-var Browser = require('Core').Browser;
+var Core = require('Core');
+var typeOf = Core.typeOf;
+var Browser = Core.Browser;
 
 var LocalStorage = require('Utility/LocalStorage');
 
@@ -43,14 +45,16 @@ var format = exports.format = function(production) {
 
 API.on('productions', {
   formatter: function(response) {
-    response.data = response.data.map(format);
+    if (typeOf(response.data) == 'array')
+      response.data = response.data.map(format);
     return response;
   }
 });
 
 API.on('presets', {
   formatter: function(response) {
-    response.data = response.data.map(format);
+    if (typeOf(response.data) == 'array')
+      response.data = response.data.map(format);
     return response;
   }
 });

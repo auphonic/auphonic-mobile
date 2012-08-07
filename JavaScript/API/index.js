@@ -36,7 +36,7 @@ var API = module.exports = {
   on: function(url, options) {
     var object = urls[url];
     if (!object) {
-      object = urls[url] = new Events;
+      object = urls[url] = {};
       object.call = API.call.bind(API, url);
       object.getLifetime = function() {
         return object.options && object.options.lifetime;
@@ -49,17 +49,12 @@ var API = module.exports = {
 };
 
 var listenersFor = function(url) {
-  return {on: function(events) {
-    var api = API.on(url);
-    if (events.success) api.addEvent('success:once', events.success);
-    if (events.error) api.addEvent('error:once', events.error);
-  }};
-};
-
-var fire = function(url, event, data) {
-  API.on(url).fireEvent(event, [data])
-    .removeEvents('success:once')
-    .removeEvents('error:once');
+  var listeners = new Events;
+  listeners.on = function(events) {
+    if (events.success) listeners.addEvent('success:once', events.success);
+    if (events.error) listeners.addEvent('error:once', events.error);
+  };
+  return listeners;
 };
 
 var getURL = function(url) {
@@ -77,6 +72,7 @@ var getAuthorization = function() {
 };
 
 API.call = function(url, method, requestData) {
+  var listeners = listenersFor(url);
   if (typeof requestData != 'string') requestData = Object.toQueryString(requestData);
 
   method = (method || 'get').toLowerCase();
@@ -85,9 +81,9 @@ API.call = function(url, method, requestData) {
     if (data) {
       // Must be async
       (function() {
-        API.on(url).fireEvent('success', [data]);
+        listeners.fireEvent('success', [data]);
       }).delay(1);
-      return listenersFor(url);
+      return listeners;
     }
   }
 
@@ -103,7 +99,7 @@ API.call = function(url, method, requestData) {
     onFailure: function(data) {
       // Delete requests don't return anything
       if (method == 'delete') {
-        fire(url, 'success', null);
+        listeners.fireEvent('success', null);
         return;
       }
 
@@ -112,7 +108,7 @@ API.call = function(url, method, requestData) {
       var options = API.on(url).options;
       if (options && options.silent) return;
       if (errorFn) errorFn(data);
-      fire(url, 'error', data);
+      listeners.fireEvent('error', data);
     },
 
     onSuccess: function(data) {
@@ -125,26 +121,27 @@ API.call = function(url, method, requestData) {
       if (options && options.formatter) data = options.formatter(data);
 
       if (method == 'get') setCache(formatGetURL(url, requestData), data, options && options.lifetime);
-      fire(url, 'success', data);
+      listeners.fireEvent('success', data);
     }
 
   }).send(requestData);
 
-  return listenersFor(url);
+  return listeners;
 };
 
 var queue = new Queue;
 
 API.upload = function(url, file, field) {
+  var listeners = listenersFor(url);
   var success = function(response) {
-    fire(url, 'success', response);
+    listeners.fireEvent('success', response);
     if (__DEV__) console.log('Code = ' + response.responseCode);
     if (__DEV__) console.log('Response = ' + response.response);
     if (__DEV__) console.log('Sent = ' + response.bytesSent);
   };
 
   var error = function(error) {
-    fire(url, 'error', error);
+    listeners.fireEvent('error', error);
     if (__DEV__) console.log(error.code);
   };
 
@@ -165,12 +162,13 @@ API.upload = function(url, file, field) {
     this.next();
   }).call();
 
-  return listenersFor(url);
+  return listeners;
 };
 
 API.authenticate = function(requestData) {
   var url = 'oauth/grant/';
   var authentication = 'Basic ' + Base64.encode(requestData.name + ':' + requestData.password);
+  var listeners = listenersFor(url);
 
   delete requestData.name;
   delete requestData.password;
@@ -185,16 +183,16 @@ API.authenticate = function(requestData) {
 
     onFailure: function(data) {
       if (__DEV__) console.log(data);
-      fire(url, 'error', data);
+      listeners.fireEvent('error', data);
     },
 
     onSuccess: function(data) {
-      fire(url, 'success', data);
+      listeners.fireEvent('success', data);
     }
 
   }).send(requestData);
 
-  return listenersFor(url);
+  return listeners;
 };
 
 API.invalidate = function(url) {
