@@ -1,8 +1,20 @@
 <ul class="formcontent">
   {{#if input_file}}
     <li>
-      <label><span class="light">{{#if service}}{{service}}{{else}}Upload{{/if}}</span> <small>{{input_file}}</small></label>
+      <label{{#unless isNewProduction}} class="info"{{/unless}}>
+        {{#unless isNewProduction}}<span></span>{{/unless}}
+        <span class="light">{{#if service}}{{service}}{{else}}Upload{{/if}}</span> <small>{{input_file}}</small>
+        {{#unless isNewProduction}}
+          <div class="hidden popover bottom justify" data-position="bottom">
+            <a href="{{baseURL}}source" class="button expand">Change Source</a>
+          </div>
+        {{/unless}}
+      </label>
     </li>
+  {{else}}
+    {{#if production}}
+      <li><a href="{{baseURL}}source" class="arrow"><span></span>Choose Source</a></li>
+    {{/if}}
   {{/if}}
 
   {{#if production}}

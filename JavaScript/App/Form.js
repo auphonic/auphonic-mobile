@@ -40,6 +40,14 @@ var Form = module.exports = new Class({
 
   eachView: function(fn, thisValue) {
     Object.each(this.views, fn, thisValue);
+  },
+
+  serialize: function(viewObject) {
+    var object = {};
+    this.eachView(function(view) {
+      if (view.getData) Object.append(object, view.getData(this, viewObject));
+    }, this);
+    return Object.expand(object);
   }
 
 });

@@ -25,6 +25,8 @@ var Form = require('App/Form');
 
 var form;
 var productions = {};
+var currentEditUUID = null;
+var serializedData = null;
 
 var createForm = function(options) {
   return new Form({
@@ -64,6 +66,7 @@ var addPlaceholder = function() {
 };
 
 Controller.define('/production', function() {
+  currentEditUUID = null;
   productions = {};
 
   var options = {
@@ -120,6 +123,7 @@ var click = function(event) {
 
 Controller.define('/production/{uuid}', function(req) {
   Data.prepare(productions[req.uuid], 'production', function(production) {
+    currentEditUUID = null;
     UI.register('a.startProduction', function(elements) {
       elements.addEvent('click', click);
     });
@@ -139,6 +143,8 @@ Controller.define('/production/{uuid}', function(req) {
 
 Controller.define('/production/{uuid}/summary', function(req) {
   var production = productions[req.uuid];
+  currentEditUUID = production.uuid;
+
   View.getMain().push('production', new View.Object({
     title: production.metadata.title,
     content: UI.render('data-detail-summary', production)
@@ -158,22 +164,30 @@ var getPresets = function(callback) {
 };
 
 var edit = function(production) {
+  // If we have changed the source, we'll reuse the data in the form
+  var reuse = form && (currentEditUUID == production.uuid);
+
+  currentEditUUID = production.uuid;
   View.getMain().showIndicator({stack: 'production'});
 
   var show = function() {
-    form = createForm(production ? {saveURL: 'production/' + production.uuid} : null);
+    var data = Object.clone(production);
+    // Update data from previous editing
+    if (reuse) Object.append(data, serializedData);
+    else form = createForm(data ? {saveURL: 'production/' + data.uuid} : null);
+    serializedData = null;
 
-    if (production.service) Source.setData(form, production.service);
+    if (data.service) Source.setData(form, data.service);
 
     // Check if we are currently uploading
     var currentUpload = LocalStorage.get('currentUpload');
-    if (currentUpload && currentUpload.uuid == production.uuid)
-      production.input_file = currentUpload.input_file;
+    if (currentUpload && currentUpload.uuid == data.uuid)
+      data.input_file = currentUpload.input_file;
 
-    ListFiles.setFile(form, production.input_file);
+    ListFiles.setFile(form, data.input_file);
 
     getPresets(function(presets) {
-      form.show('main', production, presets);
+      form.show('main', data, presets);
     });
   };
 
@@ -200,14 +214,26 @@ Controller.define('/production/edit/{uuid}', function(req) {
 });
 
 Controller.define('/production/new', {priority: 1, isGreedy: true}, function() {
+  currentEditUUID = null;
+  serializedData = null;
   getPresets(function(presets) {
     form.show('main', null, presets);
   });
 });
 
 Controller.define('/production/source', {priority: 1, isGreedy: true}, function() {
+  // Store all current information
+  if (form && currentEditUUID) {
+    var object = View.getMain().getCurrentObject();
+    serializedData = form.serialize(object);
+    Object.append(serializedData, Object.expand(object.serialize()));
+    serializedData.metadata.title = serializedData.title;
+    delete serializedData.service;
+    delete serializedData.input_file;
+  }
+
   addPlaceholder();
-  form = createForm();
+  form = createForm(form && currentEditUUID ? {saveURL: 'production/' + currentEditUUID} : null);
   form.show('source');
 });
 
@@ -220,7 +246,24 @@ Controller.define('/production/source/{service}', function(req) {
 
 Controller.define('/production/selectFile/{index}', function(req) {
   ListFiles.setData(form, req.index);
-  History.push('/production/new');
+  if (currentEditUUID) {
+    View.getMain().showIndicator({stack: 'production'});
+
+    API.call('production/{uuid}'.substitute({uuid: currentEditUUID}), 'post', JSON.stringify(Object.append({},
+      Source.getData(form),
+      ListFiles.getData(form)
+    ))).on({
+      success: function(response) {
+        productions[response.data.uuid] = response.data;
+        var url = '/production/edit/{uuid}'.substitute({uuid: currentEditUUID});
+        var object = View.getMain().getStack().getByURL(url);
+        if (object) object.invalidate();
+        History.push(url);
+      }
+    });
+  } else {
+    History.push('/production/new');
+  }
 });
 
 Controller.define('/production/new/metadata', function() {
@@ -244,7 +287,6 @@ var recorder;
 var upload = function(file) {
   LocalStorage.push('recordings', file);
 
-  var data = {metadata: {title: 'Mobile App: New Production'}};
   var onCreateSuccess = function(response) {
     LocalStorage.set('currentUpload', {
       uuid: response.data.uuid,
@@ -259,9 +301,18 @@ var upload = function(file) {
       }
     });
 
-    History.push('/production/edit/{uuid}'.substitute(response.data));
+    var url = '/production/edit/{uuid}'.substitute(response.data);
+    var object = View.getMain().getStack().getByURL(url);
+    if (object) object.invalidate();
+    History.push(url);
   };
 
+  if (currentEditUUID) {
+    onCreateSuccess({data: {uuid: currentEditUUID}});
+    return;
+  }
+
+  var data = {metadata: {title: 'Mobile App: New Production'}};
   API.call('productions', 'post', JSON.stringify(data)).on({
     success: onCreateSuccess
   });

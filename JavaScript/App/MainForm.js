@@ -140,6 +140,7 @@ module.exports = new Class({
   },
 
   createView: function(store, data, presets) {
+    this.isRendered = false;
     var isProduction = this.isProduction = (this.getDisplayType() == 'production');
     var isEditMode = this.isEditMode = !!data;
     var isNewProduction = (isProduction && !isEditMode);
