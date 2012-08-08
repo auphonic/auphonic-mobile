@@ -259,7 +259,7 @@ function program31(depth0,data) {
   foundHelper = helpers['format-url'];
   stack1 = foundHelper ? foundHelper.call(depth0, stack1, {hash:{}}) : helperMissing.call(depth0, "format-url", stack1, {hash:{}});
   if(stack1 || stack1 === 0) { buffer += stack1; }
-  buffer += "<span></a></li>\n    ";
+  buffer += "</span></a></li>\n    ";
   return buffer;}
 
 function program33(depth0,data) {
@@ -325,7 +325,7 @@ function program46(depth0,data) {
   buffer += "\n      <li><label>Tags <span class=\"light\">";
   stack1 = depth0.tags;
   stack1 = typeof stack1 === functionType ? stack1() : stack1;
-  buffer += escapeExpression(stack1) + "</label></li>\n    ";
+  buffer += escapeExpression(stack1) + "</span></label></li>\n    ";
   return buffer;}
 
 function program48(depth0,data) {
