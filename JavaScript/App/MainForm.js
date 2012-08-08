@@ -175,7 +175,7 @@ module.exports = new Class({
 
     var object = this.object = new View.Object({
       title: this.getObjectName(data) ||  'New ' + this.getDisplayName(),
-      content: UI.render('form-main-new', uiData),
+      content: UI.render('form-new-main', uiData),
       back: (isEditMode ? {title: 'Cancel'} : null),
 
       onShow: this.bound('onShow'),
