@@ -243,14 +243,14 @@ Controller.define('/production/source', {priority: 1, isGreedy: true}, function(
 
   addPlaceholder();
   form = createForm(form && currentEditUUID ? {saveURL: 'production/' + currentEditUUID} : null);
-  form.show('source');
+  form.show('service');
 });
 
 Controller.define('/production/source/{service}', function(req) {
   var service = Source.setData(form, req.service);
   if (!service) return;
 
-  form.show('listFiles');
+  form.show('input_file');
 });
 
 Controller.define('/production/selectFile/{index}', function(req) {

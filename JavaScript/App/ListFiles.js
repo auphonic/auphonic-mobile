@@ -12,7 +12,7 @@ var setFile = exports.setFile = function(store, filename) {
 };
 
 exports.getType = function() {
-  return 'listFiles';
+  return 'input_file';
 };
 
 exports.getObject = function(store) {

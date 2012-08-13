@@ -238,11 +238,18 @@ module.exports = new Class({
   },
 
   onPresetSelect: function() {
+    // Preserve input source
+    var source = Source.getData(this.store);
+    var files = ListFiles.getData(this.store);
     this.store.erase();
+    if (source) Source.setData(this.store, source[Source.getType()]);
+    if (files) ListFiles.setFile(this.store, files[ListFiles.getType()]);
 
     var select = this.object.toElement().getElement(this.options.presetChooserSelector);
-    // Worst case this is null and it deletes all input
-    this.update(this.presets[select.get('value')]);
+    var preset = this.presets[select.get('value')];
+    this.store.set('preset', preset ? preset.uuid : null);
+    // Worst case this is null and it removes all input
+    this.update(preset);
   },
 
   onActionClick: function(event) {
@@ -259,6 +266,10 @@ module.exports = new Class({
     store.eachView(function(view, type) {
       if (view.getData) Object.append(data, view.getData(store, element));
     });
+
+    // Use the selected preset (if any) so the cover photo gets preserved
+    // but only if reset_cover_image is not set
+    if (!data.reset_cover_image) data.preset = store.get('preset');
 
     // Use Title from productions
     if (data.title && data.title !== '') data['metadata.title'] = data.title;

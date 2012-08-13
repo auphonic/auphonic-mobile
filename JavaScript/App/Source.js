@@ -5,7 +5,7 @@ var View = require('View');
 var services = {};
 
 exports.getType = function() {
-  return 'source';
+  return 'service';
 };
 
 exports.getData = function(store) {
