@@ -24,7 +24,7 @@ provides: [Core, MooTools, Type, typeOf, instanceOf]
 
 exports.MooTools = {
 	version: '1.4.6-custom',
-	build: '380c6a2b41c260dfb2d993d2582837211fa22e72'
+	build: '6c0e237947684537eb5054e76c23d4c3059309d2'
 };
 
 // typeOf, instanceOf
@@ -51,7 +51,7 @@ var instanceOf = exports.instanceOf = function(item, object){
 		if (constructor === object) return true;
 		constructor = constructor.parent;
 	}
-
+	
 	return item instanceof object;
 };
 
@@ -309,7 +309,7 @@ Object.each = Object.forEach;
 
 Array.implement({
 
-
+	
 
 	each: function(fn, bind){
 		Array.forEach(this, fn, bind);
@@ -413,7 +413,7 @@ var instanceOf = exports.instanceOf;
 
 Array.implement({
 
-
+	
 
 	clean: function(){
 		return this.filter(function(item){
@@ -2293,7 +2293,7 @@ Document.implement({
 
 	newElement: function(tag, props){
 		if (props && props.checked != null) props.defaultChecked = props.checked;
-
+		
 		return this.id(this.createElement(tag)).set(props);
 	}
 
@@ -2604,14 +2604,14 @@ Element.implement({
 		if (setter){
 			setter(this, value);
 		} else {
-
+			
 
 			if (value == null){
 				this.removeAttribute(name);
-
+				
 			} else {
 				this.setAttribute(name, '' + value);
-
+				
 			}
 		}
 		return this;
@@ -2625,7 +2625,7 @@ Element.implement({
 	getProperty: function(name){
 		var getter = propertyGetters[name.toLowerCase()];
 		if (getter) return getter(this);
-
+		
 		var result = Slick.getAttribute(this, name);
 		return (!result && !Slick.hasAttribute(this, name)) ? null : result;
 	},
@@ -2661,23 +2661,23 @@ Element.implement({
 	},
 
 	hasClass: hasClassList ? function(className) {
-    return this.classList.contains(className);
-  } : function(className){
+		return this.classList.contains(className);
+	} : function(className){
 		return this.className.clean().contains(className, ' ');
 	},
 
 	addClass: hasClassList ? function(className) {
-    this.classList.add(className);
-    return this;
-  } : function(className){
+		this.classList.add(className);
+		return this;
+	} : function(className){
 		if (!this.hasClass(className)) this.className = (this.className + ' ' + className).clean();
 		return this;
 	},
 
 	removeClass: hasClassList ? function(className) {
-    this.classList.remove(className);
-    return this;
-  } : function(className){
+		this.classList.remove(className);
+		return this;
+	} : function(className){
 		this.className = this.className.replace(new RegExp('(^|\\s)' + className + '(?:\\s|$)'), '$1');
 		return this;
 	},
@@ -2802,12 +2802,12 @@ Element.implement({
 		for (i = ce.length; i--;){
 			var node = ce[i], element = te[i];
 			if (!keepid) node.removeAttribute('id');
-
+			
 			var prop = formProps[element.tagName.toLowerCase()];
 			if (prop && element[prop]) node[prop] = element[prop];
 		}
 
-
+		
 		return document.id(clone);
 	}
 
@@ -3003,7 +3003,7 @@ var DOMEvent = exports.DOMEvent = new Type('DOMEvent', function(event, win){
 	if (type.indexOf('key') == 0){
 		var code = this.code = (event.which || event.keyCode);
 		this.key = _keys[code];
-		if (type == 'keydown'){
+		if (type == 'keydown' || type == 'keyup'){
 			if (code > 111 && code < 124) this.key = 'f' + (code - 111);
 			else if (code > 95 && code < 106) this.key = code - 96;
 		}
