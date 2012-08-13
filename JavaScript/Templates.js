@@ -167,7 +167,7 @@ function program19(depth0,data) {
 function program21(depth0,data) {
   
   var buffer = "", stack1;
-  buffer += "\n  <div class=\"player\">\n    <div class=\"play-button content full\">\n      <a class=\"play\" href=\"#\"><span class=\"hidden\" data-media=\"1\">";
+  buffer += "\n  <div class=\"player clear\">\n    <div class=\"play-button content full\">\n      <a class=\"play\" href=\"#\"><span class=\"hidden\" data-media=\"1\">";
   stack1 = depth0.media_files;
   stack1 = typeof stack1 === functionType ? stack1() : stack1;
   buffer += escapeExpression(stack1) + "</span></a>\n    </div>\n    <div class=\"waveform content full\">\n      <img src=\"";
@@ -188,7 +188,7 @@ function program23(depth0,data) {
   buffer += "\n  <a href=\"#\" data-api-url=\"/production/";
   stack1 = depth0.uuid;
   stack1 = typeof stack1 === functionType ? stack1() : stack1;
-  buffer += escapeExpression(stack1) + "/start\" data-method=\"post\" class=\"button green expand startProduction\">Start Production</a>\n";
+  buffer += escapeExpression(stack1) + "/start\" data-method=\"post\" class=\"clear button green expand startProduction\">Start Production</a>\n";
   return buffer;}
 
 function program25(depth0,data) {
