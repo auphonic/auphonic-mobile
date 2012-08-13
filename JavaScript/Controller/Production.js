@@ -55,6 +55,11 @@ var createForm = function(options) {
   });
 };
 
+var resetEditUUID = function() {
+  currentEditUUID = null;
+  serializedData = null;
+};
+
 var addPlaceholder = function() {
   var stack = View.getMain().getStack();
   if (stack.getLength() > 1 || stack.getByURL('/production')) return;
@@ -66,7 +71,6 @@ var addPlaceholder = function() {
 };
 
 Controller.define('/production', function() {
-  currentEditUUID = null;
   productions = {};
 
   var options = {
@@ -104,9 +108,11 @@ Controller.define('/production', function() {
         this.getItemContainerElement().removeClass('load-more');
       },
       itemContainer: '.production_container',
-      templateId: 'production'
-    }).addEvent('invalidate', function() {
-      API.invalidate('productions');
+      templateId: 'production',
+      onShow: resetEditUUID,
+      onInvalidate: function() {
+        API.invalidate('productions');
+      }
     }));
   });
 });
@@ -123,7 +129,6 @@ var click = function(event) {
 
 Controller.define('/production/{uuid}', function(req) {
   Data.prepare(productions[req.uuid], 'production', function(production) {
-    currentEditUUID = null;
     UI.register('a.startProduction', function(elements) {
       elements.addEvent('click', click);
     });
@@ -136,18 +141,21 @@ Controller.define('/production/{uuid}', function(req) {
       action: {
         title: 'Edit',
         url: '/production/edit/' + production.uuid
-      }
+      },
+      onShow: resetEditUUID
     }));
   });
 });
 
 Controller.define('/production/{uuid}/summary', function(req) {
   var production = productions[req.uuid];
-  currentEditUUID = production.uuid;
 
   View.getMain().push('production', new View.Object({
     title: production.metadata.title,
-    content: UI.render('data-detail-summary', production)
+    content: UI.render('data-detail-summary', production),
+    onShow: function() {
+      currentEditUUID = production.uuid;
+    }
   }));
 });
 
@@ -214,8 +222,7 @@ Controller.define('/production/edit/{uuid}', function(req) {
 });
 
 Controller.define('/production/new', {priority: 1, isGreedy: true}, function() {
-  currentEditUUID = null;
-  serializedData = null;
+  resetEditUUID();
   getPresets(function(presets) {
     form.show('main', null, presets);
   });
@@ -228,6 +235,8 @@ Controller.define('/production/source', {priority: 1, isGreedy: true}, function(
     serializedData = form.serialize(object);
     Object.append(serializedData, Object.expand(object.serialize()));
     serializedData.metadata.title = serializedData.title;
+    if (serializedData.reset_cover_image) serializedData['cover-photo'] = {reset_cover_image: true};
+
     delete serializedData.service;
     delete serializedData.input_file;
   }

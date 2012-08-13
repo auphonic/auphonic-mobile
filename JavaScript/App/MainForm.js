@@ -105,6 +105,8 @@ module.exports = new Class({
     var object = this.object;
     var store = this.store;
 
+    if (data) store.set('thumbnail', data.thumbnail);
+
     store.eachView(function(view, type) {
       if (view.setData)
         view.setData(store, data && data[type], this.getBaseURL(), object, this.isRendered);
@@ -121,6 +123,7 @@ module.exports = new Class({
     if (!this.isProduction) return;
     var title = Metadata.getData(this.store)['metadata.title'];
     this.object.unserialize({title: title});
+    this.updateAction(!!title);
   },
 
   updateMetadataTitle: function() {
@@ -199,13 +202,9 @@ module.exports = new Class({
       });
     });
 
-    if (this.isEditMode) {
-      object.addEvent('show:once', (function() {
-        this.updateAlgorithms(data);
-      }).bind(this));
-
-      store.set('thumbnail', data.thumbnail);
-    }
+    if (this.isEditMode) object.addEvent('show:once', (function() {
+      this.updateAlgorithms(data);
+    }).bind(this));
 
     if (isNewProduction) object.addEvent('show:once', (function() {
       var select = object.toElement().getElement(this.options.presetChooserSelector);

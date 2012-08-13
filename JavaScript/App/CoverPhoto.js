@@ -12,6 +12,13 @@ exports.getData = function(store) {
   };
 };
 
+exports.setData = function(store, data) {
+  if (data && data.reset_cover_image) {
+    store.set('reset_cover_image', true);
+    store.set('thumbnail', null);
+  }
+};
+
 exports.createView = function(store, object) {
   var record = function(event, source) {
     event.preventDefault();
