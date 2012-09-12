@@ -22,9 +22,9 @@ provides: [Core, MooTools, Type, typeOf, instanceOf]
 
 (function(){
 
-exports.MooTools = {
-	version: '1.4.6-custom',
-	build: '6c0e237947684537eb5054e76c23d4c3059309d2'
+this.MooTools = {
+	version: '1.5.0-custom',
+	build: '33f3d7188ba434a01d13c56012a20af81cc65924'
 };
 
 // typeOf, instanceOf
@@ -2816,13 +2816,7 @@ Element.implement({
 [Element, Window, Document].invoke('implement', {
 
 	addListener: function(type, fn){
-		if (type == 'unload'){
-			var old = fn, self = this;
-			fn = function(){
-				self.removeListener('unload', fn);
-				old();
-			};
-		} else if (window.attachEvent && !window.addEventListener){
+		if (window.attachEvent && !window.addEventListener){
 			collected[Slick.uidOf(this)] = this;
 		}
 		if (this.addEventListener) this.addEventListener(type, fn, !!arguments[2]);
