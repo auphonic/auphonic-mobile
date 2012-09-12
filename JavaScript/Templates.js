@@ -1031,7 +1031,7 @@ templates['login'] = template(function (Handlebars,depth0,helpers,partials,data)
   var buffer = "", stack1, functionType="function", escapeExpression=this.escapeExpression;
 
 
-  buffer += "<form action=\"/asdf/\" method=\"post\">\n  <input type=\"hidden\" name=\"client_id\" value=\"";
+  buffer += "<form action=\"/\" method=\"post\">\n  <input type=\"hidden\" name=\"client_id\" value=\"";
   stack1 = depth0.client_id;
   stack1 = typeof stack1 === functionType ? stack1() : stack1;
   buffer += escapeExpression(stack1) + "\" />\n  <input type=\"hidden\" name=\"client_secret\" value=\"";

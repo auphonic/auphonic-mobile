@@ -82,15 +82,7 @@ module.exports = new Class({
   },
 
   getSpinner: function() {
-    return this.spinner || (this.spinner = new Spinner({
-      lines: 9,
-      length: 4,
-      width: 3,
-      radius: 4,
-      trail: 30,
-      color: '#000',
-      className: 'spinner-inline-bottom'
-    }));
+    return this.spinner || (this.spinner = new Spinner(this.getView().getOption('smallIndicatorOptions')));
   }
 
 });

@@ -5,6 +5,8 @@ var Events = Core.Events;
 
 var History = require('History');
 
+var Spinner = require('Spinner');
+
 var Stack = require('./Stack');
 var UI = require('../UI');
 
@@ -22,7 +24,8 @@ module.exports = new Class({
     back: null,
     title: null,
     action: null,
-    indicator: null,
+    indicatorOptions: null,
+    smallIndicatorOptions: null,
 
     indicatorDelay: 500,
 
@@ -40,11 +43,9 @@ module.exports = new Class({
     this.back = options.back;
     this.title = options.title;
     this.action = options.action;
-    this.indicator = options.indicator;
     delete options.back;
     delete options.title;
     delete options.action;
-    delete options.indicator;
 
     this.setOptions(options);
 
@@ -52,6 +53,7 @@ module.exports = new Class({
     this.back.setView(this);
     this.title.setView(this);
     this.action.setView(this);
+    this.indicator = new Spinner(this.options.indicatorOptions);
   },
 
   push: function(stack, object) {

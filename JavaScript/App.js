@@ -33,6 +33,7 @@ require('Controller/Production');
 require('Controller/Recording');
 require('Controller/Settings');
 
+var History = require('History');
 var Form = require('Form');
 var LocalStorage = require('Utility/LocalStorage');
 var ActiveState = require('Browser/ActiveState');
@@ -48,12 +49,13 @@ var Popover = require('UI/Actions/Popover');
 var Notice = require('UI/Notice');
 var Spinner = require('Spinner');
 
+var Auphonic = require('Auphonic');
+
 // Register Partials for Handlebars
 Handlebars.registerPartial('preset', Handlebars.templates.preset);
 Handlebars.registerPartial('production', Handlebars.templates.production);
 
 // Monkey Patch for Cordova which sometimes adds file:///
-var History = require('History');
 var getPath = History.getPath;
 History.getPath = function() {
   return '/' + getPath.call(this).replace(/^\/|^file\:\/\/\//, '');
@@ -119,6 +121,7 @@ var removeItem = function(element) {
 
 // Make the info API calls and show the UI on success, or else provide a reload button
 var infoURLs = ['algorithms', 'output_files', 'service_types'];
+var spinner;
 var isLoggedIn = !!LocalStorage.get('User');
 var loaded = 0;
 var load = function(event) {
@@ -130,9 +133,11 @@ var load = function(event) {
 
   if (event) event.preventDefault();
 
-  Notice.closeAll();
   var retry = document.id('retry');
   if (retry) retry.hide();
+
+  if (!spinner) spinner = new Spinner(Auphonic.SpinnerOptions);
+  if (isLoggedIn) spinner.spin(document.id('splash'));
 
   loaded = 0;
   infoURLs.each(function(info) {
@@ -142,10 +147,13 @@ var load = function(event) {
       success: function() {
         if (++loaded < infoURLs.length || !isLoggedIn) return;
 
+        spinner.stop();
+        Notice.closeAll();
         UI.showChrome();
         History.push('/');
       },
       error: function() {
+        spinner.stop();
         var retry = document.id('retry').show();
         retry.getElement('a').addEvent('click', load);
       }
@@ -307,14 +315,8 @@ var boot = function() {
     back: back,
     title: title,
     action: action,
-    indicator: new Spinner({
-      lines: 12,
-      length: 10,
-      width: 7,
-      radius: 13,
-      trail: 30,
-      color: '#000'
-    }),
+    indicatorOptions: Auphonic.ViewSpinnerOptions,
+    smallIndicatorOptions: Auphonic.ViewSpinnerOptionsSmall,
     indicatorDelay: 500,
 
     onChange: function() {

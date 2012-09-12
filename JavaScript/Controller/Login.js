@@ -11,14 +11,6 @@ var Notice = require('UI/Notice');
 var APIKeys = require('APIKeys');
 var Auphonic = require('Auphonic');
 
-var spinnerOptions = {
-  lines: 12,
-  length: 10,
-  width: 7,
-  radius: 13,
-  trail: 30,
-  color: '#fff'
-};
 var notice;
 var spinner;
 
@@ -47,7 +39,7 @@ Controller.define('/login', function() {
   var submit = function(event) {
     event.preventDefault();
 
-    if (!spinner) spinner = new Spinner(spinnerOptions);
+    if (!spinner) spinner = new Spinner(Auphonic.SpinnerOptions);
 
     var data = login.serialize();
     var children = login.getChildren().dispose();
