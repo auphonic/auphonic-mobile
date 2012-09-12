@@ -1,4 +1,6 @@
 #!/bin/bash
 DIR=$(cd `dirname $0` && pwd)
 
-$DIR/../node_modules/.bin/stylus --use "$DIR/../node_modules/nib/lib/nib.js" --out "$DIR/../App/CSS" --watch "$DIR/../STYL"
+source $DIR/variables
+
+$DIR/../node_modules/.bin/stylus --use "$DIR/../node_modules/nib/lib/nib.js" --out "$DIR/$AUPHONIC_OUTPUT/$AUPHONIC_CORDOVA_VERSION/" --watch "$DIR/$AUPHONIC_STYL" --use url --with "{\"paths\":[\"$DIR/$AUPHONIC_IMAGES\"],\"limit\":false}" $@

@@ -1,6 +1,5 @@
 #!/bin/bash
 DIR=$(cd `dirname $0` && pwd)
-OUTPUT="../App/JavaScript"
-
-$DIR/compile -e prod -m --no-watch
-gzip "$DIR/$OUTPUT/build.js"
+source $DIR/variables
+source $DIR/compile -e prod -m --no-watch
+gzip "$DIR/$AUPHONIC_OUTPUT/$AUPHONIC_CORDOVA_VERSION/$AUPHONIC_JS_FILENAME"

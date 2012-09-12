@@ -1,4 +1,4 @@
 #!/bin/bash
-DIR=$(cd `dirname $0` && pwd)
+source $DIR/variables
 
-$DIR/../node_modules/.bin/handlebars "$DIR/../Templates/" -f "$DIR/../JavaScript/Templates.js" -o
+$DIR/../node_modules/.bin/handlebars "$DIR/$AUPHONIC_TEMPLATES" -f "$DIR/$AUPHONIC_JS/$AUPHONIC_TEMPLATES_MODULE" -o
