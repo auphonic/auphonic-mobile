@@ -48,6 +48,15 @@
 
 #pragma mark - View lifecycle
 
+- (void)viewWillAppear:(BOOL)animated
+{
+    // Set the main view to utilize the entire application frame space of the device.
+    // Change this to suit your view's UI footprint needs in your application.
+    self.view.frame = [[UIScreen mainScreen] applicationFrame];
+    
+    [super viewWillAppear:animated];
+}
+
 - (void) viewDidLoad
 {
     [super viewDidLoad];
@@ -105,11 +114,11 @@
 - (void) webViewDidFinishLoad:(UIWebView*) theWebView 
 {
     // only valid if ___PROJECTNAME__-Info.plist specifies a protocol to handle
-    if (self.invokeString) {
+    /*if (self.invokeString) {
          // this is passed before the deviceready event is fired, so you can access it in js when you receive deviceready
          NSString* jsString = [NSString stringWithFormat:@"var invokeString = \"%@\";", self.invokeString];
          [theWebView stringByEvaluatingJavaScriptFromString:jsString];
-    }
+    }*/
      
     // Black base color for background matches the native apps
     theWebView.backgroundColor = [UIColor blackColor];

@@ -1,6 +1,6 @@
-// commit 5647225e12e18e15aefc33b151430d9a3804d9ea
+// commit 143f5221a6251c9cbccdedc57005c61551b97f12
 
-// File generated at :: Fri Jun 29 2012 09:38:36 GMT-0700 (PDT)
+// File generated at :: Wed Sep 12 2012 15:26:58 GMT-0700 (PDT)
 
 /*
  Licensed to the Apache Software Foundation (ASF) under one
@@ -186,13 +186,19 @@ var cordova = {
     },
     /**
      * Method to fire event from native code
+     * bNoDetach is required for events which cause an exception which needs to be caught in native code     
      */
-    fireDocumentEvent: function(type, data) {
+    fireDocumentEvent: function(type, data, bNoDetach) {
         var evt = createEvent(type, data);
         if (typeof documentEventHandlers[type] != 'undefined') {
-            setTimeout(function() {
-                documentEventHandlers[type].fire(evt);
-            }, 0);
+            if( bNoDetach ) {
+              documentEventHandlers[type].fire(evt);
+            }
+            else {
+              setTimeout(function() {
+                  documentEventHandlers[type].fire(evt);
+              }, 0);
+            }
         } else {
             document.dispatchEvent(evt);
         }
@@ -207,10 +213,6 @@ var cordova = {
             window.dispatchEvent(evt);
         }
     },
-    // TODO: this is Android only; think about how to do this better
-    shuttingDown:false,
-    UsePolling:false,
-    // END TODO
 
     // TODO: iOS only
     // This queue holds the currently executing command and all pending
@@ -289,17 +291,6 @@ var cordova = {
             }
         }
     },
-    // TODO: remove in 2.0.
-    addPlugin: function(name, obj) {
-        console.log("[DEPRECATION NOTICE] window.addPlugin and window.plugins will be removed in version 2.0.");
-        if (!window.plugins[name]) {
-            window.plugins[name] = obj;
-        }
-        else {
-            console.log("Error: Plugin "+name+" already exists.");
-        }
-    },
-
     addConstructor: function(func) {
         channel.onCordovaReady.subscribeOnce(function() {
             try {
@@ -315,51 +306,6 @@ var cordova = {
 channel.onPause = cordova.addDocumentEventHandler('pause');
 channel.onResume = cordova.addDocumentEventHandler('resume');
 channel.onDeviceReady = cordova.addDocumentEventHandler('deviceready');
-
-// Adds deprecation warnings to functions of an object (but only logs a message once)
-function deprecateFunctions(obj, objLabel) {
-    var newObj = {};
-    var logHash = {};
-    for (var i in obj) {
-        if (obj.hasOwnProperty(i)) {
-            if (typeof obj[i] == 'function') {
-                newObj[i] = (function(prop){
-                    var oldFunk = obj[prop];
-                    var funkId = objLabel + '_' + prop;
-                    return function() {
-                        if (!logHash[funkId]) {
-                            console.log('[DEPRECATION NOTICE] The "' + objLabel + '" global will be removed in version 2.0, please use lowercase "cordova".');
-                            logHash[funkId] = true;
-                        }
-                        oldFunk.apply(obj, arguments);
-                    };
-                })(i);
-            } else {
-                newObj[i] = (function(prop) { return obj[prop]; })(i);
-            }
-        }
-    }
-    return newObj;
-}
-
-/**
- * Legacy variable for plugin support
- * TODO: remove in 2.0.
- */
-if (!window.PhoneGap) {
-    window.PhoneGap = deprecateFunctions(cordova, 'PhoneGap');
-}
-if (!window.Cordova) {
-    window.Cordova = deprecateFunctions(cordova, 'Cordova');
-}
-
-/**
- * Plugins object
- * TODO: remove in 2.0.
- */
-if (!window.plugins) {
-    window.plugins = {};
-}
 
 module.exports = cordova;
 
@@ -460,7 +406,8 @@ module.exports = {
 
 // file: lib/common/channel.js
 define("cordova/channel", function(require, exports, module) {
-var utils = require('cordova/utils');
+var utils = require('cordova/utils'),
+    nextGuid = 1;
 
 /**
  * Custom pub-sub "channel" that can have functions subscribed to it
@@ -512,7 +459,6 @@ var Channel = function(type, opts) {
     this.type = type;
     this.handlers = {};
     this.numHandlers = 0;
-    this.guid = 1;
     this.fired = false;
     this.enabled = true;
     this.events = {
@@ -605,19 +551,19 @@ Channel.prototype.subscribe = function(f, c, g) {
 
     g = g || func.observer_guid || f.observer_guid;
     if (!g) {
-        // first time we've seen this subscriber
-        g = this.guid++;
-    }
-    else {
-        // subscriber already handled; dont set it twice
-        return g;
+        // first time any channel has seen this subscriber
+        g = nextGuid++;
     }
     func.observer_guid = g;
     f.observer_guid = g;
-    this.handlers[g] = func;
-    this.numHandlers++;
-    if (this.events.onSubscribe) this.events.onSubscribe.call(this);
-    if (this.fired) func.call(this);
+
+    // Don't add the same handler more than once.
+    if (!this.handlers[g]) {
+        this.handlers[g] = func;
+        this.numHandlers++;
+        if (this.events.onSubscribe) this.events.onSubscribe.call(this);
+        if (this.fired) func.apply(this, this.fireArgs);
+    }
     return g;
 };
 
@@ -631,15 +577,14 @@ Channel.prototype.subscribeOnce = function(f, c) {
 
     var g = null;
     var _this = this;
-    var m = function() {
-        f.apply(c || null, arguments);
-        _this.unsubscribe(g);
-    };
     if (this.fired) {
-        if (typeof c == "object") { f = utils.close(c, f); }
-        f.apply(this, this.fireArgs);
+        f.apply(c || null, this.fireArgs);
     } else {
-        g = this.subscribe(m);
+        g = this.subscribe(function() {
+            _this.unsubscribe(g);
+            f.apply(c || null, arguments);
+        });
+        f.observer_guid = g;
     }
     return g;
 };
@@ -655,7 +600,6 @@ Channel.prototype.unsubscribe = function(g) {
     var handler = this.handlers[g];
     if (handler) {
         if (handler.observer_guid) handler.observer_guid=null;
-        this.handlers[g] = null;
         delete this.handlers[g];
         this.numHandlers--;
         if (this.events.onUnsubscribe) this.events.onUnsubscribe.call(this);
@@ -669,14 +613,17 @@ Channel.prototype.fire = function(e) {
     if (this.enabled) {
         var fail = false;
         this.fired = true;
-        for (var item in this.handlers) {
-            var handler = this.handlers[item];
-            if (typeof handler == 'function') {
-                var rv = (handler.apply(this, arguments)===false);
-                fail = fail || rv;
-            }
-        }
         this.fireArgs = arguments;
+        // Copy the values first so that it is safe to modify it from within
+        // callbacks.
+        var toCall = [];
+        for (var item in this.handlers) {
+            toCall.push(this.handlers[item]);
+        }
+        for (var i = 0; i < toCall.length; ++i) {
+            var rv = (toCall[i].apply(this, arguments)===false);
+            fail = fail || rv;
+        }
         return !fail;
     }
     return true;
@@ -713,7 +660,6 @@ channel.create('onDestroy');
 
 // Channels that must fire before "deviceready" is fired.
 channel.waitForInitialization('onCordovaReady');
-channel.waitForInitialization('onCordovaInfoReady');
 channel.waitForInitialization('onCordovaConnectionReady');
 
 module.exports = channel;
@@ -736,13 +682,6 @@ module.exports = {
             }
         },
         Cordova: {
-            children: {
-                exec: {
-                    path: 'cordova/exec'
-                }
-            }
-        },
-        PhoneGap:{
             children: {
                 exec: {
                     path: 'cordova/exec'
@@ -848,6 +787,9 @@ module.exports = {
         Coordinates: {
             path: 'cordova/plugin/Coordinates'
         },
+        device: {
+            path: 'cordova/plugin/device'
+        },
         DirectoryEntry: {
             path: 'cordova/plugin/DirectoryEntry'
         },
@@ -937,20 +879,46 @@ define("cordova/exec", function(require, exports, module) {
      * @private
      */
 var cordova = require('cordova'),
+    channel = require('cordova/channel'),
+    nativecomm = require('cordova/plugin/ios/nativecomm'),
     utils = require('cordova/utils'),
-    gapBridge,
-    createGapBridge = function() {
-        gapBridge = document.createElement("iframe");
-        gapBridge.setAttribute("style", "display:none;");
-        gapBridge.setAttribute("height","0px");
-        gapBridge.setAttribute("width","0px");
-        gapBridge.setAttribute("frameborder","0");
-        document.documentElement.appendChild(gapBridge);
+    jsToNativeModes = {
+        IFRAME_NAV: 0,
+        XHR_NO_PAYLOAD: 1,
+        XHR_WITH_PAYLOAD: 2,
+        XHR_OPTIONAL_PAYLOAD: 3
     },
-    channel = require('cordova/channel');
+    // XHR mode does not work on iOS 4.2, so default to IFRAME_NAV for such devices.
+    // XHR mode's main advantage is working around a bug in -webkit-scroll, which 
+    // doesn't exist in 4.X devices anyways.
+    bridgeMode = navigator.userAgent.indexOf(' 4_') == -1 ? jsToNativeModes.XHR_NO_PAYLOAD : jsToNativeModes.IFRAME_NAV,
+    execIframe,
+    execXhr;
 
-module.exports = function() {
-    if (!channel.onCordovaInfoReady.fired) {
+function createExecIframe() {
+    var iframe = document.createElement("iframe");
+    iframe.style.display = 'none';
+    document.body.appendChild(iframe);
+    return iframe;
+}
+
+function shouldBundleCommandJson() {
+    if (bridgeMode == 2) {
+        return true;
+    }
+    if (bridgeMode == 3) {
+        var payloadLength = 0;
+        for (var i = 0; i < cordova.commandQueue.length; ++i) {
+            payloadLength += cordova.commandQueue[i].length;
+        }
+        // The value here was determined using the benchmark within CordovaLibApp on an iPad 3.
+        return payloadLength < 4500;
+    }
+    return false;
+}
+
+function iOSExec() {
+    if (!channel.onCordovaReady.fired) {
         utils.alert("ERROR: Attempting to call cordova.exec()" +
               " before 'deviceready'. Ignoring.");
         return;
@@ -979,13 +947,6 @@ module.exports = function() {
         actionArgs = Array.prototype.splice.call(arguments, 1);
     }
 
-    // Start building the command object.
-    var command = {
-        className: service,
-        methodName: action,
-        "arguments": []
-    };
-
     // Register the callbacks and add the callbackId to the positional
     // arguments if given.
     if (successCallback || failCallback) {
@@ -993,20 +954,8 @@ module.exports = function() {
         cordova.callbacks[callbackId] =
             {success:successCallback, fail:failCallback};
     }
-    if (callbackId !== null) {
-        command["arguments"].push(callbackId);
-    }
 
-    for (var i = 0; i < actionArgs.length; ++i) {
-        var arg = actionArgs[i];
-        if (arg === undefined || arg === null) { // nulls are pushed to the args now (becomes NSNull)
-            command["arguments"].push(arg);
-        } else if (typeof(arg) == 'object' && !(utils.isArray(arg))) {
-            command.options = arg;
-        } else {
-            command["arguments"].push(arg);
-        }
-    }
+    var command = [callbackId, service, action, actionArgs];
 
     // Stringify and queue the command. We stringify to command now to
     // effectively clone the command arguments in case they are mutated before
@@ -1018,16 +967,37 @@ module.exports = function() {
     // commands to execute, unless the queue is currently being flushed, in
     // which case the command will be picked up without notification.
     if (cordova.commandQueue.length == 1 && !cordova.commandQueueFlushing) {
-        // cpojer: Do not use an iframe to avoid scrolling issues.
-        location = 'gap://ready';
-        return;
-
-        if (!gapBridge) {
-            createGapBridge();
+        if (bridgeMode) {
+            execXhr = execXhr || new XMLHttpRequest();
+            // Changeing this to a GET will make the XHR reach the URIProtocol on 4.2.
+            // For some reason it still doesn't work though...
+            execXhr.open('HEAD', "file:///!gap_exec", true);
+            execXhr.setRequestHeader('vc', cordova.iOSVCAddr);
+            if (shouldBundleCommandJson()) {
+                execXhr.setRequestHeader('cmds', nativecomm());
+            }
+            execXhr.send(null);
+        } else {
+            execIframe = execIframe || createExecIframe();
+            execIframe.src = "gap://ready";
         }
-        gapBridge.src = "gap://ready";
     }
+}
+
+iOSExec.jsToNativeModes = jsToNativeModes;
+
+iOSExec.setJsToNativeBridgeMode = function(mode) {
+    // Remove the iFrame since it may be no longer required, and its existence
+    // can trigger browser bugs.
+    // https://issues.apache.org/jira/browse/CB-593
+    if (execIframe) {
+        execIframe.parentNode.removeChild(execIframe);
+        execIframe = null;
+    }
+    bridgeMode = mode;
 };
+
+module.exports = iOSExec;
 
 });
 
@@ -1048,11 +1018,11 @@ module.exports = {
         File: { // exists natively, override
             path: "cordova/plugin/File"
         },
+        FileReader: { // exists natively, override
+            path: "cordova/plugin/FileReader"
+        },
         MediaError: { // exists natively, override
             path: "cordova/plugin/MediaError"
-        },
-        device: {
-            path: 'cordova/plugin/ios/device'
         },
         console: {
             path: 'cordova/plugin/ios/console'
@@ -1207,7 +1177,10 @@ cameraExport.getPicture = function(successCallback, errorCallback, options) {
         popoverOptions = options.popoverOptions;
     }
 
-    exec(successCallback, errorCallback, "Camera", "takePicture", [quality, destinationType, sourceType, targetWidth, targetHeight, encodingType, mediaType, allowEdit, correctOrientation, saveToPhotoAlbum, popoverOptions]);
+    var args = [quality, destinationType, sourceType, targetWidth, targetHeight, encodingType,
+                mediaType, allowEdit, correctOrientation, saveToPhotoAlbum, popoverOptions];
+
+    exec(successCallback, errorCallback, "Camera", "takePicture", args);
 };
 
 cameraExport.cleanup = function(successCallback, errorCallback) {
@@ -1796,7 +1769,7 @@ var utils = require('cordova/utils'),
  * {boolean} isDirectory always true (readonly)
  * {DOMString} name of the directory, excluding the path leading to it (readonly)
  * {DOMString} fullPath the absolute full path to the directory (readonly)
- * {FileSystem} filesystem on which the directory resides (readonly)
+ * TODO: implement this!!! {FileSystem} filesystem on which the directory resides (readonly)
  */
 var DirectoryEntry = function(name, fullPath) {
      DirectoryEntry.__super__.constructor.apply(this, [false, true, name, fullPath]);
@@ -2521,13 +2494,12 @@ var DirectoryEntry = require('cordova/plugin/DirectoryEntry');
 var FileSystem = function(name, root) {
     this.name = name || null;
     if (root) {
-        console.log('root.name ' + name);
-        console.log('root.root ' + root);
         this.root = new DirectoryEntry(root.name, root.fullPath);
     }
 };
 
 module.exports = FileSystem;
+
 });
 
 // file: lib/common/plugin/FileTransfer.js
@@ -2560,10 +2532,12 @@ FileTransfer.prototype.upload = function(filePath, server, successCallback, erro
     var mimeType = null;
     var params = null;
     var chunkedMode = true;
+    var headers = null;
     if (options) {
         fileKey = options.fileKey;
         fileName = options.fileName;
         mimeType = options.mimeType;
+        headers = options.headers;
         if (options.chunkedMode !== null || typeof options.chunkedMode != "undefined") {
             chunkedMode = options.chunkedMode;
         }
@@ -2580,7 +2554,7 @@ FileTransfer.prototype.upload = function(filePath, server, successCallback, erro
         errorCallback(error);
     };
 
-    exec(successCallback, fail, 'FileTransfer', 'upload', [filePath, server, fileKey, fileName, mimeType, params, trustAllHosts, chunkedMode]);
+    exec(successCallback, fail, 'FileTransfer', 'upload', [filePath, server, fileKey, fileName, mimeType, params, trustAllHosts, chunkedMode, headers]);
 };
 
 /**
@@ -2650,15 +2624,19 @@ define("cordova/plugin/FileUploadOptions", function(require, exports, module) {
  * @param fileName {String}  Filename to be used by the server. Defaults to image.jpg.
  * @param mimeType {String}  Mimetype of the uploaded file. Defaults to image/jpeg.
  * @param params {Object}    Object with key: value params to send to the server.
+ * @param headers {Object}   Keys are header names, values are header values. Multiple
+ *                           headers of the same name are not supported.
  */
-var FileUploadOptions = function(fileKey, fileName, mimeType, params) {
+var FileUploadOptions = function(fileKey, fileName, mimeType, params, headers) {
     this.fileKey = fileKey || null;
     this.fileName = fileName || null;
     this.mimeType = mimeType || null;
     this.params = params || null;
+    this.headers = headers || null;
 };
 
 module.exports = FileUploadOptions;
+
 });
 
 // file: lib/common/plugin/FileUploadResult.js
@@ -2846,7 +2824,7 @@ FileWriter.prototype.seek = function(offset) {
     if (offset < 0) {
         this.position = Math.max(offset + this.length, 0);
     }
-    // Offset is bigger then file size so set position
+    // Offset is bigger than file size so set position
     // to the end of the file.
     else if (offset > this.length) {
         this.position = this.length;
@@ -3053,7 +3031,6 @@ Media.prototype.stop = function() {
     var me = this;
     exec(function() {
         me._position = 0;
-        me.successCallback();
     }, this.errorCallback, "Media", "stopPlayingAudio", [this.id]);
 };
 
@@ -3099,14 +3076,14 @@ Media.prototype.getCurrentPosition = function(success, fail) {
  * Start recording audio file.
  */
 Media.prototype.startRecord = function() {
-    exec(this.successCallback, this.errorCallback, "Media", "startRecordingAudio", [this.id, this.src]);
+    exec(null, this.errorCallback, "Media", "startRecordingAudio", [this.id, this.src]);
 };
 
 /**
  * Stop recording audio file.
  */
 Media.prototype.stopRecord = function() {
-    exec(this.successCallback, this.errorCallback, "Media", "stopRecordingAudio", [this.id]);
+    exec(null, this.errorCallback, "Media", "stopRecordingAudio", [this.id]);
 };
 
 /**
@@ -3128,34 +3105,39 @@ Media.prototype.setVolume = function(volume) {
  * PRIVATE
  *
  * @param id            The media object id (string)
- * @param status        The status code (int)
- * @param msg           The status message (string)
+ * @param msgType       The 'type' of update this is
+ * @param value         Use of value is determined by the msgType
  */
-Media.onStatus = function(id, msg, value) {
+Media.onStatus = function(id, msgType, value) {
+
     var media = mediaObjects[id];
-    // If state update
-    if (msg === Media.MEDIA_STATE) {
-        if (value === Media.MEDIA_STOPPED) {
-            if (media.successCallback) {
-                media.successCallback();
-            }
+
+    if(media) {
+        switch(msgType) {
+            case Media.MEDIA_STATE :
+                media.statusCallback && media.statusCallback(value);
+                if(value == Media.MEDIA_STOPPED) {
+                    media.successCallback && media.successCallback();
+                }
+                break;
+            case Media.MEDIA_DURATION :
+                media._duration = value;
+                break;
+            case Media.MEDIA_ERROR :
+                media.errorCallback && media.errorCallback(value); 
+                break;
+            case Media.MEDIA_POSITION :
+                media._position = Number(value);
+                break;
+            default :
+                console && console.error && console.error("Unhandled Media.onStatus :: " + msgType); 
+                break;
         }
-        if (media.statusCallback) {
-            media.statusCallback(value);
-        }
     }
-    else if (msg === Media.MEDIA_DURATION) {
-        media._duration = value;
+    else {
+         console && console.error && console.error("Received Media.onStatus callback for unknown media :: " + id);
     }
-    else if (msg === Media.MEDIA_ERROR) {
-        if (media.errorCallback) {
-            // value should be a MediaError object when msg == MEDIA_ERROR
-            media.errorCallback(value);
-        }
-    }
-    else if (msg === Media.MEDIA_POSITION) {
-        media._position = value;
-    }
+
 };
 
 module.exports = Media;
@@ -3165,20 +3147,36 @@ module.exports = Media;
 define("cordova/plugin/MediaError", function(require, exports, module) {
 /**
  * This class contains information about any Media errors.
- * @constructor
- */
-var MediaError = function(code, msg) {
-    this.code = (code !== undefined ? code : null);
-    this.message = msg || "";
-};
+*/
+/*
+ According to :: http://dev.w3.org/html5/spec-author-view/video.html#mediaerror
+ We should never be creating these objects, we should just implement the interface
+ which has 1 property for an instance, 'code'
 
-MediaError.MEDIA_ERR_NONE_ACTIVE    = 0;
-MediaError.MEDIA_ERR_ABORTED        = 1;
-MediaError.MEDIA_ERR_NETWORK        = 2;
-MediaError.MEDIA_ERR_DECODE         = 3;
-MediaError.MEDIA_ERR_NONE_SUPPORTED = 4;
+ instead of doing :
+    errorCallbackFunction( new MediaError(3,'msg') );
+we should simply use a literal :
+    errorCallbackFunction( {'code':3} );
+ */
+
+if(!MediaError) {
+    var MediaError = function(code, msg) {
+        this.code = (typeof code != 'undefined') ? code : null;
+        this.message = msg || ""; // message is NON-standard! do not use!
+    };
+}
+
+MediaError.MEDIA_ERR_NONE_ACTIVE    = MediaError.MEDIA_ERR_NONE_ACTIVE    || 0;
+MediaError.MEDIA_ERR_ABORTED        = MediaError.MEDIA_ERR_ABORTED        || 1;
+MediaError.MEDIA_ERR_NETWORK        = MediaError.MEDIA_ERR_NETWORK        || 2;
+MediaError.MEDIA_ERR_DECODE         = MediaError.MEDIA_ERR_DECODE         || 3;
+MediaError.MEDIA_ERR_NONE_SUPPORTED = MediaError.MEDIA_ERR_NONE_SUPPORTED || 4;
+// TODO: MediaError.MEDIA_ERR_NONE_SUPPORTED is legacy, the W3 spec now defines it as below. 
+// as defined by http://dev.w3.org/html5/spec-author-view/video.html#error-codes
+MediaError.MEDIA_ERR_SRC_NOT_SUPPORTED = MediaError.MEDIA_ERR_SRC_NOT_SUPPORTED || 4;
 
 module.exports = MediaError;
+
 });
 
 // file: lib/common/plugin/MediaFile.js
@@ -3214,28 +3212,6 @@ MediaFile.prototype.getFormatData = function(successCallback, errorCallback) {
     } else {
         exec(successCallback, errorCallback, "Capture", "getFormatData", [this.fullPath, this.type]);
     }
-};
-
-// TODO: can we axe this?
-/**
- * Casts a PluginResult message property  (array of objects) to an array of MediaFile objects
- * (used in Objective-C and Android)
- *
- * @param {PluginResult} pluginResult
- */
-MediaFile.cast = function(pluginResult) {
-    var mediaFiles = [];
-    for (var i=0; i<pluginResult.message.length; i++) {
-        var mediaFile = new MediaFile();
-        mediaFile.name = pluginResult.message[i].name;
-        mediaFile.fullPath = pluginResult.message[i].fullPath;
-        mediaFile.type = pluginResult.message[i].type;
-        mediaFile.lastModifiedDate = pluginResult.message[i].lastModifiedDate;
-        mediaFile.size = pluginResult.message[i].size;
-        mediaFiles.push(mediaFile);
-    }
-    pluginResult.message = mediaFiles;
-    return pluginResult;
 };
 
 module.exports = MediaFile;
@@ -3443,12 +3419,12 @@ var accelerometer = {
 
         var p;
         var win = function(a) {
-            successCallback(a);
             removeListeners(p);
+            successCallback(a);
         };
         var fail = function(e) {
-            errorCallback(e);
             removeListeners(p);
+            errorCallback(e);
         };
 
         p = createCallbackPair(win, fail);
@@ -3480,8 +3456,8 @@ var accelerometer = {
         var id = utils.createUUID();
 
         var p = createCallbackPair(function(){}, function(e) {
-            errorCallback(e);
             removeListeners(p);
+            errorCallback(e);
         });
         listeners.push(p);
 
@@ -3496,7 +3472,10 @@ var accelerometer = {
 
         if (running) {
             // If we're already running then immediately invoke the success callback
-            successCallback(accel);
+            // but only if we have retrieved a value, sample code does not check for null ...
+            if(accel) {
+                successCallback(accel);
+            }
         } else {
             start();
         }
@@ -4011,7 +3990,7 @@ var contacts = {
      * This function creates a new contact, but it does not persist the contact
      * to device storage. To persist the contact to device storage, invoke
      * contact.save().
-     * @param properties an object who's properties will be examined to create a new Contact
+     * @param properties an object whose properties will be examined to create a new Contact
      * @returns new Contact object
      */
     create:function(properties) {
@@ -4027,6 +4006,93 @@ var contacts = {
 };
 
 module.exports = contacts;
+
+});
+
+// file: lib/common/plugin/device.js
+define("cordova/plugin/device", function(require, exports, module) {
+var channel = require('cordova/channel'),
+    utils = require('cordova/utils'),
+    exec = require('cordova/exec');
+
+// Tell cordova channel to wait on the CordovaInfoReady event
+channel.waitForInitialization('onCordovaInfoReady');
+
+/**
+ * This represents the mobile device, and provides properties for inspecting the model, version, UUID of the
+ * phone, etc.
+ * @constructor
+ */
+function Device() {
+    this.available = false;
+    this.platform = null;
+    this.version = null;
+    this.name = null;
+    this.uuid = null;
+    this.cordova = null;
+
+    var me = this;
+
+    channel.onCordovaReady.subscribeOnce(function() {
+        me.getInfo(function(info) {
+            me.available = true;
+            me.platform = info.platform;
+            me.version = info.version;
+            me.name = info.name;
+            me.uuid = info.uuid;
+            me.cordova = info.cordova;
+            channel.onCordovaInfoReady.fire();
+        },function(e) {
+            me.available = false;
+            utils.alert("[ERROR] Error initializing Cordova: " + e);
+        });
+    });
+}
+
+/**
+ * Get device info
+ *
+ * @param {Function} successCallback The function to call when the heading data is available
+ * @param {Function} errorCallback The function to call when there is an error getting the heading data. (OPTIONAL)
+ */
+Device.prototype.getInfo = function(successCallback, errorCallback) {
+
+    // successCallback required
+    if (typeof successCallback !== "function") {
+        console.log("Device Error: successCallback is not a function");
+        return;
+    }
+
+    // errorCallback optional
+    if (errorCallback && (typeof errorCallback !== "function")) {
+        console.log("Device Error: errorCallback is not a function");
+        return;
+    }
+
+    // Get info
+    exec(successCallback, errorCallback, "Device", "getDeviceInfo", []);
+};
+
+module.exports = new Device();
+
+});
+
+// file: lib/common/plugin/echo.js
+define("cordova/plugin/echo", function(require, exports, module) {
+var exec = require('cordova/exec');
+
+/**
+ * Sends the given message through exec() to the Echo plugink, which sends it back to the successCallback.
+ * @param successCallback  invoked with a FileSystem object
+ * @param errorCallback  invoked if error occurs retrieving file system
+ * @param message  The string to be echoed.
+ * @param forceAsync  Whether to force an async return value (for testing native->js bridge).
+ */
+module.exports = function(successCallback, errorCallback, message, forceAsync) {
+    var action = forceAsync ? 'echoAsync' : 'echo';
+    exec(successCallback, errorCallback, "Echo", action, [message]);
+};
+
 
 });
 
@@ -4138,7 +4204,7 @@ var geolocation = {
         } else if (options.timeout === 0) {
             fail({
                 code:PositionError.TIMEOUT,
-                message:"timeout value in PositionOptions set to 0 and no cached Position object available, or cached Position object's age exceed's provided PositionOptions' maximumAge parameter."
+                message:"timeout value in PositionOptions set to 0 and no cached Position object available, or cached Position object's age exceeds provided PositionOptions' maximumAge parameter."
             });
         // Otherwise we have to call into native to retrieve a position.
         } else {
@@ -4478,48 +4544,22 @@ module.exports = {
          *    allowsEditing: boolean AS STRING
          *        "true" to allow editing the contact
          *        "false" (default) display contact
+         *      fields: array of fields to return in contact object (see ContactOptions.fields)
          *
-         * returns:  the id of the selected contact as param to successCallback
+         *    @returns
+         *        id of contact selected
+         *        ContactObject
+         *            if no fields provided contact contains just id information
+         *            if fields provided contact object contains information for the specified fields
+         *
          */
-        exec(successCallback, null, "Contacts","chooseContact", [options]);
+         var win = function(result) {
+             var fullContact = require('cordova/plugin/contacts').create(result);
+            successCallback(fullContact.id, fullContact);
+       };
+        exec(win, null, "Contacts","chooseContact", [options]);
     }
 };
-});
-
-// file: lib/ios/plugin/ios/device.js
-define("cordova/plugin/ios/device", function(require, exports, module) {
-/**
- * this represents the mobile device, and provides properties for inspecting the model, version, UUID of the
- * phone, etc.
- * @constructor
- */
-var exec = require('cordova/exec'),
-    utils = require('cordova/utils'),
-    channel = require('cordova/channel');
-
-var Device = function() {
-    this.platform = null;
-    this.version  = null;
-    this.name     = null;
-    this.cordova  = null;
-    this.uuid     = null;
-};
-
-Device.prototype.setInfo = function(info) {
-    try {
-        this.platform = info.platform;
-        this.version = info.version;
-        this.name = info.name;
-        this.cordova = info.cordova;
-        this.uuid = info.uuid;
-        channel.onCordovaInfoReady.fire();
-    } catch(e) {
-        utils.alert('Error during device info setting in cordova/plugin/ios/device!');
-    }
-};
-
-module.exports = new Device();
-
 });
 
 // file: lib/ios/plugin/ios/nativecomm.js
@@ -4530,10 +4570,12 @@ var cordova = require('cordova');
  * Called by native code to retrieve all queued commands and clear the queue.
  */
 module.exports = function() {
-  var json = JSON.stringify(cordova.commandQueue);
-  cordova.commandQueue = [];
+  // Each entry in commandQueue is a JSON string already.
+  var json = '[' + cordova.commandQueue.join(',') + ']';
+  cordova.commandQueue.length = 0;
   return json;
 };
+
 });
 
 // file: lib/ios/plugin/ios/notification.js
@@ -4621,7 +4663,7 @@ CurrentLevel = LevelsMap.WARN;
  *
  * The value used determines which messages get printed.  The logging
  * values above are in order, and only messages logged at the logging
- * level or above will actually be displayed to the user.  Eg, the
+ * level or above will actually be displayed to the user.  E.g., the
  * default level is WARN, so only messages logged with LOG, ERROR, or
  * WARN will be displayed; INFO and DEBUG messages will be ignored.
  */

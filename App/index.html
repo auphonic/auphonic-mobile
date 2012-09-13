@@ -9,12 +9,14 @@
 
   <script type="text/javascript">
   (function() {
-    window.__CORDOVA_VERSION = '1.9.0';
+    window.__CORDOVA_VERSION = '2.1.0';
     window.__API_DOMAIN = 'https://auphonic.com/';
     window.__SERVER_URL = 'https://auphonic.com/mobile/';
 
     // Update this if you are testing the application locally.
     var DEVbaseURL = '/Thesis/App/';
+    // Local test URL for the Server scripts. Remove this when deploying.
+    window.__SERVER_URL = 'http://10.0.0.4' + DEVbaseURL + '../Server/';
     if (new RegExp('^' + DEVbaseURL).test(location.pathname)) {
       window.__LOCALHOST__ = true;
       window.__baseURL = DEVbaseURL;
@@ -30,36 +32,35 @@
   </script>
 </head>
 <body class="chrome-invisible">
-
-<div id="splash" class="splash" style="background-image: url(./Splash.jpg);"></div>
-<div id="login" class="login hidden"></div>
-<div id="retry" class="retry hidden">
-  <a href="#" class="button expand">Retry</a>
-</div>
-
-<div id="ui" class="hidden">
-  <header></header>
-  <footer>
-    <ul>
-      <li><a href="/production" class="production"><span></span><span>Productions</span></a></li>
-      <li><a href="/preset" class="preset"><span></span><span>Presets</span></a></li>
-      <li><a href="/recording" class="record"><span></span><span>Recordings</span></a></li>
-      <li><a href="/settings" class="settings"><span></span><span>Settings</span></a></li>
-    </ul>
-  </footer>
-  <div class="headerBackground"></div>
-  <div class="footerBackground"></div>
-  <div id="main"></div>
-</div>
-
-<div id="container-template" class="hidden">
-  <div class="container scrolling scrollable">
-    <div class="scroll-content"></div>
+  <div id="splash" class="splash" style="background-image: url(./Splash.jpg);"></div>
+  <div id="login" class="login hidden"></div>
+  <div id="retry" class="retry hidden">
+    <a href="#" class="button expand">Retry</a>
   </div>
-</div>
-<script type="text/javascript">
-  document.write('\x3Cscript type="text/javascript" src="cordova-' + window.__CORDOVA_VERSION + '.js">\x3C/script>');
-  document.write('\x3Cscript type="text/javascript" src="' + window.__SERVER_URL + 'App.js">\x3C/script>');
-</script>
+
+  <div id="ui" class="hidden">
+    <header></header>
+    <footer>
+      <ul>
+        <li><a href="/production" class="production"><span></span><span>Productions</span></a></li>
+        <li><a href="/preset" class="preset"><span></span><span>Presets</span></a></li>
+        <li><a href="/recording" class="record"><span></span><span>Recordings</span></a></li>
+        <li><a href="/settings" class="settings"><span></span><span>Settings</span></a></li>
+      </ul>
+    </footer>
+    <div class="headerBackground"></div>
+    <div class="footerBackground"></div>
+    <div id="main"></div>
+  </div>
+
+  <div id="container-template" class="hidden">
+    <div class="container scrolling scrollable">
+      <div class="scroll-content"></div>
+    </div>
+  </div>
+  <script type="text/javascript">
+    document.write('\x3Cscript type="text/javascript" src="cordova-' + window.__CORDOVA_VERSION + '.js">\x3C/script>');
+    document.write('\x3Cscript type="text/javascript" src="' + window.__SERVER_URL + 'App.js">\x3C/script>');
+  </script>
 </body>
 </html>

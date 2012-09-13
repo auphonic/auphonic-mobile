@@ -25,11 +25,7 @@
 //  Copyright Christoph Pojer 2012. All rights reserved.
 //
 
-#ifdef CORDOVA_FRAMEWORK
-    #import <Cordova/CDVViewController.h>
-#else
-    #import "CDVViewController.h"
-#endif
+#import <Cordova/CDVViewController.h>
 
 @interface MainViewController : CDVViewController
 

@@ -1,3 +1,5 @@
+#!/bin/bash
+
 #
 # Licensed to the Apache Software Foundation (ASF) under one
 # or more contributor license agreements.  See the NOTICE file
@@ -17,4 +19,27 @@
 # under the License.
 #
 
-Put the .h and .m files of your plugin here. The .js files of your plugin belong in the www folder.
+#
+# compile and launch a Cordova/iOS project to the simulator
+#
+
+set -e
+
+CORDOVA_PATH=$( cd "$( dirname "$0" )" && pwd )
+PROJECT_PATH=$CORDOVA_PATH/..
+
+for file in $PROJECT_PATH/*.xcodeproj; do
+  PROJECT_NAME=$(basename "$file" .xcodeproj)
+done;
+
+cd "$PROJECT_PATH"
+
+APP=build/$PROJECT_NAME.app
+SDK=`xcodebuild -showsdks | grep Sim | tail -1 | awk '{print $6}'`
+
+xcodebuild -project $PROJECT_NAME.xcodeproj -arch i386 -target $PROJECT_NAME -configuration Debug -sdk $SDK clean build VALID_ARCHS="i386" CONFIGURATION_BUILD_DIR="$PROJECT_PATH/build"
+
+
+
+
+

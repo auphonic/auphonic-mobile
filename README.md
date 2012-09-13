@@ -11,8 +11,8 @@ Install
 * Install NodeJS and npm (`brew install node npm` on OS X using [Homebrew](http://mxcl.github.com/homebrew/))
 * `npm install` in the root folder
 * Create an App at https://auphonic.com/api/apps/ and insert your API Keys in `JavaScript/APIKeys.js`
+* Changes to `Templates/` can be applied by running `Scripts/compileTemplates`.
 * Use `Scripts/compile` to compile JavaScript and `Scripts/stylus` to compile Stylus to CSS
-* If you are changing anything in the `Templates/` run `Scripts/compileTemplates`.
 
 Run
 ---
@@ -20,23 +20,8 @@ Run
 * Use the Xcode project in `iOS/` to run the App on the iPhone
 * Use Google Chrome and open `App/` on a local server.
  * Be sure to enable touch events in Web Inspector (see: Web Inspector Settings)
- * *Note:* If developing locally in a browser adjust the relative path of the project in `App/index.html`
+ * *Note:* When developing locally in a browser the relative path of the project in `App/index.html` needs to be adjusted and the local server needs to be added to Cordova.plist in XCode.
 * The Android version is not functional yet
-
-PhoneGap Upgrade Notes for iOS
-------------------------------
-
-```javascript
-  // Add
-  location = 'gap://ready';
-  return;
-
-  // Before
-  if (!gapBridge) {
-      createGapBridge();
-  }
-  gapBridge.src = "gap://ready";
-```
 
 Logo
 ----

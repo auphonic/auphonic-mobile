@@ -20,15 +20,13 @@
 				<string>icon@2x.png</string>
 				<string>icon-72.png</string>
 				<string>icon-72@2x.png</string>
-				<string>Default.png</string>
-				<string>Default@2x.png</string>
 			</array>
 			<key>UIPrerenderedIcon</key>
 			<true/>
 		</dict>
 	</dict>
 	<key>CFBundleIdentifier</key>
-	<string>Auphonic.Auphonic</string>
+	<string>com.auphonic.app</string>
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundleName</key>
