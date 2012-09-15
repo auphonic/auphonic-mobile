@@ -1,10 +1,8 @@
 @import 'nib'
-@import 'mixin/text-shadow-inset'
 
 $header-height = 44px
 $border-bottom = 1px
 $border-top = 1px
-$headline-offset = 1px
 
 div.headerBackground, header
   z-index 10
@@ -36,19 +34,17 @@ header
     position absolute
     margin 0
     padding 0
-    height $header-height - 2px - (2 * $headline-offset)
-    line-height $header-height - 2px - (2 * $headline-offset)
+    height $header-height - 2px
+    line-height $header-height - 2px
     text-align center
 
     font-size 19px
     font-weight bold
     overflow ellipsis
-    text-shadow none
     text-transform none
-    text-shadow-inset($headline-offset, rgba(0, 0, 0, 1), #e9e9e9)
+    color #e9e9e9
+    text-shadow rgba(0, 0, 0, 1) 0 -1px 0
 
-    &:before
-      overflow ellipsis
 
     transition-property opacity, -webkit-transform
     transition-timing-function cubic-bezier(.2, .14, .25, .81), ease-in-out
@@ -133,7 +129,8 @@ header
 
       font-size 12px
       overflow ellipsis
-      text-shadow-inset($headline-offset, rgba(0, 0, 0, 0.8), #e9e9e9)
+      color #e9e9e9
+      text-shadow rgba(0, 0, 0, 0.8) 0 -1px 0
 
       border-style solid
       border-width 1px
@@ -142,9 +139,3 @@ header
 
       &.active, &.selected
         box-shadow inset 0 -1px 1px #111
-
-      &:before
-        overflow ellipsis
-        left 5px
-        right 5px
-
