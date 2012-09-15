@@ -97,7 +97,7 @@ exports.prepare = function(object, type, fn) {
 
   // We need to create a new object that can be transformed for viewing
   object = Object.clone(object);
-  object.access_token = user && '?access_token=' + user.access_token;
+  object.bearer_token = user && '?bearer_token=' + user.bearer_token;
   object.random = '&' + Date.now(); // Used for cache invalidation
 
   object[type] = true;
@@ -145,7 +145,7 @@ exports.prepare = function(object, type, fn) {
   if (length(metadata.tags)) metadata.tags = metadata.tags.join(', ');
 
   media_files = media_files.sortByKey('format').map(function(file) {
-    return file.url + object.access_token;
+    return file.url + object.bearer_token;
   });
 
   object.media_files = length(media_files) ? JSON.stringify(media_files) : null;

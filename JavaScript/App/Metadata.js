@@ -26,7 +26,7 @@ exports.createView = function(store, data) {
     title: 'Metadata',
     content: UI.render('form-new-metadata', {
       thumbnail: store.get('thumbnail'),
-      access_token: user && '?access_token=' + user.access_token,
+      bearer_token: user && '?bearer_token=' + user.bearer_token,
       random: '&' + Date.now() // Used for cache invalidation
     }),
     action: {

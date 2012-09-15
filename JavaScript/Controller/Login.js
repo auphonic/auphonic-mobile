@@ -56,11 +56,15 @@ Controller.define('/login', function() {
     };
 
     var name = data.name;
-    API.authenticate(data).on({
+    var password = data.password;
+    delete data.password;
+    delete data.name;
+
+    API.authenticate(name, password, data).on({
       success: function(response) {
         spinner.stop();
 
-        if (!/^access_token=/.test(response)) {
+        if (!response || !response.access_token) {
           error();
           return;
         }
@@ -70,7 +74,7 @@ Controller.define('/login', function() {
         API.invalidate();
         LocalStorage.set('User', {
           name: name,
-          access_token: response.substr(13) // minus access_token
+          bearer_token: response.access_token
         });
         History.push('/');
       },

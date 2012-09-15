@@ -1,6 +1,7 @@
 <form action="/" method="post">
   <input type="hidden" name="client_id" value="{{client_id}}" />
   <input type="hidden" name="client_secret" value="{{client_secret}}" />
+  <input type="hidden" name="grant_type" value="client_credentials" />
   <div class="formcontent">
     <input type="text" name="name" placeholder="email or username" autocapitalize="off" />
     <input type="password" name="password" placeholder="password" />

@@ -68,7 +68,7 @@ var formatGetURL = function(url, data) {
 
 var getAuthorization = function() {
   var user = LocalStorage.get('User');
-  return (user ? 'OAuth ' + user.access_token : '');
+  return (user ? 'Bearer ' + user.bearer_token : '');
 };
 
 API.call = function(url, method, requestData) {
@@ -165,15 +165,12 @@ API.upload = function(url, file, field) {
   return listeners;
 };
 
-API.authenticate = function(requestData) {
-  var url = 'oauth/grant/';
-  var authentication = 'Basic ' + Base64.encode(requestData.name + ':' + requestData.password);
+API.authenticate = function(name, password, requestData) {
+  var url = 'oauth2/token/';
+  var authentication = 'Basic ' + Base64.encode(name + ':' + password);
   var listeners = listenersFor(url);
 
-  delete requestData.name;
-  delete requestData.password;
-
-  new Request({
+  new Request.JSON({
 
     url: window.__API_DOMAIN + url,
     method: 'post',
