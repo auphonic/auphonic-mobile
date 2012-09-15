@@ -149,10 +149,8 @@ API.upload = function(url, file, field) {
   options.fileKey = field;
   options.fileName = file.name;
   options.mimeType = file.type;
-  options.params = {
-    headers: {
-      Authorization: getAuthorization()
-    }
+  options.headers = {
+    Authorization: getAuthorization()
   };
 
   queue.chain(function() {

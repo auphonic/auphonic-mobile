@@ -7,6 +7,7 @@ module.exports = new Class({
   Implements: [Class.Binds, Events],
 
   extension: 'wav',
+  canceled: false,
 
   initialize: function(filename) {
     this.filename = filename;
@@ -32,11 +33,20 @@ module.exports = new Class({
     this.fireEvent('cancel');
   },
 
+  cancel: function() {
+    this.canceled = true;
+    this.stop();
+  },
+
   update: function() {
     this.fireEvent('update');
   },
 
   onCaptureSuccess: function() {
+    var canceled = this.canceled;
+    this.canceled = false;
+    if (canceled) return;
+
     this.fireEvent('success', [this.file]);
   },
 
@@ -60,6 +70,10 @@ module.exports = new Class({
   },
 
   onCaptureError: function() {
+    var canceled = this.canceled;
+    this.canceled = false;
+    if (canceled) return;
+
     console.log('error');
     this.fireEvent('cancel');
   },

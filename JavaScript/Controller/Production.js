@@ -346,6 +346,9 @@ Controller.define('/production/recording/new-audio-start', function() {
   var recordings = LocalStorage.get('recordings') || [];
   var status = document.getElement('.record_status');
   var time;
+  var cancel = function() {
+    recorder.cancel();
+  };
 
   recorder = new CordovaAudioRecorder('mobile-recording-' + (recordings.length + 1)).addEvents({
     start: function() {
@@ -361,12 +364,15 @@ Controller.define('/production/recording/new-audio-start', function() {
     },
 
     cancel: function() {
+      View.getMain().getCurrentObject().removeEvent('hide:once', cancel);
       document.getElement('.record_button').show();
       document.getElement('.stop_record_button').hide();
     }
   });
 
   recorder.start();
+
+  View.getMain().getCurrentObject().addEvent('hide:once', cancel);
 });
 
 Controller.define('/production/recording/stop', function() {
