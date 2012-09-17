@@ -61,6 +61,8 @@
 		<string>CDVSplashScreen</string>
 		<key>Battery</key>
 		<string>CDVBattery</string>
+		<key>IdleTimer</key>
+		<string>IdleTimer</string>
 	</dict>
 </dict>
 </plist>

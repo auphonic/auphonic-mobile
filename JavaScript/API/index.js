@@ -7,7 +7,10 @@ var Request = require('Request');
 var Base64 = require('Utility/Base64');
 var LocalStorage = require('Utility/LocalStorage');
 
+var IdleTimer = require('Cordova/IdleTimer');
+
 var Queue = require('Queue').Queue;
+
 
 var urls = {};
 var cache = {};
@@ -132,8 +135,12 @@ API.call = function(url, method, requestData) {
 var queue = new Queue;
 
 API.upload = function(url, file, field) {
+  IdleTimer.disable();
+
   var listeners = listenersFor(url);
   var success = function(response) {
+    IdleTimer.enable();
+
     listeners.fireEvent('success', response);
     if (__DEV__) console.log('Code = ' + response.responseCode);
     if (__DEV__) console.log('Response = ' + response.response);
@@ -141,6 +148,8 @@ API.upload = function(url, file, field) {
   };
 
   var error = function(error) {
+    IdleTimer.enable();
+
     listeners.fireEvent('error', error);
     if (__DEV__) console.log(error.code);
   };

@@ -2,6 +2,8 @@ var Core = require('Core');
 var Class = Core.Class;
 var Events = Core.Events;
 
+var IdleTimer = require('Cordova/IdleTimer');
+
 module.exports = new Class({
 
   Implements: [Class.Binds, Events],
@@ -18,8 +20,8 @@ module.exports = new Class({
   },
 
   _capture: function() {
+    IdleTimer.disable();
     this.fireEvent('start');
-
     this.media = new window.Media(this.file.fullPath, this.bound('onCaptureSuccess'), this.bound('onCaptureError'));
     this.media.startRecord();
 
@@ -27,6 +29,7 @@ module.exports = new Class({
   },
 
   stop: function() {
+    IdleTimer.enable();
     clearInterval(this.timer);
     this.media.stopRecord();
 
