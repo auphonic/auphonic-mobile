@@ -55,12 +55,7 @@ Controller.define('/login', function() {
       login.empty().adopt(children);
     };
 
-    var name = data.name;
-    var password = data.password;
-    delete data.password;
-    delete data.name;
-
-    API.authenticate(name, password, data).on({
+    API.authenticate(data).on({
       success: function(response) {
         spinner.stop();
 
@@ -73,7 +68,7 @@ Controller.define('/login', function() {
         login.empty();
         API.invalidate();
         LocalStorage.set('User', {
-          name: name,
+          name: data.username,
           bearer_token: response.access_token
         });
         History.push('/');

@@ -163,9 +163,9 @@ API.upload = function(url, file, field) {
   return listeners;
 };
 
-API.authenticate = function(name, password, requestData) {
+API.authenticate = function(requestData) {
   var url = 'oauth2/token/';
-  var authentication = 'Basic ' + Base64.encode(name + ':' + password);
+  var authentication = 'Basic ' + Base64.encode(requestData.client_id + ':' + requestData.client_secret);
   var listeners = listenersFor(url);
 
   new Request.JSON({

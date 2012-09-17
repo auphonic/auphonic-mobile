@@ -1037,7 +1037,7 @@ templates['login'] = template(function (Handlebars,depth0,helpers,partials,data)
   buffer += escapeExpression(stack1) + "\" />\n  <input type=\"hidden\" name=\"client_secret\" value=\"";
   stack1 = depth0.client_secret;
   stack1 = typeof stack1 === functionType ? stack1() : stack1;
-  buffer += escapeExpression(stack1) + "\" />\n  <input type=\"hidden\" name=\"grant_type\" value=\"client_credentials\" />\n  <div class=\"formcontent\">\n    <input type=\"text\" name=\"name\" placeholder=\"email or username\" autocapitalize=\"off\" />\n    <input type=\"password\" name=\"password\" placeholder=\"password\" />\n  </div>\n  <div>\n    <input type=\"submit\" name=\"submit\" value=\"Login\" />\n    <a href=\"";
+  buffer += escapeExpression(stack1) + "\" />\n  <input type=\"hidden\" name=\"grant_type\" value=\"password\" />\n  <div class=\"formcontent\">\n    <input type=\"text\" name=\"username\" placeholder=\"email or username\" autocapitalize=\"off\" />\n    <input type=\"password\" name=\"password\" placeholder=\"password\" />\n  </div>\n  <div>\n    <input type=\"submit\" name=\"submit\" value=\"Login\" />\n    <a href=\"";
   stack1 = depth0.registerURL;
   stack1 = typeof stack1 === functionType ? stack1() : stack1;
   buffer += escapeExpression(stack1) + "\" value=\"Register\" class=\"register button\">Register</a>\n  </div>\n</form>\n";
