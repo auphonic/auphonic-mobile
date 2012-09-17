@@ -4,6 +4,8 @@ var Options = Core.Options;
 var Element = Core.Element;
 var Browser = Core.Browser;
 
+var UI = require('UI');
+
 var Queue = require('Queue').Queue;
 
 var templateElement = new Element('div');
@@ -34,6 +36,7 @@ module.exports = new Class({
     if (type == 'error') duration = 0;
 
     element.getElement('.text').set('html', message);
+    UI.update(element);
     this.duration = duration;
     this.push();
   },
@@ -104,6 +107,11 @@ module.exports = new Class({
 
   closeHandler: function(event) {
     event.preventDefault();
+
+    // Don't close when an anchor inside of a Notice is clicked
+    var target = event.target;
+    if (target && (target.get('tag') == 'a' || target.getParent('a')))
+      return;
 
     this.close();
   },

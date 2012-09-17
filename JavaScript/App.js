@@ -185,7 +185,7 @@ var boot = function() {
 
   UI.register({
 
-    '#main a:external, a.register': function(elements) {
+    '#main a:external, a.register, div.notice-inner a': function(elements) {
       elements.addEvent('click', clickExternal);
     },
 
@@ -274,13 +274,13 @@ var boot = function() {
   }).update();
 
   Notice.setContainer(document.body)
-    .setTemplate(new Element('div.notice').adopt(new Element('div.close'), new Element('div.text')));
+    .setTemplate(new Element('div.notice').adopt(new Element('div.close'), new Element('div.notice-inner.text')));
 
   var notice;
   var noticeText;
   API.setErrorHandler(function(data) {
     var text = '';
-    if (data && data.status_code) text = '<h1>An error occurred</h1> Please try again or report a bug so we can fix this as soon as possible.';
+    if (data && data.status_code) text = '<h1>An error occurred</h1> Please try again or <a href="{IssuesURL}">report a bug</a> so we can fix this as soon as possible.'.substitute(Auphonic);
     else text = '<h1>A network error ocurred</h1> Please put your device in some elevated position to regain Internet access. If the problem lies on our end we\'ll make sure to fix the problem quickly :)';
 
     View.getMain().hideIndicator();
