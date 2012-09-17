@@ -27,8 +27,13 @@
     }
 
     window.__SERVER_URL += window.__CORDOVA_VERSION + '/';
-    document.write('<link rel="stylesheet" media="all" type="text/css" href="' + window.__SERVER_URL + 'Style.css" />');
+    // Retrieve the App Version
+    document.write('\x3Cscript type="text/javascript" src="' + window.__SERVER_URL + 'Version.js?' + Date.now() + '">\x3C/script>');
   })();
+  </script>
+  <script type="text/javascript">
+    // window.__APP_VERSION is now available
+    document.write('<link rel="stylesheet" media="all" type="text/css" href="' + window.__SERVER_URL + 'Style-' + window.__APP_VERSION + '.css" />');
   </script>
 </head>
 <body class="chrome-invisible">
@@ -60,7 +65,7 @@
   </div>
   <script type="text/javascript">
     document.write('\x3Cscript type="text/javascript" src="cordova-' + window.__CORDOVA_VERSION + '.js">\x3C/script>');
-    document.write('\x3Cscript type="text/javascript" src="' + window.__SERVER_URL + 'App.js">\x3C/script>');
+    document.write('\x3Cscript type="text/javascript" src="' + window.__SERVER_URL + 'App-' + window.__APP_VERSION + '.js">\x3C/script>');
   </script>
 </body>
 </html>
