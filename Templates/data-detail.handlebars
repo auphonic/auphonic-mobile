@@ -1,24 +1,19 @@
-<div class="white-above"></div>
-<div class="content detail expand">
+<div class="detail expand{{#if thumbnail}} with-thumbnail{{/if}}">
   {{#if thumbnail}}
-    <img src="{{{image thumbnail}}}" class="thumbnail" />
+    <div class="cover-photo" style="background-image: url({{{image thumbnail}}});"></div>
+    <div class="gradient"></div>
   {{/if}}
-  {{#metadata}}
-    {{#if track}}<span class="track">#{{track}}</span>{{/if}}
-    <h1>{{title}}</h1>
-    {{#if genre}}<span class="genre">{{genre}}</span>{{/if}}
-    {{#if album}}<span class="album">{{album}}</span>{{/if}}
-    {{#if year}}<span class="year">{{year}}</span>{{/if}}
-    {{#if artist}}<span class="artist small light">{{artist}}</span>{{/if}}
-  {{/metadata}}
-  {{#if input_file}}
-    <span class="small service">
-      {{#if service_display_type}}<span class="light bold">{{service_display_type}}</span>{{/if}}
-      {{#if service_display_name}}<span class="bold">{{service_display_name}}</span>{{/if}}
-    </span>
-    <span class="small file">{{input_file}}</span>
-  {{/if}}
-  {{#if metadata.subtitle}}<div class="clear-left small light">{{metadata.subtitle}}</div>{{/if}}
+  <div class="detail-inner">
+    {{#metadata}}
+      {{#if genre}}<span class="genre">{{genre}}</span>{{/if}}
+      <h1>{{title}}</h1>
+      {{#if year}}<span class="year">{{year}}</span>{{/if}}
+      {{#if album}}<span class="album">{{album}}</span>{{/if}}
+      {{#if track}}<span class="track">#{{track}}</span>{{/if}}
+      {{#if artist}}<span class="artist small">{{artist}}</span>{{/if}}
+    {{/metadata}}
+  </div>
+  <div class="clear"></div>
 </div>
 
 {{#if media_files}}
@@ -35,6 +30,18 @@
 
 {{#if start_allowed}}
   <a href="#" data-api-url="/production/{{uuid}}/start" data-method="post" class="clear button green expand startProduction">Start Production</a>
+{{/if}}
+
+{{#if input_file}}
+  <h1>Input Source{{#if service_display_type}} - {{service_display_type}}{{/if}}</h1>
+  <ul>
+    <li><label>{{#if service_display_name}}<span class="light">{{service_display_name}}</span>{{/if}} <small>{{input_file}}</small></label></li>
+  </ul>
+{{/if}}
+
+{{#if metadata.subtitle}}
+  <h1>Subtitle</h1>
+  <div class="content small">{{metadata.subtitle}}</div>
 {{/if}}
 
 {{#if hasDetails}}

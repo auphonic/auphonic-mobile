@@ -11,13 +11,15 @@ img.thumbnail
   border-radius 5px
   box-shadow 0 1px 3px rgba(0, 0, 0, 0.4)
 
-div.detail.expand
+div.detail
+  position relative
   margin -10px -10px 15px -10px
-  border none
-  background-image linear-gradient(top, #fff 0%, #fff 90%, #e5e5e5 100%)
-  box-shadow 0 1px 2px rgba(0, 0, 0, 0.2)
+  padding 10px
+  background #fff
+  box-shadow 0 1px 3px rgba(0, 0, 0, 0.4)
 
   h1
+    text-shadow none
     margin-left 0
     margin-bottom 5px
 
@@ -30,7 +32,7 @@ div.detail.expand
     font-size 13px
     text-transform uppercase
 
-  span.artist, span.file, span.service
+  span.artist
     display block
     overflow ellipsis
     line-height 1.3em
@@ -39,9 +41,40 @@ div.detail.expand
     float right
     clear right
 
-    color $color-light
     font-size 12px
     line-height 1.3em
 
   span.track
     padding 3px 0 0 3px
+
+  &.with-thumbnail
+    height 130px
+    padding 0
+
+    div.cover-photo
+      position absolute
+      left 0
+      right 0
+      top -200px
+      height 330px
+      background-size 400px
+      background-position center -50%
+      background-repeat no-repeat
+
+    div.gradient
+      position absolute
+      left 0
+      right 0
+      top -70px
+      height 200px
+      background-image linear-gradient(top, rgba(0,0,0,0) 50%, rgba(0, 0, 0, 0.6) 100%)
+
+    div.detail-inner
+      position absolute
+      left 10px
+      right 10px
+      bottom 5px
+
+      h1, span
+        color #fff
+        text-shadow 0 1px 0 #000
