@@ -1,5 +1,3 @@
-var LocalStorage = require('Utility/LocalStorage');
-
 var API = require('API');
 var UI = require('UI');
 var View = require('View');
@@ -20,14 +18,11 @@ exports.setData = function(store, metadata) {
 
 exports.createView = function(store, data) {
   var object;
-  var user = LocalStorage.get('User');
 
   object = new View.Object({
     title: 'Metadata',
     content: UI.render('form-new-metadata', {
       thumbnail: store.get('thumbnail'),
-      bearer_token: user && '?bearer_token=' + user.bearer_token,
-      random: '&' + Date.now() // Used for cache invalidation
     }),
     action: {
       title: 'Done',

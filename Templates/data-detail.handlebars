@@ -1,7 +1,7 @@
 <div class="white-above"></div>
 <div class="content detail expand">
   {{#if thumbnail}}
-    <img src="{{thumbnail}}{{bearer_token}}{{random}}" class="thumbnail" />
+    <img src="{{{image thumbnail}}}" class="thumbnail" />
   {{/if}}
   {{#metadata}}
     {{#if track}}<span class="track">#{{track}}</span>{{/if}}
@@ -27,7 +27,7 @@
       <a class="play" href="#"><span class="hidden" data-media="1">{{media_files}}</span></a>
     </div>
     <div class="waveform content full">
-      <img src="{{waveform_image}}{{bearer_token}}{{random}}" />
+      <img src="{{{image waveform_image}}}" />
       <div class="position"></div>
     </div>
   </div>
