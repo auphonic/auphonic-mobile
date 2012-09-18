@@ -30,21 +30,17 @@ templates['data-detail-summary'] = template(function (Handlebars,depth0,helpers,
   return buffer;});
 templates['data-detail'] = template(function (Handlebars,depth0,helpers,partials,data) {
   helpers = helpers || Handlebars.helpers;
-  var buffer = "", stack1, functionType="function", escapeExpression=this.escapeExpression, self=this, helperMissing=helpers.helperMissing, blockHelperMissing=helpers.blockHelperMissing;
+  var buffer = "", stack1, helperMissing=helpers.helperMissing, functionType="function", escapeExpression=this.escapeExpression, self=this, blockHelperMissing=helpers.blockHelperMissing;
 
 function program1(depth0,data) {
   
-  var buffer = "", stack1;
+  var buffer = "", stack1, foundHelper;
   buffer += "\n    <img src=\"";
   stack1 = depth0.thumbnail;
-  stack1 = typeof stack1 === functionType ? stack1() : stack1;
-  buffer += escapeExpression(stack1);
-  stack1 = depth0.bearer_token;
-  stack1 = typeof stack1 === functionType ? stack1() : stack1;
-  buffer += escapeExpression(stack1);
-  stack1 = depth0.random;
-  stack1 = typeof stack1 === functionType ? stack1() : stack1;
-  buffer += escapeExpression(stack1) + "\" class=\"thumbnail\" />\n  ";
+  foundHelper = helpers.image;
+  stack1 = foundHelper ? foundHelper.call(depth0, stack1, {hash:{}}) : helperMissing.call(depth0, "image", stack1, {hash:{}});
+  if(stack1 || stack1 === 0) { buffer += stack1; }
+  buffer += "\" class=\"thumbnail\" />\n  ";
   return buffer;}
 
 function program3(depth0,data) {
@@ -166,20 +162,16 @@ function program19(depth0,data) {
 
 function program21(depth0,data) {
   
-  var buffer = "", stack1;
+  var buffer = "", stack1, foundHelper;
   buffer += "\n  <div class=\"player clear\">\n    <div class=\"play-button content full\">\n      <a class=\"play\" href=\"#\"><span class=\"hidden\" data-media=\"1\">";
   stack1 = depth0.media_files;
   stack1 = typeof stack1 === functionType ? stack1() : stack1;
   buffer += escapeExpression(stack1) + "</span></a>\n    </div>\n    <div class=\"waveform content full\">\n      <img src=\"";
   stack1 = depth0.waveform_image;
-  stack1 = typeof stack1 === functionType ? stack1() : stack1;
-  buffer += escapeExpression(stack1);
-  stack1 = depth0.bearer_token;
-  stack1 = typeof stack1 === functionType ? stack1() : stack1;
-  buffer += escapeExpression(stack1);
-  stack1 = depth0.random;
-  stack1 = typeof stack1 === functionType ? stack1() : stack1;
-  buffer += escapeExpression(stack1) + "\" />\n      <div class=\"position\"></div>\n    </div>\n  </div>\n";
+  foundHelper = helpers.image;
+  stack1 = foundHelper ? foundHelper.call(depth0, stack1, {hash:{}}) : helperMissing.call(depth0, "image", stack1, {hash:{}});
+  if(stack1 || stack1 === 0) { buffer += stack1; }
+  buffer += "\" />\n      <div class=\"position\"></div>\n    </div>\n  </div>\n";
   return buffer;}
 
 function program23(depth0,data) {
@@ -705,7 +697,7 @@ function program27(depth0,data) {
   return buffer;});
 templates['form-new-metadata'] = template(function (Handlebars,depth0,helpers,partials,data) {
   helpers = helpers || Handlebars.helpers;
-  var buffer = "", stack1, functionType="function", escapeExpression=this.escapeExpression, self=this;
+  var buffer = "", stack1, foundHelper, helperMissing=helpers.helperMissing, self=this;
 
 function program1(depth0,data) {
   
@@ -719,14 +711,10 @@ function program3(depth0,data) {
 
   buffer += "<ul class=\"formcontent\">\n  <li>\n    <label class=\"left\"><input type=\"text\" name=\"metadata.title\" class=\"right\" />Title</label>\n  </li>\n  <li>\n    <label class=\"left\"><input type=\"text\" name=\"metadata.album\" class=\"right\" />Album</label>\n  </li>\n  <li>\n    <label class=\"left\"><input type=\"text\" name=\"metadata.artist\" class=\"right\" />Artist</label>\n  </li>\n  <li>\n    <label class=\"left\"><input type=\"tel\" name=\"metadata.track\" class=\"right\" />Track</label>\n  </li>\n</ul>\n\n<h1>Cover Photo</h1>\n<img src=\"";
   stack1 = depth0.thumbnail;
-  stack1 = typeof stack1 === functionType ? stack1() : stack1;
-  buffer += escapeExpression(stack1);
-  stack1 = depth0.bearer_token;
-  stack1 = typeof stack1 === functionType ? stack1() : stack1;
-  buffer += escapeExpression(stack1);
-  stack1 = depth0.random;
-  stack1 = typeof stack1 === functionType ? stack1() : stack1;
-  buffer += escapeExpression(stack1) + "\" class=\"thumbnail";
+  foundHelper = helpers.image;
+  stack1 = foundHelper ? foundHelper.call(depth0, stack1, {hash:{}}) : helperMissing.call(depth0, "image", stack1, {hash:{}});
+  if(stack1 || stack1 === 0) { buffer += stack1; }
+  buffer += "\" class=\"thumbnail";
   stack1 = depth0.thumbnail;
   stack1 = helpers.unless.call(depth0, stack1, {hash:{},inverse:self.noop,fn:self.program(1, program1, data)});
   if(stack1 || stack1 === 0) { buffer += stack1; }
@@ -1044,7 +1032,7 @@ templates['login'] = template(function (Handlebars,depth0,helpers,partials,data)
   return buffer;});
 templates['preset'] = template(function (Handlebars,depth0,helpers,partials,data) {
   helpers = helpers || Handlebars.helpers;
-  var buffer = "", stack1, functionType="function", escapeExpression=this.escapeExpression, self=this;
+  var buffer = "", stack1, foundHelper, functionType="function", escapeExpression=this.escapeExpression, self=this, helperMissing=helpers.helperMissing;
 
 function program1(depth0,data) {
   
@@ -1082,7 +1070,12 @@ function program5(depth0,data) {
   stack1 = depth0.short_info;
   stack1 = helpers['if'].call(depth0, stack1, {hash:{},inverse:self.noop,fn:self.program(3, program3, data)});
   if(stack1 || stack1 === 0) { buffer += stack1; }
-  buffer += "\">\n    <span></span>\n    ";
+  buffer += "\">\n    <span></span>\n    <img src=\"";
+  stack1 = depth0.thumbnail;
+  foundHelper = helpers.image;
+  stack1 = foundHelper ? foundHelper.call(depth0, stack1, {hash:{}}) : helperMissing.call(depth0, "image", stack1, {hash:{}});
+  if(stack1 || stack1 === 0) { buffer += stack1; }
+  buffer += "\" class=\"small-logo list-thumbnail\" />\n    ";
   stack1 = depth0.preset_name;
   stack1 = typeof stack1 === functionType ? stack1() : stack1;
   buffer += escapeExpression(stack1) + "\n    ";
@@ -1126,7 +1119,7 @@ function program4(depth0,data) {
   return buffer;});
 templates['production'] = template(function (Handlebars,depth0,helpers,partials,data) {
   helpers = helpers || Handlebars.helpers;
-  var buffer = "", stack1, functionType="function", escapeExpression=this.escapeExpression;
+  var buffer = "", stack1, foundHelper, functionType="function", escapeExpression=this.escapeExpression, helperMissing=helpers.helperMissing;
 
 
   buffer += "<li class=\"show-popover\" data-popover-event=\"touchhold\">\n  <div class=\"hidden popover top justify\" data-position=\"top\">\n    <a href=\"/production/edit/";
@@ -1135,7 +1128,12 @@ templates['production'] = template(function (Handlebars,depth0,helpers,partials,
   buffer += escapeExpression(stack1) + "\" class=\"button expand\">Edit</a>\n  </div>\n  <a href=\"/production/";
   stack1 = depth0.uuid;
   stack1 = typeof stack1 === functionType ? stack1() : stack1;
-  buffer += escapeExpression(stack1) + "\" class=\"arrow expanded\">\n    <span></span>\n    ";
+  buffer += escapeExpression(stack1) + "\" class=\"arrow expanded\">\n    <span></span>\n    <img src=\"";
+  stack1 = depth0.thumbnail;
+  foundHelper = helpers.image;
+  stack1 = foundHelper ? foundHelper.call(depth0, stack1, {hash:{}}) : helperMissing.call(depth0, "image", stack1, {hash:{}});
+  if(stack1 || stack1 === 0) { buffer += stack1; }
+  buffer += "\" class=\"small-logo list-thumbnail\" />\n    ";
   stack1 = depth0.metadata;
   stack1 = stack1 == null || stack1 === false ? stack1 : stack1.title;
   stack1 = typeof stack1 === functionType ? stack1() : stack1;
