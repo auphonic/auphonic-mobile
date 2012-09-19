@@ -39,7 +39,7 @@ module.exports = new Class({
     this.setOptions(options);
 
     // Force binding to this class
-    this.createView = this.createView.bind(this);
+    this.createView = this.bound('createView');
   },
 
   getDisplayName: function() {
@@ -269,7 +269,7 @@ module.exports = new Class({
 
     // Use the selected preset (if any) so the cover photo gets preserved
     // but only if reset_cover_image is not set
-    if (!data.reset_cover_image) data.preset = store.get('preset');
+    if (!data.reset_cover_image) data.preset_cover_image = store.get('preset');
 
     // Use Title from productions
     if (data.title && data.title !== '') data['metadata.title'] = data.title;
