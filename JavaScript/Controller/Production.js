@@ -8,6 +8,7 @@ var Notice = require('UI/Notice');
 
 var LocalStorage = require('Utility/LocalStorage');
 
+var AudioRecorder = require('UI/AudioRecorder');
 var CordovaAudioRecorder = require('Capture/CordovaAudioRecorder');
 var CordovaVideoRecorder = require('Capture/CordovaVideoRecorder');
 
@@ -305,7 +306,6 @@ var upload = function(file) {
     API.upload('production/{uuid}/upload'.substitute(response.data), file, 'input_file').on({
       success: function() {
         new Notice('The recording <span class="bold">"' + file.name + '"</span> was successfully uploaded and attached to your production.');
-
         LocalStorage.erase('currentUpload');
       }
     });
@@ -343,38 +343,12 @@ Controller.define('/production/recording/new-audio', function() {
 });
 
 Controller.define('/production/recording/new-audio-start', function() {
-  var recordings = LocalStorage.get('recordings') || [];
-  var status = document.getElement('.record_status');
-  var time;
-  var cancel = function() {
-    recorder.cancel();
-  };
-
-  recorder = new CordovaAudioRecorder('mobile-recording-' + (recordings.length + 1)).addEvents({
-    start: function() {
-      time = 0;
-      document.getElement('.record_button').hide();
-      document.getElement('.stop_record_button').show();
-    },
-
-    success: upload,
-
-    update: function() {
-      status.set('text', (++time) + ' second' + (time == 1 ? '' : 's'));
-    },
-
-    cancel: function() {
-      View.getMain().getCurrentObject().removeEvent('hide:once', cancel);
-      document.getElement('.record_button').show();
-      document.getElement('.stop_record_button').hide();
-    }
-  });
-
-  recorder.start();
-
-  View.getMain().getCurrentObject().addEvent('hide:once', cancel);
+  recorder = new AudioRecorder(CordovaAudioRecorder, {
+    onSuccess: upload
+  }).start();
 });
 
 Controller.define('/production/recording/stop', function() {
   recorder.stop();
+  recorder = null;
 });

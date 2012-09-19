@@ -1,17 +1,20 @@
 var Core = require('Core');
 var Class = Core.Class;
 var Events = Core.Events;
+var Options = Core.Options;
 
 var IdleTimer = require('Cordova/IdleTimer');
 
 module.exports = new Class({
 
-  Implements: [Class.Binds, Events],
+  Implements: [Class.Binds, Options, Events],
 
   extension: 'wav',
   canceled: false,
 
-  initialize: function(filename) {
+  initialize: function(filename, options) {
+    this.setOptions(options);
+
     this.filename = filename;
   },
 
