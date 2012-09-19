@@ -208,15 +208,15 @@ API.invalidate = function(url) {
   });
 };
 
-API.cacheInfo = function(url, options) {
-  return API.on('info/' + url, Object.append({
+API.cacheInfo = function(options) {
+  return API.on('info', Object.append({
     lifetime: -1
   }, options)).call();
 };
 
 API.getInfo = function(type) {
-  var response = getCache('info/' + type);
-  return response && response.data;
+  var response = getCache('info');
+  return response && response.data && response.data[type];
 };
 
 API.setErrorHandler = function(fn) {

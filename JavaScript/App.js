@@ -119,19 +119,13 @@ var removeItem = function(element) {
   if (url && method) API.call(url, method);
 };
 
-// Make the info API calls and show the UI on success, or else provide a reload button
-var infoURLs = ['algorithms', 'output_files', 'service_types'];
+// Make the info API call and show the UI on success, or else provide a reload button
 var spinner;
 var isLoggedIn = !!LocalStorage.get('User');
-var loaded = 0;
 var load = function(event) {
-  isLoggedIn = !!LocalStorage.get('User');
-  if (loaded == infoURLs.length) {
-    UI.showChrome();
-    return;
-  }
-
   if (event) event.preventDefault();
+
+  isLoggedIn = !!LocalStorage.get('User');
 
   var retry = document.id('retry');
   if (retry) retry.hide();
@@ -139,25 +133,22 @@ var load = function(event) {
   if (!spinner) spinner = new Spinner(Auphonic.SpinnerOptions);
   if (isLoggedIn) spinner.spin(document.id('splash'));
 
-  loaded = 0;
-  infoURLs.each(function(info) {
-    API.cacheInfo(info, {
-      silent: !isLoggedIn
-    }).on({
-      success: function() {
-        if (++loaded < infoURLs.length || !isLoggedIn) return;
+  API.cacheInfo({
+    silent: !isLoggedIn
+  }).on({
+    success: function() {
+      Notice.closeAll();
+      if (!isLoggedIn) return;
 
-        spinner.stop();
-        Notice.closeAll();
-        UI.showChrome();
-        History.push('/');
-      },
-      error: function() {
-        spinner.stop();
-        var retry = document.id('retry').show();
-        retry.getElement('a').addEvent('click', load);
-      }
-    });
+      spinner.stop();
+      UI.showChrome();
+      History.push('/');
+    },
+    error: function() {
+      spinner.stop();
+      var retry = document.id('retry').show();
+      retry.getElement('a').addEvent('click', load);
+    }
   });
 };
 
