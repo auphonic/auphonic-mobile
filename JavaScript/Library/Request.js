@@ -35,6 +35,10 @@ var Request = module.exports = new Class({
 			url += (url.contains('?') ? '&' : '?') + data;
 			data = null;
 		}
+
+		// Add a timestamp to prevent any sort of caching
+		url += (url.contains('?') ? '&' : '?') + Date.now();
+
 		this.xhr.open(method, url, true);
 
 		// Set Headers
