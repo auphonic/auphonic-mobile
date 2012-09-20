@@ -24,6 +24,8 @@ var Source = require('App/Source');
 
 var Form = require('App/Form');
 
+var Auphonic = require('Auphonic');
+
 var form;
 var productions = {};
 var currentEditUUID = null;
@@ -321,7 +323,7 @@ var upload = function(file) {
     return;
   }
 
-  var data = {metadata: {title: 'Mobile App: New Production'}};
+  var data = {metadata: {title: Auphonic.DefaultTitle}};
   API.call('productions', 'post', JSON.stringify(data)).on({
     success: onCreateSuccess
   });

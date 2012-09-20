@@ -599,7 +599,7 @@ function program16(depth0,data) {
 function program17(depth0,data) {
   
   var buffer = "", stack1;
-  buffer += "\n        <li>\n          <label class=\"left\">\n            <select name=\"format\" class=\"preset-chooser right empty\" data-select-type=\"preserve-null-state\">\n              <option value=\"\" selected>No Preset</option>\n              ";
+  buffer += "\n        <li>\n          <label class=\"left\">\n            <select class=\"preset-chooser right empty\" data-select-type=\"preserve-null-state\">\n              <option value=\"\" selected>No Preset</option>\n              ";
   stack1 = depth0.presets;
   stack1 = helpers.each.call(depth0, stack1, {hash:{},inverse:self.noop,fn:self.program(18, program18, data)});
   if(stack1 || stack1 === 0) { buffer += stack1; }

@@ -151,7 +151,7 @@ module.exports = new Class({
     this.presets = presets;
 
     // This is a placeholder title created by the mobile app, remove it if possible
-    if (isEditMode && isProduction && data.metadata.title == 'Mobile App: New Production') {
+    if (isEditMode && isProduction && data.metadata.title == Auphonic.DefaultTitle) {
       data.metadata.title = '';
       isNewProduction = true;
     }

@@ -3,6 +3,7 @@ exports.FeedbackURL = 'mailto:christoph.pojer+auphonic@gmail.com?subject=Auphoni
 exports.RepositoryURL = 'https://github.com/auphonic/auphonic-mobile';
 exports.IssuesURL = 'https://github.com/auphonic/auphonic-mobile/issues';
 exports.RegisterURL = 'https://auphonic.com/accounts/register/';
+exports.DefaultTitle = 'Mobile App: New Production';
 
 exports.DefaultOutputFile = {
   format: 'mp3',
