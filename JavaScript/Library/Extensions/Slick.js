@@ -6,7 +6,7 @@ Slick.definePseudo('internal', function(){
 });
 
 Slick.definePseudo('external', function(){
-  return (this.hostname != location.hostname || (/^mailto:/).test(this.href));
+  return (this.hostname && this.hostname != location.hostname || (/^mailto:/).test(this.href));
 });
 
 Slick.definePseudo('input', function(){

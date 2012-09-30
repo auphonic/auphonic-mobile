@@ -21,8 +21,8 @@ var Metadata = require('App/Metadata');
 var OutputFiles = require('App/OutputFiles');
 var OutgoingService = require('App/OutgoingService');
 var Source = require('App/Source');
-
 var Form = require('App/Form');
+var ProductionStatus = require('App/ProductionStatus');
 
 var Auphonic = require('Auphonic');
 
@@ -120,34 +120,66 @@ Controller.define('/production', function() {
   });
 });
 
-var click = function(event) {
-  event.preventDefault();
-
-  var url = this.get('data-api-url');
-  var method = this.get('data-method');
-  if (url && method) API.call(url, method, 'null');
-
-  this.dispose();
+var statusOptions = {
+  url: 'production/{uuid}',
+  onFinish: function(production) {
+    productions[production.uuid] = production;
+    showOne(production, {refresh: true});
+  }
 };
 
-Controller.define('/production/{uuid}', function(req) {
+var showOne = function(req, options) {
   Data.prepare(productions[req.uuid], 'production', function(production) {
-    UI.register('a.startProduction', function(elements) {
-      elements.addEvent('click', click);
-    });
-
     addPlaceholder();
 
-    View.getMain().push('production', new View.Object({
+    var object = new View.Object({
       title: production.metadata.title,
-      content: UI.render('data-detail', production),
+      content: UI.render('detail', production),
       action: {
         title: 'Edit',
         url: '/production/edit/' + production.uuid
       },
-      onShow: resetEditUUID
-    }));
+      onShow: function() {
+        resetEditUUID();
+        var production = productions[req.uuid];
+        // Production is being processed
+        if (!production.change_allowed) {
+          var processing = object.toElement().getElement('.processing');
+          var productionStatus = new ProductionStatus(processing, statusOptions);
+
+          productionStatus.check(production);
+          object.addEvent('hide', productionStatus.bound('stop'));
+        }
+      }
+    });
+
+    if (options && options.refresh) View.getMain().replace(object);
+    else View.getMain().push('production', object);
   });
+};
+
+// Start a production and update the status
+var startProduction = function(event) {
+  event.preventDefault();
+
+  this.hide();
+  var processing = this.getNext('div.processing').show();
+  var productionStatus = new ProductionStatus(processing, statusOptions);
+
+  View.getMain().getCurrentObject().addEvent('hide', productionStatus.bound('stop'));
+
+  var url = this.get('data-api-url');
+  if (url) API.call(url, this.get('data-method'), 'null').on({
+    success: productionStatus.bound('update')
+  });
+};
+
+UI.register('a.startProduction', function(elements) {
+  elements.addEvent('click', startProduction);
+});
+
+Controller.define('/production/{uuid}', function(req) {
+  showOne(req);
 });
 
 Controller.define('/production/{uuid}/summary', function(req) {

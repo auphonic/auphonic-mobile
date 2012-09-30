@@ -10,29 +10,16 @@ var OutputFiles = require('./OutputFiles');
 var OutgoingService = require('./OutgoingService');
 var Source = require('./Source');
 
+var Auphonic = require('Auphonic');
+
 var length = function(object) {
   return object && object.length;
-};
-
-var statuses = {
-  '0': 'Incoming',
-  '1': 'Waiting',
-  '2': 'Error',
-  '3': 'Done',
-  '4': 'Processing',
-  '5': 'Encoding',
-  '6': 'Transferring',
-  '7': 'Encoding',
-  '8': 'Splitting',
-  '9': 'Incomplete',
-  '10': 'Not Started',
-  '11': 'Outdated'
 };
 
 var fields = ['output_files', 'outgoing_services', 'chapters'];
 var singular = ['file', 'service', 'chapter'];
 var format = exports.format = function(production) {
-  production.short_status_string = statuses[production.status];
+  production.short_status_string = Auphonic.StatusStrings[production.status];
 
   var short_info = [];
   fields.each(function(field, index) {

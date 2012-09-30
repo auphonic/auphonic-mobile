@@ -56,8 +56,8 @@ module.exports = new Class({
     this.indicator = new Spinner(this.options.indicatorOptions);
   },
 
-  push: function(stack, object) {
-    if (!object) {
+  push: function(stack, object, _options) {
+    if (arguments.length == 1) {
       object = stack;
       stack = this.getStack().getName();
     }
@@ -76,7 +76,7 @@ module.exports = new Class({
       object.setURL(History.getPath());
 
     var current = this._current;
-    var isImmediate = rotated;
+    var isImmediate = (_options && _options.immediate) || rotated;
     var direction = current.hasObject(object) ? 'left' : 'right';
     var previous;
     if (!isImmediate) previous = this.getCurrentObject().rememberScroll();
@@ -122,6 +122,14 @@ module.exports = new Class({
     if (current) History.push(current.getPrevious().getURL());
 
     return this;
+  },
+
+  replace: function(object) {
+    this.getCurrentObject().toElement().dispose();
+    this._current.pop();
+    return this.push(this._current.getName(), object, {
+      immediate: true
+    });
   },
 
   rotate: function(stack) {
