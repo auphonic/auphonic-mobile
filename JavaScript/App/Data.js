@@ -47,6 +47,30 @@ API.on('presets', {
   }
 });
 
+exports.formatInfos = function(response) {
+  // Process Algorithms into a usable format
+  response.data.algorithms_array = Object.values(Object.map(response.data.algorithms, function(item, algorithm) {
+    var object = Object.clone(item);
+    object.key = algorithm;
+    object[object.type] = true;
+    object[algorithm] = true;
+    // Put algorithms with values on the bottom
+    object.order = (object.type == 'select') ? 2 : 1;
+
+    if (object.type == 'select') object.options.each(function(option) {
+      if (option.value == object.default_value)
+        option.selected = true;
+
+      var substring = null;
+      if (algorithm == Auphonic.LUFSAlgorithmName) substring = option.display_name.match(Auphonic.LUFSDisplayFilter);
+      option.short_display_name = (substring && substring[0]) || option.display_name;
+    });
+
+    return object;
+  })).sortByKey('order');
+
+  return response;
+};
 
 var preferredFormats = {
   mp3: 1,
@@ -110,9 +134,24 @@ exports.prepare = function(object, type, fn) {
     return true;
   }) : null;
 
-  var algorithms = API.getInfo('algorithms');
-  object.algorithms = Object.values(Object.map(object.algorithms, function(value, algorithm) {
-    return (value && algorithms[algorithm]) ? algorithms[algorithm] : null;
+  object.algorithms = Object.values(Object.map(API.getInfo('algorithms_array'), function(algorithm) {
+    var value = object.algorithms[algorithm.key];
+    if (value == null) return null;
+    algorithm = Object.clone(algorithm);
+    algorithm.value = value;
+
+    if (algorithm.type == 'select') {
+      // Search for the correct value string in options
+      for (var i = 0; i < algorithm.options.length; i++) {
+        var option = algorithm.options[i];
+        if (option.value == value) {
+          algorithm.value_string = option.short_display_name;
+          break;
+        }
+      }
+    }
+
+    return algorithm;
   })).clean();
 
   object.hasAlgorithms = !!length(object.algorithms);

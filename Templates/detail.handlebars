@@ -128,13 +128,13 @@
   <h1>Algorithms</h1>
   <ul>
   {{#each algorithms}}
-    <li>
-      <label class="info">
+    <li class="wide">
+      {{#if select}}
+        <span class="right light bold">{{value_string}}</span>
+      {{/if}}
+      <label class="show-popover {{#if select}}left{{else}}info{{/if}}">
         <span></span>{{display_name}}
-        <div class="hidden popover top justify" data-position="top">
-          <h1>{{display_name}}</h1>
-          {{description}}
-        </div>
+        {{> algorithm-popover}}
       </label>
     </li>
   {{/each}}

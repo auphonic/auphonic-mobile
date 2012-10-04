@@ -1,0 +1,12 @@
+<div class="hidden popover top justify" data-position="top">
+  <h1>{{display_name}}</h1>
+  {{description}}
+  {{#if loudnesstarget}}
+    <h1 class="small">Available Options</h1>
+    <ul>
+    {{#each options}}
+      <li>{{display_name}}</li>
+    {{/each}}
+    </ul>
+  {{/if}}
+</div>

@@ -161,12 +161,8 @@ module.exports = new Class({
       (data || (data = {}))[type] = [Auphonic.DefaultOutputFile];
 
     var service = Source.getObject(store);
-    var algorithms = Object.values(Object.map(API.getInfo('algorithms'), function(content, algorithm) {
-      return Object.append({key: algorithm}, content);
-    }));
-
     var uiData = {
-      algorithm: algorithms,
+      algorithm: API.getInfo('algorithms_array'),
       baseURL: this.getBaseURL(),
       name: this.getObjectName(data),
       output_basename: isEditMode && data.output_basename,

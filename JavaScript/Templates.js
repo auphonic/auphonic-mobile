@@ -17,6 +17,40 @@ templates['about'] = template(function (Handlebars,depth0,helpers,partials,data)
   if(stack1 || stack1 === 0) { buffer += stack1; }
   buffer += "</span></a></li>\n</ul>\n";
   return buffer;});
+templates['algorithm-popover'] = template(function (Handlebars,depth0,helpers,partials,data) {
+  helpers = helpers || Handlebars.helpers;
+  var buffer = "", stack1, functionType="function", escapeExpression=this.escapeExpression, self=this;
+
+function program1(depth0,data) {
+  
+  var buffer = "", stack1;
+  buffer += "\n    <h1 class=\"small\">Available Options</h1>\n    <ul>\n    ";
+  stack1 = depth0.options;
+  stack1 = helpers.each.call(depth0, stack1, {hash:{},inverse:self.noop,fn:self.program(2, program2, data)});
+  if(stack1 || stack1 === 0) { buffer += stack1; }
+  buffer += "\n    </ul>\n  ";
+  return buffer;}
+function program2(depth0,data) {
+  
+  var buffer = "", stack1;
+  buffer += "\n      <li>";
+  stack1 = depth0.display_name;
+  stack1 = typeof stack1 === functionType ? stack1() : stack1;
+  buffer += escapeExpression(stack1) + "</li>\n    ";
+  return buffer;}
+
+  buffer += "<div class=\"hidden popover top justify\" data-position=\"top\">\n  <h1>";
+  stack1 = depth0.display_name;
+  stack1 = typeof stack1 === functionType ? stack1() : stack1;
+  buffer += escapeExpression(stack1) + "</h1>\n  ";
+  stack1 = depth0.description;
+  stack1 = typeof stack1 === functionType ? stack1() : stack1;
+  buffer += escapeExpression(stack1) + "\n  ";
+  stack1 = depth0.loudnesstarget;
+  stack1 = helpers['if'].call(depth0, stack1, {hash:{},inverse:self.noop,fn:self.program(1, program1, data)});
+  if(stack1 || stack1 === 0) { buffer += stack1; }
+  buffer += "\n</div>\n";
+  return buffer;});
 templates['data-detail-summary'] = template(function (Handlebars,depth0,helpers,partials,data) {
   helpers = helpers || Handlebars.helpers;
   var buffer = "", stack1, functionType="function", escapeExpression=this.escapeExpression;
@@ -35,7 +69,7 @@ templates['default'] = template(function (Handlebars,depth0,helpers,partials,dat
 
   return "<div class=\"logo\"></div>\n<ul>\n  <li><a href=\"/production/recording/new-audio\" class=\"arrow\"><span></span>Start a new Recording</a></li>\n  <li><a href=\"/production/source\" class=\"arrow\"><span></span>Create a new Production</a></li>\n  <li><a href=\"/preset/new\" class=\"arrow\"><span></span>Define a Preset</a></li>\n</ul>\n";});
 templates['detail'] = template(function (Handlebars,depth0,helpers,partials,data) {
-  helpers = helpers || Handlebars.helpers;
+  helpers = helpers || Handlebars.helpers; partials = partials || Handlebars.partials;
   var buffer = "", stack1, helperMissing=helpers.helperMissing, functionType="function", escapeExpression=this.escapeExpression, self=this, blockHelperMissing=helpers.blockHelperMissing;
 
 function program1(depth0,data) {
@@ -442,17 +476,41 @@ function program65(depth0,data) {
 function program66(depth0,data) {
   
   var buffer = "", stack1;
-  buffer += "\n    <li>\n      <label class=\"info\">\n        <span></span>";
+  buffer += "\n    <li class=\"wide\">\n      ";
+  stack1 = depth0.select;
+  stack1 = helpers['if'].call(depth0, stack1, {hash:{},inverse:self.noop,fn:self.program(67, program67, data)});
+  if(stack1 || stack1 === 0) { buffer += stack1; }
+  buffer += "\n      <label class=\"show-popover ";
+  stack1 = depth0.select;
+  stack1 = helpers['if'].call(depth0, stack1, {hash:{},inverse:self.program(71, program71, data),fn:self.program(69, program69, data)});
+  if(stack1 || stack1 === 0) { buffer += stack1; }
+  buffer += "\">\n        <span></span>";
   stack1 = depth0.display_name;
   stack1 = typeof stack1 === functionType ? stack1() : stack1;
-  buffer += escapeExpression(stack1) + "\n        <div class=\"hidden popover top justify\" data-position=\"top\">\n          <h1>";
-  stack1 = depth0.display_name;
-  stack1 = typeof stack1 === functionType ? stack1() : stack1;
-  buffer += escapeExpression(stack1) + "</h1>\n          ";
-  stack1 = depth0.description;
-  stack1 = typeof stack1 === functionType ? stack1() : stack1;
-  buffer += escapeExpression(stack1) + "\n        </div>\n      </label>\n    </li>\n  ";
+  buffer += escapeExpression(stack1) + "\n        ";
+  stack1 = depth0;
+  stack1 = self.invokePartial(partials['algorithm-popover'], 'algorithm-popover', stack1, helpers, partials);;
+  if(stack1 || stack1 === 0) { buffer += stack1; }
+  buffer += "\n      </label>\n    </li>\n  ";
   return buffer;}
+function program67(depth0,data) {
+  
+  var buffer = "", stack1;
+  buffer += "\n        <span class=\"right light bold\">";
+  stack1 = depth0.value_string;
+  stack1 = typeof stack1 === functionType ? stack1() : stack1;
+  buffer += escapeExpression(stack1) + "</span>\n      ";
+  return buffer;}
+
+function program69(depth0,data) {
+  
+  
+  return "left";}
+
+function program71(depth0,data) {
+  
+  
+  return "info";}
 
   buffer += "<div class=\"detail expand";
   stack1 = depth0.thumbnail;
@@ -513,7 +571,7 @@ templates['form-new-chapter'] = template(function (Handlebars,depth0,helpers,par
 
   return "<ul class=\"formcontent\">\n  <li>\n    <label class=\"left\">\n      <input type=\"text\" name=\"start\" placeholder=\"00:00:00\" class=\"right\" data-required=\"1\" data-format-time=\"1\" data-matches=\"^([01]?\\d|2[0-3]):([0-5]\\d?)(:([0-5]\\d?(\\.(\\d{1,6})?)?)?)?$\" />\n      Start\n    </label>\n  </li>\n  <li>\n    <label class=\"left\">\n      <input type=\"text\" name=\"title\" class=\"right\" data-required=\"1\" />\n      Title\n    </label>\n  </li>\n</ul>\n";});
 templates['form-new-main'] = template(function (Handlebars,depth0,helpers,partials,data) {
-  helpers = helpers || Handlebars.helpers;
+  helpers = helpers || Handlebars.helpers; partials = partials || Handlebars.partials;
   var buffer = "", stack1, functionType="function", escapeExpression=this.escapeExpression, self=this;
 
 function program1(depth0,data) {
@@ -657,28 +715,80 @@ function program24(depth0,data) {
 function program26(depth0,data) {
   
   var buffer = "", stack1;
-  buffer += "\n    <li class=\"wide\">\n      <div class=\"right\">\n        <div class=\"checkbox\">\n          <div>\n            <span class=\"left\"></span><span class=\"thumb\" data-on=\"ON\" data-off=\"OFF\"></span>\n            <input type=\"checkbox\" name=\"algorithms.";
+  buffer += "\n    ";
+  stack1 = depth0.checkbox;
+  stack1 = helpers['if'].call(depth0, stack1, {hash:{},inverse:self.noop,fn:self.program(27, program27, data)});
+  if(stack1 || stack1 === 0) { buffer += stack1; }
+  buffer += "\n    ";
+  stack1 = depth0.select;
+  stack1 = helpers['if'].call(depth0, stack1, {hash:{},inverse:self.noop,fn:self.program(30, program30, data)});
+  if(stack1 || stack1 === 0) { buffer += stack1; }
+  buffer += "\n  ";
+  return buffer;}
+function program27(depth0,data) {
+  
+  var buffer = "", stack1;
+  buffer += "\n      <li class=\"wide\">\n        <div class=\"right\">\n          <div class=\"checkbox\">\n            <div>\n              <span class=\"left\"></span><span class=\"thumb\" data-on=\"ON\" data-off=\"OFF\"></span>\n              <input type=\"checkbox\" name=\"algorithms.";
   stack1 = depth0.key;
   stack1 = typeof stack1 === functionType ? stack1() : stack1;
   buffer += escapeExpression(stack1) + "\" value=\"1\"";
   stack1 = depth0.default_value;
-  stack1 = helpers['if'].call(depth0, stack1, {hash:{},inverse:self.noop,fn:self.program(27, program27, data)});
+  stack1 = helpers['if'].call(depth0, stack1, {hash:{},inverse:self.noop,fn:self.program(28, program28, data)});
   if(stack1 || stack1 === 0) { buffer += stack1; }
-  buffer += " />\n          </div>\n        </div>\n      </div>\n      <label class=\"left info\">\n        ";
+  buffer += " />\n            </div>\n          </div>\n        </div>\n        <label class=\"left info\">\n          ";
   stack1 = depth0.display_name;
   stack1 = typeof stack1 === functionType ? stack1() : stack1;
-  buffer += escapeExpression(stack1) + "\n        <div class=\"hidden popover top justify\" data-position=\"top\">\n          <h1>";
+  buffer += escapeExpression(stack1) + "\n          <div class=\"hidden popover top justify\" data-position=\"top\">\n            <h1>";
   stack1 = depth0.display_name;
   stack1 = typeof stack1 === functionType ? stack1() : stack1;
-  buffer += escapeExpression(stack1) + "</h1>\n          ";
+  buffer += escapeExpression(stack1) + "</h1>\n            ";
   stack1 = depth0.description;
   stack1 = typeof stack1 === functionType ? stack1() : stack1;
-  buffer += escapeExpression(stack1) + "\n        </div>\n      </label>\n    </li>\n  ";
+  buffer += escapeExpression(stack1) + "\n          </div>\n        </label>\n      </li>\n    ";
   return buffer;}
-function program27(depth0,data) {
+function program28(depth0,data) {
   
   
   return " checked=\"checked\"";}
+
+function program30(depth0,data) {
+  
+  var buffer = "", stack1;
+  buffer += "\n      <li class=\"wide\">\n        <label class=\"left info\">\n          <select name=\"algorithms.";
+  stack1 = depth0.key;
+  stack1 = typeof stack1 === functionType ? stack1() : stack1;
+  buffer += escapeExpression(stack1) + "\" class=\"right\">\n            ";
+  stack1 = depth0.options;
+  stack1 = helpers.each.call(depth0, stack1, {hash:{},inverse:self.noop,fn:self.program(31, program31, data)});
+  if(stack1 || stack1 === 0) { buffer += stack1; }
+  buffer += "\n          </select>\n          ";
+  stack1 = depth0.display_name;
+  stack1 = typeof stack1 === functionType ? stack1() : stack1;
+  buffer += escapeExpression(stack1) + "\n          ";
+  stack1 = depth0;
+  stack1 = self.invokePartial(partials['algorithm-popover'], 'algorithm-popover', stack1, helpers, partials);;
+  if(stack1 || stack1 === 0) { buffer += stack1; }
+  buffer += "\n        </label>\n      </li>\n    ";
+  return buffer;}
+function program31(depth0,data) {
+  
+  var buffer = "", stack1;
+  buffer += "\n              <option value=\"";
+  stack1 = depth0.value;
+  stack1 = typeof stack1 === functionType ? stack1() : stack1;
+  buffer += escapeExpression(stack1) + "\"";
+  stack1 = depth0.selected;
+  stack1 = helpers['if'].call(depth0, stack1, {hash:{},inverse:self.noop,fn:self.program(32, program32, data)});
+  if(stack1 || stack1 === 0) { buffer += stack1; }
+  buffer += ">";
+  stack1 = depth0.display_name;
+  stack1 = typeof stack1 === functionType ? stack1() : stack1;
+  buffer += escapeExpression(stack1) + "</option>\n            ";
+  return buffer;}
+function program32(depth0,data) {
+  
+  
+  return "selected=\"selected\"";}
 
   buffer += "<ul class=\"formcontent\">\n  ";
   stack1 = depth0.input_file;
@@ -915,10 +1025,6 @@ function program5(depth0,data) {
   stack1 = depth0.select;
   stack1 = helpers['if'].call(depth0, stack1, {hash:{},inverse:self.noop,fn:self.program(9, program9, data)});
   if(stack1 || stack1 === 0) { buffer += stack1; }
-  buffer += "\n          ";
-  stack1 = depth0.input;
-  stack1 = helpers['if'].call(depth0, stack1, {hash:{},inverse:self.noop,fn:self.program(19, program19, data)});
-  if(stack1 || stack1 === 0) { buffer += stack1; }
   buffer += "\n        ";
   return buffer;}
 function program6(depth0,data) {
@@ -1008,24 +1114,6 @@ function program17(depth0,data) {
   
   
   return "\n                  <span class=\"right placeholder\">select a value</span>\n                ";}
-
-function program19(depth0,data) {
-  
-  var buffer = "", stack1;
-  buffer += "\n            <li>\n              <label class=\"left\">\n                <input type=\"text\" name=\"outgoing_services.";
-  stack1 = depth0.uuid;
-  stack1 = typeof stack1 === functionType ? stack1() : stack1;
-  buffer += escapeExpression(stack1) + ".";
-  stack1 = depth0.key;
-  stack1 = typeof stack1 === functionType ? stack1() : stack1;
-  buffer += escapeExpression(stack1) + "\" value=\"";
-  stack1 = depth0.default_value;
-  stack1 = typeof stack1 === functionType ? stack1() : stack1;
-  buffer += escapeExpression(stack1) + "\"  class=\"right\" />\n                ";
-  stack1 = depth0.display_name;
-  stack1 = typeof stack1 === functionType ? stack1() : stack1;
-  buffer += escapeExpression(stack1) + "\n              </label>\n            </li>\n          ";
-  return buffer;}
 
   buffer += "<ul class=\"formcontent\">\n  ";
   stack1 = depth0.service;

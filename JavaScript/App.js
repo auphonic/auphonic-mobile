@@ -49,11 +49,14 @@ var Popover = require('UI/Actions/Popover');
 var Notice = require('UI/Notice');
 var Spinner = require('Spinner');
 
+var Data = require('App/Data');
+
 var Auphonic = require('Auphonic');
 
 // Register Partials for Handlebars
 Handlebars.registerPartial('preset', Handlebars.templates.preset);
 Handlebars.registerPartial('production', Handlebars.templates.production);
+Handlebars.registerPartial('algorithm-popover', Handlebars.templates['algorithm-popover']);
 
 // Monkey Patch for Cordova which sometimes adds file:///
 var getPath = History.getPath;
@@ -134,7 +137,8 @@ var load = function(event) {
   if (isLoggedIn) spinner.spin(document.id('splash'));
 
   API.cacheInfo({
-    silent: !isLoggedIn
+    silent: !isLoggedIn,
+    formatter: Data.formatInfos
   }).on({
     success: function() {
       Notice.closeAll();

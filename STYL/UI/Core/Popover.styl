@@ -17,11 +17,15 @@
   opacity 1
 
   h1
+    margin 10px 0 10px 0
     margin-left 0
     margin-right 0
     color #fff
     text-align center
     text-shadow none
+
+    &:first-child
+      margin-top 0
 
   &.fade
     transform scale(0)
@@ -59,3 +63,18 @@
   &.top:after
     border-bottom-color transparent
     border-top-color #444
+
+  // Necessary because of CSS specificity
+  div.container & ul
+    margin 0
+
+    font-size 0.9em
+
+    border-radius 0
+    background none
+    box-shadow none
+
+    li
+      padding 3px
+      overflow ellipsis
+      border none

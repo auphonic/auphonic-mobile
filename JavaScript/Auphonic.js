@@ -53,6 +53,9 @@ var statusStrings = {
   '11': 'Outdated'
 };
 
+exports.LUFSAlgorithmName = 'loudnesstarget';
+exports.LUFSDisplayFilter = /^.*?lufs/i;
+
 exports.getStatusString = function(type) {
   return statusStrings[type] || 'Processing';
 };

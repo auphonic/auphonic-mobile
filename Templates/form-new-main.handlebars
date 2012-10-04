@@ -76,22 +76,37 @@
 <h1>Algorithms</h1>
 <ul class="formcontent">
   {{#each algorithm}}
-    <li class="wide">
-      <div class="right">
-        <div class="checkbox">
-          <div>
-            <span class="left"></span><span class="thumb" data-on="ON" data-off="OFF"></span>
-            <input type="checkbox" name="algorithms.{{key}}" value="1"{{#if default_value}} checked="checked"{{/if}} />
+    {{#if checkbox}}
+      <li class="wide">
+        <div class="right">
+          <div class="checkbox">
+            <div>
+              <span class="left"></span><span class="thumb" data-on="ON" data-off="OFF"></span>
+              <input type="checkbox" name="algorithms.{{key}}" value="1"{{#if default_value}} checked="checked"{{/if}} />
+            </div>
           </div>
         </div>
-      </div>
-      <label class="left info">
-        {{display_name}}
-        <div class="hidden popover top justify" data-position="top">
-          <h1>{{display_name}}</h1>
-          {{description}}
-        </div>
-      </label>
-    </li>
+        <label class="left info">
+          {{display_name}}
+          <div class="hidden popover top justify" data-position="top">
+            <h1>{{display_name}}</h1>
+            {{description}}
+          </div>
+        </label>
+      </li>
+    {{/if}}
+    {{#if select}}
+      <li class="wide">
+        <label class="left info">
+          <select name="algorithms.{{key}}" class="right">
+            {{#each options}}
+              <option value="{{value}}"{{#if selected}}selected="selected"{{/if}}>{{display_name}}</option>
+            {{/each}}
+          </select>
+          {{display_name}}
+          {{> algorithm-popover}}
+        </label>
+      </li>
+    {{/if}}
   {{/each}}
 </ul>
