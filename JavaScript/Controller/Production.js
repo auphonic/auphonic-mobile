@@ -102,7 +102,7 @@ Controller.define('/production', function() {
         title: 'New',
         url: '/production/source'
       },
-      type: 'white',
+      type: response.data.length && 'white',
       loadMoreFunction: load,
       loadMoreOptions: options,
       loadedItems: response.data.length,

@@ -77,7 +77,6 @@ Controller.define('/preset', function() {
 
   load(options, function(response) {
     add(response.data);
-
     View.getMain().push('preset', new View.Object.LoadMore({
       title: 'Presets',
       content: UI.render('presets', {preset: response.data}),
@@ -85,7 +84,7 @@ Controller.define('/preset', function() {
         title: 'New',
         url: '/preset/new'
       },
-      type: 'white',
+      type: response.data.length && 'white',
       loadMoreFunction: load,
       loadMoreOptions: options,
       loadedItems: response.data.length,
