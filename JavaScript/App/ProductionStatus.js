@@ -62,7 +62,7 @@ module.exports = new Class({
       return;
     }
 
-    this.progress.updateText(Auphonic.StatusStrings[production.status]);
+    this.progress.updateText(Auphonic.getStatusString(production.status));
     this.timer = this.check.delay(this.options.delay, this, [production]);
 
     return this;

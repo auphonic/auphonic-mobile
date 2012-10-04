@@ -5,21 +5,6 @@ exports.IssuesURL = 'https://github.com/auphonic/auphonic-mobile/issues';
 exports.RegisterURL = 'https://auphonic.com/accounts/register/';
 exports.DefaultTitle = 'Mobile App: New Production';
 
-exports.StatusStrings = {
-  '0': 'Incoming',
-  '1': 'Waiting',
-  '2': 'Error',
-  '3': 'Done',
-  '4': 'Processing',
-  '5': 'Encoding',
-  '6': 'Transferring',
-  '7': 'Encoding',
-  '8': 'Splitting',
-  '9': 'Incomplete',
-  '10': 'Not Started',
-  '11': 'Outdated'
-};
-
 exports.DefaultOutputFile = {
   format: 'mp3',
   bitrate: '96'
@@ -51,4 +36,23 @@ exports.ViewSpinnerOptionsSmall = {
   trail: 30,
   color: '#000',
   className: 'spinner-inline-bottom'
+};
+
+var statusStrings = {
+  '0': 'Incoming',
+  '1': 'Waiting',
+  '2': 'Error',
+  '3': 'Done',
+  '4': 'Processing',
+  '5': 'Encoding',
+  '6': 'Transferring',
+  '7': 'Encoding',
+  '8': 'Splitting',
+  '9': 'Incomplete',
+  '10': 'Not Started',
+  '11': 'Outdated'
+};
+
+exports.getStatusString = function(type) {
+  return statusStrings[type] || 'Processing';
 };

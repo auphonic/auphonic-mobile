@@ -19,7 +19,7 @@ var length = function(object) {
 var fields = ['output_files', 'outgoing_services', 'chapters'];
 var singular = ['file', 'service', 'chapter'];
 var format = exports.format = function(production) {
-  production.short_status_string = Auphonic.StatusStrings[production.status];
+  production.short_status_string = Auphonic.getStatusString(production.status);
 
   var short_info = [];
   fields.each(function(field, index) {
