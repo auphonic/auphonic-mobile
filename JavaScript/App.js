@@ -303,7 +303,7 @@ var boot = function() {
   var title = new UI.Title(header, new Element('h1'));
 
   View.setMain(new View.Controller('main', {
-    template: 'container-template',
+    template: 'container',
     contentSelector: 'div.scroll-content',
     scrollableSelector: 'div.scrollable',
 

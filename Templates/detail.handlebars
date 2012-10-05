@@ -32,9 +32,11 @@
   <a data-api-url="/production/{{uuid}}/start" data-method="post" class="clear button green expand startProduction">Start Production</a>
   <div class="content processing hidden"></div>
 {{else}}
-  {{#unless change_allowed}}
-    <div class="content processing">Processing</div>
-  {{/unless}}
+  {{#if production}}
+    {{#unless change_allowed}}
+      <div class="content processing">Processing</div>
+    {{/unless}}
+  {{/if}}
 {{/if}}
 
 {{#if input_file}}

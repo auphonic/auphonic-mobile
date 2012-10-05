@@ -3,6 +3,8 @@ var typeOf = Core.typeOf;
 var Class = Core.Class;
 var Events = Core.Events;
 
+var UI = require('UI');
+
 module.exports = new Class({
 
   Implements: [Events],
@@ -58,7 +60,7 @@ module.exports = new Class({
     var selector = view.getOption('contentSelector');
     var type = this.getType();
 
-    var element = document.id(template).getFirst().clone();
+    var element = Element.from(UI.render(template));
     if (type) element.addClass(type);
     element.getElement(selector).set('html', this.getContent());
 
