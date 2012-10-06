@@ -15,6 +15,7 @@ var Queue = require('Queue').Queue;
 var urls = {};
 var cache = {};
 var errorFn;
+var timeoutFn;
 
 var setCache = function(type, data, lifetime) {
   cache[type] = {
@@ -94,9 +95,14 @@ API.call = function(url, method, requestData) {
 
     url: getURL(url),
     method: method,
+    timeout: (method == 'get' ? 10000 : 0),
     headers: {
       'Authorization': getAuthorization(),
       'Content-Type': 'application/json'
+    },
+
+    onTimeout: function() {
+      if (timeoutFn) timeoutFn();
     },
 
     onFailure: function(data) {
@@ -223,3 +229,6 @@ API.setErrorHandler = function(fn) {
   errorFn = fn;
 };
 
+API.setTimeoutHandler = function(fn) {
+  timeoutFn = fn;
+};

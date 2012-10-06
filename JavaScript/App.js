@@ -75,8 +75,12 @@ var click = function(event) {
 
   if (!href) return;
   if (event.touches && event.touches.length > 1) return;
+
+  var isTabbarIcon = !!this.getParent('footer');
+  if (isTabbarIcon) Notice.closeAll();
+
   if (UI.isHighlighted(this)) {
-    if (!this.getParent('footer')) return;
+    if (!isTabbarIcon) return;
 
     // Tap on footer icon
     if (History.getPath() == href) {
@@ -276,12 +280,12 @@ exports.boot = function() {
 
   }).update();
 
-  Notice.setContainer(document.body)
-    .setTemplate(new Element('div.notice').adopt(new Element('div.close'), new Element('div.notice-inner.text')));
+  Notice.setContainer(document.body);
+  Notice.setTemplate(new Element('div.notice').adopt(new Element('div.close'), new Element('div.notice-inner.text')));
 
   var notice;
   var noticeText;
-  API.setErrorHandler(function(data) {
+  var errorHandler = function(data) {
     var text = '';
     if (data && data.status_code) text = '<h1>An error occurred</h1> Please try again or <a href="{IssuesURL}">report a bug</a> so we can fix this as soon as possible.'.substitute(Auphonic);
     else text = '<h1>A network error ocurred</h1> Please put your device in some elevated position to regain Internet access. If the problem lies on our end we\'ll make sure to fix the problem quickly :)';
@@ -296,7 +300,10 @@ exports.boot = function() {
 
     noticeText = text;
     notice = new Notice(text, {type: 'error'});
-  });
+  };
+
+  API.setTimeoutHandler(errorHandler);
+  API.setErrorHandler(errorHandler);
 
   UI.addEvents({
     enable: Popover.enable,

@@ -11,6 +11,7 @@ var Request = module.exports = new Class({
 	options: {
 		method: 'get',
 		url: window.location,
+		timeout: 0,
 		headers: {
 			'Accept': 'text/plain,text/html,application/xhtml+xml,application/xml',
 			'X-Requested-With': 'XMLHttpRequest'
@@ -40,6 +41,8 @@ var Request = module.exports = new Class({
 		url += (url.contains('?') ? '&' : '?') + Date.now();
 
 		this.xhr.open(method, url, true);
+		if (this.options.timeout)
+			this.timer = this.timeoutTimer.delay(this.options.timeout, this);
 
 		// Set Headers
 		var headers = this.options.headers;
@@ -50,6 +53,7 @@ var Request = module.exports = new Class({
 			this.xhr.setRequestHeader(header, headers[header]);
 
 		this.running = true;
+
 		this.xhr.send(data);
 	},
 
@@ -59,7 +63,7 @@ var Request = module.exports = new Class({
 		if ((this.xhr.status >= 200 && this.xhr.status < 300) || this.xhr.status === 0) this.success();
 		else this.failure();
 		this.fireEvent('complete', this.responseText);
-		this.running = false;
+		this.end();
 	},
 
 	success: function() {
@@ -70,11 +74,23 @@ var Request = module.exports = new Class({
 		this.fireEvent('failure', this.xhr.responseText);
 	},
 
+	end: function() {
+		if (!this.running) return;
+		this.running = false;
+		clearTimeout(this.timer);
+	},
+
 	cancel: function() {
 		if (!this.running) return;
+		this.end();
 		this.xhr.abort();
 		this.xhr.removeEventListener('readystatechange', this.bound('onReadyStateChange'), false);
 		this.fireEvent('cancel');
+	},
+
+	timeoutTimer: function() {
+		this.cancel();
+		this.fireEvent('timeout');
 	},
 
 	isRunning: function() {
@@ -107,8 +123,8 @@ Request.JSON = new Class({
 		}).bind(this)) || undefined;
 		if ((this.xhr.status >= 200 && this.xhr.status < 300) || this.xhr.status === 0) this.success();
 		else this.failure();
-		this.running = false;
 		this.fireEvent('complete', this.response);
+		this.end();
 	},
 
 	success: function() {
