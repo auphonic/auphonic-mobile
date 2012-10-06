@@ -39,11 +39,14 @@
         document.querySelector('head').appendChild(script);
       };
 
+      var links = [];
+      var timer = null;
       this.__loadCSS = function(url, success, error) {
         var listener = function() {
-          link.removeEventListener('success', listener, false);
+          link.removeEventListener('load', listener, false);
           link.onreadystatechange = null;
-          success.call(this);
+          if (success) success.call(this);
+          if (error) link.removeEventListener('error', error, false);
         };
 
         var link = document.createElement('link');
@@ -51,6 +54,7 @@
         link.setAttribute('media', 'all');
         link.setAttribute('type', 'text/css');
         link.setAttribute('href', url);
+        link.setAttribute('data-href', url);
 
         if (error) link.addEventListener('error', error, false);
 
@@ -63,6 +67,35 @@
         }
 
         document.querySelector('head').appendChild(link);
+        links.push({element: link, listener: listener});
+        if (!timer) timer = setInterval(poll, 20);
+      };
+
+      // Fallback polling method for browsers that don't support link.onload
+      var poll = function() {
+        var sheets = document.styleSheets;
+        var i = sheets.length;
+
+        // Cross Origin CSS loading
+        // http://yearofmoo.com/2011/03/cross-browser-stylesheet-preloading/
+        while (i--) {
+          var link = sheets[i];
+          var owner = link.ownerNode || link.owningElement;
+          var j = links.length;
+          if (owner) {
+            while (j--) {
+              if (owner == links[j].element) {
+                links[j].listener.call(links[j].element);
+                links.splice(j, 1);
+              }
+            }
+          }
+        }
+
+        if (!links.length) {
+          clearInterval(timer);
+          timer = null;
+        }
       };
 
       this.__loadCSS('App.css');
