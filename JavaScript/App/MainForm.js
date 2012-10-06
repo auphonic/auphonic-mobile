@@ -107,6 +107,13 @@ module.exports = new Class({
 
     if (data) store.set('thumbnail', data.thumbnail);
 
+    if (!data && (!this.isEditMode || this.isNewProduction)) {
+      // Set the default output file
+      var type = OutputFiles.getType();
+      data = {};
+      data[type] = [Auphonic.DefaultOutputFile];
+    }
+
     store.eachView(function(view, type) {
       if (view.setData)
         view.setData(store, data && data[type], this.getBaseURL(), object, this.isRendered);
@@ -155,10 +162,6 @@ module.exports = new Class({
       data.metadata.title = '';
       isNewProduction = true;
     }
-
-    var type = OutputFiles.getType();
-    if ((!isEditMode || isNewProduction) && (!data || !data[type] || !data[type].length))
-      (data || (data = {}))[type] = [Auphonic.DefaultOutputFile];
 
     var service = Source.getObject(store);
     var uiData = {
@@ -305,6 +308,9 @@ module.exports = new Class({
   },
 
   onUpload: function(file) {
+    // Don't reset the cover photo to the selected preset
+    this.store.set('preset', null);
+
     if (this.isEditMode) {
       this.upload(file);
       return;

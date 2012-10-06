@@ -164,7 +164,7 @@ API.upload = function(url, file, field) {
 
   queue.chain(function() {
     var transfer = new window.FileTransfer();
-    transfer.upload(file.fullPath, getURL(url), success, error, options);
+    transfer.upload(file.fullPath, getURL(url) + (url.contains('?') ? '&' : '?') + Date.now(), success, error, options);
 
     this.next();
   }).call();

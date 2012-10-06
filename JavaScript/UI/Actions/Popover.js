@@ -26,7 +26,7 @@ module.exports = new Class({
 
   enabled: true,
 
-  initialize: function(element, options){
+  initialize: function(element, options) {
     this.setOptions(options);
 
     element = this.element = document.id(element);
@@ -34,7 +34,7 @@ module.exports = new Class({
     return this.check(element) || this.setup();
   },
 
-  setup: function(){
+  setup: function() {
     var popover = this.popover = this.element.getElement(this.options.selector);
     popover.dispose().removeClass('hidden').addClass(this.options.animationClass);
     popover.store(baseKey, this.element);
@@ -44,22 +44,22 @@ module.exports = new Class({
     this.attach();
   },
 
-  attach: function(){
+  attach: function() {
     this.element.addEvent(this.event, this.bound('onClick'));
     this.popover.addEvent('click', this.bound('onPopoverClick'));
   },
 
-  detach: function(){
+  detach: function() {
     this.element.removeEvent(this.event, this.bound('onClick'));
     this.popover.removeEvent('click', this.bound('onPopoverClick'));
   },
 
-  onClick: function(event){
+  onClick: function(event) {
     if (!this.enabled || !enabled) return;
 
     event.preventDefault();
 
-    if (this.isOpen){
+    if (this.isOpen) {
       this.close();
       return;
     }
@@ -73,7 +73,7 @@ module.exports = new Class({
     this.close();
   },
 
-  onComplete: function(){
+  onComplete: function() {
     this.isOpen = false;
     this.popover.dispose();
 
@@ -84,7 +84,7 @@ module.exports = new Class({
     }
   },
 
-  open: function(content){
+  open: function(content) {
     if (this.isOpen) return this;
     this.isOpen = true;
 
@@ -99,7 +99,7 @@ module.exports = new Class({
       window.addEvent('touchend', this.bound('enableElement'));
     }
 
-    (function(){
+    (function() {
       // Delay because the event probably still bubbles and would cause 'close' to be called via OuterClickStack
       OuterClickStack.push(this.bound('close'), popover);
 
@@ -109,7 +109,7 @@ module.exports = new Class({
     return this;
   },
 
-  close: function(){
+  close: function() {
     if (!this.isOpen) return this;
 
     window.removeEventListener('orientationchange', this.bound('position'), false);
@@ -140,7 +140,7 @@ module.exports = new Class({
     return container.offsetTop + element.offsetHeight + this.options.arrowHeight;
   },
 
-  position: function(){
+  position: function() {
     var element = this.getScrollElement();
     var popover = this.popover;
     var top = this.getPosition();

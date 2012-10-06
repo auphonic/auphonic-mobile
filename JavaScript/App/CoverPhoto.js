@@ -73,7 +73,7 @@ exports.createView = function(store, object) {
 
     // This is nasty but prevents ghost clicks on iOS properly
     UI.disable(container);
-    UI.enable.delay(300, null, container);
+    UI.enable.delay(300, UI, container);
 
     object.getView().getAction().toElement().addEvent('click:once', eraseFromStore);
     object.getView().getBack().toElement().addEvent('click:once', removeListeners);
