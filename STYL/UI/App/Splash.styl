@@ -1,0 +1,29 @@
+@import 'nib'
+
+@import '../../mixin/expand'
+
+div.splash
+  z-index 20
+  expand()
+
+  transition-property transform
+  transition-duration 350ms
+  transform translate3d(0, 0, 0)
+
+  background-image url(./Splash.jpg)
+  background-repeat no-repeat
+  background-position center
+  background-size 100% 100%
+
+  &.fade
+    transform translate3d(0, -100%, 0)
+
+@css {
+  /* Target iPhone 4(S) and properly center the Splash */
+  @media only screen and (max-device-height: 960px) and (-webkit-min-device-pixel-ratio: 2) {
+  div.splash {
+    -webkit-background-size: 100% 568px;
+    -moz-background-size: 100% 568px;
+    background-size: 100% 568px;
+  }
+}

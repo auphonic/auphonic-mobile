@@ -3,6 +3,7 @@ AUPHONIC_HASH=`git rev-parse --verify HEAD`
 
 AUPHONIC_JS="../JavaScript"
 AUPHONIC_STYL="../STYL"
+AUPHONIC_APP="../App"
 AUPHONIC_IMAGES="../Images"
 AUPHONIC_TEMPLATES="../Templates"
 AUPHONIC_TEMPLATES_MODULE="Templates.js"

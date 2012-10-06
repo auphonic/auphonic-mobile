@@ -7,85 +7,68 @@
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
   <style type="text/css">
-    div.splash {
-      z-index: 20;
-      position: absolute;
-      left: 0;
-      right: 0;
-      top: 0;
-      bottom: 0;
-      -webkit-transition-property: -webkit-transform;
-      -moz-transition-property: -moz-transform;
-      -o-transition-property: -o-transform;
-      -ms-transition-property: -ms-transform;
-      transition-property: transform;
-      -webkit-transition-duration: 350ms;
-      -moz-transition-duration: 350ms;
-      -o-transition-duration: 350ms;
-      -ms-transition-duration: 350ms;
-      transition-duration: 350ms;
-      -webkit-transform: translate3d(0, 0, 0);
-      -moz-transform: translate3d(0, 0, 0);
-      -o-transform: translate3d(0, 0, 0);
-      -ms-transform: translate3d(0, 0, 0);
-      transform: translate3d(0, 0, 0);
-      background-image: url(./Splash.jpg);
-      background-repeat: no-repeat;
-      background-position: center;
-      -webkit-background-size: 100% 100%;
-      -moz-background-size: 100% 100%;
-      background-size: 100% 100%;
-    }
-
-    div.splash.fade {
-      -webkit-transform: translate3d(0, -100%, 0);
-      -moz-transform: translate3d(0, -100%, 0);
-      -o-transform: translate3d(0, -100%, 0);
-      -ms-transform: translate3d(0, -100%, 0);
-      transform: translate3d(0, -100%, 0);
-    }
-
     .hidden {
       display: none;
     }
-
-    /* Target iPhone 4(S) and properly center the Splash */
-    @media only screen and (max-device-height: 960px) and (-webkit-min-device-pixel-ratio: 2) {
-      div.splash {
-        -webkit-background-size: 100% 568px;
-        -moz-background-size: 100% 568px;
-        background-size: 100% 568px;
-      }
-    }
   </style>
   <script type="text/javascript">
-  (function() {
-    window.__CORDOVA_VERSION = '2.1.0';
-    window.__API_DOMAIN = 'https://auphonic.com/';
-    window.__SERVER_URL = 'https://auphonic.com/mobile/';
+    (function() {
+      this.__CORDOVA_VERSION = '2.1.0';
+      this.__API_DOMAIN = 'https://auphonic.com/';
+      this.__SERVER_URL = 'https://auphonic.com/mobile/';
 
-    // Update this if you are testing the application locally.
-    var DEVbaseURL = '/Thesis/App/';
-    // Local test URL for the Server scripts. Remove this when deploying.
-    window.__SERVER_URL = 'http://10.0.0.4' + DEVbaseURL + '../Server/';
-    if (new RegExp('^' + DEVbaseURL).test(location.pathname)) {
-      window.__LOCALHOST__ = true;
-      window.__baseURL = DEVbaseURL;
-      window.__API_DOMAIN = '../wrapper.php?';
-      window.__SERVER_URL = DEVbaseURL + '../Server/';
+      // Update this if you are testing the application locally.
+      var DEVbaseURL = '/Thesis/App/';
+      // Local test URL for the Server scripts. Remove this when deploying.
+      this.__SERVER_URL = 'http://10.201.1.91' + DEVbaseURL + '../Server/';
+      if (new RegExp('^' + DEVbaseURL).test(location.pathname)) {
+        this.__LOCALHOST__ = true;
+        this.__baseURL = DEVbaseURL;
+        this.__API_DOMAIN = '../wrapper.php?';
+        this.__SERVER_URL = DEVbaseURL + '../Server/';
+        document.write('<base href="' + DEVbaseURL + '" />');
+      }
 
-      document.write('<base href="' + DEVbaseURL + '" />');
-    }
+      this.__SERVER_URL += this.__CORDOVA_VERSION + '/';
 
-    window.__SERVER_URL += window.__CORDOVA_VERSION + '/';
-    // Retrieve the App Version
-    document.write('\x3Cscript type="text/javascript" src="' + window.__SERVER_URL + 'Version.js?' + Date.now() + '">\x3C/script>');
-  })();
+      this.__loadJS = function(url, success, error) {
+        var script = document.createElement('script');
+        if (success) script.addEventListener('load', success, false);
+        if (error) script.addEventListener('error', error, false);
+        script.setAttribute('src', url);
+        document.querySelector('head').appendChild(script);
+      };
+
+      this.__loadCSS = function(url, success, error) {
+        var listener = function() {
+          link.removeEventListener('success', listener, false);
+          link.onreadystatechange = null;
+          success.call(this);
+        };
+
+        var link = document.createElement('link');
+        link.setAttribute('rel', 'stylesheet');
+        link.setAttribute('media', 'all');
+        link.setAttribute('type', 'text/css');
+        link.setAttribute('href', url);
+
+        if (error) link.addEventListener('error', error, false);
+
+        if (success) {
+          link.addEventListener('load', listener, false);
+          link.onreadystatechange = function() {
+              var state = link.readyState;
+              if (state === 'loaded' || state === 'complete') listener.call(this);
+            };
+        }
+
+        document.querySelector('head').appendChild(link);
+      };
+
+      this.__loadCSS('App.css');
+    }).call(window);
   </script>
-  <script type="text/javascript">
-    // window.__APP_VERSION is now available
-    document.write('<link rel="stylesheet" media="all" type="text/css" href="' + window.__SERVER_URL + 'Style-' + window.__APP_VERSION + '.css" />');
-  </script>
+  <script type="text/javascript" src="./Spinner.js"></script>
 </head>
 <body class="chrome-invisible">
   <div id="splash" class="splash"></div>
@@ -93,24 +76,57 @@
   <div id="retry" class="retry hidden">
     <a href="#" class="button expand">Retry</a>
   </div>
-
-  <div id="ui" class="hidden">
-    <header></header>
-    <footer>
-      <ul>
-        <li><a href="/production" class="production"><span></span><span>Productions</span></a></li>
-        <li><a href="/preset" class="preset"><span></span><span>Presets</span></a></li>
-        <li><a href="/recording" class="record"><span></span><span>Recordings</span></a></li>
-        <li><a href="/settings" class="settings"><span></span><span>Settings</span></a></li>
-      </ul>
-    </footer>
-    <div class="headerBackground"></div>
-    <div class="footerBackground"></div>
-    <div id="main"></div>
-  </div>
+  <script type="text/javascript" src="./cordova.js"></script>
   <script type="text/javascript">
-    document.write('\x3Cscript type="text/javascript" src="cordova-' + window.__CORDOVA_VERSION + '.js">\x3C/script>');
-    document.write('\x3Cscript type="text/javascript" src="' + window.__SERVER_URL + 'App-' + window.__APP_VERSION + '.js">\x3C/script>');
+    (function() {
+      var spinner = new Spinner({
+        lines: 12,
+        length: 10,
+        width: 7,
+        radius: 13,
+        trail: 30,
+        color: '#fff'
+      });
+
+      var loaded = 0;
+      var resources = 2;
+      var element = document.querySelector('#retry')
+
+      var clickRetry = function(event) {
+        if (event) event.preventDefault();
+
+        retry.className = 'retry hidden';
+        element.querySelector('a.button').removeEventListener('click', clickRetry, false);
+        load();
+      };
+
+      var load = function() {
+        loaded = 0;
+
+        spinner.spin(document.querySelector('#splash'));
+        __loadJS(__SERVER_URL + 'Version.js?' + Date.now(), function() {
+          // __APP_VERSION is now available
+          __loadCSS(__SERVER_URL + 'Style-' + __APP_VERSION + '.css', success, error);
+          __loadJS(__SERVER_URL + 'App-' + __APP_VERSION + '.js', success, error);
+        }, error);
+      };
+
+      var success = function() {
+        if (++loaded < resources) return;
+
+        spinner.stop();
+        require('App').boot();
+      };
+
+      var error = function() {
+        spinner.stop();
+
+        element.className = 'retry';
+        element.querySelector('a.button').addEventListener('click', clickRetry, false);
+      };
+
+      load();
+    })();
   </script>
 </body>
 </html>

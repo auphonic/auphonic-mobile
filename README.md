@@ -12,7 +12,7 @@ Install
 * `npm install` in the root folder
 * Create an App at https://auphonic.com/api/apps/ and insert your API Keys in `JavaScript/APIKeys.js`
 * Changes to `Templates/` can be applied by running `Scripts/compileTemplates`.
-* Use `Scripts/compile` to compile JavaScript and `Scripts/stylus` to compile Stylus to CSS
+* Use `Scripts/compile` to compile JavaScript, `Scripts/stylus` to compile Stylus to CSS and `Scripts/stylus-client` to compile the Stylus to CSS that is bundled with the App
 
 Run
 ---

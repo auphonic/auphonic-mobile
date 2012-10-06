@@ -131,7 +131,7 @@ var load = function(event) {
   isLoggedIn = !!LocalStorage.get('User');
 
   var retry = document.id('retry');
-  if (retry) retry.hide();
+  retry.hide();
 
   if (!spinner) spinner = new Spinner(Auphonic.SpinnerOptions);
   if (isLoggedIn) spinner.spin(document.id('splash'));
@@ -156,10 +156,10 @@ var load = function(event) {
   });
 };
 
-load();
-
 // This is a lot of glue code !
-var boot = function() {
+exports.boot = function() {
+  load();
+
   var activeState = (new ActiveState({
     active: 'active',
     hit: 'hit',
@@ -177,6 +177,8 @@ var boot = function() {
     // Prevent all clicks from working normally
     window.addEventListener('click', preventDefault, false);
   }
+
+  document.body.adopt(Element.from(UI.render('ui')));
 
   UI.register({
 
@@ -340,14 +342,3 @@ var boot = function() {
 
   if (!isLoggedIn) History.push('/login');
 };
-
-var fired;
-var ready = function(){
-  if (fired) return;
-  fired = true;
-
-  boot();
-};
-
-document.addEventListener('deviceready', ready, false);
-window.addEventListener('DOMContentLoaded', ready, false);

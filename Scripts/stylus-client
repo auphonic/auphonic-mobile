@@ -1,0 +1,6 @@
+#!/bin/bash
+DIR=$(cd `dirname $0` && pwd)
+
+source $DIR/variables
+
+$DIR/stylus-executable --use "$DIR/../node_modules/nib/lib/nib.js" --out "$DIR/$AUPHONIC_APP/" --watch "$DIR/$AUPHONIC_STYL/App" --use url --with "{\"paths\":[\"$DIR/$AUPHONIC_IMAGES\"],\"limit\":false}" $@
