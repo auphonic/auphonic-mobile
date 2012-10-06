@@ -133,8 +133,14 @@ var load = function(event) {
   var retry = document.id('retry');
   retry.hide();
 
-  if (!spinner) spinner = new Spinner(Auphonic.SpinnerOptions);
+  if (!spinner) {
+    var nativeSpinner = window.__NATIVE_SPINNER;
+    if (nativeSpinner && nativeSpinner.isSpinning()) spinner = nativeSpinner;
+    else spinner = new Spinner(Auphonic.SpinnerOptions);
+  }
+
   if (isLoggedIn) spinner.spin(document.id('splash'));
+  else spinner.stop();
 
   API.cacheInfo({
     silent: !isLoggedIn,

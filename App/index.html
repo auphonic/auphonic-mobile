@@ -85,7 +85,8 @@
   <script type="text/javascript" src="./cordova.js"></script>
   <script type="text/javascript">
     (function() {
-      var spinner = new Spinner({
+      // We are reusing this instance in App.js once all code has loaded
+      var spinner = this.__NATIVE_SPINNER = new Spinner({
         lines: 12,
         length: 10,
         width: 7,
@@ -122,10 +123,8 @@
       };
 
       var success = function() {
-        if (++loaded < resources) return;
-
-        spinner.stop();
-        require('App').boot();
+        // We are not stopping the spinner because it is being reused
+        if (++loaded >= resources) require('App').boot();
       };
 
       var error = function() {

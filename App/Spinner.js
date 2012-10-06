@@ -1,4 +1,5 @@
-//fgnass.github.com/spin.js#v1.2.5
+// fgnass.github.com/spin.js#v1.2.5
+// Modified for Auphonic
 (function() {
 
 /**
@@ -131,7 +132,13 @@ var Spinner = function Spinner(o) {
 
 Spinner.defaults = {};
 merge(Spinner.prototype, {
+  isSpinning: function() {
+    return this.spinning;
+  },
+
   spin: function(target) {
+    if (this.isSpinning()) return this;
+
     this.stop();
     var self = this;
     var o = self.opts;
@@ -159,6 +166,9 @@ merge(Spinner.prototype, {
         self.timeout = self.el && setTimeout(anim, ~~(1000/fps));
       }();
     }
+
+    this.spinning = true;
+
     return self;
   },
   stop: function() {
@@ -167,6 +177,7 @@ merge(Spinner.prototype, {
       clearTimeout(this.timeout);
       if (el.parentNode) el.parentNode.removeChild(el);
       this.el = undefined;
+      this.spinning = false;
     }
     return this;
   },
@@ -203,6 +214,8 @@ merge(Spinner.prototype, {
     if (i < el.childNodes.length) el.childNodes[i].style.opacity = val;
   }
 });
+
+useCssAnimations = vendor(document.createElement('div'), 'animation');
 
 window.Spinner = Spinner;
 
