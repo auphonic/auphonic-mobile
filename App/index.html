@@ -76,6 +76,12 @@
   <div id="retry" class="retry hidden">
     <a href="#" class="button expand">Retry</a>
   </div>
+  <div id="native-notice" class="notice native">
+    <div class="notice-inner text">
+      <h1>A network error ocurred</h1>
+      Please put your device in some elevated position to regain Internet access. If the problem lies on our end we'll make sure to fix the problem quickly :)
+    </div>
+  </div>
   <script type="text/javascript" src="./cordova.js"></script>
   <script type="text/javascript">
     (function() {
@@ -90,15 +96,19 @@
 
       var loaded = 0;
       var resources = 2;
-      var element = document.querySelector('#retry')
+      var retryElement = document.querySelector('#retry');
+      var noticeElement = document.querySelector('#native-notice');
 
       var clickRetry = function(event) {
         if (event) event.preventDefault();
 
+        noticeElement.style.display = '';
         retry.className = 'retry hidden';
-        element.querySelector('a.button').removeEventListener('click', clickRetry, false);
+        retryElement.querySelector('a.button').removeEventListener('click', clickRetry, false);
         load();
       };
+
+      var url = null;
 
       var load = function() {
         loaded = 0;
@@ -121,8 +131,9 @@
       var error = function() {
         spinner.stop();
 
-        element.className = 'retry';
-        element.querySelector('a.button').addEventListener('click', clickRetry, false);
+        noticeElement.style.display = 'block';
+        retryElement.className = 'retry';
+        retryElement.querySelector('a.button').addEventListener('click', clickRetry, false);
       };
 
       load();

@@ -15,8 +15,13 @@
 
   transition-property opacity, -webkit-transform, background
   transition-duration 400ms
-  transform scale(1) translate3d(0, -100%, 0)
+  transform translate3d(0, -100%, 0)
   opacity 0
+
+  &.native
+    display none
+    opacity 1
+    transform translate3d(0, 0, 0)
 
   .chrome-invisible &
     top 0
