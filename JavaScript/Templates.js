@@ -169,16 +169,12 @@ function program14(depth0,data) {
 
 function program16(depth0,data) {
   
-  var buffer = "", stack1, foundHelper;
-  buffer += "\n  <div class=\"player clear\">\n    <div class=\"play-button content full\">\n      <a class=\"play\" href=\"#\"><span class=\"hidden\" data-media=\"1\">";
-  stack1 = depth0.media_files;
-  stack1 = typeof stack1 === functionType ? stack1() : stack1;
-  buffer += escapeExpression(stack1) + "</span></a>\n    </div>\n    <div class=\"waveform content full\">\n      <img src=\"";
-  stack1 = depth0.waveform_image;
-  foundHelper = helpers.image;
-  stack1 = foundHelper ? foundHelper.call(depth0, stack1, {hash:{}}) : helperMissing.call(depth0, "image", stack1, {hash:{}});
+  var buffer = "", stack1;
+  buffer += "\n  ";
+  stack1 = depth0;
+  stack1 = self.invokePartial(partials.player, 'player', stack1, helpers, partials);;
   if(stack1 || stack1 === 0) { buffer += stack1; }
-  buffer += "\" />\n      <div class=\"position\"></div>\n    </div>\n  </div>\n";
+  buffer += "\n";
   return buffer;}
 
 function program18(depth0,data) {
@@ -1156,6 +1152,21 @@ templates['login'] = template(function (Handlebars,depth0,helpers,partials,data)
   stack1 = typeof stack1 === functionType ? stack1() : stack1;
   buffer += escapeExpression(stack1) + "\" value=\"Register\" class=\"register button\">Register</a>\n  </div>\n</form>\n";
   return buffer;});
+templates['player'] = template(function (Handlebars,depth0,helpers,partials,data) {
+  helpers = helpers || Handlebars.helpers;
+  var buffer = "", stack1, foundHelper, functionType="function", escapeExpression=this.escapeExpression, helperMissing=helpers.helperMissing;
+
+
+  buffer += "<div class=\"player clear\">\n  <div class=\"play-button content full\">\n    <a class=\"play\" href=\"#\"><span class=\"hidden\" data-media=\"1\">";
+  stack1 = depth0.media_files;
+  stack1 = typeof stack1 === functionType ? stack1() : stack1;
+  buffer += escapeExpression(stack1) + "</span></a>\n  </div>\n  <div class=\"waveform content full\">\n    <img src=\"";
+  stack1 = depth0.waveform_image;
+  foundHelper = helpers.image;
+  stack1 = foundHelper ? foundHelper.call(depth0, stack1, {hash:{}}) : helperMissing.call(depth0, "image", stack1, {hash:{}});
+  if(stack1 || stack1 === 0) { buffer += stack1; }
+  buffer += "\" />\n    <div class=\"position\"></div>\n  </div>\n</div>\n";
+  return buffer;});
 templates['preset'] = template(function (Handlebars,depth0,helpers,partials,data) {
   helpers = helpers || Handlebars.helpers;
   var buffer = "", stack1, foundHelper, functionType="function", escapeExpression=this.escapeExpression, self=this, helperMissing=helpers.helperMissing;
@@ -1311,6 +1322,20 @@ templates['record-audio'] = template(function (Handlebars,depth0,helpers,partial
 
   return "<ul class=\"record_button\">\n  <li><a href=\"/production/recording/new-audio-start\">Start Recording</a></li>\n</ul>\n<ul class=\"stop_record_button hidden\">\n  <li><span class=\"record_status right light\"></span><a href=\"/production/recording/stop\">Stop recording</a></li>\n</ul>\n";});
 templates['recording'] = template(function (Handlebars,depth0,helpers,partials,data) {
+  helpers = helpers || Handlebars.helpers; partials = partials || Handlebars.partials;
+  var buffer = "", stack1, functionType="function", escapeExpression=this.escapeExpression, self=this;
+
+
+  buffer += "<h1>";
+  stack1 = depth0.name;
+  stack1 = typeof stack1 === functionType ? stack1() : stack1;
+  buffer += escapeExpression(stack1) + "</h1>\n\n";
+  stack1 = depth0;
+  stack1 = self.invokePartial(partials.player, 'player', stack1, helpers, partials);;
+  if(stack1 || stack1 === 0) { buffer += stack1; }
+  buffer += "\n";
+  return buffer;});
+templates['recordings'] = template(function (Handlebars,depth0,helpers,partials,data) {
   helpers = helpers || Handlebars.helpers;
   var buffer = "", stack1, functionType="function", escapeExpression=this.escapeExpression, self=this;
 
@@ -1326,7 +1351,7 @@ function program1(depth0,data) {
 function program2(depth0,data) {
   
   var buffer = "", stack1;
-  buffer += "\n    <li><a href=\"/production/recording/";
+  buffer += "\n    <li><a href=\"/recording/";
   stack1 = depth0.name;
   stack1 = typeof stack1 === functionType ? stack1() : stack1;
   buffer += escapeExpression(stack1) + "\" class=\"arrow\"><span></span>";

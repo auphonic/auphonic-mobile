@@ -57,6 +57,7 @@ var Auphonic = require('Auphonic');
 Handlebars.registerPartial('preset', Handlebars.templates.preset);
 Handlebars.registerPartial('production', Handlebars.templates.production);
 Handlebars.registerPartial('algorithm-popover', Handlebars.templates['algorithm-popover']);
+Handlebars.registerPartial('player', Handlebars.templates['player']);
 
 // Monkey Patch for Cordova which sometimes adds file:///
 var getPath = History.getPath;

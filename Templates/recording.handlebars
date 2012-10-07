@@ -1,12 +1,3 @@
-{{#if recordings}}
-  <ul>
-  {{#each recordings}}
-    <li><a href="/production/recording/{{name}}" class="arrow"><span></span>{{name}}</a></li>
-  {{/each}}
-  </ul>
-{{else}}
-  <h1 class="null">You have no recent recordings.</h1>
-  <ul>
-    <li><a href="/production/recording/new-audio" class="arrow"><span></span>Start a new Recording</a></li>
-  </ul>
-{{/if}}
+<h1>{{name}}</h1>
+
+{{> player}}
