@@ -12,10 +12,10 @@ var Notice = require('UI/Notice');
 var SwipeAble = require('UI/Actions/SwipeAble');
 
 var Chapter = require('./Chapter');
+var ListFiles = require('./ListFiles');
 var Metadata = require('./Metadata');
 var OutputFiles = require('./OutputFiles');
 var Source = require('./Source');
-var ListFiles = require('./ListFiles');
 
 var Auphonic = require('Auphonic');
 

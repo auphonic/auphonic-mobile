@@ -9,12 +9,12 @@ var Controller = require('./');
 var View = require('View');
 var UI = require('UI');
 
-var Data = require('App/Data');
 var CoverPhoto = require('App/CoverPhoto');
+var Data = require('App/Data');
 var MainForm = require('App/MainForm');
 var Metadata = require('App/Metadata');
-var OutputFiles = require('App/OutputFiles');
 var OutgoingService = require('App/OutgoingService');
+var OutputFiles = require('App/OutputFiles');
 
 var Form = require('App/Form');
 
