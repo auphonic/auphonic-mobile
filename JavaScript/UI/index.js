@@ -5,6 +5,7 @@ var Elements = Core.Elements;
 var DynamicMatcher = require('DynamicMatcher');
 
 var UI = module.exports = new DynamicMatcher;
+var Notice = require('./Notice');
 
 UI.BackButton = require('./Elements/BackButton');
 UI.ActionButton = require('./Elements/ActionButton');
@@ -49,6 +50,9 @@ Object.append(UI, {
     }
 
     (function() {
+      // Close all notices on immediate transitions
+      if (!isImmediate) Notice.closeAll(oppositeDirection);
+
       if (previous) previous.addClass(oppositeDirection);
       if (current) current.removeClass(direction);
     }).delay(50, this); // Use a higher delay to account for DOM insertion delays

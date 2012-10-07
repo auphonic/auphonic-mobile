@@ -170,7 +170,7 @@ module.exports.setTemplate = function(element) {
   return this;
 };
 
-module.exports.closeAll = function() {
-  stack.invoke('close');
+module.exports.closeAll = function(direction) {
+  stack.invoke('close', direction);
   return this;
 };

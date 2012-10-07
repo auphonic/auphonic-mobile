@@ -77,11 +77,8 @@ var click = function(event) {
   if (!href) return;
   if (event.touches && event.touches.length > 1) return;
 
-  var isTabbarIcon = !!this.getParent('footer');
-  if (isTabbarIcon) Notice.closeAll();
-
   if (UI.isHighlighted(this)) {
-    if (!isTabbarIcon) return;
+    if (!this.getParent('footer')) return;
 
     // Tap on footer icon
     if (History.getPath() == href) {
