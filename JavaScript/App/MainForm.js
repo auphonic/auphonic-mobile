@@ -107,11 +107,11 @@ module.exports = new Class({
 
     if (data) store.set('thumbnail', data.thumbnail);
 
-    if (!data && (!this.isEditMode || this.isNewProduction)) {
+    if (this.isNewProduction) {
       // Set the default output file
       var type = OutputFiles.getType();
-      data = {};
-      data[type] = [Auphonic.DefaultOutputFile];
+      if (!data) data = {};
+      if (!data[type] || !data[type].length) data[type] = [Auphonic.DefaultOutputFile];
     }
 
     store.eachView(function(view, type) {
@@ -153,14 +153,14 @@ module.exports = new Class({
     this.isRendered = false;
     var isProduction = this.isProduction = (this.getDisplayType() == 'production');
     var isEditMode = this.isEditMode = !!data;
-    var isNewProduction = (isProduction && !isEditMode);
+    var isNewProduction = this.isNewProduction = (isProduction && !isEditMode);
     this.store = store;
     this.presets = presets;
 
     // This is a placeholder title created by the mobile app, remove it if possible
     if (isEditMode && isProduction && data.metadata.title == Auphonic.DefaultTitle) {
       data.metadata.title = '';
-      isNewProduction = true;
+      isNewProduction = this.isNewProduction = true;
     }
 
     var service = Source.getObject(store);
