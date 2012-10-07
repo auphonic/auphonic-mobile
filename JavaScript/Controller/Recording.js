@@ -2,14 +2,16 @@ var Controller = require('./');
 var UI = require('UI');
 var View = require('View');
 
-var LocalStorage = require('Utility/LocalStorage');
+var Recording = require('App/Recording');
+
+var Auphonic = require('Auphonic');
 
 Controller.define('/recording', function() {
-
+  var recordings = Object.values(Recording.findAll());
   View.getMain().push('recording', new View.Object({
     title: 'Recordings',
     content: UI.render('recordings', {
-      recordings: LocalStorage.get('recordings').reverse()
+      recordings: recordings.length && recordings
     }),
     action: {
       title: 'New',
@@ -21,20 +23,16 @@ Controller.define('/recording', function() {
 
 Controller.define('/recording/{name}', function(req) {
 
-  var recordings = LocalStorage.get('recordings');
-  var recording;
+  var recording = Recording.findByName(req.name);
+  recording.media_files = JSON.stringify([recording.fullPath]);
 
-  for (var i = 0; i < recordings.length; i++) {
-    if (req.name == recordings[i].name) {
-      recording = recordings[i];
-      break;
-    }
-  }
-
-  recording.media_files = [recording.fullPath];
+  var match = recording.name.match(Auphonic.DefaultFileNameFilter);
+  var name = recording.name;
+  if (match && match[1])
+    name = 'Recording ' + match[1];
 
   View.getMain().push('recording', new View.Object({
-    title: recording.name,
+    title: name,
     content: UI.render('recording', recording)
   }));
 

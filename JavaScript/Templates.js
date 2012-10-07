@@ -1323,17 +1323,16 @@ templates['record-audio'] = template(function (Handlebars,depth0,helpers,partial
   return "<ul class=\"record_button\">\n  <li><a href=\"/production/recording/new-audio-start\">Start Recording</a></li>\n</ul>\n<ul class=\"stop_record_button hidden\">\n  <li><span class=\"record_status right light\"></span><a href=\"/production/recording/stop\">Stop recording</a></li>\n</ul>\n";});
 templates['recording'] = template(function (Handlebars,depth0,helpers,partials,data) {
   helpers = helpers || Handlebars.helpers; partials = partials || Handlebars.partials;
-  var buffer = "", stack1, functionType="function", escapeExpression=this.escapeExpression, self=this;
+  var buffer = "", stack1, self=this, functionType="function", escapeExpression=this.escapeExpression;
 
 
-  buffer += "<h1>";
-  stack1 = depth0.name;
-  stack1 = typeof stack1 === functionType ? stack1() : stack1;
-  buffer += escapeExpression(stack1) + "</h1>\n\n";
   stack1 = depth0;
   stack1 = self.invokePartial(partials.player, 'player', stack1, helpers, partials);;
   if(stack1 || stack1 === 0) { buffer += stack1; }
-  buffer += "\n";
+  buffer += "\n\n<a data-api-url=\"/production/";
+  stack1 = depth0.uuid;
+  stack1 = typeof stack1 === functionType ? stack1() : stack1;
+  buffer += escapeExpression(stack1) + "/start\" data-method=\"post\" class=\"clear button green expand\">Upload</a>\n";
   return buffer;});
 templates['recordings'] = template(function (Handlebars,depth0,helpers,partials,data) {
   helpers = helpers || Handlebars.helpers;

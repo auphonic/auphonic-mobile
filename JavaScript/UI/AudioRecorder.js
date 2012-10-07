@@ -1,19 +1,17 @@
 var Core = require('Core');
 var Class = Core.Class;
+var Options = Core.Options;
 
 var View = require('View');
-
-var LocalStorage = require('Utility/LocalStorage');
 
 module.exports = new Class({
 
   Implements: [Class.Binds],
 
-  initialize: function(recorderClass, options) {
-    var recordings = LocalStorage.get('recordings') || [];
-
+  // options and name get passed to the class
+  initialize: function(recorderClass, name, options) {
     this.status = document.getElement('.record_status');
-    this.recorder = new recorderClass('mobile-recording-' + (recordings.length + 1), options);
+    this.recorder = new recorderClass(name, options);
 
     this.recorder.addEvents({
       start: this.bound('onStart'),

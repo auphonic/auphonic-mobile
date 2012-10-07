@@ -22,6 +22,7 @@ var Metadata = require('App/Metadata');
 var OutgoingService = require('App/OutgoingService');
 var OutputFiles = require('App/OutputFiles');
 var ProductionStatus = require('App/ProductionStatus');
+var Recording = require('App/Recording');
 var Source = require('App/Source');
 
 var Auphonic = require('Auphonic');
@@ -377,7 +378,9 @@ Controller.define('/production/recording/new-audio', function() {
 });
 
 Controller.define('/production/recording/new-audio-start', function() {
-  recorder = new AudioRecorder(CordovaAudioRecorder, {
+  var name = this.options.fileName.substitute({uuid: Recording.count() + 1});
+
+  recorder = new AudioRecorder(CordovaAudioRecorder, name, {
     onSuccess: upload
   }).start();
 });
