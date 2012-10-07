@@ -50,12 +50,6 @@
         };
 
         var link = document.createElement('link');
-        link.setAttribute('rel', 'stylesheet');
-        link.setAttribute('media', 'all');
-        link.setAttribute('type', 'text/css');
-        link.setAttribute('href', url);
-        link.setAttribute('data-href', url);
-
         if (error) link.addEventListener('error', error, false);
 
         if (success) {
@@ -66,8 +60,14 @@
             };
         }
 
+        link.setAttribute('rel', 'stylesheet');
+        link.setAttribute('media', 'all');
+        link.setAttribute('type', 'text/css');
+        link.setAttribute('href', url);
+        link.setAttribute('data-href', url);
+
         document.querySelector('head').appendChild(link);
-        links.push({element: link, listener: listener});
+        links.push({element: link, listener: listener, error: error});
         if (!timer) timer = setInterval(poll, 20);
       };
 
@@ -85,7 +85,9 @@
           if (owner) {
             while (j--) {
               if (owner == links[j].element) {
-                links[j].listener.call(links[j].element);
+                // error
+                if (!link.cssRules.length) links[j].error.call(links[j].element);
+                else links[j].listener.call(links[j].element);
                 links.splice(j, 1);
               }
             }
