@@ -8,33 +8,6 @@ var set = function(recordings) {
   LocalStorage.set('recordings', recordings);
 };
 
-exports.setCurrentUpload = function(data) {
-  LocalStorage.set('currentUpload', data);
-};
-
-exports.getCurrentUpload = function() {
-  return LocalStorage.get('currentUpload');
-};
-
-exports.push = function(recording) {
-  var recordings = get();
-  recording = Object.append({}, recording);
-  var id = String.uniqueID();
-  recording.id = id;
-  recordings[id] = recording;
-  set(recordings);
-};
-
-var findById = exports.findById = function(id) {
-  return get()[id];
-};
-
-exports.findAll = get;
-
-exports.count = function() {
-  return Object.values(get()).length || 0;
-};
-
 var removeRecording = function(recording) {
   var recordings = get();
   delete recordings[recording.id];
@@ -48,6 +21,33 @@ var removeFile = function(file) {
 
 var onFileSystemReady = function(fileSystem) {
   fileSystem.root.getFile(this.getFileName(), null, removeFile, error);
+};
+
+var findById = exports.findById = function(id) {
+  return get()[id];
+};
+
+exports.findAll = get;
+
+exports.count = function() {
+  return Object.values(get()).length || 0;
+};
+
+exports.setCurrentUpload = function(data) {
+  LocalStorage.set('currentUpload', data);
+};
+
+exports.getCurrentUpload = function() {
+  return LocalStorage.get('currentUpload');
+};
+
+exports.add = function(recording) {
+  var recordings = get();
+  recording = Object.append({}, recording);
+  var id = String.uniqueID();
+  recording.id = id;
+  recordings[id] = recording;
+  set(recordings);
 };
 
 exports.remove = function(id) {

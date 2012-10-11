@@ -52,9 +52,13 @@ module.exports = new Class({
   play: function() {
     if (this.isPlaying) return;
     if (!this.mediaIsAvailable) {
-      // Cordova: Allow the UI to Update because play() freezes the browser.
-      this.fireEvent('load');
-      this._play.delay(100, this);
+      if ((/\/|file:\/\/\//i).test(this.mediaFile)) {
+        this._play();
+      } else {
+        // Cordova: Allow the UI to Update because play() freezes the browser.
+        this.fireEvent('load');
+        this._play.delay(300, this);
+      }
       return;
     }
 
@@ -135,9 +139,6 @@ module.exports = new Class({
   },
 
   onLoadError: function(error) {
-    console.log(error.code);
-    console.log(error.message);
-
     this.media.stop();
     this.media.release();
     this.media = null;

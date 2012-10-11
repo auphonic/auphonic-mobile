@@ -329,7 +329,7 @@ Controller.define('/production/new/outgoing_services', function() {
 // Recording
 var recorder;
 var upload = function(file) {
-  Recording.push(file);
+  Recording.add(file);
 
   var refresh = function(response) {
     var production = response.data;

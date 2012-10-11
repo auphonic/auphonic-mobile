@@ -633,7 +633,7 @@ function program88(depth0,data) {
   stack1 = depth0.media_files;
   stack1 = helpers['if'].call(depth0, stack1, {hash:{},inverse:self.noop,fn:self.program(22, program22, data)});
   if(stack1 || stack1 === 0) { buffer += stack1; }
-  buffer += "\n\n";
+  buffer += "\n<div class=\"clear\"></div>\n\n";
   stack1 = depth0.start_allowed;
   stack1 = helpers['if'].call(depth0, stack1, {hash:{},inverse:self.program(26, program26, data),fn:self.program(24, program24, data)});
   if(stack1 || stack1 === 0) { buffer += stack1; }
@@ -1247,18 +1247,32 @@ templates['login'] = template(function (Handlebars,depth0,helpers,partials,data)
   return buffer;});
 templates['player'] = template(function (Handlebars,depth0,helpers,partials,data) {
   helpers = helpers || Handlebars.helpers;
-  var buffer = "", stack1, foundHelper, functionType="function", escapeExpression=this.escapeExpression, helperMissing=helpers.helperMissing;
+  var buffer = "", stack1, helperMissing=helpers.helperMissing, functionType="function", escapeExpression=this.escapeExpression, self=this;
 
-
-  buffer += "<div class=\"player clear\">\n  <div class=\"play-button content full\">\n    <a class=\"play\" href=\"#\"><span class=\"hidden\" data-media=\"1\">";
-  stack1 = depth0.media_files;
-  stack1 = typeof stack1 === functionType ? stack1() : stack1;
-  buffer += escapeExpression(stack1) + "</span></a>\n  </div>\n  <div class=\"waveform content full\">\n    <img src=\"";
+function program1(depth0,data) {
+  
+  var buffer = "", stack1, foundHelper;
+  buffer += "\n      <img src=\"";
   stack1 = depth0.waveform_image;
   foundHelper = helpers.image;
   stack1 = foundHelper ? foundHelper.call(depth0, stack1, {hash:{}}) : helperMissing.call(depth0, "image", stack1, {hash:{}});
   if(stack1 || stack1 === 0) { buffer += stack1; }
-  buffer += "\" />\n    <div class=\"position\"></div>\n  </div>\n</div>\n<div class=\"clear\"></div>\n";
+  buffer += "\" />\n    ";
+  return buffer;}
+
+function program3(depth0,data) {
+  
+  
+  return "\n      <div class=\"line\"></div>\n    ";}
+
+  buffer += "<div class=\"player clear\">\n  <div class=\"play-button content full\">\n    <a class=\"play\" href=\"#\"><span class=\"hidden\" data-media=\"1\">";
+  stack1 = depth0.media_files;
+  stack1 = typeof stack1 === functionType ? stack1() : stack1;
+  buffer += escapeExpression(stack1) + "</span></a>\n  </div>\n  <div class=\"waveform content full\">\n    ";
+  stack1 = depth0.waveform_image;
+  stack1 = helpers['if'].call(depth0, stack1, {hash:{},inverse:self.program(3, program3, data),fn:self.program(1, program1, data)});
+  if(stack1 || stack1 === 0) { buffer += stack1; }
+  buffer += "\n    <div class=\"position\"></div>\n  </div>\n</div>\n";
   return buffer;});
 templates['preset'] = template(function (Handlebars,depth0,helpers,partials,data) {
   helpers = helpers || Handlebars.helpers;

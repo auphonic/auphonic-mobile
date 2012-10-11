@@ -3,8 +3,11 @@
     <a class="play" href="#"><span class="hidden" data-media="1">{{media_files}}</span></a>
   </div>
   <div class="waveform content full">
-    <img src="{{{image waveform_image}}}" />
+    {{#if waveform_image}}
+      <img src="{{{image waveform_image}}}" />
+    {{else}}
+      <div class="line"></div>
+    {{/if}}
     <div class="position"></div>
   </div>
 </div>
-<div class="clear"></div>
