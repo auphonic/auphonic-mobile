@@ -268,11 +268,7 @@ module.exports = new Class({
 
     // Use the selected preset (if any) so the cover photo gets preserved
     // but only if reset_cover_image is not set
-    if (!data.reset_cover_image) {
-      var preset = this.presets[store.get('preset')];
-      // Only set this property if an image exists, the API will return an error otherwise
-      if (preset && preset.image) data.preset_cover_image = preset.uuid;
-    }
+    if (!data.reset_cover_image) data.preset_cover_image = store.get('preset');
 
     // Use Title from productions
     if (data.title && data.title !== '') data['metadata.title'] = data.title;
