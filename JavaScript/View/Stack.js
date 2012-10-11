@@ -88,6 +88,10 @@ module.exports = new Class({
 
   getCurrent: function(){
     return this.current;
+  },
+
+  getName: function() {
+    return this.name;
   }
 
 });

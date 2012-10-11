@@ -1329,10 +1329,10 @@ templates['recording'] = template(function (Handlebars,depth0,helpers,partials,d
   stack1 = depth0;
   stack1 = self.invokePartial(partials.player, 'player', stack1, helpers, partials);;
   if(stack1 || stack1 === 0) { buffer += stack1; }
-  buffer += "\n\n<a data-api-url=\"/production/";
-  stack1 = depth0.uuid;
+  buffer += "\n\n<a href=\"/production/recording/upload/";
+  stack1 = depth0.name;
   stack1 = typeof stack1 === functionType ? stack1() : stack1;
-  buffer += escapeExpression(stack1) + "/start\" data-method=\"post\" class=\"clear button green expand\">Upload</a>\n";
+  buffer += escapeExpression(stack1) + "\" class=\"clear button green expand\">Upload</a>\n";
   return buffer;});
 templates['recordings'] = template(function (Handlebars,depth0,helpers,partials,data) {
   helpers = helpers || Handlebars.helpers;

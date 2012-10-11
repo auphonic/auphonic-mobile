@@ -66,7 +66,8 @@ var resetEditUUID = function() {
 
 var addPlaceholder = function() {
   var stack = View.getMain().getStack();
-  if (stack.getLength() > 1 || stack.getByURL('/production')) return;
+  if (stack.getName() == 'production' && (stack.getLength() > 1 || stack.getByURL('/production')))
+    return;
 
   View.getMain().push('production', new View.Object({
     url: '/production',
@@ -361,6 +362,14 @@ var upload = function(file) {
     success: onCreateSuccess
   });
 };
+
+Controller.define('/production/recording/upload/{name}', function(req) {
+  addPlaceholder();
+
+  resetEditUUID();
+  var recording = Recording.findByName(req.name);
+  if (recording) upload(recording);
+});
 
 Controller.define('/production/recording/new-video', function() {
   new CordovaVideoRecorder().addEvents({
