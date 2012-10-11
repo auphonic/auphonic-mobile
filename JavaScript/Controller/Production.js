@@ -6,8 +6,6 @@ var View = require('View');
 var UI = require('UI');
 var Notice = require('UI/Notice');
 
-var LocalStorage = require('Utility/LocalStorage');
-
 var AudioRecorder = require('UI/AudioRecorder');
 var CordovaAudioRecorder = require('Capture/CordovaAudioRecorder');
 var CordovaVideoRecorder = require('Capture/CordovaVideoRecorder');
@@ -225,9 +223,9 @@ var edit = function(production) {
     if (data.service) Source.setData(form, data.service);
 
     // Check if we are currently uploading
-    var currentUpload = LocalStorage.get('currentUpload');
+    var currentUpload = Recording.getCurrentUpload();
     if (currentUpload && currentUpload.uuid == data.uuid)
-      data.input_file = currentUpload.input_file;
+      data.input_file = currentUpload.file.name;
 
     ListFiles.setFile(form, data.input_file);
 
@@ -331,18 +329,18 @@ Controller.define('/production/new/outgoing_services', function() {
 // Recording
 var recorder;
 var upload = function(file) {
-  LocalStorage.push('recordings', file);
+  Recording.push(file);
 
   var onCreateSuccess = function(response) {
-    LocalStorage.set('currentUpload', {
+    Recording.setCurrentUpload({
       uuid: response.data.uuid,
-      input_file: file.name
+      file: file
     });
 
     API.upload('production/{uuid}/upload'.substitute(response.data), file, 'input_file').on({
       success: function() {
         new Notice('The recording <span class="bold">"' + file.name + '"</span> was successfully uploaded and attached to your production.');
-        LocalStorage.erase('currentUpload');
+        Recording.setCurrentUpload(null);
       }
     });
 

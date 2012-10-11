@@ -2,6 +2,14 @@
 
 var LocalStorage = require('Utility/LocalStorage');
 
+exports.setCurrentUpload = function(data) {
+  LocalStorage.set('currentUpload', data);
+};
+
+exports.getCurrentUpload = function() {
+  return LocalStorage.get('currentUpload');
+};
+
 exports.push = function(recording) {
   var recordings = LocalStorage.get('recordings');
   recordings.push(recording);
