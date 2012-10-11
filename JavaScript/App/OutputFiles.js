@@ -54,10 +54,10 @@ var createUIData = exports.createUIData = function(content) {
   var outputFiles = API.getInfo('output_files');
   var item = outputFiles[content.format];
   var index = (item.bitrates ? item.bitrates.indexOf('' + content.bitrate) : 0); // Needs to be String
-  return {
+  return Object.append({}, content, {
     title: item.display_name.replace(/\((.+?)\)/, '').trim(), // Remove parenthesis
     detail: item.bitrate_strings ? item.bitrate_strings[index].replace(/\((.+?)\)/, '').trim() : '', // Remove parenthesis,
-  };
+  });
 };
 
 var parseFromContainer = function(container) {

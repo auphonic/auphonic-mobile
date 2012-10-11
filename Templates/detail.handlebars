@@ -36,47 +36,52 @@
 {{#if input_file}}
   <h1>Input Source{{#if service_display_type}} - {{service_display_type}}{{/if}}</h1>
   <ul>
-    <li><label>{{#if service_display_name}}<span class="light">{{service_display_name}}</span>{{/if}} <small>{{input_file}}</small></label></li>
+    <li>
+      <label>
+        {{#if service_display_name}}
+          <span class="light">{{service_display_name}}</span>
+          <small>{{input_file}}</small>
+        {{else}}
+          {{input_file}}
+        {{/if}}
+      </label>
+    </li>
+    {{#if length_string}}
+      <li><span class="right light">{{length_string}}</span><label class="left">Length</label></li>
+    {{/if}}
   </ul>
-{{/if}}
-
-{{#if metadata.subtitle}}
-  <h1>Subtitle</h1>
-  <div class="content small">{{metadata.subtitle}}</div>
 {{/if}}
 
 {{#if hasDetails}}
   <h1>Details</h1>
   <ul>
     {{#if metadata.summary}}<li><a href="{{baseURL}}/{{uuid}}/summary" class="arrow"><span></span>Summary</a></li>{{/if}}
+    {{#metadata}}
+      {{#if publisher}}<li><label>Publisher <span class="light">{{publisher}}</span></label></li>{{/if}}
+      {{#if url}}
+        <li><a href="{{url}}" class="share"><span></span>URL <span class="light">{{{format-url url}}}</span></a></li>
+      {{/if}}
+      {{#if hasLicense}}
+        <li>
+          {{#if license_url}}
+            <a href="{{license_url}}" class="share"><span></span>
+          {{else}}
+            <label>
+          {{/if}}
 
+          License <span class="light">{{#if license}}{{license}}{{else}}{{{format-url license_url}}}{{/if}}</span>
 
-  {{#metadata}}
-    {{#if publisher}}<li><label>Publisher <span class="light">{{publisher}}</span></label></li>{{/if}}
-    {{#if url}}
-      <li><a href="{{url}}" class="share"><span></span>URL <span class="light">{{{format-url url}}}</span></a></li>
-    {{/if}}
-    {{#if hasLicense}}
-      <li>
-        {{#if license_url}}
-          <a href="{{license_url}}" class="share"><span></span>
-        {{else}}
-          <label>
-        {{/if}}
-
-        License <span class="light">{{#if license}}{{license}}{{else}}{{{format-url license_url}}}{{/if}}</span>
-
-        {{#if license_url}}
-          </a>
-        {{else}}
-          </label>
-        {{/if}}
-      </li>
-    {{/if}}
-    {{#if tags}}
-      <li><label>Tags <span class="light">{{tags}}</span></label></li>
-    {{/if}}
-  {{/metadata}}
+          {{#if license_url}}
+            </a>
+          {{else}}
+            </label>
+          {{/if}}
+        </li>
+      {{/if}}
+      {{#if tags}}
+        <li><label>Tags <span class="light">{{tags}}</span></label></li>
+      {{/if}}
+    {{/metadata}}
   </ul>
 {{/if}}
 
@@ -91,9 +96,16 @@
       </li>
     {{/if}}
     {{#each output_files}}
-      <li>
-        <label>{{title}}{{#if detail}} <small class="light">{{detail}}</small>{{/if}}</label>
-      </li>
+      {{#if size_string}}
+        <li class="wide">
+          {{#if size_string}}<span class="right light"><small>{{size_string}}</small></span>{{/if}}
+          <label class="left">{{title}}{{#if detail}} <small class="light">{{detail}}</small>{{/if}}</label>
+        </li>
+      {{else}}
+        <li>
+          <label>{{title}}{{#if detail}} <small class="light">{{detail}}</small>{{/if}}</label>
+        </li>
+      {{/if}}
     {{/each}}
   </ul>
 {{/if}}
@@ -118,6 +130,13 @@
       <li><label><span class="light">{{display_type}}</span> <small>{{display_name}}</small></label></li>
     {{/each}}
   </ul>
+{{/if}}
+
+{{#if metadata.subtitle}}
+  <h1>Subtitle</h1>
+  <div class="content">
+    {{metadata.subtitle}}
+  </div>
 {{/if}}
 
 {{#if hasAlgorithms}}

@@ -72,6 +72,27 @@ exports.formatInfos = function(response) {
   return response;
 };
 
+exports.formatRecordingLength = function(from, separator){
+  var delta = Math.abs(Math.floor(from));
+
+  var vals = [],
+    durations = [60, 60, 24, 365, 0],
+    names = ['s', 'm', 'h', 'd', 'y'],
+    value, duration;
+
+  for (var item = 0; item < durations.length; item++){
+    if (item && !delta) break;
+    value = delta;
+    if ((duration = durations[item])){
+      value = (delta % duration);
+      delta = Math.floor(delta / duration);
+    }
+    vals.unshift(value + (names[item] || ''));
+  }
+
+  return vals.join(separator || ':');
+};
+
 var preferredFormats = {
   mp3: 1,
   'mp3-vbr': 3, // Variable Bitrate mp3's sometime cause issues
@@ -123,6 +144,9 @@ exports.prepare = function(object, type, fn) {
     length(metadata.tags && metadata.tags.erase('')); // The API returns an array with one empty string
 
   object.hasChapters = length(object.chapters);
+
+  var length_string = exports.formatRecordingLength(object.length, ' ');
+  if (length_string != '0s') object.length_string = length_string;
 
   if (object.hasChapters) object.chapters.sortByKey('start');
 
