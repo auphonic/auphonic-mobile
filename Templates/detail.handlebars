@@ -7,9 +7,11 @@
   {{/if}}
   <div class="detail-inner">
     {{#metadata}}
-      {{#if genre}}<span class="genre">{{genre}}</span>{{/if}}
-      <h1>{{title}}</h1>
+      {{#if hasDescription}}<h1>{{title}}</h1>{{/if}}
       {{#if year}}<span class="year">{{year}}</span>{{/if}}
+      {{#if genre}}<span class="genre">{{genre}}</span>{{/if}}
+      {{#unless hasDescription}}<h1>{{title}}</h1>{{/unless}}
+
       {{#if album}}<span class="album">{{album}}</span>{{/if}}
       {{#if track}}<span class="track">#{{track}}</span>{{/if}}
       {{#if artist}}<span class="artist small">{{artist}}</span>{{/if}}

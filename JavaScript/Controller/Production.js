@@ -401,7 +401,7 @@ Controller.define('/production/recording/new-audio', function() {
 });
 
 Controller.define('/production/recording/new-audio-start', function() {
-  var name = this.options.fileName.substitute({uuid: Recording.count() + 1});
+  var name = Auphonic.DefaultFileName.substitute({uuid: Recording.count() + 1});
 
   recorder = new AudioRecorder(CordovaAudioRecorder, name, {
     onSuccess: upload

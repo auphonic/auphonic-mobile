@@ -143,6 +143,7 @@ exports.prepare = function(object, type, fn) {
     metadata.hasLicense ||
     length(metadata.tags && metadata.tags.erase('')); // The API returns an array with one empty string
 
+  metadata.hasDescription = !!(metadata.album || metadata.artist);
   object.hasChapters = length(object.chapters);
 
   var length_string = exports.formatRecordingLength(object.length, ' ');
