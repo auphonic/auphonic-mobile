@@ -136,7 +136,7 @@ exports.prepare = function(object, type, fn) {
 
   object.algorithms = Object.values(Object.map(API.getInfo('algorithms_array'), function(algorithm) {
     var value = object.algorithms[algorithm.key];
-    if (value == null) return null;
+    if (!value) return null;
     algorithm = Object.clone(algorithm);
     algorithm.value = value;
 
