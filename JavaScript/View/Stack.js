@@ -24,10 +24,6 @@ module.exports = new Class({
       }
     }
 
-    // This is also the case when you go back to a tab
-    if (this.current && this.current.getURL() == object.getURL())
-      return this; // Don't do anything
-
     object.setStack(this);
     this.current = object;
     stack.push(this.current);

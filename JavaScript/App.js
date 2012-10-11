@@ -27,6 +27,7 @@ require('App/Data');
 require('App/OutgoingService');
 
 // Load Controllers
+var Controller = require('Controller');
 require('Controller/Login');
 require('Controller/Preset');
 require('Controller/Production');
@@ -116,6 +117,14 @@ var removeItem = function(element) {
   (function() {
     element.addEvent('transitionComplete:once', function() {
       this.destroy();
+
+      var object = View.getMain().getCurrentObject();
+      var hasChildren = object.toElement().getElements('ul.main-list >').length;
+      if (!hasChildren) {
+        // Force re-rendering
+        object.invalidate();
+        Controller.refresh();
+      }
     }).addClass('out');
   }).delay(10);
 

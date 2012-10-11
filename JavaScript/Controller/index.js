@@ -9,6 +9,11 @@ var router = new Router({
   }
 });
 
+var change = function(url) {
+  // Phonegap likes to add file:///
+  router.parse('/' + url.replace(/^\/|^file\:\/\/\//, ''));
+};
+
 module.exports = {
 
   define: function(key, options, fn) {
@@ -20,7 +25,6 @@ module.exports = {
       var main = View.getMain();
       var stack = main.getStack();
       var object = stack && stack.getByURL(History.getPath());
-
       if (object && !object.isInvalid()) {
         // We don't want to push the same element again if it is the one that is currently shown
         // This is mostly a fix for a browser issue where pushState is being called twice on domready
@@ -30,11 +34,12 @@ module.exports = {
         fn.apply(null, arguments);
       }
     }, options && options.priority).setGreedy(options && options.isGreedy);
+  },
+
+  refresh: function() {
+    change(History.getPath());
   }
 
 };
 
-History.addEvent('change', function(url) {
-  // Phonegap likes to add file:///
-  router.parse('/' + url.replace(/^\/|^file\:\/\/\//, ''));
-});
+History.addEvent('change', change);
