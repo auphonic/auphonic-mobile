@@ -377,11 +377,11 @@ var upload = function(file) {
   });
 };
 
-Controller.define('/production/recording/upload/{name}', function(req) {
+Controller.define('/production/recording/upload/{id}', function(req) {
   addPlaceholder();
 
   resetEditUUID();
-  var recording = Recording.findByName(req.name);
+  var recording = Recording.findById(req.id);
   if (recording) upload(recording);
 });
 

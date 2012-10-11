@@ -122,6 +122,10 @@ var removeItem = function(element) {
   var url = element.get('data-api-url');
   var method = element.get('data-method');
   if (url && method) API.call(url, method);
+
+  var event = element.get('data-fire-event');
+  var id = element.get('data-id');
+  if (event) element.fireEvent(event, [id]);
 };
 
 // Make the info API call and show the UI on success, or else provide a reload button

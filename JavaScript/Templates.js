@@ -1431,22 +1431,33 @@ function program1(depth0,data) {
 function program2(depth0,data) {
   
   var buffer = "", stack1;
-  buffer += "\n    <li><a href=\"/recording/";
+  buffer += "\n    <li class=\"swipeable show-popover\" data-popover-event=\"touchhold\" data-id=\"";
+  stack1 = depth0.id;
+  stack1 = typeof stack1 === functionType ? stack1() : stack1;
+  buffer += escapeExpression(stack1) + "\" data-fire-event=\"removeRecording\">\n      <span class=\"right removable";
+  stack1 = depth0.short_info;
+  stack1 = helpers['if'].call(depth0, stack1, {hash:{},inverse:self.noop,fn:self.program(3, program3, data)});
+  if(stack1 || stack1 === 0) { buffer += stack1; }
+  buffer += "\">\n        <span><a href=\"#\" class=\"button red small\">Delete</a></span>\n      </span>\n      <div class=\"hidden popover top justify\" data-position=\"top\">\n        <a href=\"#\" class=\"button expand red deleteable\">Delete</a>\n      </div>\n      <a href=\"/recording/";
   stack1 = depth0.name;
   stack1 = typeof stack1 === functionType ? stack1() : stack1;
   buffer += escapeExpression(stack1) + "\" class=\"arrow\"><span></span>";
   stack1 = depth0.name;
   stack1 = typeof stack1 === functionType ? stack1() : stack1;
-  buffer += escapeExpression(stack1) + "</a></li>\n  ";
+  buffer += escapeExpression(stack1) + "</a>\n    </li>\n  ";
   return buffer;}
+function program3(depth0,data) {
+  
+  
+  return " expanded";}
 
-function program4(depth0,data) {
+function program5(depth0,data) {
   
   
   return "\n  <h1 class=\"null\">You have no recent recordings.</h1>\n  <ul>\n    <li><a href=\"/production/recording/new-audio\" class=\"arrow\"><span></span>Start a new Recording</a></li>\n  </ul>\n";}
 
   stack1 = depth0.recordings;
-  stack1 = helpers['if'].call(depth0, stack1, {hash:{},inverse:self.program(4, program4, data),fn:self.program(1, program1, data)});
+  stack1 = helpers['if'].call(depth0, stack1, {hash:{},inverse:self.program(5, program5, data),fn:self.program(1, program1, data)});
   if(stack1 || stack1 === 0) { buffer += stack1; }
   buffer += "\n";
   return buffer;});

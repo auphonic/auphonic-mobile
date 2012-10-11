@@ -8,7 +8,7 @@ var Auphonic = require('Auphonic');
 
 Controller.define('/recording', function() {
   var recordings = Object.values(Recording.findAll());
-  View.getMain().push('recording', new View.Object({
+  var object = new View.Object({
     title: 'Recordings',
     content: UI.render('recordings', {
       recordings: recordings.length && recordings
@@ -16,14 +16,16 @@ Controller.define('/recording', function() {
     action: {
       title: 'New',
       url: '/production/source'
-    },
-  }));
+    }
+  });
 
+  View.getMain().push('recording', object);
+  object.toElement().getElements('li').addEvent('removeRecording', Recording.remove);
 });
 
-Controller.define('/recording/{name}', function(req) {
+Controller.define('/recording/{id}', function(req) {
 
-  var recording = Recording.findByName(req.name);
+  var recording = Recording.findById(req.id);
   recording.media_files = JSON.stringify([recording.fullPath]);
 
   var match = recording.name.match(Auphonic.DefaultFileNameFilter);
