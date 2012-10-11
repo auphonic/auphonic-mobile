@@ -331,6 +331,12 @@ var recorder;
 var upload = function(file) {
   Recording.push(file);
 
+  var refresh = function(response) {
+    var production = response.data;
+    productions[production.uuid] = production;
+    showOne(production, {refresh: true});
+  };
+
   var onCreateSuccess = function(response) {
     Recording.setCurrentUpload({
       uuid: response.data.uuid,
@@ -338,9 +344,19 @@ var upload = function(file) {
     });
 
     API.upload('production/{uuid}/upload'.substitute(response.data), file, 'input_file').on({
-      success: function() {
+      success: function(production) {
         new Notice('The recording <span class="bold">"' + file.name + '"</span> was successfully uploaded and attached to your production.');
         Recording.setCurrentUpload(null);
+
+        // If the production is currently being viewed, refresh.
+        // Reload the production data because the upload response is not fully reliable with Cordova.
+        var url = 'production/{uuid}'.substitute(response.data);
+        if (History.getPath() == '/' + url) {
+          API.invalidate(url);
+          API.call(url).on({
+            success: refresh
+          });
+        }
       }
     });
 
