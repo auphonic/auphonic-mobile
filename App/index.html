@@ -12,6 +12,7 @@
     }
   </style>
   <script type="text/javascript">
+    // Set up globals
     (function() {
       this.__CORDOVA_VERSION = '2.1.0';
       this.__API_DOMAIN = 'https://auphonic.com/';
@@ -20,7 +21,7 @@
       // Update this if you are testing the application locally.
       var DEVbaseURL = '/Thesis/App/';
       // Local test URL for the Server scripts. Remove this when deploying.
-      this.__SERVER_URL = 'http://10.201.1.91' + DEVbaseURL + '../Server/';
+      this.__SERVER_URL = 'http://10.0.0.4' + DEVbaseURL + '../Server/';
       if (new RegExp('^' + DEVbaseURL).test(location.pathname)) {
         this.__LOCALHOST__ = true;
         this.__baseURL = DEVbaseURL;
@@ -30,8 +31,11 @@
       }
 
       this.__SERVER_URL += this.__CORDOVA_VERSION + '/';
+    })();
 
-      this.__loadJS = function(url, success, error) {
+    // define __loadResource
+    (function() {
+      var loadJS = function(url, success, error) {
         var script = document.createElement('script');
         if (success) script.addEventListener('load', success, false);
         if (error) script.addEventListener('error', error, false);
@@ -41,7 +45,7 @@
 
       var links = [];
       var timer = null;
-      this.__loadCSS = function(url, success, error) {
+      var loadCSS = function(url, success, error) {
         var listener = function() {
           link.removeEventListener('load', listener, false);
           link.onreadystatechange = null;
@@ -100,7 +104,12 @@
         }
       };
 
-      this.__loadCSS('App.css');
+      this.__loadResource = function(url, success, error) {
+        if (/\.js(\?|$)/.test(url)) loadJS(url, success, error);
+        else loadCSS(url, success, error);
+      };
+
+      this.__loadResource('App.css');
     }).call(window);
   </script>
   <script type="text/javascript" src="./Spinner.js"></script>
@@ -130,36 +139,22 @@
         color: '#fff'
       });
 
-      var loaded = 0;
-      var resources = 2;
+      var loaded, resources;
       var retryElement = document.querySelector('#retry');
       var noticeElement = document.querySelector('#native-notice');
 
-      var clickRetry = function(event) {
+      var retryClick = function(event) {
         if (event) event.preventDefault();
 
         noticeElement.style.display = '';
         retry.className = 'retry hidden';
-        retryElement.querySelector('a.button').removeEventListener('click', clickRetry, false);
+        retryElement.querySelector('a.button').removeEventListener('click', retryClick, false);
         load();
-      };
-
-      var url = null;
-
-      var load = function() {
-        loaded = 0;
-
-        spinner.spin(document.querySelector('#splash'));
-        __loadJS(__SERVER_URL + 'Version.js?' + Date.now(), function() {
-          // __APP_VERSION is now available
-          __loadCSS(__SERVER_URL + 'Style-' + __APP_VERSION + '.css', success, error);
-          __loadJS(__SERVER_URL + 'App-' + __APP_VERSION + '.js', success, error);
-        }, error);
       };
 
       var success = function() {
         // We are not stopping the spinner because it is being reused
-        if (++loaded >= resources) require('App').boot();
+        if (++loaded >= resources.length) require('App').boot();
       };
 
       var error = function() {
@@ -167,7 +162,20 @@
 
         noticeElement.style.display = 'block';
         retryElement.className = 'retry';
-        retryElement.querySelector('a.button').addEventListener('click', clickRetry, false);
+        retryElement.querySelector('a.button').addEventListener('click', retryClick, false);
+      };
+
+      var load = function() {
+        spinner.spin(document.querySelector('#splash'));
+        __loadResource(__SERVER_URL + 'Version.js?' + Date.now(), function() {
+          // __APP_VERSION is now available
+          loaded = 0;
+          resources = ['Style-' + __APP_VERSION + '.css', 'App-' + __APP_VERSION + '.js'];
+
+          resources.forEach(function(resource) {
+            __loadResource(__SERVER_URL + resource, success, error);
+          });
+        }, error);
       };
 
       load();
