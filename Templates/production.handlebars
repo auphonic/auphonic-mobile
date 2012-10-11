@@ -1,6 +1,10 @@
-<li class="show-popover" data-popover-event="touchhold">
+<li class="swipeable show-popover" data-popover-event="touchhold"  data-api-url="production/{{uuid}}" data-method="delete">
+  <span class="right removable{{#if short_info}} expanded{{/if}}">
+    <span><a href="#" class="button red small">Delete</a></span>
+  </span>
   <div class="hidden popover top justify" data-position="top">
     <a href="/production/edit/{{uuid}}" class="button expand">Edit</a>
+    <a href="#" class="button expand red deleteable">Delete</a>
   </div>
   <a href="/production/{{uuid}}" class="arrow expanded">
     <span></span>
