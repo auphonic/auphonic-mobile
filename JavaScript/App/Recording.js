@@ -1,6 +1,12 @@
-// TODO transform all access into objects!
-
 var LocalStorage = require('Utility/LocalStorage');
+
+var get = function() {
+  return LocalStorage.get('recordings') || {};
+};
+
+var set = function(recordings) {
+  LocalStorage.set('recordings', recordings);
+};
 
 exports.setCurrentUpload = function(data) {
   LocalStorage.set('currentUpload', data);
@@ -11,45 +17,28 @@ exports.getCurrentUpload = function() {
 };
 
 exports.push = function(recording) {
-  var recordings = LocalStorage.get('recordings');
-  recordings.push(recording);
+  var recordings = get();
+  recording = Object.append({}, recording);
+  var id = String.uniqueID();
+  recording.id = id;
+  recordings[id] = recording;
+  set(recordings);
 };
 
-exports.findById = function(id) {
-  var recordings = LocalStorage.get('recordings');
-
-  for (var i = 0; i < recordings.length; i++) {
-    if (id == recordings[i].name)
-      return recordings[i];
-  }
-
-  return null;
+var findById = exports.findById = function(id) {
+  return get()[id];
 };
 
-exports.findAll = function() {
-  var recordings = LocalStorage.get('recordings');
-  var object = {};
-  if (recordings) recordings.each(function(recording) {
-    recording.id = recording.name;
-    object[recording.name] = recording;
-  });
-
-  return object;
-};
+exports.findAll = get;
 
 exports.count = function() {
-  var recordings = LocalStorage.get('recordings');
-  return (recordings && recordings.length) || 0;
+  return Object.values(get()).length || 0;
 };
 
 var removeRecording = function(recording) {
-  var recordings = LocalStorage.get('recordings');
-  for (var i = 0; i < recordings.length; i++) {
-    if (recording.name == recordings[i].name)
-      delete recordings[i];
-  }
-
-  LocalStorage.set('recordings', recordings.clean());
+  var recordings = get();
+  delete recordings[recording.id];
+  set(recordings);
 };
 
 var error = function() {};
@@ -62,7 +51,7 @@ var onFileSystemReady = function(fileSystem) {
 };
 
 exports.remove = function(id) {
-  var recording = exports.findById(id);
+  var recording = findById(id);
   if (!recording) return;
 
   removeRecording(recording);

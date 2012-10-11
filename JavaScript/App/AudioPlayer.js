@@ -149,7 +149,7 @@ module.exports = new Class({
   onError: function() {
     this.stop();
 
-    if (!this.notice) this.notice = new Notice('Sorry, your device does not support playback of any of the produced output files. :(', {
+    if (!this.notice) this.notice = new Notice('Sorry, your device does not support playback of this audio file. :(', {
       type: 'error'
     });
     else this.notice.push();

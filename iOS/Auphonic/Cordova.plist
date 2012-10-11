@@ -17,7 +17,7 @@
 	<key>MediaPlaybackRequiresUserAction</key>
 	<false/>
 	<key>AllowInlineMediaPlayback</key>
-	<false/>
+	<true/>
 	<key>OpenAllWhitelistURLsInWebView</key>
 	<false/>
 	<key>BackupWebStorage</key>

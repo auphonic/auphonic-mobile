@@ -16,12 +16,6 @@ module.exports = {
     return JSON.parse(storage.getItem(key));
   }.overloadGetter(),
 
-  push: function(key, value) {
-    var list = this.get(key) || [];
-    list.push(value);
-    return this.set(key, list);
-  },
-
   erase: function(){
     erase.apply(this, arguments);
     return this;
