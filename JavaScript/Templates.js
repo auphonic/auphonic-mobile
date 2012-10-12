@@ -1265,14 +1265,17 @@ function program3(depth0,data) {
   
   return "\n      <div class=\"line\"></div>\n    ";}
 
-  buffer += "<div class=\"player clear\">\n  <div class=\"play-button content full\">\n    <a class=\"play\" href=\"#\"><span class=\"hidden\" data-media=\"1\">";
+  buffer += "<div class=\"player clear\">\n  <div class=\"play-button content full\">\n    <a class=\"play\" href=\"#\">\n      <span class=\"hidden\" data-media=\"1\">";
   stack1 = depth0.media_files;
   stack1 = typeof stack1 === functionType ? stack1() : stack1;
-  buffer += escapeExpression(stack1) + "</span></a>\n  </div>\n  <div class=\"waveform content full\">\n    ";
+  buffer += escapeExpression(stack1) + "</span>\n      <span class=\"hidden\" data-length=\"1\">";
+  stack1 = depth0.length;
+  stack1 = typeof stack1 === functionType ? stack1() : stack1;
+  buffer += escapeExpression(stack1) + "</span></a>\n  </div>\n  <div class=\"waveform content full show-popover\" data-popover-open-event=\"touchstart\" data-popover-open-delay=\"300\" data-popover-close-event=\"touchend\">\n    ";
   stack1 = depth0.waveform_image;
   stack1 = helpers['if'].call(depth0, stack1, {hash:{},inverse:self.program(3, program3, data),fn:self.program(1, program1, data)});
   if(stack1 || stack1 === 0) { buffer += stack1; }
-  buffer += "\n    <div class=\"position\"></div>\n  </div>\n</div>\n";
+  buffer += "\n    <div class=\"position\"></div>\n      <div class=\"hidden popover top center auto-width\" data-position=\"top\"></div>\n  </div>\n</div>\n";
   return buffer;});
 templates['preset'] = template(function (Handlebars,depth0,helpers,partials,data) {
   helpers = helpers || Handlebars.helpers;
@@ -1297,7 +1300,7 @@ function program5(depth0,data) {
   buffer += escapeExpression(stack1) + "\n      </span>\n    ";
   return buffer;}
 
-  buffer += "<li class=\"swipeable show-popover\" data-popover-event=\"touchhold\" data-api-url=\"preset/";
+  buffer += "<li class=\"swipeable show-popover\" data-popover-open-event=\"touchhold\" data-api-url=\"preset/";
   stack1 = depth0.uuid;
   stack1 = typeof stack1 === functionType ? stack1() : stack1;
   buffer += escapeExpression(stack1) + "\" data-method=\"delete\">\n  <span class=\"right removable";
@@ -1370,7 +1373,7 @@ function program1(depth0,data) {
   
   return " expanded";}
 
-  buffer += "<li class=\"swipeable show-popover\" data-popover-event=\"touchhold\"  data-api-url=\"production/";
+  buffer += "<li class=\"swipeable show-popover\" data-popover-open-event=\"touchhold\" data-api-url=\"production/";
   stack1 = depth0.uuid;
   stack1 = typeof stack1 === functionType ? stack1() : stack1;
   buffer += escapeExpression(stack1) + "\" data-method=\"delete\">\n  <span class=\"right removable";
@@ -1468,7 +1471,7 @@ function program1(depth0,data) {
 function program2(depth0,data) {
   
   var buffer = "", stack1;
-  buffer += "\n    <li class=\"swipeable show-popover\" data-popover-event=\"touchhold\" data-id=\"";
+  buffer += "\n    <li class=\"swipeable show-popover\" data-popover-open-event=\"touchhold\" data-id=\"";
   stack1 = depth0.id;
   stack1 = typeof stack1 === functionType ? stack1() : stack1;
   buffer += escapeExpression(stack1) + "\" data-fire-event=\"removeRecording\">\n      <span class=\"right removable";
@@ -1606,7 +1609,7 @@ templates['ui-removable-chapter-list-item'] = template(function (Handlebars,dept
   var buffer = "", stack1, functionType="function", escapeExpression=this.escapeExpression;
 
 
-  buffer += "<li class=\"swipeable show-popover\" data-popover-event=\"touchhold\">\n  <span class=\"right removable\">\n    <span><a class=\"button red small\">";
+  buffer += "<li class=\"swipeable show-popover\" data-popover-open-event=\"touchhold\">\n  <span class=\"right removable\">\n    <span><a class=\"button red small\">";
   stack1 = depth0.label;
   stack1 = typeof stack1 === functionType ? stack1() : stack1;
   buffer += escapeExpression(stack1) + "</a></span>\n  </span>\n  <div class=\"hidden popover top justify\" data-position=\"top\">\n    <a class=\"button expand red deleteable\">";
@@ -1636,7 +1639,7 @@ function program1(depth0,data) {
   buffer += escapeExpression(stack1) + "</small>";
   return buffer;}
 
-  buffer += "<li class=\"swipeable show-popover\" data-popover-event=\"touchhold\">\n  <span class=\"right removable\">\n    <span><a class=\"button red small\">";
+  buffer += "<li class=\"swipeable show-popover\" data-popover-open-event=\"touchhold\">\n  <span class=\"right removable\">\n    <span><a class=\"button red small\">";
   stack1 = depth0.label;
   stack1 = typeof stack1 === functionType ? stack1() : stack1;
   buffer += escapeExpression(stack1) + "</a></span>\n  </span>\n  <div class=\"hidden popover top justify\" data-position=\"top\">\n    <a class=\"button expand red deleteable\">";

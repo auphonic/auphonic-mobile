@@ -11,6 +11,7 @@ module.exports = new Class({
 
   options: {
     selector: '[data-media]',
+    lengthSelector: '[data-length]',
     playSelector: 'a.play',
     waveformSelector: 'div.waveform',
     positionSelector: 'div.waveform div.position'
@@ -34,7 +35,7 @@ module.exports = new Class({
     this.positionIndicator = element.getElement(this.options.positionSelector);
     this.mediaFiles = JSON.parse(element.getElement(this.options.selector).get('html'));
     this.mediaFile = this.pickMediaFile();
-
+    this.duration = Math.round(parseFloat(element.getElement(this.options.lengthSelector).get('text'))) || -1;
     this.playButton.addEvent('click', this.bound('toggle'));
     this.waveform.addEvent('touchstart', this.bound('seek'));
     this.waveform.addEvent('touchmove', this.bound('seek'));
@@ -52,7 +53,7 @@ module.exports = new Class({
   play: function() {
     if (this.isPlaying) return;
     if (!this.mediaIsAvailable) {
-      if ((/\/|file:\/\/\//i).test(this.mediaFile)) {
+      if (this.isLocalMedia()) {
         this._play();
       } else {
         // Cordova: Allow the UI to Update because play() freezes the browser.
@@ -99,11 +100,25 @@ module.exports = new Class({
     if (!this.mediaFile) return;
     event.preventDefault();
 
+    // If the file is local, let's load the file now so the duration can be accessed
+    if (this.isLocalMedia() && !this.mediaIsAvailable) {
+      this.play();
+      this.stop();
+      this._seek.delay(0, this, [event]);
+      return;
+    }
+
+    this._seek(event);
+  },
+
+  _seek: function(event) {
     this.stopTimer();
     this.previousPosition = event.page.x;
     this.position = this.convertPixelToDuration(this.previousPosition);
-    this.updateIndicator(this.convertDurationToPixel(this.position));
-    this.waveform.addEvent('touchend:once', this.bound('seekTo'));
+    var pixel = this.convertDurationToPixel(this.position);
+    this.updateIndicator(pixel);
+    this.fireEvent('seek', [this.position, pixel]);
+    document.body.addEvent('touchend:once', this.bound('seekTo'));
   },
 
   seekTo: function(event) {
@@ -115,7 +130,7 @@ module.exports = new Class({
         // In case all media files are unsupported, ignore
         if (!this.mediaFile) return;
         this.position = this.convertPixelToDuration(this.previousPosition);
-        this.getMedia().seekTo(this.position);
+        this.getMedia().seekTo(this.position || 1); // pass 1ms, 0 doesn't work
       }).delay(0, this);
       return;
     }
@@ -123,7 +138,7 @@ module.exports = new Class({
     if (!this.isPlaying) this.play();
     else this.startTimer();
 
-    this.getMedia().seekTo(this.position);
+    this.getMedia().seekTo(this.position || 1); // pass 1ms, 0 doesn't work
   },
 
   getMedia: function() {
@@ -174,7 +189,7 @@ module.exports = new Class({
   },
 
   convertPixelToDuration: function(position) {
-    var duration = this.getMedia().getDuration();
+    var duration = this.getDuration();
     var waveform = this.waveform;
     var left = waveform.offsetLeft;
     var width = waveform.offsetWidth;
@@ -183,9 +198,22 @@ module.exports = new Class({
   },
 
   convertDurationToPixel: function(position) {
-    var duration = this.getMedia().getDuration();
+    var duration = this.getDuration();
     var width = this.waveform.offsetWidth;
     return position / duration * width / 1000;
+  },
+
+  isLocalMedia: function() {
+    return (/^\/|^file:\/\/\//i).test(this.mediaFile);
+  },
+
+  getDuration: function() {
+    var mediaDuration = this.getMedia().getDuration();
+    return ((mediaDuration != -1) ? mediaDuration : 0) || this.duration;
+  },
+
+  getWaveform: function() {
+    return this.waveform;
   }
 
 });

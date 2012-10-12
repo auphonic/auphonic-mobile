@@ -72,7 +72,7 @@ exports.formatInfos = function(response) {
   return response;
 };
 
-exports.formatRecordingLength = function(from, separator){
+exports.formatDuration = function(from, separator, pad){
   var delta = Math.abs(Math.floor(from));
 
   var vals = [],
@@ -87,6 +87,7 @@ exports.formatRecordingLength = function(from, separator){
       value = (delta % duration);
       delta = Math.floor(delta / duration);
     }
+    if (pad) value = String(Array(String(duration).length + 1).join('0') + value).slice(-String(duration).length);
     vals.unshift(value + (names[item] || ''));
   }
 
@@ -146,7 +147,7 @@ exports.prepare = function(object, type, fn) {
   metadata.hasDescription = !!(metadata.album || metadata.artist);
   object.hasChapters = length(object.chapters);
 
-  var length_string = exports.formatRecordingLength(object.length, ' ');
+  var length_string = exports.formatDuration(object.length, ' ');
   if (length_string != '0s') object.length_string = length_string;
 
   if (object.hasChapters) object.chapters.sortByKey('start');

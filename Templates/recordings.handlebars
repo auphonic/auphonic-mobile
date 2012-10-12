@@ -1,7 +1,7 @@
 {{#if recordings}}
   <ul class="main-list">
   {{#each recordings}}
-    <li class="swipeable show-popover" data-popover-event="touchhold" data-id="{{id}}" data-fire-event="removeRecording">
+    <li class="swipeable show-popover" data-popover-open-event="touchhold" data-id="{{id}}" data-fire-event="removeRecording">
       <span class="right removable{{#if short_info}} expanded{{/if}}">
         <span><a class="button red small">Delete</a></span>
       </span>

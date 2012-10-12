@@ -19,7 +19,9 @@ module.exports = new Class({
     selector: 'div.popover',
     scrollSelector: 'div.scrollable',
     positionProperty: 'data-position',
-    eventProperty: 'data-popover-event',
+    openEventProperty: 'data-popover-open-event',
+    closeEventProperty: 'data-popover-close-event',
+    openDelay: 'data-popover-open-delay',
     animationClass: 'fade',
     arrowHeight: 14
   },
@@ -39,19 +41,23 @@ module.exports = new Class({
     popover.dispose().removeClass('hidden').addClass(this.options.animationClass);
     popover.store(baseKey, this.element);
     this.pos = popover.get(this.options.positionProperty);
-    this.event = this.element.get(this.options.eventProperty) || 'click';
+    this.openEvent = this.element.get(this.options.openEventProperty) || 'click';
+    this.closeEvent = this.element.get(this.options.closeEventProperty);
+    this.openDelay = parseInt(this.element.get(this.options.openDelay), 10) || '0';
 
     this.attach();
   },
 
   attach: function() {
-    this.element.addEvent(this.event, this.bound('onClick'));
-    this.popover.addEvent('click', this.bound('onPopoverClick'));
+    this.element.addEvent(this.openEvent, this.bound('onClick'));
+    if (this.closeEvent) this.element.addEvent(this.closeEvent, this.bound('onClose'));
+    this.popover.addEvent('click', this.bound('onClose'));
   },
 
   detach: function() {
-    this.element.removeEvent(this.event, this.bound('onClick'));
-    this.popover.removeEvent('click', this.bound('onPopoverClick'));
+    this.element.removeEvent(this.openEvent, this.bound('onClick'));
+    if (this.closeEvent) this.element.removeEvent(this.closeEvent, this.bound('onClose'));
+    this.popover.removeEvent('click', this.bound('onClose'));
   },
 
   onClick: function(event) {
@@ -64,10 +70,15 @@ module.exports = new Class({
       return;
     }
 
+    if (this.openDelay) {
+      this.timer = this.open.delay(this.openDelay, this);
+      return;
+    }
+
     this.open();
   },
 
-  onPopoverClick: function(event) {
+  onClose: function(event) {
     event.preventDefault();
 
     this.close();
@@ -112,6 +123,7 @@ module.exports = new Class({
   close: function() {
     if (!this.isOpen) return this;
 
+    clearTimeout(this.timer);
     window.removeEventListener('orientationchange', this.bound('position'), false);
     OuterClickStack.erase(this.bound('close'));
 
@@ -178,7 +190,11 @@ module.exports = new Class({
   },
 
   shouldDisableElement: function() {
-    return (this.event != 'click');
+    return (this.openEvent != 'click');
+  },
+
+  getPopover: function() {
+    return this.popover;
   }
 
 });

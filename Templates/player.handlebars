@@ -1,13 +1,16 @@
 <div class="player clear">
   <div class="play-button content full">
-    <a class="play" href="#"><span class="hidden" data-media="1">{{media_files}}</span></a>
+    <a class="play" href="#">
+      <span class="hidden" data-media="1">{{media_files}}</span>
+      <span class="hidden" data-length="1">{{length}}</span></a>
   </div>
-  <div class="waveform content full">
+  <div class="waveform content full show-popover" data-popover-open-event="touchstart" data-popover-open-delay="300" data-popover-close-event="touchend">
     {{#if waveform_image}}
       <img src="{{{image waveform_image}}}" />
     {{else}}
       <div class="line"></div>
     {{/if}}
     <div class="position"></div>
+      <div class="hidden popover top center auto-width" data-position="top"></div>
   </div>
 </div>

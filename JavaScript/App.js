@@ -226,7 +226,9 @@ exports.boot = function() {
       selector: popoverSelector,
       scrollSelector: 'div.scrollable',
       positionProperty: 'data-position',
-      eventProperty: 'data-popover-event',
+      eventProperty: 'data-popover-open-event',
+      closeEventProperty: 'data-popover-close-event',
+      openDelay: 'data-popover-open-delay',
       animationClass: 'fade',
       arrowHeight: 14
     }),
@@ -269,6 +271,7 @@ exports.boot = function() {
 
     '.player': Class.Instantiate(AudioPlayer, {
       selector: '[data-media]',
+      lengthSelector: '[data-length]',
       playSelector: 'a.play',
       waveformSelector: 'div.waveform',
       positionSelector: 'div.waveform div.position',
@@ -286,6 +289,21 @@ exports.boot = function() {
 
       onLoadFinished: function() {
         View.getMain().hideIndicator();
+      },
+
+      onSeek: function(position, pixel) {
+        var waveform = this.getWaveform();
+        var popover = waveform.getInstanceOf(Popover).getPopover();
+        popover.set('text', Data.formatDuration(position / 1000, ' ', true));
+
+        // Checking if we overflow the screen on the right
+        var waveformLeft = waveform.offsetLeft;
+        var bodyWidth = document.body.offsetWidth;
+        var width = popover.offsetWidth || 40;
+        var left = pixel + waveformLeft - width / 2;
+        var overflow = (left + width + 10) - bodyWidth;
+        if (overflow > 0) left -= overflow;
+        popover.setStyle('left', left);
       }
     })
 
