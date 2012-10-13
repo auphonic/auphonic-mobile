@@ -65,7 +65,7 @@ module.exports = new Class({
 
     event.preventDefault();
 
-    if (this.isOpen) {
+    if (this.isOpen()) {
       this.close();
       return;
     }
@@ -85,7 +85,7 @@ module.exports = new Class({
   },
 
   onComplete: function() {
-    this.isOpen = false;
+    this._isOpen = false;
     this.popover.dispose();
 
     // Restore previous settings
@@ -96,8 +96,8 @@ module.exports = new Class({
   },
 
   open: function(content) {
-    if (this.isOpen) return this;
-    this.isOpen = true;
+    if (this.isOpen()) return this;
+    this._isOpen = true;
 
     var popover = this.popover;
     popover.inject(this.getScrollElement());
@@ -121,9 +121,9 @@ module.exports = new Class({
   },
 
   close: function() {
-    if (!this.isOpen) return this;
-
     clearTimeout(this.timer);
+    if (!this._isOpen) return this;
+
     window.removeEventListener('orientationchange', this.bound('position'), false);
     OuterClickStack.erase(this.bound('close'));
 
@@ -195,6 +195,14 @@ module.exports = new Class({
 
   getPopover: function() {
     return this.popover;
+  },
+
+  isOpen: function() {
+    return this._isOpen;
+  },
+
+  getOpenDelay: function() {
+    return this.openDelay;
   }
 
 });

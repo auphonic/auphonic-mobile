@@ -1279,19 +1279,9 @@ function program3(depth0,data) {
   return buffer;});
 templates['preset'] = template(function (Handlebars,depth0,helpers,partials,data) {
   helpers = helpers || Handlebars.helpers;
-  var buffer = "", stack1, foundHelper, functionType="function", escapeExpression=this.escapeExpression, self=this, helperMissing=helpers.helperMissing;
+  var buffer = "", stack1, foundHelper, functionType="function", escapeExpression=this.escapeExpression, helperMissing=helpers.helperMissing, self=this;
 
 function program1(depth0,data) {
-  
-  
-  return " expanded";}
-
-function program3(depth0,data) {
-  
-  
-  return " expanded";}
-
-function program5(depth0,data) {
   
   var buffer = "", stack1;
   buffer += "\n      <br />\n      <span class=\"light small bold info-left\">\n        ";
@@ -1303,21 +1293,13 @@ function program5(depth0,data) {
   buffer += "<li class=\"swipeable show-popover\" data-popover-open-event=\"touchhold\" data-api-url=\"preset/";
   stack1 = depth0.uuid;
   stack1 = typeof stack1 === functionType ? stack1() : stack1;
-  buffer += escapeExpression(stack1) + "\" data-method=\"delete\">\n  <span class=\"right removable";
-  stack1 = depth0.short_info;
-  stack1 = helpers['if'].call(depth0, stack1, {hash:{},inverse:self.noop,fn:self.program(1, program1, data)});
-  if(stack1 || stack1 === 0) { buffer += stack1; }
-  buffer += "\">\n    <span><a class=\"button red small\">Delete</a></span>\n  </span>\n  <div class=\"hidden popover top justify\" data-position=\"top\">\n    <a href=\"/preset/edit/";
+  buffer += escapeExpression(stack1) + "\" data-method=\"delete\">\n  <span class=\"right removable expanded\">\n    <span><a class=\"button red small\">Delete</a></span>\n  </span>\n  <div class=\"hidden popover top justify\" data-position=\"top\">\n    <a href=\"/preset/edit/";
   stack1 = depth0.uuid;
   stack1 = typeof stack1 === functionType ? stack1() : stack1;
   buffer += escapeExpression(stack1) + "\" class=\"button expand\">Edit</a>\n    <a class=\"button expand red deleteable\">Delete</a>\n  </div>\n  <a href=\"/preset/";
   stack1 = depth0.uuid;
   stack1 = typeof stack1 === functionType ? stack1() : stack1;
-  buffer += escapeExpression(stack1) + "\" class=\"arrow ";
-  stack1 = depth0.short_info;
-  stack1 = helpers['if'].call(depth0, stack1, {hash:{},inverse:self.noop,fn:self.program(3, program3, data)});
-  if(stack1 || stack1 === 0) { buffer += stack1; }
-  buffer += "\">\n    <span></span>\n    <img src=\"";
+  buffer += escapeExpression(stack1) + "\" class=\"arrow expanded\">\n    <span></span>\n    <img src=\"";
   stack1 = depth0.thumbnail;
   foundHelper = helpers.image;
   stack1 = foundHelper ? foundHelper.call(depth0, stack1, {hash:{}}) : helperMissing.call(depth0, "image", stack1, {hash:{}});
@@ -1327,7 +1309,7 @@ function program5(depth0,data) {
   stack1 = typeof stack1 === functionType ? stack1() : stack1;
   buffer += escapeExpression(stack1) + "\n    ";
   stack1 = depth0.short_info;
-  stack1 = helpers['if'].call(depth0, stack1, {hash:{},inverse:self.noop,fn:self.program(5, program5, data)});
+  stack1 = helpers['if'].call(depth0, stack1, {hash:{},inverse:self.noop,fn:self.program(1, program1, data)});
   if(stack1 || stack1 === 0) { buffer += stack1; }
   buffer += "\n  </a>\n</li>\n";
   return buffer;});
@@ -1366,21 +1348,13 @@ function program4(depth0,data) {
   return buffer;});
 templates['production'] = template(function (Handlebars,depth0,helpers,partials,data) {
   helpers = helpers || Handlebars.helpers;
-  var buffer = "", stack1, foundHelper, functionType="function", escapeExpression=this.escapeExpression, self=this, helperMissing=helpers.helperMissing;
+  var buffer = "", stack1, foundHelper, functionType="function", escapeExpression=this.escapeExpression, helperMissing=helpers.helperMissing;
 
-function program1(depth0,data) {
-  
-  
-  return " expanded";}
 
   buffer += "<li class=\"swipeable show-popover\" data-popover-open-event=\"touchhold\" data-api-url=\"production/";
   stack1 = depth0.uuid;
   stack1 = typeof stack1 === functionType ? stack1() : stack1;
-  buffer += escapeExpression(stack1) + "\" data-method=\"delete\">\n  <span class=\"right removable";
-  stack1 = depth0.short_info;
-  stack1 = helpers['if'].call(depth0, stack1, {hash:{},inverse:self.noop,fn:self.program(1, program1, data)});
-  if(stack1 || stack1 === 0) { buffer += stack1; }
-  buffer += "\">\n    <span><a class=\"button red small\">Delete</a></span>\n  </span>\n  <div class=\"hidden popover top justify\" data-position=\"top\">\n    <a href=\"/production/edit/";
+  buffer += escapeExpression(stack1) + "\" data-method=\"delete\">\n  <span class=\"right removable expanded\">\n    <span><a class=\"button red small\">Delete</a></span>\n  </span>\n  <div class=\"hidden popover top justify\" data-position=\"top\">\n    <a href=\"/production/edit/";
   stack1 = depth0.uuid;
   stack1 = typeof stack1 === functionType ? stack1() : stack1;
   buffer += escapeExpression(stack1) + "\" class=\"button expand\">Edit</a>\n    <a class=\"button expand red deleteable\">Delete</a>\n  </div>\n  <a href=\"/production/";
@@ -1395,7 +1369,7 @@ function program1(depth0,data) {
   stack1 = depth0.metadata;
   stack1 = stack1 == null || stack1 === false ? stack1 : stack1.title;
   stack1 = typeof stack1 === functionType ? stack1() : stack1;
-  buffer += escapeExpression(stack1) + "<br />\n    <span class=\"small bold info-left\">\n      ";
+  buffer += escapeExpression(stack1) + "\n    <br />\n    <span class=\"small bold info-left\">\n      ";
   stack1 = depth0.short_status_string;
   stack1 = typeof stack1 === functionType ? stack1() : stack1;
   buffer += escapeExpression(stack1) + " <span class=\"light\">";
@@ -1474,11 +1448,7 @@ function program2(depth0,data) {
   buffer += "\n    <li class=\"swipeable show-popover\" data-popover-open-event=\"touchhold\" data-id=\"";
   stack1 = depth0.id;
   stack1 = typeof stack1 === functionType ? stack1() : stack1;
-  buffer += escapeExpression(stack1) + "\" data-fire-event=\"removeRecording\">\n      <span class=\"right removable";
-  stack1 = depth0.short_info;
-  stack1 = helpers['if'].call(depth0, stack1, {hash:{},inverse:self.noop,fn:self.program(3, program3, data)});
-  if(stack1 || stack1 === 0) { buffer += stack1; }
-  buffer += "\">\n        <span><a class=\"button red small\">Delete</a></span>\n      </span>\n      <div class=\"hidden popover top justify\" data-position=\"top\">\n        <a class=\"button expand red deleteable\">Delete</a>\n      </div>\n      <a href=\"/recording/";
+  buffer += escapeExpression(stack1) + "\" data-fire-event=\"removeRecording\">\n      <span class=\"right removable\">\n        <span><a class=\"button red small\">Delete</a></span>\n      </span>\n      <div class=\"hidden popover top justify\" data-position=\"top\">\n        <a class=\"button expand red deleteable\">Delete</a>\n      </div>\n      <a href=\"/recording/";
   stack1 = depth0.id;
   stack1 = typeof stack1 === functionType ? stack1() : stack1;
   buffer += escapeExpression(stack1) + "\" class=\"arrow\"><span></span>";
@@ -1486,18 +1456,14 @@ function program2(depth0,data) {
   stack1 = typeof stack1 === functionType ? stack1() : stack1;
   buffer += escapeExpression(stack1) + "</a>\n    </li>\n  ";
   return buffer;}
-function program3(depth0,data) {
-  
-  
-  return " expanded";}
 
-function program5(depth0,data) {
+function program4(depth0,data) {
   
   
   return "\n  <h1 class=\"null\">You have no recent recordings.</h1>\n  <ul>\n    <li><a href=\"/production/recording/new-audio\" class=\"arrow\"><span></span>Start a new Recording</a></li>\n  </ul>\n";}
 
   stack1 = depth0.recordings;
-  stack1 = helpers['if'].call(depth0, stack1, {hash:{},inverse:self.program(5, program5, data),fn:self.program(1, program1, data)});
+  stack1 = helpers['if'].call(depth0, stack1, {hash:{},inverse:self.program(4, program4, data),fn:self.program(1, program1, data)});
   if(stack1 || stack1 === 0) { buffer += stack1; }
   buffer += "\n";
   return buffer;});

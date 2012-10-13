@@ -1,5 +1,5 @@
 <li class="swipeable show-popover" data-popover-open-event="touchhold" data-api-url="production/{{uuid}}" data-method="delete">
-  <span class="right removable{{#if short_info}} expanded{{/if}}">
+  <span class="right removable expanded">
     <span><a class="button red small">Delete</a></span>
   </span>
   <div class="hidden popover top justify" data-position="top">
@@ -9,7 +9,8 @@
   <a href="/production/{{uuid}}" class="arrow expanded">
     <span></span>
     <img src="{{{image thumbnail}}}" class="small-logo list-thumbnail" />
-    {{metadata.title}}<br />
+    {{metadata.title}}
+    <br />
     <span class="small bold info-left">
       {{short_status_string}} <span class="light">{{short_info}}</span>
     </span>

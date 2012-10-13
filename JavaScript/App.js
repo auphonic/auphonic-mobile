@@ -57,8 +57,8 @@ var Auphonic = require('Auphonic');
 // Register Partials for Handlebars
 Handlebars.registerPartial('preset', Handlebars.templates.preset);
 Handlebars.registerPartial('production', Handlebars.templates.production);
+Handlebars.registerPartial('player', Handlebars.templates.player);
 Handlebars.registerPartial('algorithm-popover', Handlebars.templates['algorithm-popover']);
-Handlebars.registerPartial('player', Handlebars.templates['player']);
 
 // Monkey Patch for Cordova which sometimes adds file:///
 var getPath = History.getPath;
@@ -293,17 +293,24 @@ exports.boot = function() {
 
       onSeek: function(position, pixel) {
         var waveform = this.getWaveform();
-        var popover = waveform.getInstanceOf(Popover).getPopover();
-        popover.set('text', Data.formatDuration(position / 1000, ' ', true));
+        var popover = waveform.getInstanceOf(Popover);
+        var popoverElement = popover.getPopover();
+        popoverElement.set('text', Data.formatDuration(position / 1000, ' ', true));
 
-        // Checking if we overflow the screen on the right
-        var waveformLeft = waveform.offsetLeft;
-        var bodyWidth = document.body.offsetWidth;
-        var width = popover.offsetWidth || 40;
-        var left = pixel + waveformLeft - width / 2;
-        var overflow = (left + width + 10) - bodyWidth;
-        if (overflow > 0) left -= overflow;
-        popover.setStyle('left', left);
+        var reposition = function() {
+          // Checking if we overflow the screen on the right
+          var waveformLeft = waveform.offsetLeft;
+          var bodyWidth = document.body.offsetWidth;
+          var width = popoverElement.offsetWidth;
+          var left = pixel + waveformLeft - width / 2;
+          var overflow = (left + width + 10) - bodyWidth;
+          if (overflow > 0) left -= overflow;
+          popoverElement.setStyle('left', left);
+        };
+
+        reposition();
+        if (!popover.isOpen() && popover.getOpenDelay())
+          reposition.delay(popover.getOpenDelay());
       }
     })
 
