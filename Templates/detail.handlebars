@@ -130,7 +130,13 @@
   <h1>Outgoing File Transfers</h1>
   <ul>
     {{#each outgoing_services}}
-      <li><label><span class="light">{{display_type}}</span> <small>{{display_name}}</small></label></li>
+      <li>
+        {{#if result_urls}}
+          <a href="{{result_urls.0.}}" class="share"><span></span><span class="light">{{display_type}}</span> <small>{{display_name}}</small></a>
+        {{else}}
+          <label><span class="light">{{display_type}}</span> <small>{{display_name}}</small></label>
+        {{/if}}
+      </li>
     {{/each}}
   </ul>
 {{/if}}

@@ -78,7 +78,7 @@ module.exports = new Class({
   },
 
   getItemContainerElement: function() {
-    return document.getElement(this.getItemContainer());
+    return this.toElement().getElement(this.getItemContainer());
   },
 
   getSpinner: function() {

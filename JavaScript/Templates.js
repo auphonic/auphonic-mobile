@@ -549,16 +549,41 @@ function program77(depth0,data) {
 function program78(depth0,data) {
   
   var buffer = "", stack1;
-  buffer += "\n      <li><label><span class=\"light\">";
+  buffer += "\n      <li>\n        ";
+  stack1 = depth0.result_urls;
+  stack1 = helpers['if'].call(depth0, stack1, {hash:{},inverse:self.program(81, program81, data),fn:self.program(79, program79, data)});
+  if(stack1 || stack1 === 0) { buffer += stack1; }
+  buffer += "\n      </li>\n    ";
+  return buffer;}
+function program79(depth0,data) {
+  
+  var buffer = "", stack1;
+  buffer += "\n          <a href=\"";
+  stack1 = depth0.result_urls;
+  stack1 = stack1 == null || stack1 === false ? stack1 : stack1[0];
+  stack1 = typeof stack1 === functionType ? stack1() : stack1;
+  buffer += escapeExpression(stack1) + "\" class=\"share\"><span></span><span class=\"light\">";
   stack1 = depth0.display_type;
   stack1 = typeof stack1 === functionType ? stack1() : stack1;
   buffer += escapeExpression(stack1) + "</span> <small>";
   stack1 = depth0.display_name;
   stack1 = typeof stack1 === functionType ? stack1() : stack1;
-  buffer += escapeExpression(stack1) + "</small></label></li>\n    ";
+  buffer += escapeExpression(stack1) + "</small></a>\n        ";
   return buffer;}
 
-function program80(depth0,data) {
+function program81(depth0,data) {
+  
+  var buffer = "", stack1;
+  buffer += "\n          <label><span class=\"light\">";
+  stack1 = depth0.display_type;
+  stack1 = typeof stack1 === functionType ? stack1() : stack1;
+  buffer += escapeExpression(stack1) + "</span> <small>";
+  stack1 = depth0.display_name;
+  stack1 = typeof stack1 === functionType ? stack1() : stack1;
+  buffer += escapeExpression(stack1) + "</small></label>\n        ";
+  return buffer;}
+
+function program83(depth0,data) {
   
   var buffer = "", stack1;
   buffer += "\n  <h1>Subtitle</h1>\n  <div class=\"content\">\n    ";
@@ -568,25 +593,25 @@ function program80(depth0,data) {
   buffer += escapeExpression(stack1) + "\n  </div>\n";
   return buffer;}
 
-function program82(depth0,data) {
+function program85(depth0,data) {
   
   var buffer = "", stack1;
   buffer += "\n  <h1>Algorithms</h1>\n  <ul>\n  ";
   stack1 = depth0.algorithms;
-  stack1 = helpers.each.call(depth0, stack1, {hash:{},inverse:self.noop,fn:self.program(83, program83, data)});
+  stack1 = helpers.each.call(depth0, stack1, {hash:{},inverse:self.noop,fn:self.program(86, program86, data)});
   if(stack1 || stack1 === 0) { buffer += stack1; }
   buffer += "\n  </ul>\n";
   return buffer;}
-function program83(depth0,data) {
+function program86(depth0,data) {
   
   var buffer = "", stack1;
   buffer += "\n    <li class=\"wide\">\n      ";
   stack1 = depth0.select;
-  stack1 = helpers['if'].call(depth0, stack1, {hash:{},inverse:self.noop,fn:self.program(84, program84, data)});
+  stack1 = helpers['if'].call(depth0, stack1, {hash:{},inverse:self.noop,fn:self.program(87, program87, data)});
   if(stack1 || stack1 === 0) { buffer += stack1; }
   buffer += "\n      <label class=\"show-popover ";
   stack1 = depth0.select;
-  stack1 = helpers['if'].call(depth0, stack1, {hash:{},inverse:self.program(88, program88, data),fn:self.program(86, program86, data)});
+  stack1 = helpers['if'].call(depth0, stack1, {hash:{},inverse:self.program(91, program91, data),fn:self.program(89, program89, data)});
   if(stack1 || stack1 === 0) { buffer += stack1; }
   buffer += "\">\n        <span></span>";
   stack1 = depth0.display_name;
@@ -597,7 +622,7 @@ function program83(depth0,data) {
   if(stack1 || stack1 === 0) { buffer += stack1; }
   buffer += "\n      </label>\n    </li>\n  ";
   return buffer;}
-function program84(depth0,data) {
+function program87(depth0,data) {
   
   var buffer = "", stack1;
   buffer += "\n        <span class=\"right light bold\">";
@@ -606,12 +631,12 @@ function program84(depth0,data) {
   buffer += escapeExpression(stack1) + "</span>\n      ";
   return buffer;}
 
-function program86(depth0,data) {
+function program89(depth0,data) {
   
   
   return "left";}
 
-function program88(depth0,data) {
+function program91(depth0,data) {
   
   
   return "info";}
@@ -660,11 +685,11 @@ function program88(depth0,data) {
   buffer += "\n\n";
   stack1 = depth0.metadata;
   stack1 = stack1 == null || stack1 === false ? stack1 : stack1.subtitle;
-  stack1 = helpers['if'].call(depth0, stack1, {hash:{},inverse:self.noop,fn:self.program(80, program80, data)});
+  stack1 = helpers['if'].call(depth0, stack1, {hash:{},inverse:self.noop,fn:self.program(83, program83, data)});
   if(stack1 || stack1 === 0) { buffer += stack1; }
   buffer += "\n\n";
   stack1 = depth0.hasAlgorithms;
-  stack1 = helpers['if'].call(depth0, stack1, {hash:{},inverse:self.noop,fn:self.program(82, program82, data)});
+  stack1 = helpers['if'].call(depth0, stack1, {hash:{},inverse:self.noop,fn:self.program(85, program85, data)});
   if(stack1 || stack1 === 0) { buffer += stack1; }
   buffer += "\n";
   return buffer;});
