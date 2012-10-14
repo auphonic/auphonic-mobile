@@ -32,7 +32,8 @@ module.exports = new Class({
     getObjectName: function(object) {
       return '';
     },
-    onSave: function(object) {}
+    onSave: function(object) {},
+    onUploadSuccess: function(uuid) {}
   },
 
   initialize: function(options) {
@@ -157,6 +158,8 @@ module.exports = new Class({
     this.store = store;
     this.presets = presets;
 
+    if (isEditMode) this.uuid = data.uuid;
+
     // This is a placeholder title created by the mobile app, remove it if possible
     if (isEditMode && isProduction && data.metadata.title == Auphonic.DefaultTitle) {
       data.metadata.title = '';
@@ -218,9 +221,7 @@ module.exports = new Class({
 
   upload: function(file) {
     return API.upload(this.getSaveURL() + '/upload', file, 'image').on({
-      success: function() {
-        new Notice('The Cover Photo was successfully uploaded.');
-      }
+      success: this.bound('onUploadSuccess')
     });
   },
 
@@ -297,8 +298,10 @@ module.exports = new Class({
 
     // If the production is new and a cover photo is selected we need to upload it now.
     if (this.uploadFile) {
-      if (!this.isEditMode)
+      if (!this.isEditMode) {
         this.setSaveURL((this.getBaseURL() + '{uuid}').substitute(response.data));
+        this.uuid = response.data.uuid;
+      }
 
       this.upload(this.uploadFile);
       this.uploadFile = null;
@@ -318,6 +321,11 @@ module.exports = new Class({
 
     // defer until after save
     this.uploadFile = file;
+  },
+
+  onUploadSuccess: function(response) {
+    new Notice('The Cover Photo was successfully uploaded.');
+    this.options.onUploadSuccess.call(this, [this.uuid]);
   }
 
 });

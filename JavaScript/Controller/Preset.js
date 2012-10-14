@@ -35,6 +35,19 @@ var createForm = function(options) {
         onSave: function(object) {
           presets[object.uuid] = object;
           History.push('/preset/' + object.uuid);
+        },
+        onUploadSuccess: function(uuid) {
+          var url = 'preset/{uuid}'.substitute({uuid: uuid});
+          if (History.getPath() != '/' + url) return;
+
+          API.invalidate(url);
+          API.call(url).on({
+            success: function(response) {
+              var preset = response.data;
+              presets[preset.uuid] = preset;
+              showOne(preset, {refresh: true});
+            }
+          });
         }
       }, options)),
       Metadata,
@@ -100,18 +113,26 @@ Controller.define('/preset', function() {
   });
 });
 
-Controller.define('/preset/{uuid}', function(req) {
+var showOne = function(req, options) {
   Data.prepare(presets[req.uuid], 'preset', function(preset) {
     addPlaceholder();
-    View.getMain().push('preset', new View.Object({
+
+    var object = new View.Object({
       title: preset.preset_name,
       content: UI.render('detail', preset),
       action: {
         title: 'Edit',
         url: '/preset/edit/' + preset.uuid
       }
-    }));
+    });
+
+    if (options && options.refresh) View.getMain().replace(object);
+    else View.getMain().push('preset', object);
   });
+};
+
+Controller.define('/preset/{uuid}', function(req) {
+  showOne(req);
 });
 
 Controller.define('/preset/{uuid}/summary', function(req) {

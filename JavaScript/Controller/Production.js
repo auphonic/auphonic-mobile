@@ -44,6 +44,19 @@ var createForm = function(options) {
         onSave: function(object) {
           productions[object.uuid] = object;
           History.push('/production/' + object.uuid);
+        },
+        onUploadSuccess: function(uuid) {
+          var url = 'production/{uuid}'.substitute({uuid: uuid});
+          if (History.getPath() != '/' + url) return;
+
+          API.invalidate(url);
+          API.call(url).on({
+            success: function(response) {
+              var production = response.data;
+              productions[production.uuid] = production;
+              showOne(production, {refresh: true});
+            }
+          });
         }
       }, options)),
       Chapter,
