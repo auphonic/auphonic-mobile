@@ -1443,9 +1443,13 @@ templates['record-audio'] = template(function (Handlebars,depth0,helpers,partial
   return "<ul class=\"record_button\">\n  <li><a href=\"/production/recording/new-audio-start\">Start Recording</a></li>\n</ul>\n<ul class=\"stop_record_button hidden\">\n  <li><span class=\"record_status right light\"></span><a href=\"/production/recording/stop\">Stop recording</a></li>\n</ul>\n";});
 templates['recording'] = template(function (Handlebars,depth0,helpers,partials,data) {
   helpers = helpers || Handlebars.helpers; partials = partials || Handlebars.partials;
-  var buffer = "", stack1, self=this, functionType="function", escapeExpression=this.escapeExpression;
+  var buffer = "", stack1, functionType="function", escapeExpression=this.escapeExpression, self=this;
 
 
+  buffer += "<ul>\n  <li>\n    <span class=\"right light bold\">";
+  stack1 = depth0.display_date;
+  stack1 = typeof stack1 === functionType ? stack1() : stack1;
+  buffer += escapeExpression(stack1) + "</span>\n    <label class=\"left\">Date</label>\n  </li>\n</ul>\n\n";
   stack1 = depth0;
   stack1 = self.invokePartial(partials.player, 'player', stack1, helpers, partials);;
   if(stack1 || stack1 === 0) { buffer += stack1; }
@@ -1477,7 +1481,7 @@ function program2(depth0,data) {
   stack1 = depth0.id;
   stack1 = typeof stack1 === functionType ? stack1() : stack1;
   buffer += escapeExpression(stack1) + "\" class=\"arrow\"><span></span>";
-  stack1 = depth0.name;
+  stack1 = depth0.display_name;
   stack1 = typeof stack1 === functionType ? stack1() : stack1;
   buffer += escapeExpression(stack1) + "</a>\n    </li>\n  ";
   return buffer;}

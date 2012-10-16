@@ -1,5 +1,7 @@
 var LocalStorage = require('Utility/LocalStorage');
 
+var Auphonic = require('Auphonic');
+
 var get = function() {
   return LocalStorage.get('recordings') || {};
 };
@@ -29,8 +31,15 @@ var findById = exports.findById = function(id) {
 
 exports.findAll = get;
 
-exports.count = function() {
-  return Object.values(get()).length || 0;
+exports.generateRecordingId = function() {
+  var id = (LocalStorage.get('recording-id') || 0) + 1;
+  LocalStorage.set('recording-id', id);
+  return id;
+};
+
+exports.getRecordingName = function(recording) {
+  var match = recording.name.match(Auphonic.DefaultFileNameFilter);
+  return (match && match[1] ? 'Recording ' + match[1] : recording.name);
 };
 
 exports.setCurrentUpload = function(data) {
@@ -43,9 +52,13 @@ exports.getCurrentUpload = function() {
 
 exports.add = function(recording) {
   var recordings = get();
-  recording = Object.append({}, recording);
   var id = String.uniqueID();
+
+  recording = Object.append({}, recording);
   recording.id = id;
+  recording.timestamp = Date.now();
+  recording.display_name = exports.getRecordingName(recording);
+
   recordings[id] = recording;
   set(recordings);
 };

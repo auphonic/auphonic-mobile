@@ -46,17 +46,8 @@ var createForm = function(options) {
           History.push('/production/' + object.uuid);
         },
         onUploadSuccess: function(uuid) {
-          var url = 'production/{uuid}'.substitute({uuid: uuid});
-          if (History.getPath() != '/' + url) return;
-
-          API.invalidate(url);
-          API.call(url).on({
-            success: function(response) {
-              var production = response.data;
-              productions[production.uuid] = production;
-              showOne(production, {refresh: true});
-            }
-          });
+          var object = {uuid: uuid};
+          if (requiresRefresh(object)) refresh(object);
         }
       }, options)),
       Chapter,
@@ -171,6 +162,25 @@ var showOne = function(req, options) {
   });
 };
 
+var requiresRefresh = function(production) {
+  // If the production is currently being viewed, refresh.
+  // Reload the production data because the upload response is not fully reliable with Cordova.
+  var url = 'production/{uuid}'.substitute(production);
+  return (History.getPath() == '/' + url);
+};
+
+var refresh = function(production) {
+  var url = 'production/{uuid}'.substitute(production);
+  API.invalidate(url);
+  API.call(url).on({
+     success: function(response) {
+        var object = response.data;
+        productions[object.uuid] = object;
+        showOne(object, {refresh: true});
+     }
+  });
+};
+
 // Start a production and update the status
 var startProduction = function(event) {
   event.preventDefault();
@@ -224,7 +234,6 @@ var edit = function(production) {
   var reuse = form && (currentEditUUID == production.uuid);
 
   currentEditUUID = production.uuid;
-  View.getMain().showIndicator({stack: 'production'});
 
   var show = function() {
     var data = Object.clone(production);
@@ -344,12 +353,6 @@ var recorder;
 var upload = function(file) {
   Recording.add(file);
 
-  var refresh = function(response) {
-    var production = response.data;
-    productions[production.uuid] = production;
-    showOne(production, {refresh: true});
-  };
-
   var onCreateSuccess = function(response) {
     Recording.setCurrentUpload({
       uuid: response.data.uuid,
@@ -357,19 +360,10 @@ var upload = function(file) {
     });
 
     API.upload('production/{uuid}/upload'.substitute(response.data), file, 'input_file').on({
-      success: function(production) {
+      success: function() {
         new Notice('The recording <span class="bold">"' + file.name + '"</span> was successfully uploaded and attached to your production.');
         Recording.setCurrentUpload(null);
-
-        // If the production is currently being viewed, refresh.
-        // Reload the production data because the upload response is not fully reliable with Cordova.
-        var url = 'production/{uuid}'.substitute(response.data);
-        if (History.getPath() == '/' + url) {
-          API.invalidate(url);
-          API.call(url).on({
-            success: refresh
-          });
-        }
+        if (requiresRefresh(response.data)) refresh(response.data);
       }
     });
 
@@ -414,7 +408,7 @@ Controller.define('/production/recording/new-audio', function() {
 });
 
 Controller.define('/production/recording/new-audio-start', function() {
-  var name = Auphonic.DefaultFileName.substitute({uuid: Recording.count() + 1});
+  var name = Auphonic.DefaultFileName.substitute({uuid: Recording.generateRecordingId()});
 
   recorder = new AudioRecorder(CordovaAudioRecorder, name, {
     onSuccess: upload
@@ -424,4 +418,8 @@ Controller.define('/production/recording/new-audio-start', function() {
 Controller.define('/production/recording/stop', function() {
   recorder.stop();
   recorder = null;
+});
+
+Controller.define('/recording', {isGreedy: true}, function() {
+  resetEditUUID();
 });

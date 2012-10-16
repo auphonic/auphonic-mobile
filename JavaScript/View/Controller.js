@@ -166,6 +166,7 @@ module.exports = new Class({
   },
 
   showIndicator: function(options) {
+    if (this.indicatorIsVisible) return;
     if (options && options.immediate) {
       UI.disable();
       this._showIndicator(options);

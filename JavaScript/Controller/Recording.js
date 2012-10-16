@@ -6,8 +6,8 @@ var Recording = require('App/Recording');
 
 var Auphonic = require('Auphonic');
 
-Controller.define('/recording', function() {
-  var recordings = Object.values(Recording.findAll());
+Controller.define('/recording', {isGreedy: true}, function() {
+  var recordings = Object.values(Recording.findAll()).sortByKey('timestamp').reverse();
   var object = new View.Object({
     title: 'Recordings',
     content: UI.render('recordings', {
@@ -23,18 +23,18 @@ Controller.define('/recording', function() {
   object.toElement().getElements('li').addEvent('removeRecording', Recording.remove);
 });
 
+var months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+
 Controller.define('/recording/{id}', function(req) {
 
   var recording = Recording.findById(req.id);
-  recording.media_files = JSON.stringify([recording.fullPath]);
+  var date = new Date(recording.timestamp);
 
-  var match = recording.name.match(Auphonic.DefaultFileNameFilter);
-  var name = recording.name;
-  if (match && match[1])
-    name = 'Recording ' + match[1];
+  recording.media_files = JSON.stringify([recording.fullPath]);
+  recording.display_date = months[date.getMonth()] + ' ' + date.getDate() + ', ' + date.getHours() + ':' + date.getMinutes();
 
   View.getMain().push('recording', new View.Object({
-    title: name,
+    title: Recording.getRecordingName(recording),
     content: UI.render('recording', recording)
   }));
 
