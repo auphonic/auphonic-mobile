@@ -5,9 +5,10 @@ var Request = Core.Request;
 var Request = require('Request');
 
 var Base64 = require('Utility/Base64');
-var LocalStorage = require('Utility/LocalStorage');
 
 var IdleTimer = require('Cordova/IdleTimer');
+
+var User = require('App/User');
 
 var Queue = require('Queue').Queue;
 
@@ -71,7 +72,7 @@ var formatGetURL = function(url, data) {
 };
 
 var getAuthorization = function() {
-  var user = LocalStorage.get('User');
+  var user = User.get();
   return (user ? 'Bearer ' + user.bearer_token : '');
 };
 

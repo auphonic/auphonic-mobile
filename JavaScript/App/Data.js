@@ -2,13 +2,12 @@ var Core = require('Core');
 var typeOf = Core.typeOf;
 var Browser = Core.Browser;
 
-var LocalStorage = require('Utility/LocalStorage');
-
 var API = require('API');
 
 var OutputFiles = require('./OutputFiles');
 var OutgoingService = require('./OutgoingService');
 var Source = require('./Source');
+var User = require('./User');
 
 var Auphonic = require('Auphonic');
 
@@ -125,8 +124,7 @@ exports.prepare = function(object, type, fn) {
     fn(object);
   });
 
-  var user = LocalStorage.get('User');
-  var bearer_token = '?bearer_token=' + user.bearer_token;
+  var bearer_token = '?bearer_token=' + User.get().bearer_token;
 
   // We need to create a new object that can be transformed for viewing
   object = Object.clone(object);

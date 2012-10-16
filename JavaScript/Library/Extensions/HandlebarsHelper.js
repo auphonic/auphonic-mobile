@@ -1,4 +1,4 @@
-var LocalStorage = require('Utility/LocalStorage');
+var User = require('App/User');
 
 var Handlebars = require('Handlebars');
 
@@ -11,7 +11,7 @@ var time = Date.now();
 Handlebars.registerHelper('image', function(url) {
   if (!url) return 'data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==';
 
-  var user = LocalStorage.get('User');
+  var user = User.get();
   var token = (user ? 'bearer_token=' + user.bearer_token + '&' : '');
 
   var now = Date.now();

@@ -25,6 +25,8 @@ require('Dev');
 // Set up Formatters
 require('App/Data');
 require('App/OutgoingService');
+var Data = require('App/Data');
+var User = require('App/User');
 
 // Load Controllers
 var Controller = require('Controller');
@@ -36,7 +38,6 @@ require('Controller/Settings');
 
 var History = require('History');
 var Form = require('Form');
-var LocalStorage = require('Utility/LocalStorage');
 var ActiveState = require('Browser/ActiveState');
 var PreventClickOnScroll = require('Browser/PreventClickOnScroll');
 
@@ -49,8 +50,6 @@ var SwipeAble = require('UI/Actions/SwipeAble');
 var Popover = require('UI/Actions/Popover');
 var Notice = require('UI/Notice');
 var Spinner = require('Spinner');
-
-var Data = require('App/Data');
 
 var Auphonic = require('Auphonic');
 
@@ -139,11 +138,11 @@ var removeItem = function(element) {
 
 // Make the info API call and show the UI on success, or else provide a reload button
 var spinner;
-var isLoggedIn = !!LocalStorage.get('User');
+var isLoggedIn = User.isLoggedIn();
 var load = function(event) {
   if (event) event.preventDefault();
 
-  isLoggedIn = !!LocalStorage.get('User');
+  isLoggedIn = User.isLoggedIn();
 
   var retry = document.id('retry');
   retry.hide();

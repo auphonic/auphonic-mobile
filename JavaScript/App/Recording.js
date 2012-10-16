@@ -1,13 +1,19 @@
 var LocalStorage = require('Utility/LocalStorage');
 
+var User = require('App/User');
+
 var Auphonic = require('Auphonic');
 
+var key = function(key) {
+  return User.getSafeUsername() + '-recordings' + (key ? '-' + key : '');
+};
+
 var get = function() {
-  return LocalStorage.get('recordings') || {};
+  return LocalStorage.get(key()) || {};
 };
 
 var set = function(recordings) {
-  LocalStorage.set('recordings', recordings);
+  LocalStorage.set(key(), recordings);
 };
 
 var removeRecording = function(recording) {
@@ -32,8 +38,8 @@ var findById = exports.findById = function(id) {
 exports.findAll = get;
 
 exports.generateRecordingId = function() {
-  var id = (LocalStorage.get('recording-id') || 0) + 1;
-  LocalStorage.set('recording-id', id);
+  var id = (LocalStorage.get(key('id')) || 0) + 1;
+  LocalStorage.set(key('id'), id);
   return id;
 };
 
@@ -43,11 +49,11 @@ exports.getRecordingName = function(recording) {
 };
 
 exports.setCurrentUpload = function(data) {
-  LocalStorage.set('currentUpload', data);
+  LocalStorage.set(key('currentUpload'), data);
 };
 
 exports.getCurrentUpload = function() {
-  return LocalStorage.get('currentUpload');
+  return LocalStorage.get(key('currentUpload'));
 };
 
 exports.add = function(recording) {

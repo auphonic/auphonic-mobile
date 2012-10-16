@@ -1,12 +1,13 @@
 var History = require('History');
 var Form = require('Form');
-var LocalStorage = require('Utility/LocalStorage');
 var Spinner = require('Spinner');
 
 var API = require('API');
 var Controller = require('./');
 var UI = require('UI');
 var Notice = require('UI/Notice');
+
+var User = require('App/User');
 
 var APIKeys = require('APIKeys');
 var Auphonic = require('Auphonic');
@@ -15,7 +16,7 @@ var notice;
 var spinner;
 
 Controller.define('/login', function() {
-  if (LocalStorage.get('User')) {
+  if (User.isLoggedIn()) {
     History.push('/');
     return;
   }
@@ -67,7 +68,7 @@ Controller.define('/login', function() {
         if (notice) notice.close();
         login.empty();
         API.invalidate();
-        LocalStorage.set('User', {
+        User.set({
           name: data.username,
           bearer_token: response.access_token
         });

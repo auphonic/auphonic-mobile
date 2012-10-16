@@ -19,10 +19,6 @@ module.exports = {
   erase: function(){
     erase.apply(this, arguments);
     return this;
-  },
-
-  clear: function() {
-    localStorage.clear();
   }
 
 };
