@@ -45,7 +45,9 @@ var createForm = function(options) {
           productions[object.uuid] = object;
           History.push('/production/' + object.uuid);
         },
-        onUploadSuccess: refreshIfRequired
+        onUploadSuccess: function(object) {
+          View.getMain().getCurrentObject().fireEvent('refresh', [object]);
+        }
       }, options)),
       Chapter,
       Metadata,
@@ -140,6 +142,7 @@ var showOne = function(req, options) {
         title: 'Edit',
         url: '/production/edit/' + production.uuid
       },
+
       onShow: function() {
         resetEditUUID();
         var production = productions[req.uuid];
@@ -151,20 +154,20 @@ var showOne = function(req, options) {
           productionStatus.check(production);
           object.addEvent('hide', productionStatus.bound('stop'));
         }
+      },
+
+      onRefresh: function(data) {
+        // If the production is currently being viewed, refresh.
+        if (data.uuid == production.uuid) {
+          productions[data.uuid] = data;
+          showOne(data, {refresh: true});
+        }
       }
     });
 
     if (options && options.refresh) View.getMain().replace(object);
     else View.getMain().push('production', object);
   });
-};
-
-var refreshIfRequired = function(production) {
-  // If the production is currently being viewed, refresh.
-  if (History.getPath() == '/production/{uuid}'.substitute(production)) {
-    productions[production.uuid] = production;
-    showOne(production, {refresh: true});
-  }
 };
 
 // Start a production and update the status
@@ -232,8 +235,12 @@ var edit = function(production) {
 
     // Check if we are currently uploading
     var currentUpload = Recording.getCurrentUpload();
-    if (currentUpload && currentUpload.uuid == data.uuid)
+    if (currentUpload && currentUpload.uuid == data.uuid) {
       data.input_file = currentUpload.file.name;
+      // Remove an eventual service uuid.
+      delete data.service;
+      Source.resetData(form);
+    }
 
     ListFiles.setFile(form, data.input_file);
 
@@ -346,11 +353,13 @@ var upload = function(file) {
     });
 
     API.upload('production/{uuid}/upload'.substitute(response.data), file, 'input_file').on({
+
       success: function(uploadResponse) {
         new Notice('The recording <span class="bold">"' + file.name + '"</span> was successfully uploaded and attached to your production.');
         Recording.setCurrentUpload(null);
-        refreshIfRequired(uploadResponse.data);
+        View.getMain().getCurrentObject().fireEvent('refresh', [uploadResponse.data]);
       }
+
     });
 
     var url = '/production/edit/{uuid}'.substitute(response.data);

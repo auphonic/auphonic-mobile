@@ -153,11 +153,13 @@
   <ul>
   {{#each algorithms}}
     <li class="wide">
-      {{#if select}}
-        <span class="right light bold">{{value_string}}</span>
-      {{/if}}
       <label class="show-popover {{#if select}}left{{else}}info{{/if}}">
-        <span></span>{{display_name}}
+        {{#if select}}
+          <span class="right light bold">{{value_string}}</span>
+        {{else}}
+          <span></span>
+        {{/if}}
+        {{display_name}}
         {{> algorithm-popover}}
       </label>
     </li>

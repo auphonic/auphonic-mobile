@@ -605,15 +605,15 @@ function program85(depth0,data) {
 function program86(depth0,data) {
   
   var buffer = "", stack1;
-  buffer += "\n    <li class=\"wide\">\n      ";
+  buffer += "\n    <li class=\"wide\">\n      <label class=\"show-popover ";
   stack1 = depth0.select;
-  stack1 = helpers['if'].call(depth0, stack1, {hash:{},inverse:self.noop,fn:self.program(87, program87, data)});
+  stack1 = helpers['if'].call(depth0, stack1, {hash:{},inverse:self.program(89, program89, data),fn:self.program(87, program87, data)});
   if(stack1 || stack1 === 0) { buffer += stack1; }
-  buffer += "\n      <label class=\"show-popover ";
+  buffer += "\">\n        ";
   stack1 = depth0.select;
-  stack1 = helpers['if'].call(depth0, stack1, {hash:{},inverse:self.program(91, program91, data),fn:self.program(89, program89, data)});
+  stack1 = helpers['if'].call(depth0, stack1, {hash:{},inverse:self.program(93, program93, data),fn:self.program(91, program91, data)});
   if(stack1 || stack1 === 0) { buffer += stack1; }
-  buffer += "\">\n        <span></span>";
+  buffer += "\n        ";
   stack1 = depth0.display_name;
   stack1 = typeof stack1 === functionType ? stack1() : stack1;
   buffer += escapeExpression(stack1) + "\n        ";
@@ -624,22 +624,27 @@ function program86(depth0,data) {
   return buffer;}
 function program87(depth0,data) {
   
-  var buffer = "", stack1;
-  buffer += "\n        <span class=\"right light bold\">";
-  stack1 = depth0.value_string;
-  stack1 = typeof stack1 === functionType ? stack1() : stack1;
-  buffer += escapeExpression(stack1) + "</span>\n      ";
-  return buffer;}
+  
+  return "left";}
 
 function program89(depth0,data) {
   
   
-  return "left";}
+  return "info";}
 
 function program91(depth0,data) {
   
+  var buffer = "", stack1;
+  buffer += "\n          <span class=\"right light bold\">";
+  stack1 = depth0.value_string;
+  stack1 = typeof stack1 === functionType ? stack1() : stack1;
+  buffer += escapeExpression(stack1) + "</span>\n        ";
+  return buffer;}
+
+function program93(depth0,data) {
   
-  return "info";}
+  
+  return "\n          <span></span>\n        ";}
 
   buffer += "<div class=\"detail expand";
   stack1 = depth0.thumbnail;
@@ -980,7 +985,7 @@ function program3(depth0,data) {
   stack1 = depth0.thumbnail;
   stack1 = helpers.unless.call(depth0, stack1, {hash:{},inverse:self.noop,fn:self.program(1, program1, data)});
   if(stack1 || stack1 === 0) { buffer += stack1; }
-  buffer += "\" />\n<ul>\n  <li>\n    <label class=\"show-popover\">\n      Upload\n      <div class=\"hidden popover top justify\" data-position=\"top\">\n        <a href=\"#\" class=\"button expand upload_take_photo\">Take a Photo</a>\n        <a href=\"#\" class=\"button expand upload_from_library\">Choose from Libraray</a>\n      </div>\n    </label>\n  </li>\n  <li class=\"remove_thumbnail";
+  buffer += "\" />\n<ul>\n  <li>\n    <label class=\"show-popover\">\n      Upload\n      <div class=\"hidden popover top justify\" data-position=\"top\">\n        <a href=\"#\" class=\"button expand upload_take_photo\">Take a Photo</a>\n        <a href=\"#\" class=\"button expand upload_from_library\">Choose from Library</a>\n      </div>\n    </label>\n  </li>\n  <li class=\"remove_thumbnail";
   stack1 = depth0.thumbnail;
   stack1 = helpers.unless.call(depth0, stack1, {hash:{},inverse:self.noop,fn:self.program(3, program3, data)});
   if(stack1 || stack1 === 0) { buffer += stack1; }

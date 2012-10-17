@@ -36,11 +36,8 @@ var createForm = function(options) {
           presets[object.uuid] = object;
           History.push('/preset/' + object.uuid);
         },
-        onUploadSuccess: function(preset) {
-          if (History.getPath() == '/preset/{uuid}'.substitute(preset)) {
-            presets[preset.uuid] = preset;
-            showOne(preset, {refresh: true});
-          }
+        onUploadSuccess: function(object) {
+          View.getMain().getCurrentObject().fireEvent('refresh', [object]);
         }
       }, options)),
       Metadata,
@@ -116,7 +113,15 @@ var showOne = function(req, options) {
       action: {
         title: 'Edit',
         url: '/preset/edit/' + preset.uuid
+      },
+
+      onRefresh: function(data) {
+        if (data.uuid == preset.uuid) {
+          presets[data.uuid] = data;
+          showOne(data, {refresh: true});
+        }
       }
+
     });
 
     if (options && options.refresh) View.getMain().replace(object);

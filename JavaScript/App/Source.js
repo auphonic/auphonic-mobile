@@ -23,6 +23,11 @@ exports.setData = function(store, id) {
   return service;
 };
 
+exports.resetData = function(store) {
+  store.set('service', null);
+  store.set('serviceObject', null);
+};
+
 exports.getObject = function(store) {
   return store.get('serviceObject', {});
 };
