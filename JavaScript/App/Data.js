@@ -7,7 +7,8 @@ var API = require('API');
 var OutputFiles = require('./OutputFiles');
 var OutgoingService = require('./OutgoingService');
 var Source = require('./Source');
-var User = require('./User');
+
+var User = require('Store/User');
 
 var Auphonic = require('Auphonic');
 

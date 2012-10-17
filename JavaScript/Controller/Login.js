@@ -7,7 +7,7 @@ var Controller = require('./');
 var UI = require('UI');
 var Notice = require('UI/Notice');
 
-var User = require('App/User');
+var User = require('Store/User');
 
 var APIKeys = require('APIKeys');
 var Auphonic = require('Auphonic');

@@ -1,6 +1,6 @@
 var LocalStorage = require('Utility/LocalStorage');
 
-var User = require('App/User');
+var User = require('Store/User');
 
 var Auphonic = require('Auphonic');
 

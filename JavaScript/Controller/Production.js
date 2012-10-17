@@ -20,8 +20,9 @@ var Metadata = require('App/Metadata');
 var OutgoingService = require('App/OutgoingService');
 var OutputFiles = require('App/OutputFiles');
 var ProductionStatus = require('App/ProductionStatus');
-var Recording = require('App/Recording');
 var Source = require('App/Source');
+
+var Recording = require('Store/Recording');
 
 var Auphonic = require('Auphonic');
 

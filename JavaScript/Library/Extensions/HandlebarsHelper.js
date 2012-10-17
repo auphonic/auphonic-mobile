@@ -1,4 +1,4 @@
-var User = require('App/User');
+var User = require('Store/User');
 
 var Handlebars = require('Handlebars');
 

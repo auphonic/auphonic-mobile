@@ -26,7 +26,7 @@ require('Dev');
 require('App/Data');
 require('App/OutgoingService');
 var Data = require('App/Data');
-var User = require('App/User');
+var User = require('Store/User');
 
 // Load Controllers
 var Controller = require('Controller');

@@ -4,7 +4,7 @@ var Controller = require('./');
 var View = require('../View');
 var UI = require('../UI');
 
-var User = require('App/User');
+var User = require('Store/User');
 
 var Auphonic = require('Auphonic');
 

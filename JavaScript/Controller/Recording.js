@@ -2,7 +2,7 @@ var Controller = require('./');
 var UI = require('UI');
 var View = require('View');
 
-var Recording = require('App/Recording');
+var Recording = require('Store/Recording');
 
 var Auphonic = require('Auphonic');
 

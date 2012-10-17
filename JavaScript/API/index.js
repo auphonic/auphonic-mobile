@@ -8,7 +8,7 @@ var Base64 = require('Utility/Base64');
 
 var IdleTimer = require('Cordova/IdleTimer');
 
-var User = require('App/User');
+var User = require('Store/User');
 
 var Queue = require('Queue').Queue;
 
