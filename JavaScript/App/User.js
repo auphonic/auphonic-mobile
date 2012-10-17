@@ -19,5 +19,5 @@ exports.reset = function() {
 
 exports.getSafeUsername = function() {
   var user = get();
-  if (user) return Base64.encode(user.name);
+  return (user ? Base64.encode(user.name) : '');
 };
