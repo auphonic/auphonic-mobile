@@ -69,6 +69,9 @@ var preventDefault = function(event) {
   event.preventDefault();
 };
 
+var cancelText = 'Are you sure you want to cancel?';
+// This should catch all important editing URLs
+var formURLs = /^\/?(production|preset)\/(edit|new|recording)/i;
 var popoverSelector = 'div.popover';
 var click = function(event) {
   event.preventDefault();
@@ -77,11 +80,25 @@ var click = function(event) {
   if (!href) return;
   if (event.touches && event.touches.length > 1) return;
 
+  var currentPath = History.getPath();
+  var isFooter = !!this.getParent('footer');
+
+  if (isFooter && formURLs.test(currentPath)) {
+    // This is unbelieveably hacky but mobile safari alerts show parts of the URL
+    // which isn't very pretty. This way the title of the alert says "Please Confirm".
+    History.detach();
+    window.history.pushState(null, null, '/Please Confirm');
+    var confirmed = window.confirm(cancelText);
+    window.history.pushState(null, null, currentPath);
+    History.attach();
+    if (!confirmed) return;
+  }
+
   if (UI.isHighlighted(this)) {
-    if (!this.getParent('footer')) return;
+    if (!isFooter) return;
 
     // Tap on footer icon
-    if (History.getPath() == href) {
+    if (currentPath == href) {
       // Invalidate and rename stack to force re-evaluation
       View.getMain().getCurrentObject().invalidate();
       View.getMain().getStack().setName('default');
