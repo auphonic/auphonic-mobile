@@ -36,18 +36,11 @@ var createForm = function(options) {
           presets[object.uuid] = object;
           History.push('/preset/' + object.uuid);
         },
-        onUploadSuccess: function(uuid) {
-          var url = 'preset/{uuid}'.substitute({uuid: uuid});
-          if (History.getPath() != '/' + url) return;
-
-          API.invalidate(url);
-          API.call(url).on({
-            success: function(response) {
-              var preset = response.data;
-              presets[preset.uuid] = preset;
-              showOne(preset, {refresh: true});
-            }
-          });
+        onUploadSuccess: function(preset) {
+          if (History.getPath() == '/preset/{uuid}'.substitute(preset)) {
+            presets[preset.uuid] = preset;
+            showOne(preset, {refresh: true});
+          }
         }
       }, options)),
       Metadata,

@@ -45,10 +45,7 @@ var createForm = function(options) {
           productions[object.uuid] = object;
           History.push('/production/' + object.uuid);
         },
-        onUploadSuccess: function(uuid) {
-          var object = {uuid: uuid};
-          if (requiresRefresh(object)) refresh(object);
-        }
+        onUploadSuccess: refreshIfRequired
       }, options)),
       Chapter,
       Metadata,
@@ -162,23 +159,12 @@ var showOne = function(req, options) {
   });
 };
 
-var requiresRefresh = function(production) {
+var refreshIfRequired = function(production) {
   // If the production is currently being viewed, refresh.
-  // Reload the production data because the upload response is not fully reliable with Cordova.
-  var url = 'production/{uuid}'.substitute(production);
-  return (History.getPath() == '/' + url);
-};
-
-var refresh = function(production) {
-  var url = 'production/{uuid}'.substitute(production);
-  API.invalidate(url);
-  API.call(url).on({
-     success: function(response) {
-        var object = response.data;
-        productions[object.uuid] = object;
-        showOne(object, {refresh: true});
-     }
-  });
+  if (History.getPath() == '/production/{uuid}'.substitute(production)) {
+    productions[production.uuid] = production;
+    showOne(production, {refresh: true});
+  }
 };
 
 // Start a production and update the status
@@ -360,10 +346,10 @@ var upload = function(file) {
     });
 
     API.upload('production/{uuid}/upload'.substitute(response.data), file, 'input_file').on({
-      success: function() {
+      success: function(uploadResponse) {
         new Notice('The recording <span class="bold">"' + file.name + '"</span> was successfully uploaded and attached to your production.');
         Recording.setCurrentUpload(null);
-        if (requiresRefresh(response.data)) refresh(response.data);
+        refreshIfRequired(uploadResponse.data);
       }
     });
 

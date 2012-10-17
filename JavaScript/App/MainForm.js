@@ -33,7 +33,7 @@ module.exports = new Class({
       return '';
     },
     onSave: function(object) {},
-    onUploadSuccess: function(uuid) {}
+    onUploadSuccess: function(object) {}
   },
 
   initialize: function(options) {
@@ -157,8 +157,6 @@ module.exports = new Class({
     var isNewProduction = this.isNewProduction = (isProduction && !isEditMode);
     this.store = store;
     this.presets = presets;
-
-    if (isEditMode) this.uuid = data.uuid;
 
     // This is a placeholder title created by the mobile app, remove it if possible
     if (isEditMode && isProduction && data.metadata.title == Auphonic.DefaultTitle) {
@@ -298,10 +296,8 @@ module.exports = new Class({
 
     // If the production is new and a cover photo is selected we need to upload it now.
     if (this.uploadFile) {
-      if (!this.isEditMode) {
+      if (!this.isEditMode)
         this.setSaveURL((this.getBaseURL() + '{uuid}').substitute(response.data));
-        this.uuid = response.data.uuid;
-      }
 
       this.upload(this.uploadFile);
       this.uploadFile = null;
@@ -325,7 +321,7 @@ module.exports = new Class({
 
   onUploadSuccess: function(response) {
     new Notice('The Cover Photo was successfully uploaded.');
-    this.options.onUploadSuccess.call(this, [this.uuid]);
+    this.options.onUploadSuccess.call(this, response.data);
   }
 
 });

@@ -148,10 +148,8 @@ API.upload = function(url, file, field) {
   var success = function(response) {
     IdleTimer.enable();
 
-    listeners.fireEvent('success', response);
-    if (__DEV__) console.log('Code = ' + response.responseCode);
-    if (__DEV__) console.log('Response = ' + response.response);
-    if (__DEV__) console.log('Sent = ' + response.bytesSent);
+    listeners.fireEvent('success', JSON.parse(response.response));
+    if (__DEV__) console.log('Code: ' + response.responseCode + ', Bytes: ' + response.bytesSent);
   };
 
   var error = function(error) {
