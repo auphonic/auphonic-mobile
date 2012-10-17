@@ -97,12 +97,12 @@
     {{/if}}
     {{#if select}}
       <li class="wide">
+        <select name="algorithms.{{key}}" class="right">
+          {{#each options}}
+            <option value="{{value}}"{{#if selected}}selected="selected"{{/if}}>{{display_name}}</option>
+          {{/each}}
+        </select>
         <label class="left info">
-          <select name="algorithms.{{key}}" class="right">
-            {{#each options}}
-              <option value="{{value}}"{{#if selected}}selected="selected"{{/if}}>{{display_name}}</option>
-            {{/each}}
-          </select>
           {{display_name}}
           {{> algorithm-popover}}
         </label>

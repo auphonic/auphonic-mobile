@@ -883,14 +883,14 @@ function program28(depth0,data) {
 function program30(depth0,data) {
   
   var buffer = "", stack1;
-  buffer += "\n      <li class=\"wide\">\n        <label class=\"left info\">\n          <select name=\"algorithms.";
+  buffer += "\n      <li class=\"wide\">\n        <select name=\"algorithms.";
   stack1 = depth0.key;
   stack1 = typeof stack1 === functionType ? stack1() : stack1;
-  buffer += escapeExpression(stack1) + "\" class=\"right\">\n            ";
+  buffer += escapeExpression(stack1) + "\" class=\"right\">\n          ";
   stack1 = depth0.options;
   stack1 = helpers.each.call(depth0, stack1, {hash:{},inverse:self.noop,fn:self.program(31, program31, data)});
   if(stack1 || stack1 === 0) { buffer += stack1; }
-  buffer += "\n          </select>\n          ";
+  buffer += "\n        </select>\n        <label class=\"left info\">\n          ";
   stack1 = depth0.display_name;
   stack1 = typeof stack1 === functionType ? stack1() : stack1;
   buffer += escapeExpression(stack1) + "\n          ";
@@ -902,7 +902,7 @@ function program30(depth0,data) {
 function program31(depth0,data) {
   
   var buffer = "", stack1;
-  buffer += "\n              <option value=\"";
+  buffer += "\n            <option value=\"";
   stack1 = depth0.value;
   stack1 = typeof stack1 === functionType ? stack1() : stack1;
   buffer += escapeExpression(stack1) + "\"";
@@ -912,7 +912,7 @@ function program31(depth0,data) {
   buffer += ">";
   stack1 = depth0.display_name;
   stack1 = typeof stack1 === functionType ? stack1() : stack1;
-  buffer += escapeExpression(stack1) + "</option>\n            ";
+  buffer += escapeExpression(stack1) + "</option>\n          ";
   return buffer;}
 function program32(depth0,data) {
   
