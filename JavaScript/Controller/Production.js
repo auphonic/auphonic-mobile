@@ -76,7 +76,7 @@ var addPlaceholder = function() {
   }).invalidate());
 };
 
-Controller.define('/production', function() {
+var showAll = function() {
   productions = {};
 
   var options = {
@@ -98,7 +98,8 @@ Controller.define('/production', function() {
 
   load(options, function(response) {
     add(response.data);
-    View.getMain().push('production', new View.Object.LoadMore({
+
+    var object = new View.Object.LoadMore({
       title: 'Productions',
       content: UI.render('productions', {production: response.data}),
       action: {
@@ -119,9 +120,30 @@ Controller.define('/production', function() {
       onInvalidate: function() {
         API.invalidate('productions');
       }
-    }));
+    });
+
+    View.getMain().push('production', object);
+
+    var getElements = function() {
+      return object.toElement().getElements('ul.main-list >');
+    };
+
+    getElements().addEvent('remove', function(uuid) {
+      if (options.offset > 0) options.offset--;
+      delete productions[uuid];
+      if (getElements().length == 1) {
+        // If the last item is being deleted, refresh now
+        object.invalidate();
+        showAll();
+      } else {
+        // otherwise invalidate onHide
+        object.addEvent('hide', function() {
+          object.invalidate();
+        });
+      }
+    });
   });
-});
+};
 
 var statusOptions = {
   url: 'production/{uuid}',
@@ -189,6 +211,8 @@ var startProduction = function(event) {
 UI.register('a.startProduction', function(elements) {
   elements.addEvent('click', startProduction);
 });
+
+Controller.define('/production', showAll);
 
 Controller.define('/production/{uuid}', function(req) {
   showOne(req);
@@ -382,7 +406,6 @@ var upload = function(file) {
 Controller.define('/production/recording/upload/{id}', function(req) {
   addPlaceholder();
 
-  resetEditUUID();
   var recording = Recording.findById(req.id);
   if (recording) upload(recording);
 });

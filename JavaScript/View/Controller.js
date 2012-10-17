@@ -72,8 +72,7 @@ module.exports = new Class({
       this.rotate(stack);
     }
 
-    if (!object.getURL())
-      object.setURL(History.getPath());
+    if (!object.getURL()) object.setURL(History.getPath());
 
     var current = this._current;
     var isImmediate = (_options && _options.immediate) || rotated;

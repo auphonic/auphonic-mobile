@@ -132,25 +132,17 @@ var removeItem = function(element) {
   element.addClass('fade');
   (function() {
     element.addEvent('transitionComplete:once', function() {
-      this.destroy();
+      var event = this.get('data-fire-event');
+      var id = this.get('data-id');
+      if (event) this.fireEvent(event, [id]);
 
-      var object = View.getMain().getCurrentObject();
-      var hasChildren = object.toElement().getElements('ul.main-list >').length;
-      if (!hasChildren) {
-        // Force re-rendering
-        object.invalidate();
-        Controller.refresh();
-      }
+      this.destroy();
     }).addClass('out');
   }).delay(10);
 
   var url = element.get('data-api-url');
   var method = element.get('data-method');
   if (url && method) API.call(url, method);
-
-  var event = element.get('data-fire-event');
-  var id = element.get('data-id');
-  if (event) element.fireEvent(event, [id]);
 };
 
 // Make the info API call and show the UI on success, or else provide a reload button

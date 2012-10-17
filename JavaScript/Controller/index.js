@@ -9,11 +9,6 @@ var router = new Router({
   }
 });
 
-var change = function(url) {
-  // Phonegap likes to add file:///
-  router.parse('/' + url.replace(/^\/|^file\:\/\/\//, ''));
-};
-
 module.exports = {
 
   define: function(key, options, fn) {
@@ -34,12 +29,11 @@ module.exports = {
         fn.apply(null, arguments);
       }
     }, options && options.priority).setGreedy(options && options.isGreedy);
-  },
-
-  refresh: function() {
-    change(History.getPath());
   }
 
 };
 
-History.addEvent('change', change);
+History.addEvent('change', function(url) {
+  // Phonegap likes to add file:///
+  router.parse('/' + url.replace(/^\/|^file\:\/\/\//, ''));
+});

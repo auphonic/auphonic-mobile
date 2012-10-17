@@ -58,7 +58,7 @@ var addPlaceholder = function() {
   }).invalidate());
 };
 
-Controller.define('/preset', function() {
+var showAll = function() {
   presets = {};
 
   var options = {
@@ -80,7 +80,7 @@ Controller.define('/preset', function() {
 
   load(options, function(response) {
     add(response.data);
-    View.getMain().push('preset', new View.Object.LoadMore({
+    var object = new View.Object.LoadMore({
       title: 'Presets',
       content: UI.render('presets', {preset: response.data}),
       action: {
@@ -96,12 +96,34 @@ Controller.define('/preset', function() {
         this.getItemContainerElement().removeClass('load-more');
       },
       itemContainer: '.preset_container',
-      templateId: 'preset'
-    }).addEvent('invalidate', function() {
-      API.invalidate('presets');
-    }));
+      templateId: 'preset',
+      onInvalidate: function() {
+        API.invalidate('presets');
+      }
+    });
+
+    View.getMain().push('preset', object);
+    var getElements = function() {
+      return object.toElement().getElements('ul.main-list >');
+    };
+
+    getElements().addEvent('remove', function(uuid) {
+      if (options.offset > 0) options.offset--;
+      delete presets[uuid];
+      object.invalidate();
+      if (getElements().length == 1) {
+        // If the last item is being deleted, refresh now
+        object.invalidate();
+        showAll();
+      } else {
+        // otherwise invalidate onHide
+        object.addEvent('hide', function() {
+          object.invalidate();
+        });
+      }
+    });
   });
-});
+};
 
 var showOne = function(req, options) {
   Data.prepare(presets[req.uuid], 'preset', function(preset) {
@@ -128,6 +150,8 @@ var showOne = function(req, options) {
     else View.getMain().push('preset', object);
   });
 };
+
+Controller.define('/preset', showAll);
 
 Controller.define('/preset/{uuid}', function(req) {
   showOne(req);

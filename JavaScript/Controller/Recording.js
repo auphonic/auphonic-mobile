@@ -6,7 +6,7 @@ var Recording = require('App/Recording');
 
 var Auphonic = require('Auphonic');
 
-Controller.define('/recording', {isGreedy: true}, function() {
+var showAll = function() {
   var recordings = Object.values(Recording.findAll()).sortByKey('timestamp').reverse();
   var object = new View.Object({
     title: 'Recordings',
@@ -20,10 +20,28 @@ Controller.define('/recording', {isGreedy: true}, function() {
   });
 
   View.getMain().push('recording', object);
-  object.toElement().getElements('li').addEvent('removeRecording', Recording.remove);
-});
+  var getElements = function() {
+    return object.toElement().getElements('ul.main-list >');
+  };
+
+  getElements().addEvent('remove', function(id) {
+    Recording.remove(id);
+    if (getElements().length == 1) {
+      // If the last item is being deleted, refresh now
+      object.invalidate();
+      showAll();
+    } else {
+      // otherwise invalidate onHide
+      object.addEvent('hide', function() {
+        object.invalidate();
+      });
+    }
+  });
+};
 
 var months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+
+Controller.define('/recording', {isGreedy: true}, showAll);
 
 Controller.define('/recording/{id}', function(req) {
 
