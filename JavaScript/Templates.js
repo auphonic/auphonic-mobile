@@ -1498,7 +1498,7 @@ templates['record-audio'] = template(function (Handlebars,depth0,helpers,partial
   
 
 
-  return "<div class=\"audio-recorder\">\n  <a class=\"button red recorder\">Start</a>\n\n  <ul class=\"status hidden fade out\">\n    <li class=\"wide\">\n      <a class=\"add-chapter-mark\" class=\"left\">\n        <span class=\"right light out\"></span>\n        Add Chapter Mark\n      </a>\n    </li>\n    <li>\n      <span class=\"recording-length right light\"></span>\n      <label>Length</label>\n    </li>\n  </ul>\n</div>\n";});
+  return "<div class=\"audio-recorder\">\n  <a class=\"button red recorder\">Start</a>\n\n  <ul class=\"status hidden fade out\">\n    <li>\n      <span class=\"recording-length right light\"></span>\n      <label>Length</label>\n    </li>\n    <li class=\"wide\">\n      <a class=\"add-chapter-mark\" class=\"left\">\n        <span class=\"right light out\"></span>\n        Add Chapter Mark\n      </a>\n    </li>\n  </ul>\n</div>\n";});
 templates['recording'] = template(function (Handlebars,depth0,helpers,partials,data) {
   helpers = helpers || Handlebars.helpers; partials = partials || Handlebars.partials;
   var buffer = "", stack1, functionType="function", escapeExpression=this.escapeExpression, self=this;

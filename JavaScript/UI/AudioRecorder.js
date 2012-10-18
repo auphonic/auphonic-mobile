@@ -57,10 +57,11 @@ module.exports = new Class({
       title: 'Chapter {id}'.substitute({id: ++this.chapterID})
     });
 
+    clearTimeout(this.timer);
     this.markerHighlight.set('text', time).removeClass('out');
-    (function() {
+    this.timer = (function() {
       this.markerHighlight.addClass('out');
-    }).delay(2000, this);
+    }).delay(2500, this);
   },
 
   toggle: function() {
@@ -97,7 +98,7 @@ module.exports = new Class({
   },
 
   onUpdate: function() {
-    this.recordingLengthElement.set('text', (++this.time) + ' second' + (this.time == 1 ? '' : 's'));
+    this.recordingLengthElement.set('text', Data.formatDuration(++this.time, ' '));
   },
 
   onCancel: function() {
