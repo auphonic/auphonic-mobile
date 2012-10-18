@@ -53,6 +53,8 @@ exports.getCurrentUpload = function() {
 };
 
 exports.add = function(recording) {
+  if (recording.uploaded) return;
+
   var recordings = get();
   var id = String.uniqueID();
 
@@ -60,6 +62,7 @@ exports.add = function(recording) {
   recording.id = id;
   recording.timestamp = Date.now();
   recording.display_name = exports.getRecordingName(recording);
+  recording.uploaded = true;
 
   recordings[id] = recording;
   set(recordings);
