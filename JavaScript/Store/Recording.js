@@ -27,10 +27,18 @@ var removeFile = function(file) {
   file.remove(function() {}, error);
 };
 
+var read = function(id, success, error) {
+  var recording = findById(id);
+  if (recording) window.requestFileSystem(window.LocalFileSystem.PERSISTENT, 0, function(fileSystem) {
+    fileSystem.root.getFile(recording.fullPath, null, success, error);
+  }, error);
+};
+
 var findById = exports.findById = function(id) {
   return get()[id];
 };
 
+exports.read = read;
 exports.findAll = get;
 
 exports.generateRecordingId = function() {
@@ -68,14 +76,11 @@ exports.add = function(recording) {
   set(recordings);
 };
 
+
 exports.remove = function(id) {
   var recording = findById(id);
   if (!recording) return;
 
-  var onFileSystemReady = function(fileSystem) {
-    fileSystem.root.getFile(recording.fullPath, null, removeFile, error);
-  };
-
   removeRecording(recording);
-  window.requestFileSystem(window.LocalFileSystem.PERSISTENT, 0, onFileSystemReady, error);
+  read(id, removeFile, error);
 };

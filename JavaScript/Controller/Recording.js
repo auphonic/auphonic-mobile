@@ -40,6 +40,13 @@ var showAll = function() {
 };
 
 var months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+var sizes = ['b', 'KB', 'MB', 'GB', 'TB'];
+
+var formatFileSize = function(bytes) {
+  if (!bytes) bytes = 0;
+  var base = Math.log(bytes) / Math.log(1024);
+  return Math.round(Math.pow(1024, base - Math.floor(base)), 0) + ' ' + sizes[Math.floor(base)];
+};
 
 Controller.define('/recording', {isGreedy: true}, showAll);
 
@@ -47,13 +54,18 @@ Controller.define('/recording/{id}', function(req) {
 
   var recording = Recording.findById(req.id);
   var date = new Date(recording.timestamp);
-
   recording.media_files = JSON.stringify([recording.fullPath]);
   recording.display_date = months[date.getMonth()] + ' ' + date.getDate() + ', ' + date.getHours() + ':' + date.getMinutes();
 
-  View.getMain().push('recording', new View.Object({
-    title: Recording.getRecordingName(recording),
-    content: UI.render('recording', recording)
-  }));
+  Recording.read(recording.id, function(fileEntry) {
+    fileEntry.file(function(file) {
+      recording.display_size = formatFileSize(file.size);
+
+      View.getMain().push('recording', new View.Object({
+        title: Recording.getRecordingName(recording),
+        content: UI.render('recording', recording)
+      }));
+    }, function() {});
+  }, function() {});
 
 });
