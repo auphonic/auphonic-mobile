@@ -3,5 +3,3 @@ DIR=$(cd `dirname $0` && pwd)
 source $DIR/variables
 source $DIR/compile -e prod -m --no-watch
 source $DIR/stylus --no-watch -c
-gzip "$DIR/$AUPHONIC_OUTPUT/$AUPHONIC_CORDOVA_VERSION/$AUPHONIC_CSS_FILENAME"
-gzip "$DIR/$AUPHONIC_OUTPUT/$AUPHONIC_CORDOVA_VERSION/$AUPHONIC_JS_FILENAME"

@@ -16,7 +16,7 @@
     (function() {
       this.__CORDOVA_VERSION = '2.2.0';
       this.__API_DOMAIN = 'https://auphonic.com/';
-      this.__SERVER_URL = 'https://auphonic.com/media/mobile/';
+      this.__SERVER_URL = 'https://auphonic.com/mobile/';
 
       // Update this if you are testing the application locally.
       var DEVbaseURL = '/Thesis/App/';
@@ -46,7 +46,11 @@
       var links = [];
       var timer = null;
       var loadCSS = function(url, success, error) {
+        // Prevent success from being called twice through polling
+        var called = false;
         var listener = function() {
+          if (called) return;
+          called = true;
           link.removeEventListener('load', listener, false);
           link.onreadystatechange = null;
           if (success) success.call(this);
@@ -72,7 +76,7 @@
 
         document.querySelector('head').appendChild(link);
         links.push({element: link, listener: listener, error: error});
-        if (!timer) timer = setInterval(poll, 20);
+        if (!timer) timer = setTimeout(poll, 20);
       };
 
       // Fallback polling method for browsers that don't support link.onload
@@ -98,10 +102,8 @@
           }
         }
 
-        if (!links.length) {
-          clearInterval(timer);
-          timer = null;
-        }
+        if (links.length) setTimeout(poll, 20);
+        else timer = null;
       };
 
       this.__loadResource = function(url, success, error) {
@@ -154,7 +156,8 @@
 
       var success = function() {
         // We are not stopping the spinner because it is being reused
-        if (++loaded >= resources.length) require('App').boot();
+        if (++loaded >= resources.length && window.__BOOTAPP)
+          window.__BOOTAPP();
       };
 
       var error = function() {

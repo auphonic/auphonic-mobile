@@ -187,7 +187,7 @@ var load = function(event) {
 };
 
 // This is a lot of glue code !
-exports.boot = function() {
+window.__BOOTAPP = function() {
   load();
 
   var activeState = (new ActiveState({
@@ -399,4 +399,6 @@ exports.boot = function() {
   });
 
   if (!isLoggedIn) History.push('/login');
+
+  delete window.__BOOTAPP; // bye!
 };
