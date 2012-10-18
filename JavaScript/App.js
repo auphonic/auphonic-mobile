@@ -79,6 +79,7 @@ var click = function(event) {
 
   if (!href) return;
   if (event.touches && event.touches.length > 1) return;
+  if (document.activeElement && document.activeElement.match('input, select, textarea')) return;
 
   var currentPath = History.getPath();
   var isFooter = !!this.getParent('footer');

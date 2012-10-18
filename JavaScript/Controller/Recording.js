@@ -56,6 +56,7 @@ Controller.define('/recording/{id}', function(req) {
   var date = new Date(recording.timestamp);
   recording.media_files = JSON.stringify([recording.fullPath]);
   recording.display_date = months[date.getMonth()] + ' ' + date.getDate() + ', ' + date.getHours() + ':' + date.getMinutes();
+  recording.hasChapters = recording.chapters && recording.chapters.length;
 
   Recording.read(recording.id, function(fileEntry) {
     fileEntry.file(function(file) {

@@ -12,3 +12,16 @@
 {{> player}}
 
 <a href="/production/recording/upload/{{id}}" class="clear button green expand">Upload</a>
+
+{{#if hasChapters}}
+  <h1>Chapter Marks</h1>
+  <ul>
+    {{#each chapters}}
+      <li>
+        <label>
+          <small class="light">{{start}}</small> {{title}}
+        </label>
+      </li>
+    {{/each}}
+  </ul>
+{{/if}}

@@ -396,7 +396,6 @@ Controller.define('/production/new/outgoing_services', function() {
 });
 
 // Recording
-var recorder;
 var upload = function(file) {
   Recording.add(file);
 
@@ -443,7 +442,10 @@ var upload = function(file) {
     return;
   }
 
-  var data = {metadata: {title: Auphonic.DefaultTitle}};
+  var data = {
+    metadata: {title: Auphonic.DefaultTitle},
+    chapters: file.chapters
+  };
   API.call('productions', 'post', JSON.stringify(data)).on({
     success: onCreateSuccess
   });
@@ -465,24 +467,17 @@ Controller.define('/production/recording/new-video', function() {
 Controller.define('/production/recording/new-audio', function() {
   addPlaceholder();
 
-  View.getMain().push('production', new View.Object({
+  var object = new View.Object({
     title: 'Audio Recording',
     content: UI.render('record-audio')
-  }));
-});
+  });
 
-Controller.define('/production/recording/new-audio-start', function() {
+  View.getMain().push('production', object);
+
   var name = Auphonic.DefaultFileName.substitute({uuid: Recording.generateRecordingId()});
-  var object = View.getMain().getCurrentObject();
-
-  recorder = new AudioRecorder(CordovaAudioRecorder, object, name, {
+  new AudioRecorder(CordovaAudioRecorder, object, name, {
     onSuccess: upload
-  }).start();
-});
-
-Controller.define('/production/recording/stop', function() {
-  recorder.stop();
-  recorder = null;
+  });
 });
 
 Controller.define('/recording', {isGreedy: true}, function() {

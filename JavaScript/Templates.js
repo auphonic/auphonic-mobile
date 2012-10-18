@@ -1498,11 +1498,31 @@ templates['record-audio'] = template(function (Handlebars,depth0,helpers,partial
   
 
 
-  return "<ul class=\"record_button\">\n  <li><a href=\"/production/recording/new-audio-start\">Start Recording</a></li>\n</ul>\n<ul class=\"stop_record_button hidden\">\n  <li><span class=\"record_status right light\"></span><a href=\"/production/recording/stop\">Stop recording</a></li>\n</ul>\n";});
+  return "<div class=\"audio-recorder\">\n  <a class=\"button red recorder\">Start</a>\n\n  <ul class=\"status hidden fade out\">\n    <li class=\"wide\">\n      <a class=\"add-chapter-mark\" class=\"left\">\n        <span class=\"right light out\"></span>\n        Add Chapter Mark\n      </a>\n    </li>\n    <li>\n      <span class=\"recording-length right light\"></span>\n      <label>Length</label>\n    </li>\n  </ul>\n</div>\n";});
 templates['recording'] = template(function (Handlebars,depth0,helpers,partials,data) {
   helpers = helpers || Handlebars.helpers; partials = partials || Handlebars.partials;
   var buffer = "", stack1, functionType="function", escapeExpression=this.escapeExpression, self=this;
 
+function program1(depth0,data) {
+  
+  var buffer = "", stack1;
+  buffer += "\n  <h1>Chapter Marks</h1>\n  <ul>\n    ";
+  stack1 = depth0.chapters;
+  stack1 = helpers.each.call(depth0, stack1, {hash:{},inverse:self.noop,fn:self.program(2, program2, data)});
+  if(stack1 || stack1 === 0) { buffer += stack1; }
+  buffer += "\n  </ul>\n";
+  return buffer;}
+function program2(depth0,data) {
+  
+  var buffer = "", stack1;
+  buffer += "\n      <li>\n        <label>\n          <small class=\"light\">";
+  stack1 = depth0.start;
+  stack1 = typeof stack1 === functionType ? stack1() : stack1;
+  buffer += escapeExpression(stack1) + "</small> ";
+  stack1 = depth0.title;
+  stack1 = typeof stack1 === functionType ? stack1() : stack1;
+  buffer += escapeExpression(stack1) + "\n        </label>\n      </li>\n    ";
+  return buffer;}
 
   buffer += "<ul>\n  <li>\n    <span class=\"right light bold\">";
   stack1 = depth0.display_size;
@@ -1517,7 +1537,11 @@ templates['recording'] = template(function (Handlebars,depth0,helpers,partials,d
   buffer += "\n\n<a href=\"/production/recording/upload/";
   stack1 = depth0.id;
   stack1 = typeof stack1 === functionType ? stack1() : stack1;
-  buffer += escapeExpression(stack1) + "\" class=\"clear button green expand\">Upload</a>\n";
+  buffer += escapeExpression(stack1) + "\" class=\"clear button green expand\">Upload</a>\n\n";
+  stack1 = depth0.hasChapters;
+  stack1 = helpers['if'].call(depth0, stack1, {hash:{},inverse:self.noop,fn:self.program(1, program1, data)});
+  if(stack1 || stack1 === 0) { buffer += stack1; }
+  buffer += "\n";
   return buffer;});
 templates['recordings'] = template(function (Handlebars,depth0,helpers,partials,data) {
   helpers = helpers || Handlebars.helpers;

@@ -1,0 +1,40 @@
+@import 'nib'
+
+@keyframes pulse {
+  from {
+    transform scale(1)
+  }
+  to {
+    transform scale(1.05)
+  }
+}
+
+.audio-recorder
+  a.button.red.recorder
+    display block
+    width 150px
+    height 150px
+    padding 0
+    margin 20px auto 30px
+
+    font-size 40px
+    line-height 145px
+
+    border-radius 50%
+    box-shadow 0 0 5px rgba(0, 0, 0, 0.3)
+
+    &.pulse
+      animation-name pulse
+      animation-iteration-count infinite
+      animation-timing-function ease-in-out
+      animation-direction alternate
+      animation-duration 1s
+
+  a.add-chapter-mark
+    span
+      transition-timing-function ease-in-out
+      transition-duration 350ms
+      opacity 1
+
+      &.out
+        opacity 0
