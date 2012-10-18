@@ -410,6 +410,11 @@ var upload = function(file) {
         View.getMain().getCurrentObject().fireEvent('refresh', [uploadResponse.data]);
       },
 
+      error: function() {
+        new Notice('There was an error uploading your recording <span class="bold">"' + file.name + '"</span>. You can find your recording in the "Recordings" tab and you can try uploading it again later.');
+        CurrentUpload.remove(uuid);
+      },
+
       progress: function(event) {
         // Bound this between 0 and 100 just to make sure to never have a crazy percentage here :)
         var percentage = Math.max(0, Math.min(100, Math.round(event.loaded / event.total * 100)));

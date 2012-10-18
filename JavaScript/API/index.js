@@ -142,6 +142,7 @@ API.upload = function(url, file, field) {
   IdleTimer.disable();
 
   var transfer;
+  var canceled = false;
   var listeners = listenersFor(url);
   var success = function(response) {
     IdleTimer.enable();
@@ -152,6 +153,8 @@ API.upload = function(url, file, field) {
 
   var error = function(error) {
     IdleTimer.enable();
+
+    if (canceled) return;
 
     listeners.fireEvent('error', error);
     if (__DEV__) console.log(error.code);
@@ -176,6 +179,7 @@ API.upload = function(url, file, field) {
   }).call();
 
   listeners.cancel = function() {
+    canceled = true;
     if (transfer) transfer.abort();
   };
 

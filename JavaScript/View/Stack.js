@@ -50,6 +50,8 @@ module.exports = new Class({
   prune: function() {
     var stack = this.stack;
     this.stack = [stack[0], stack[stack.length - 1]];
+
+    return this;
   },
 
   rewind: function(index, object) {

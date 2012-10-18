@@ -158,14 +158,15 @@ module.exports = new Class({
     var isProduction = this.isProduction = (this.getDisplayType() == 'production');
     var isEditMode = this.isEditMode = !!data;
     var isNewProduction = this.isNewProduction = (isProduction && !isEditMode);
-    var hasPopover = isNewProduction;
+    var hasPopover = !isNewProduction;
     var hasUpload = false;
     this.store = store;
     this.presets = presets;
 
     if (isEditMode) {
       this.uuid = data.uuid;
-      if (!hasPopover) hasPopover = hasUpload = CurrentUpload.has(this.uuid);
+      hasUpload = CurrentUpload.has(this.uuid);
+      if (!hasPopover) hasPopover = hasUpload;
     }
 
     // This is a placeholder title created by the mobile app, remove it if possible
@@ -247,6 +248,8 @@ module.exports = new Class({
     var element = this.object.toElement();
     element.getElement('.input_file').dispose();
     element.getElement('.change_source').show();
+
+    ListFiles.setFile(this.store, null);
   },
 
   upload: function(file) {
@@ -366,7 +369,9 @@ module.exports = new Class({
   },
 
   // When the upload finishes, onRefresh is being called
-  onRefresh: function() {
+  onRefresh: function(data) {
+    if (data.uuid != this.uuid) return;
+
     var element = this.object.toElement();
     var label = element.getElement('.input_file_label');
 
@@ -375,6 +380,10 @@ module.exports = new Class({
 
     label.removeClass('info');
     label.getInstanceOf(Popover).detach();
+
+    // We actually need to prune the stack because Change Source is supposed
+    // to transition to the right.
+    View.getMain().getStack().prune();
   }
 
 });
