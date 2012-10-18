@@ -57,7 +57,13 @@ templates['container'] = template(function (Handlebars,depth0,helpers,partials,d
 
 
   return "<div class=\"container scrolling scrollable\">\n  <div class=\"scroll-content\"></div>\n</div>\n";});
-templates['data-detail-summary'] = template(function (Handlebars,depth0,helpers,partials,data) {
+templates['default'] = template(function (Handlebars,depth0,helpers,partials,data) {
+  helpers = helpers || Handlebars.helpers;
+  
+
+
+  return "<div class=\"logo\"></div>\n<ul>\n  <li><a href=\"/production/recording/new-audio\" class=\"arrow\"><span></span>Start a new Recording</a></li>\n  <li><a href=\"/production/source\" class=\"arrow\"><span></span>Create a new Production</a></li>\n  <li><a href=\"/preset/new\" class=\"arrow\"><span></span>Define a Preset</a></li>\n</ul>\n";});
+templates['detail-summary'] = template(function (Handlebars,depth0,helpers,partials,data) {
   helpers = helpers || Handlebars.helpers;
   var buffer = "", stack1, functionType="function", escapeExpression=this.escapeExpression;
 
@@ -68,12 +74,6 @@ templates['data-detail-summary'] = template(function (Handlebars,depth0,helpers,
   stack1 = typeof stack1 === functionType ? stack1() : stack1;
   buffer += escapeExpression(stack1) + "\n</div>\n";
   return buffer;});
-templates['default'] = template(function (Handlebars,depth0,helpers,partials,data) {
-  helpers = helpers || Handlebars.helpers;
-  
-
-
-  return "<div class=\"logo\"></div>\n<ul>\n  <li><a href=\"/production/recording/new-audio\" class=\"arrow\"><span></span>Start a new Recording</a></li>\n  <li><a href=\"/production/source\" class=\"arrow\"><span></span>Create a new Production</a></li>\n  <li><a href=\"/preset/new\" class=\"arrow\"><span></span>Define a Preset</a></li>\n</ul>\n";});
 templates['detail'] = template(function (Handlebars,depth0,helpers,partials,data) {
   helpers = helpers || Handlebars.helpers; partials = partials || Handlebars.partials;
   var buffer = "", stack1, helperMissing=helpers.helperMissing, functionType="function", escapeExpression=this.escapeExpression, self=this, blockHelperMissing=helpers.blockHelperMissing;
@@ -1100,71 +1100,84 @@ templates['form-new-service'] = template(function (Handlebars,depth0,helpers,par
 function program1(depth0,data) {
   
   var buffer = "", stack1;
-  buffer += "\n    <li class=\"wide\">\n      <input type=\"hidden\" name=\"outgoing_services.";
+  buffer += "\n  <ul class=\"formcontent\">\n    ";
+  stack1 = depth0.service;
+  stack1 = helpers.each.call(depth0, stack1, {hash:{},inverse:self.noop,fn:self.program(2, program2, data)});
+  if(stack1 || stack1 === 0) { buffer += stack1; }
+  buffer += "\n  </ul>\n\n  ";
+  stack1 = depth0.service;
+  stack1 = helpers.each.call(depth0, stack1, {hash:{},inverse:self.noop,fn:self.program(4, program4, data)});
+  if(stack1 || stack1 === 0) { buffer += stack1; }
+  buffer += "\n";
+  return buffer;}
+function program2(depth0,data) {
+  
+  var buffer = "", stack1;
+  buffer += "\n      <li class=\"wide\">\n        <input type=\"hidden\" name=\"outgoing_services.";
   stack1 = depth0.uuid;
   stack1 = typeof stack1 === functionType ? stack1() : stack1;
   buffer += escapeExpression(stack1) + ".uuid\" value=\"";
   stack1 = depth0.uuid;
   stack1 = typeof stack1 === functionType ? stack1() : stack1;
-  buffer += escapeExpression(stack1) + "\" />\n      <label class=\"left\">\n        <div class=\"right\">\n          <div class=\"checkbox\">\n            <div>\n              <span class=\"left\"></span><span class=\"thumb\" data-on=\"ON\" data-off=\"OFF\"></span>\n              <input type=\"checkbox\" name=\"outgoing_services.";
+  buffer += escapeExpression(stack1) + "\" />\n        <label class=\"left\">\n          <div class=\"right\">\n            <div class=\"checkbox\">\n              <div>\n                <span class=\"left\"></span><span class=\"thumb\" data-on=\"ON\" data-off=\"OFF\"></span>\n                <input type=\"checkbox\" name=\"outgoing_services.";
   stack1 = depth0.uuid;
   stack1 = typeof stack1 === functionType ? stack1() : stack1;
   buffer += escapeExpression(stack1) + ".checked\" data-uuid=\"";
   stack1 = depth0.uuid;
   stack1 = typeof stack1 === functionType ? stack1() : stack1;
-  buffer += escapeExpression(stack1) + "\" value=\"1\" />\n            </div>\n          </div>\n        </div>\n        <small><span class=\"light\">";
+  buffer += escapeExpression(stack1) + "\" value=\"1\" />\n              </div>\n            </div>\n          </div>\n          <small><span class=\"light\">";
   stack1 = depth0.display_type;
   stack1 = typeof stack1 === functionType ? stack1() : stack1;
   buffer += escapeExpression(stack1) + "</span> ";
   stack1 = depth0.display_name;
   stack1 = typeof stack1 === functionType ? stack1() : stack1;
-  buffer += escapeExpression(stack1) + "</small>\n      </label>\n    </li>\n  ";
+  buffer += escapeExpression(stack1) + "</small>\n        </label>\n      </li>\n    ";
   return buffer;}
 
-function program3(depth0,data) {
-  
-  var buffer = "", stack1;
-  buffer += "\n  ";
-  stack1 = depth0.parameters;
-  stack1 = helpers['if'].call(depth0, stack1, {hash:{},inverse:self.noop,fn:self.program(4, program4, data)});
-  if(stack1 || stack1 === 0) { buffer += stack1; }
-  buffer += "\n";
-  return buffer;}
 function program4(depth0,data) {
   
   var buffer = "", stack1;
-  buffer += "\n    <div class=\"fade\" data-service-uuid=\"";
+  buffer += "\n    ";
+  stack1 = depth0.parameters;
+  stack1 = helpers['if'].call(depth0, stack1, {hash:{},inverse:self.noop,fn:self.program(5, program5, data)});
+  if(stack1 || stack1 === 0) { buffer += stack1; }
+  buffer += "\n  ";
+  return buffer;}
+function program5(depth0,data) {
+  
+  var buffer = "", stack1;
+  buffer += "\n      <div class=\"fade\" data-service-uuid=\"";
   stack1 = depth0.uuid;
   stack1 = typeof stack1 === functionType ? stack1() : stack1;
-  buffer += escapeExpression(stack1) + "\">\n      <h1>";
+  buffer += escapeExpression(stack1) + "\">\n        <h1>";
   stack1 = depth0.display_type;
   stack1 = typeof stack1 === functionType ? stack1() : stack1;
   buffer += escapeExpression(stack1) + " - ";
   stack1 = depth0.display_name;
   stack1 = typeof stack1 === functionType ? stack1() : stack1;
-  buffer += escapeExpression(stack1) + "</h1>\n      <ul>\n        ";
+  buffer += escapeExpression(stack1) + "</h1>\n        <ul>\n          ";
   stack1 = depth0.parameters;
-  stack1 = helpers.each.call(depth0, stack1, {hash:{},inverse:self.noop,fn:self.program(5, program5, data)});
+  stack1 = helpers.each.call(depth0, stack1, {hash:{},inverse:self.noop,fn:self.program(6, program6, data)});
   if(stack1 || stack1 === 0) { buffer += stack1; }
-  buffer += "\n      </ul>\n    </div>\n  ";
-  return buffer;}
-function program5(depth0,data) {
-  
-  var buffer = "", stack1;
-  buffer += "\n          ";
-  stack1 = depth0.checkbox;
-  stack1 = helpers['if'].call(depth0, stack1, {hash:{},inverse:self.noop,fn:self.program(6, program6, data)});
-  if(stack1 || stack1 === 0) { buffer += stack1; }
-  buffer += "\n          ";
-  stack1 = depth0.select;
-  stack1 = helpers['if'].call(depth0, stack1, {hash:{},inverse:self.noop,fn:self.program(9, program9, data)});
-  if(stack1 || stack1 === 0) { buffer += stack1; }
-  buffer += "\n        ";
+  buffer += "\n        </ul>\n      </div>\n    ";
   return buffer;}
 function program6(depth0,data) {
   
   var buffer = "", stack1;
-  buffer += "\n            <li class=\"wide\">\n              <label class=\"left\">\n                <div class=\"right\">\n                  <div class=\"checkbox\">\n                    <div>\n                      <span class=\"left\"></span><span class=\"thumb\" data-on=\"YES\" data-off=\"NO\"></span>\n                      <input type=\"checkbox\" name=\"outgoing_services.";
+  buffer += "\n            ";
+  stack1 = depth0.checkbox;
+  stack1 = helpers['if'].call(depth0, stack1, {hash:{},inverse:self.noop,fn:self.program(7, program7, data)});
+  if(stack1 || stack1 === 0) { buffer += stack1; }
+  buffer += "\n            ";
+  stack1 = depth0.select;
+  stack1 = helpers['if'].call(depth0, stack1, {hash:{},inverse:self.noop,fn:self.program(10, program10, data)});
+  if(stack1 || stack1 === 0) { buffer += stack1; }
+  buffer += "\n          ";
+  return buffer;}
+function program7(depth0,data) {
+  
+  var buffer = "", stack1;
+  buffer += "\n              <li class=\"wide\">\n                <label class=\"left\">\n                  <div class=\"right\">\n                    <div class=\"checkbox\">\n                      <div>\n                        <span class=\"left\"></span><span class=\"thumb\" data-on=\"YES\" data-off=\"NO\"></span>\n                        <input type=\"checkbox\" name=\"outgoing_services.";
   stack1 = depth0.uuid;
   stack1 = typeof stack1 === functionType ? stack1() : stack1;
   buffer += escapeExpression(stack1) + ".";
@@ -1172,22 +1185,22 @@ function program6(depth0,data) {
   stack1 = typeof stack1 === functionType ? stack1() : stack1;
   buffer += escapeExpression(stack1) + "\" value=\"1\" ";
   stack1 = depth0.default_value;
-  stack1 = helpers['if'].call(depth0, stack1, {hash:{},inverse:self.noop,fn:self.program(7, program7, data)});
+  stack1 = helpers['if'].call(depth0, stack1, {hash:{},inverse:self.noop,fn:self.program(8, program8, data)});
   if(stack1 || stack1 === 0) { buffer += stack1; }
-  buffer += "/>\n                    </div>\n                  </div>\n                </div>\n                ";
+  buffer += "/>\n                      </div>\n                    </div>\n                  </div>\n                  ";
   stack1 = depth0.display_name;
   stack1 = typeof stack1 === functionType ? stack1() : stack1;
-  buffer += escapeExpression(stack1) + "\n              </label>\n            </li>\n          ";
+  buffer += escapeExpression(stack1) + "\n                </label>\n              </li>\n            ";
   return buffer;}
-function program7(depth0,data) {
+function program8(depth0,data) {
   
   
   return "checked=\"checked\"";}
 
-function program9(depth0,data) {
+function program10(depth0,data) {
   
   var buffer = "", stack1;
-  buffer += "\n            <li>\n              <label class=\"left\">\n                <select name=\"outgoing_services.";
+  buffer += "\n              <li>\n                <label class=\"left\">\n                  <select name=\"outgoing_services.";
   stack1 = depth0.uuid;
   stack1 = typeof stack1 === functionType ? stack1() : stack1;
   buffer += escapeExpression(stack1) + ".";
@@ -1195,67 +1208,67 @@ function program9(depth0,data) {
   stack1 = typeof stack1 === functionType ? stack1() : stack1;
   buffer += escapeExpression(stack1) + "\" class=\"right";
   stack1 = depth0.default_value;
-  stack1 = helpers.unless.call(depth0, stack1, {hash:{},inverse:self.noop,fn:self.program(10, program10, data)});
+  stack1 = helpers.unless.call(depth0, stack1, {hash:{},inverse:self.noop,fn:self.program(11, program11, data)});
   if(stack1 || stack1 === 0) { buffer += stack1; }
   buffer += "\"";
   stack1 = depth0.hasEmptyOption;
-  stack1 = helpers['if'].call(depth0, stack1, {hash:{},inverse:self.noop,fn:self.program(12, program12, data)});
+  stack1 = helpers['if'].call(depth0, stack1, {hash:{},inverse:self.noop,fn:self.program(13, program13, data)});
   if(stack1 || stack1 === 0) { buffer += stack1; }
-  buffer += ">\n                  ";
+  buffer += ">\n                    ";
   stack1 = depth0.options;
-  stack1 = helpers.each.call(depth0, stack1, {hash:{},inverse:self.noop,fn:self.program(14, program14, data)});
+  stack1 = helpers.each.call(depth0, stack1, {hash:{},inverse:self.noop,fn:self.program(15, program15, data)});
   if(stack1 || stack1 === 0) { buffer += stack1; }
-  buffer += "\n                </select>\n                ";
+  buffer += "\n                  </select>\n                  ";
   stack1 = depth0.default_value;
-  stack1 = helpers.unless.call(depth0, stack1, {hash:{},inverse:self.noop,fn:self.program(17, program17, data)});
+  stack1 = helpers.unless.call(depth0, stack1, {hash:{},inverse:self.noop,fn:self.program(18, program18, data)});
   if(stack1 || stack1 === 0) { buffer += stack1; }
-  buffer += "\n                ";
+  buffer += "\n                  ";
   stack1 = depth0.display_name;
   stack1 = typeof stack1 === functionType ? stack1() : stack1;
-  buffer += escapeExpression(stack1) + "\n              </label>\n            </li>\n          ";
+  buffer += escapeExpression(stack1) + "\n                </label>\n              </li>\n            ";
   return buffer;}
-function program10(depth0,data) {
+function program11(depth0,data) {
   
   
   return " empty";}
 
-function program12(depth0,data) {
+function program13(depth0,data) {
   
   
   return " data-select-type=\"preserve-null-state\"";}
 
-function program14(depth0,data) {
+function program15(depth0,data) {
   
   var buffer = "", stack1;
-  buffer += "\n                    <option value=\"";
+  buffer += "\n                      <option value=\"";
   stack1 = depth0.value;
   stack1 = typeof stack1 === functionType ? stack1() : stack1;
   buffer += escapeExpression(stack1) + "\"";
   stack1 = depth0.selected;
-  stack1 = helpers['if'].call(depth0, stack1, {hash:{},inverse:self.noop,fn:self.program(15, program15, data)});
+  stack1 = helpers['if'].call(depth0, stack1, {hash:{},inverse:self.noop,fn:self.program(16, program16, data)});
   if(stack1 || stack1 === 0) { buffer += stack1; }
   buffer += ">";
   stack1 = depth0.display_name;
   stack1 = typeof stack1 === functionType ? stack1() : stack1;
-  buffer += escapeExpression(stack1) + "</option>\n                  ";
+  buffer += escapeExpression(stack1) + "</option>\n                    ";
   return buffer;}
-function program15(depth0,data) {
+function program16(depth0,data) {
   
   
   return "selected=\"selected\"";}
 
-function program17(depth0,data) {
+function program18(depth0,data) {
   
   
-  return "\n                  <span class=\"right placeholder\">select a value</span>\n                ";}
+  return "\n                    <span class=\"right placeholder\">select a value</span>\n                  ";}
 
-  buffer += "<ul class=\"formcontent\">\n  ";
+function program20(depth0,data) {
+  
+  
+  return "\n  <h1 class=\"null\">You have no outgoing services.</h1>\n  <p class=\"null\">Please go to the <a href=\"https://auphonic.com\">Auphonic Website</a> and add external services so you can automatically export your recordings.</p>\n";}
+
   stack1 = depth0.service;
-  stack1 = helpers.each.call(depth0, stack1, {hash:{},inverse:self.noop,fn:self.program(1, program1, data)});
-  if(stack1 || stack1 === 0) { buffer += stack1; }
-  buffer += "\n</ul>\n\n";
-  stack1 = depth0.service;
-  stack1 = helpers.each.call(depth0, stack1, {hash:{},inverse:self.noop,fn:self.program(3, program3, data)});
+  stack1 = helpers['if'].call(depth0, stack1, {hash:{},inverse:self.program(20, program20, data),fn:self.program(1, program1, data)});
   if(stack1 || stack1 === 0) { buffer += stack1; }
   buffer += "\n";
   return buffer;});
@@ -1372,7 +1385,7 @@ function program2(depth0,data) {
 function program4(depth0,data) {
   
   
-  return "\n  <h1 class=\"null\">You have no presets yet.</h1>\n  <p class=\"null\">A preset helps you predefine settings like metadata or output files for new productions, speeding up the production-flow when only few values change.</p>\n  <ul>\n    <li><a href=\"/preset/new\" class=\"arrow\"><span></span>Define a new Preset</a></li>\n  </ul>\n";}
+  return "\n  <h1 class=\"null\">You have no presets yet.</h1>\n  <p class=\"null\">A preset helps you predefine settings like metadata or output files and speeds up creating new productions.</p>\n  <ul>\n    <li><a href=\"/preset/new\" class=\"arrow\"><span></span>Define a new Preset</a></li>\n  </ul>\n";}
 
   stack1 = depth0.preset;
   stack1 = helpers['if'].call(depth0, stack1, {hash:{},inverse:self.program(4, program4, data),fn:self.program(1, program1, data)});

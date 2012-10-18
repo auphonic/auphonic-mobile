@@ -224,7 +224,7 @@ Controller.define('/production/{uuid}/summary', function(req) {
 
   View.getMain().push('production', new View.Object({
     title: production.metadata.title,
-    content: UI.render('data-detail-summary', production),
+    content: UI.render('detail-summary', production),
     onShow: function() {
       currentEditUUID = production.uuid;
     }

@@ -104,18 +104,22 @@ exports.createView = function(store) {
       service.parameters = Object.values(type.parameters);
     });
 
+    var hasServices = !!services.length;
+
+    var action = hasServices ? {
+      title: 'Done',
+      back: true,
+      onClick: function() {
+        store.set('outgoing_services', View.getMain().getCurrentObject().serialize());
+      }
+    } : null;
+
     var object = new View.Object({
       title: 'Transfers',
       content: UI.render('form-new-service', {
-        service: services
+        service: hasServices && services
       }),
-      action: {
-        title: 'Done',
-        back: true,
-        onClick: function() {
-          store.set('outgoing_services', View.getMain().getCurrentObject().serialize());
-        }
-      },
+      action: action,
       back: {
         title: 'Cancel'
       },

@@ -135,6 +135,8 @@ exports.prepare = function(object, type, fn) {
 
   var metadata = object.metadata;
 
+  if (type == 'preset' && !metadata.title) metadata.title = object.preset_name;
+
   metadata.hasLicense = !!(metadata.license || metadata.license_url);
   object.hasDetails =
     metadata.summary ||
