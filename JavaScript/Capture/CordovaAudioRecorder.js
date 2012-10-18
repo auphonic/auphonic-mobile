@@ -71,8 +71,9 @@ module.exports = new Class({
   },
 
   onError: function() {
-    console.log('error');
     this.fireEvent('cancel');
+    this.fireEvent('error');
+    if (this.file) this.file.remove(function() {}, function() {});
   },
 
   onCaptureError: function() {
@@ -80,8 +81,9 @@ module.exports = new Class({
     this.canceled = false;
     if (canceled) return;
 
-    console.log('error');
     this.fireEvent('cancel');
+    this.fireEvent('error');
+    this.file.remove(function() {}, function() {});
   },
 
   getFileName: function() {

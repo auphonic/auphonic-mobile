@@ -428,8 +428,9 @@ Controller.define('/production/recording/new-audio', function() {
 
 Controller.define('/production/recording/new-audio-start', function() {
   var name = Auphonic.DefaultFileName.substitute({uuid: Recording.generateRecordingId()});
+  var object = View.getMain().getCurrentObject();
 
-  recorder = new AudioRecorder(CordovaAudioRecorder, name, {
+  recorder = new AudioRecorder(CordovaAudioRecorder, object, name, {
     onSuccess: upload
   }).start();
 });

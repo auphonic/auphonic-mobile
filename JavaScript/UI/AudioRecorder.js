@@ -2,27 +2,38 @@ var Core = require('Core');
 var Class = Core.Class;
 var Options = Core.Options;
 
-var View = require('View');
+var UI = require('UI');
+var Notice = require('UI/Notice');
 
 module.exports = new Class({
 
   Implements: [Class.Binds],
 
-  // options and name get passed to the class
-  initialize: function(recorderClass, name, options) {
-    this.status = document.getElement('.record_status');
-    this.recorder = new recorderClass(name, options);
+  // options and fileName get passed to the class
+  initialize: function(recorderClass, object, fileName, options) {
+    this.object = object;
+    var element = object.toElement();
+
+    this.status = element.getElement('.record_status');
+    this.recorder = new recorderClass(fileName, options);
+
+    this.startButton = element.getElement('.record_button');
+    this.stopButton = element.getElement('.stop_record_button');
 
     this.recorder.addEvents({
       start: this.bound('onStart'),
       update: this.bound('onUpdate'),
-      cancel: this.bound('onCancel')
+      cancel: this.bound('onCancel'),
+      error: this.bound('onError')
     });
   },
 
   start: function() {
-    View.getMain().getCurrentObject().addEvent('hide:once', this.bound('onHide'));
+    this.object.addEvent('hide:once', this.bound('onHide'));
     this.recorder.start();
+    UI.unhighlight(this.startButton.getElement('a'));
+    this.startButton.hide();
+    this.stopButton.show();
     return this;
   },
 
@@ -33,8 +44,6 @@ module.exports = new Class({
 
   onStart: function() {
     this.time = 0;
-    document.getElement('.record_button').hide();
-    document.getElement('.stop_record_button').show();
   },
 
   onUpdate: function() {
@@ -42,9 +51,15 @@ module.exports = new Class({
   },
 
   onCancel: function() {
-    View.getMain().getCurrentObject().removeEvent('hide:once', this.bound('onHide'));
-    document.getElement('.record_button').show();
-    document.getElement('.stop_record_button').hide();
+    this.object.removeEvent('hide:once', this.bound('onHide'));
+    UI.unhighlight(this.stopButton.getElement('a'));
+    this.startButton.show();
+    this.stopButton.hide();
+    this.status.set('text', '');
+  },
+
+  onError: function() {
+    new Notice('There was an error with your recording. Please try again.');
   },
 
   onHide: function() {

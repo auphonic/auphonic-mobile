@@ -7,7 +7,7 @@ This application is being developed by [@cpojer](http://cpojer.net) as bachelor'
 Install
 -------
 
-* Install [Cordova (PhoneGap)](http://phonegap.com/)
+* Install [Cordova (PhoneGap)](http://phonegap.com/). Note that for iOS a fork of Cordova is currently being used: https://github.com/cpojer/incubator-cordova-ios
 * Install NodeJS and npm (`brew install node npm` on OS X using [Homebrew](http://mxcl.github.com/homebrew/))
 * `npm install` in the root folder
 * Create an App at https://auphonic.com/api/apps/ and insert your API Keys in `JavaScript/APIKeys.js`
