@@ -55,10 +55,7 @@ var API = module.exports = {
 
 var listenersFor = function(url) {
   var listeners = new Events;
-  listeners.on = function(events) {
-    if (events.success) listeners.addEvent('success:once', events.success);
-    if (events.error) listeners.addEvent('error:once', events.error);
-  };
+  listeners.on = listeners.addEvents;
   return listeners;
 };
 
@@ -144,6 +141,7 @@ var queue = new Queue;
 API.upload = function(url, file, field) {
   IdleTimer.disable();
 
+  var transfer;
   var listeners = listenersFor(url);
   var success = function(response) {
     IdleTimer.enable();
@@ -168,11 +166,18 @@ API.upload = function(url, file, field) {
   };
 
   queue.chain(function() {
-    var transfer = new window.FileTransfer();
+    transfer = new window.FileTransfer();
+    transfer.onprogress = function(event) {
+      listeners.fireEvent('progress', event);
+    };
     transfer.upload(file.fullPath, getURL(url) + (url.contains('?') ? '&' : '?') + Date.now(), success, error, options);
 
     this.next();
   }).call();
+
+  listeners.cancel = function() {
+    if (transfer) transfer.abort();
+  };
 
   return listeners;
 };

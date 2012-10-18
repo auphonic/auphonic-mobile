@@ -52,14 +52,6 @@ exports.getRecordingName = function(recording) {
   return (match && match[1] ? 'Recording ' + match[1] : recording.name);
 };
 
-exports.setCurrentUpload = function(data) {
-  LocalStorage.set(key('currentUpload'), data);
-};
-
-exports.getCurrentUpload = function() {
-  return LocalStorage.get(key('currentUpload'));
-};
-
 exports.add = function(recording) {
   if (recording.uploaded) return;
 

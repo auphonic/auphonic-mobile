@@ -10,12 +10,15 @@ var View = require('View');
 
 var Notice = require('UI/Notice');
 var SwipeAble = require('UI/Actions/SwipeAble');
+var Popover = require('UI/Actions/Popover');
 
 var Chapter = require('./Chapter');
 var ListFiles = require('./ListFiles');
 var Metadata = require('./Metadata');
 var OutputFiles = require('./OutputFiles');
 var Source = require('./Source');
+
+var CurrentUpload = require('Store/CurrentUpload');
 
 var Auphonic = require('Auphonic');
 
@@ -155,8 +158,15 @@ module.exports = new Class({
     var isProduction = this.isProduction = (this.getDisplayType() == 'production');
     var isEditMode = this.isEditMode = !!data;
     var isNewProduction = this.isNewProduction = (isProduction && !isEditMode);
+    var hasPopover = isNewProduction;
+    var hasUpload = false;
     this.store = store;
     this.presets = presets;
+
+    if (isEditMode) {
+      this.uuid = data.uuid;
+      if (!hasPopover) hasPopover = hasUpload = CurrentUpload.has(this.uuid);
+    }
 
     // This is a placeholder title created by the mobile app, remove it if possible
     if (isEditMode && isProduction && data.metadata.title == Auphonic.DefaultTitle) {
@@ -173,7 +183,9 @@ module.exports = new Class({
       presets: presets && Object.values(presets),
       service: (service ? service.display_type : null),
       input_file: ListFiles.getObject(store),
-      isNewProduction: isNewProduction
+      isNewProduction: isNewProduction,
+      hasPopover: hasPopover,
+      hasUpload: hasUpload
     };
     uiData[this.getDisplayType()] = true;
 
@@ -183,7 +195,9 @@ module.exports = new Class({
       back: (isEditMode ? {title: 'Cancel'} : null),
 
       onShow: this.bound('onShow'),
-      onHide: this.bound('onHide')
+      onHide: this.bound('onHide'),
+      onUploadProgress: this.bound('onUploadProgress'),
+      onRefresh: this.bound('onRefresh')
     });
 
     store.eachView(function(view, type) {
@@ -195,7 +209,13 @@ module.exports = new Class({
 
     this.actionIsVisible = (isEditMode && !!this.getObjectName(data));
     var updateAction = this.bound('updateAction');
+    var cancelUpload = this.bound('cancelUpload');
     object.addEvent('show:once', function() {
+      if (hasUpload) {
+        var cancelButton = object.toElement().getElement('.cancelUpload');
+        if (cancelButton) cancelButton.addEvent('click', cancelUpload);
+      }
+
       // This only affects either preset_name or metadata.title
       object.toElement().getElement('[data-required]').addEvent('input', function() {
         updateAction(!!this.get('value'));
@@ -215,6 +235,18 @@ module.exports = new Class({
 
     View.getMain().push(this.getDisplayType(), object);
     this.isRendered = true;
+  },
+
+  // Cancel a recording upload
+  cancelUpload: function(event) {
+    event.preventDefault();
+
+    var upload = CurrentUpload.remove(this.uuid);
+    if (upload) upload.transfer.cancel();
+
+    var element = this.object.toElement();
+    element.getElement('.input_file').dispose();
+    element.getElement('.change_source').show();
   },
 
   upload: function(file) {
@@ -296,8 +328,10 @@ module.exports = new Class({
 
     // If the production is new and a cover photo is selected we need to upload it now.
     if (this.uploadFile) {
-      if (!this.isEditMode)
+      if (!this.isEditMode) {
         this.setSaveURL((this.getBaseURL() + '{uuid}').substitute(response.data));
+        this.uuid = response.data.uuid;
+      }
 
       this.upload(this.uploadFile);
       this.uploadFile = null;
@@ -322,6 +356,25 @@ module.exports = new Class({
   onUploadSuccess: function(response) {
     new Notice('The Cover Photo was successfully uploaded.');
     this.options.onUploadSuccess.call(this, response.data);
+  },
+
+  onUploadProgress: function(data) {
+    if (data.uuid != this.uuid) return;
+
+    var uploading = this.object.toElement().getElement('.input_file_label .uploading');
+    if (uploading) uploading.show().set('text', ' (' + data.percentage + ' %)');
+  },
+
+  // When the upload finishes, onRefresh is being called
+  onRefresh: function() {
+    var element = this.object.toElement();
+    var label = element.getElement('.input_file_label');
+
+    var uploading = label.getElement('.uploading');
+    if (uploading) uploading.hide().set('text', '');
+
+    label.removeClass('info');
+    label.getInstanceOf(Popover).detach();
   }
 
 });

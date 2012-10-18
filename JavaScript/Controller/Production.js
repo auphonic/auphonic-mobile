@@ -22,6 +22,7 @@ var OutputFiles = require('App/OutputFiles');
 var ProductionStatus = require('App/ProductionStatus');
 var Source = require('App/Source');
 
+var CurrentUpload = require('Store/CurrentUpload');
 var Recording = require('Store/Recording');
 
 var Auphonic = require('Auphonic');
@@ -168,6 +169,7 @@ var showOne = function(req, options) {
 
       onShow: function() {
         resetEditUUID();
+
         var production = productions[req.uuid];
         // Production is being processed
         if (!production.change_allowed) {
@@ -185,7 +187,15 @@ var showOne = function(req, options) {
           productions[data.uuid] = data;
           showOne(data, {refresh: true});
         }
+      },
+
+      onUploadProgress: function(data) {
+        if (data.uuid != production.uuid) return;
+
+        var uploading = object.toElement().getElement('.uploading');
+        if (uploading) uploading.set('text', 'Uploading ' + data.percentage + ' %');
       }
+
     });
 
     if (options && options.refresh) View.getMain().replace(object);
@@ -209,8 +219,27 @@ var startProduction = function(event) {
   });
 };
 
-UI.register('a.startProduction', function(elements) {
-  elements.addEvent('click', startProduction);
+var cancelUpload = function(event) {
+  event.preventDefault();
+
+  var uuid = this.get('data-id');
+  var upload = CurrentUpload.remove(uuid);
+  if (!upload) return;
+
+  upload.transfer.cancel();
+  showOne(productions[uuid], {refresh: true});
+};
+
+UI.register({
+
+  'div.detailView a.startProduction': function(elements) {
+    elements.addEvent('click', startProduction);
+  },
+
+  'div.detailView a.cancelUpload': function(elements) {
+    elements.addEvent('click', cancelUpload);
+  }
+
 });
 
 Controller.define('/production', showAll);
@@ -259,8 +288,8 @@ var edit = function(production) {
     if (data.service) Source.setData(form, data.service);
 
     // Check if we are currently uploading
-    var currentUpload = Recording.getCurrentUpload();
-    if (currentUpload && currentUpload.uuid == data.uuid) {
+    var currentUpload = CurrentUpload.retrieve(data.uuid);
+    if (currentUpload) {
       data.input_file = currentUpload.file.name;
       // Remove an eventual service uuid.
       delete data.service;
@@ -372,19 +401,30 @@ var upload = function(file) {
   Recording.add(file);
 
   var onCreateSuccess = function(response) {
-    Recording.setCurrentUpload({
-      uuid: response.data.uuid,
-      file: file
-    });
-
-    API.upload('production/{uuid}/upload'.substitute(response.data), file, 'input_file').on({
+    var uuid = response.data.uuid;
+    var transfer = API.upload('production/{uuid}/upload'.substitute(response.data), file, 'input_file').on({
 
       success: function(uploadResponse) {
         new Notice('The recording <span class="bold">"' + file.name + '"</span> was successfully uploaded and attached to your production.');
-        Recording.setCurrentUpload(null);
+        CurrentUpload.remove(uuid);
         View.getMain().getCurrentObject().fireEvent('refresh', [uploadResponse.data]);
+      },
+
+      progress: function(event) {
+        // Bound this between 0 and 100 just to make sure to never have a crazy percentage here :)
+        var percentage = Math.max(0, Math.min(100, Math.round(event.loaded / event.total * 100)));
+
+        View.getMain().getCurrentObject().fireEvent('uploadProgress', [{
+          uuid: uuid,
+          percentage: percentage
+        }]);
       }
 
+    });
+
+    CurrentUpload.add(uuid, {
+      transfer: transfer,
+      file: file
     });
 
     var url = '/production/edit/{uuid}'.substitute(response.data);

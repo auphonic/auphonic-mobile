@@ -1,16 +1,18 @@
 <ul class="formcontent">
   {{#if input_file}}
-    <li>
-      <label{{#unless isNewProduction}} class="info"{{/unless}}>
-        {{#unless isNewProduction}}<span></span>{{/unless}}
-        <span class="light">{{#if service}}{{service}}{{else}}Upload{{/if}}</span> <small>{{input_file}}</small>
-        {{#unless isNewProduction}}
+    <li class="input_file">
+      <label class="input_file_label{{#if hasPopover}} info{{/if}}">
+        {{#if hasPopover}}<span></span>{{/if}}
+        <span class="light">{{#if service}}{{service}}{{else}}Upload<small class="uploading hidden"></small>{{/if}}</span> <small>{{input_file}}</small>
+        {{#if hasPopover}}
           <div class="hidden popover bottom justify" data-position="bottom">
-            <a href="{{baseURL}}source" class="button expand">Change Source</a>
+            {{#if hasUpload}}<a class="button red expand cancelUpload">Cancel Upload</a>{{/if}}
+            {{#unless isNewProduction}}<a href="{{baseURL}}source" class="button expand">Change Source</a>{{/unless}}
           </div>
-        {{/unless}}
+        {{/if}}
       </label>
     </li>
+    <li class="change_source hidden"><a href="{{baseURL}}source" class="arrow"><span></span>Choose Source</a></li>
   {{else}}
     {{#if production}}
       <li><a href="{{baseURL}}source" class="arrow"><span></span>Choose Source</a></li>

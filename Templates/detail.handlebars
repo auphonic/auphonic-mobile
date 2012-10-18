@@ -1,168 +1,175 @@
-<div class="detail expand{{#if thumbnail}} with-thumbnail{{/if}}">
-  {{#if thumbnail}}
-    <div class="cover-photo" style="background-image: url({{{image thumbnail}}});"></div>
-    <div class="gradient"></div>
-  {{else}}
-    <div class="white-background"></div>
-  {{/if}}
-  <div class="detail-inner">
-    {{#metadata}}
-      {{#if hasDescription}}<h1>{{title}}</h1>{{/if}}
-      {{#if year}}<span class="year">{{year}}</span>{{/if}}
-      {{#if genre}}<span class="genre">{{genre}}</span>{{/if}}
-      {{#unless hasDescription}}<h1>{{title}}</h1>{{/unless}}
+<div class="detailView">
+  <div class="detail expand{{#if thumbnail}} with-thumbnail{{/if}}">
+    {{#if thumbnail}}
+      <div class="cover-photo" style="background-image: url({{{image thumbnail}}});"></div>
+      <div class="gradient"></div>
+    {{else}}
+      <div class="white-background"></div>
+    {{/if}}
+    <div class="detail-inner">
+      {{#metadata}}
+        {{#if hasDescription}}<h1>{{title}}</h1>{{/if}}
+        {{#if year}}<span class="year">{{year}}</span>{{/if}}
+        {{#if genre}}<span class="genre">{{genre}}</span>{{/if}}
+        {{#unless hasDescription}}<h1>{{title}}</h1>{{/unless}}
 
-      {{#if album}}<span class="album">{{album}}</span>{{/if}}
-      {{#if track}}<span class="track">#{{track}}</span>{{/if}}
-      {{#if artist}}<span class="artist small">{{artist}}</span>{{/if}}
-    {{/metadata}}
+        {{#if album}}<span class="album">{{album}}</span>{{/if}}
+        {{#if track}}<span class="track">#{{track}}</span>{{/if}}
+        {{#if artist}}<span class="artist small">{{artist}}</span>{{/if}}
+      {{/metadata}}
+    </div>
+    <div class="clear"></div>
   </div>
-  <div class="clear"></div>
-</div>
 
-{{#if media_files}}
-  {{> player}}
-{{/if}}
-<div class="clear"></div>
-
-{{#if start_allowed}}
-  <a data-api-url="/production/{{uuid}}/start" data-method="post" class="clear button green expand startProduction">Start Production</a>
-  <div class="content processing hidden"></div>
-{{else}}
-  {{#if production}}
-    {{#unless change_allowed}}
-      <div class="content processing">Processing</div>
-    {{/unless}}
+  {{#if media_files}}
+    {{> player}}
   {{/if}}
-{{/if}}
+  <div class="clear"></div>
 
-{{#if input_file}}
-  <h1>Input Source{{#if service_display_type}} - {{service_display_type}}{{/if}}</h1>
-  <ul>
-    <li>
-      <label>
-        {{#if service_display_name}}
-          <span class="light">{{service_display_name}}</span>
-          <small>{{input_file}}</small>
-        {{else}}
-          {{input_file}}
-        {{/if}}
-      </label>
-    </li>
-    {{#if length_string}}
-      <li><span class="right light">{{length_string}}</span><label class="left">Length</label></li>
+  {{#if is_uploading}}
+    <div class="content uploading">Uploading</div>
+    <a class="clear button red expand cancelUpload" data-id="{{uuid}}">Cancel Upload</a>
+  {{/if}}
+
+  {{#if start_allowed}}
+    <a data-api-url="/production/{{uuid}}/start" data-method="post" class="clear button green expand startProduction">Start Production</a>
+    <div class="content processing hidden"></div>
+  {{else}}
+    {{#if production}}
+      {{#unless change_allowed}}
+        <div class="content processing">Processing</div>
+      {{/unless}}
     {{/if}}
-  </ul>
-{{/if}}
+  {{/if}}
 
-{{#if hasDetails}}
-  <h1>Details</h1>
-  <ul>
-    {{#if metadata.summary}}<li><a href="{{baseURL}}/{{uuid}}/summary" class="arrow"><span></span>Summary</a></li>{{/if}}
-    {{#metadata}}
-      {{#if publisher}}<li><label>Publisher <span class="light">{{publisher}}</span></label></li>{{/if}}
-      {{#if url}}
-        <li><a href="{{url}}" class="share"><span></span>URL <span class="light">{{{format-url url}}}</span></a></li>
-      {{/if}}
-      {{#if hasLicense}}
-        <li>
-          {{#if license_url}}
-            <a href="{{license_url}}" class="share"><span></span>
-          {{else}}
-            <label>
-          {{/if}}
-
-          License <span class="light">{{#if license}}{{license}}{{else}}{{{format-url license_url}}}{{/if}}</span>
-
-          {{#if license_url}}
-            </a>
-          {{else}}
-            </label>
-          {{/if}}
-        </li>
-      {{/if}}
-      {{#if tags}}
-        <li><label>Tags <span class="light">{{tags}}</span></label></li>
-      {{/if}}
-    {{/metadata}}
-  </ul>
-{{/if}}
-
-{{#if output_files}}
-  <h1>Output Files</h1>
-  <ul>
-    {{#if output_basename}}
-      <li>
-        <label class="left">
-          Prefix <small class="light">{{output_basename}}</small>
-        </label>
-      </li>
-    {{/if}}
-    {{#each output_files}}
-      {{#if size_string}}
-        <li class="wide">
-          {{#if size_string}}<span class="right light"><small>{{size_string}}</small></span>{{/if}}
-          <label class="left">{{title}}{{#if detail}} <small class="light">{{detail}}</small>{{/if}}</label>
-        </li>
-      {{else}}
-        <li>
-          <label>{{title}}{{#if detail}} <small class="light">{{detail}}</small>{{/if}}</label>
-        </li>
-      {{/if}}
-    {{/each}}
-  </ul>
-{{/if}}
-
-{{#if hasChapters}}
-  <h1>Chapter Marks</h1>
-  <ul>
-    {{#each chapters}}
+  {{#if input_file}}
+    <h1>Input Source{{#if service_display_type}} - {{service_display_type}}{{/if}}</h1>
+    <ul>
       <li>
         <label>
-          <small class="light">{{start}}</small> {{title}}
+          {{#if service_display_name}}
+            <span class="light">{{service_display_name}}</span>
+            <small>{{input_file}}</small>
+          {{else}}
+            {{input_file}}
+          {{/if}}
+        </label>
+      </li>
+      {{#if length_string}}
+        <li><span class="right light">{{length_string}}</span><label class="left">Length</label></li>
+      {{/if}}
+    </ul>
+  {{/if}}
+
+  {{#if hasDetails}}
+    <h1>Details</h1>
+    <ul>
+      {{#if metadata.summary}}<li><a href="{{baseURL}}/{{uuid}}/summary" class="arrow"><span></span>Summary</a></li>{{/if}}
+      {{#metadata}}
+        {{#if publisher}}<li><label>Publisher <span class="light">{{publisher}}</span></label></li>{{/if}}
+        {{#if url}}
+          <li><a href="{{url}}" class="share"><span></span>URL <span class="light">{{{format-url url}}}</span></a></li>
+        {{/if}}
+        {{#if hasLicense}}
+          <li>
+            {{#if license_url}}
+              <a href="{{license_url}}" class="share"><span></span>
+            {{else}}
+              <label>
+            {{/if}}
+
+            License <span class="light">{{#if license}}{{license}}{{else}}{{{format-url license_url}}}{{/if}}</span>
+
+            {{#if license_url}}
+              </a>
+            {{else}}
+              </label>
+            {{/if}}
+          </li>
+        {{/if}}
+        {{#if tags}}
+          <li><label>Tags <span class="light">{{tags}}</span></label></li>
+        {{/if}}
+      {{/metadata}}
+    </ul>
+  {{/if}}
+
+  {{#if output_files}}
+    <h1>Output Files</h1>
+    <ul>
+      {{#if output_basename}}
+        <li>
+          <label class="left">
+            Prefix <small class="light">{{output_basename}}</small>
+          </label>
+        </li>
+      {{/if}}
+      {{#each output_files}}
+        {{#if size_string}}
+          <li class="wide">
+            {{#if size_string}}<span class="right light"><small>{{size_string}}</small></span>{{/if}}
+            <label class="left">{{title}}{{#if detail}} <small class="light">{{detail}}</small>{{/if}}</label>
+          </li>
+        {{else}}
+          <li>
+            <label>{{title}}{{#if detail}} <small class="light">{{detail}}</small>{{/if}}</label>
+          </li>
+        {{/if}}
+      {{/each}}
+    </ul>
+  {{/if}}
+
+  {{#if hasChapters}}
+    <h1>Chapter Marks</h1>
+    <ul>
+      {{#each chapters}}
+        <li>
+          <label>
+            <small class="light">{{start}}</small> {{title}}
+          </label>
+        </li>
+      {{/each}}
+    </ul>
+  {{/if}}
+
+  {{#if outgoing_services}}
+    <h1>Outgoing File Transfers</h1>
+    <ul>
+      {{#each outgoing_services}}
+        <li>
+          {{#if result_urls}}
+            <a href="{{result_urls.0.}}" class="share"><span></span><span class="light">{{display_type}}</span> <small>{{display_name}}</small></a>
+          {{else}}
+            <label><span class="light">{{display_type}}</span> <small>{{display_name}}</small></label>
+          {{/if}}
+        </li>
+      {{/each}}
+    </ul>
+  {{/if}}
+
+  {{#if metadata.subtitle}}
+    <h1>Subtitle</h1>
+    <div class="content">
+      {{metadata.subtitle}}
+    </div>
+  {{/if}}
+
+  {{#if hasAlgorithms}}
+    <h1>Algorithms</h1>
+    <ul>
+    {{#each algorithms}}
+      <li class="wide">
+        <label class="show-popover {{#if select}}left{{else}}info{{/if}}">
+          {{#if select}}
+            <span class="right light bold">{{value_string}}</span>
+          {{else}}
+            <span></span>
+          {{/if}}
+          {{display_name}}
+          {{> algorithm-popover}}
         </label>
       </li>
     {{/each}}
-  </ul>
-{{/if}}
-
-{{#if outgoing_services}}
-  <h1>Outgoing File Transfers</h1>
-  <ul>
-    {{#each outgoing_services}}
-      <li>
-        {{#if result_urls}}
-          <a href="{{result_urls.0.}}" class="share"><span></span><span class="light">{{display_type}}</span> <small>{{display_name}}</small></a>
-        {{else}}
-          <label><span class="light">{{display_type}}</span> <small>{{display_name}}</small></label>
-        {{/if}}
-      </li>
-    {{/each}}
-  </ul>
-{{/if}}
-
-{{#if metadata.subtitle}}
-  <h1>Subtitle</h1>
-  <div class="content">
-    {{metadata.subtitle}}
-  </div>
-{{/if}}
-
-{{#if hasAlgorithms}}
-  <h1>Algorithms</h1>
-  <ul>
-  {{#each algorithms}}
-    <li class="wide">
-      <label class="show-popover {{#if select}}left{{else}}info{{/if}}">
-        {{#if select}}
-          <span class="right light bold">{{value_string}}</span>
-        {{else}}
-          <span></span>
-        {{/if}}
-        {{display_name}}
-        {{> algorithm-popover}}
-      </label>
-    </li>
-  {{/each}}
-  </ul>
-{{/if}}
+    </ul>
+  {{/if}}
+</div>
