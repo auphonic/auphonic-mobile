@@ -74,7 +74,10 @@ var addPlaceholder = function() {
 
   View.getMain().push('production', new View.Object({
     url: '/production',
-    title: 'Productions'
+    title: 'Productions',
+    backOptions: {
+      className: 'small'
+    }
   }).invalidate());
 };
 
@@ -107,6 +110,9 @@ var showAll = function() {
       action: {
         title: 'New',
         url: '/production/source'
+      },
+      backOptions: {
+        className: 'small'
       },
       type: response.data.length && 'white',
       loadMoreFunction: load,

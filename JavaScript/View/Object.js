@@ -2,6 +2,7 @@ var Core = require('Core');
 var typeOf = Core.typeOf;
 var Class = Core.Class;
 var Events = Core.Events;
+var Element = Core.Element;
 
 var UI = require('UI');
 
@@ -18,6 +19,7 @@ module.exports = new Class({
     action: null,
     back: null,
     backTitle: null,
+    backOptions: null,
 
     type: null,
     scrollTop: 0,
@@ -42,6 +44,7 @@ module.exports = new Class({
       .setContent(options.content)
       .setAction(options.action)
       .setBack(options.back)
+      .setBackOptions(options.backOptions)
       .setType(options.type)
       .setUses(options.uses);
   },
@@ -110,9 +113,9 @@ module.exports = new Class({
     if (back) return back;
 
     var previous = this.getStack().getPrevious();
-    return {
+    return Object.append({}, previous && previous.getBackOptions(), {
       title: (previous && (previous.getBackTitle() || previous.getTitle())) || 'Back'
-    };
+    });
   },
 
   // API consistency
