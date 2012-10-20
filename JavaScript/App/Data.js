@@ -151,8 +151,8 @@ exports.prepare = function(object, type, fn) {
   metadata.hasDescription = !!(metadata.album || metadata.artist);
   object.hasChapters = length(object.chapters);
 
-  var length_string = exports.formatDuration(object.length, ' ');
-  if (length_string != '0s') object.length_string = length_string;
+  var duration_string = exports.formatDuration(object.length, ' ');
+  if (duration_string != '0s') object.duration_string = duration_string;
 
   if (object.hasChapters) object.chapters.sortByKey('start');
 

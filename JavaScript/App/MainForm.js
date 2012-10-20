@@ -155,6 +155,7 @@ module.exports = new Class({
 
   createView: function(store, data, presets) {
     this.isRendered = false;
+    var inputFile, inputBasename;
     var isProduction = this.isProduction = (this.getDisplayType() == 'production');
     var isEditMode = this.isEditMode = !!data;
     var isNewProduction = this.isNewProduction = (isProduction && !isEditMode);
@@ -176,6 +177,9 @@ module.exports = new Class({
     }
 
     var service = Source.getObject(store);
+    inputFile = inputBasename = (ListFiles.getObject(store) || '');
+    var index = inputFile.lastIndexOf('.');
+
     var uiData = {
       algorithm: API.getInfo('algorithms_array'),
       baseURL: this.getBaseURL(),
@@ -183,7 +187,8 @@ module.exports = new Class({
       output_basename: isEditMode && data.output_basename,
       presets: presets && Object.values(presets),
       service: (service ? service.display_type : null),
-      input_file: ListFiles.getObject(store),
+      input_file: inputFile,
+      input_file_basename: (index == -1) ? inputBasename : inputBasename.substring(0, index),
       isNewProduction: isNewProduction,
       hasPopover: hasPopover,
       hasUpload: hasUpload

@@ -104,6 +104,9 @@ exports.setup = function(store, baseURL, object) {
       title: id ? 'Done' : 'Add',
       back: true,
       onClick: function() {
+        // Fire blur to apply changes
+        if (document.activeElement) document.activeElement.fireEvent('blur');
+
         add(baseURL, store, getContainer(object), View.getMain().getCurrentObject().serialize(), id);
       }
     });
@@ -157,7 +160,7 @@ exports.createView = function(store, editId) {
     if (!matches(this)) return;
 
     var parts = value.split(':');
-    if (!parts[2]) parts[2] = '0';
+    if (!parts[2]) parts.unshift('0');
     this.set('value', parts.map(function(part, index) {
       if (index == parts.length - 1) {
         var last = part.split('.');

@@ -61,8 +61,8 @@
 <ul class="output_files">
   <li>
     <label class="left">
-      <input type="text" name="output_basename" value="{{output_basename}}" placeholder="file name prefix" class="right" />
-      Prefix
+      <input type="text" name="output_basename" value="{{#if output_basename}}{{output_basename}}{{else}}{{input_file_basename}}{{/if}}" placeholder="without extension" class="right" />
+      Filename
     </label>
   </li>
   <li><a href="{{baseURL}}new/output_file" class="plus"><span></span>Add Audio Format</a></li>

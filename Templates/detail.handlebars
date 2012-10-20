@@ -55,8 +55,8 @@
           {{/if}}
         </label>
       </li>
-      {{#if length_string}}
-        <li><span class="right light">{{length_string}}</span><label class="left">Length</label></li>
+      {{#if duration_string}}
+        <li><span class="right light">{{duration_string}}</span><label class="left">Duration</label></li>
       {{/if}}
     </ul>
   {{/if}}
@@ -99,9 +99,7 @@
     <ul>
       {{#if output_basename}}
         <li>
-          <label class="left">
-            Prefix <small class="light">{{output_basename}}</small>
-          </label>
+          <label>Filename <small class="light">{{output_basename}}</small></label>
         </li>
       {{/if}}
       {{#each output_files}}
