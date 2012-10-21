@@ -69,8 +69,7 @@ var formatGetURL = function(url, data) {
 };
 
 var getAuthorization = function() {
-  var user = User.get();
-  return (user ? 'Bearer ' + user.bearer_token : '');
+  return User.getToken('Bearer ');
 };
 
 API.call = function(url, method, requestData) {

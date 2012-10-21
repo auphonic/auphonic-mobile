@@ -9,6 +9,11 @@ var get = exports.get = function() {
   return LocalStorage.get('user');
 };
 
+var getAttribute = function(attribute) {
+  var user = get();
+  return user && user[attribute];
+};
+
 exports.isLoggedIn = function() {
   return !!get();
 };
@@ -18,6 +23,10 @@ exports.reset = function() {
 };
 
 exports.getSafeUsername = function() {
-  var user = get();
-  return (user ? Base64.encode(user.name) : '');
+  return Base64.encode(getAttribute('name') || '');
+};
+
+exports.getToken = function(prefix) {
+  var token = getAttribute('token');
+  return (token ? prefix + token : '');
 };

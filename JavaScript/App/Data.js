@@ -128,8 +128,6 @@ exports.prepare = function(object, type, fn) {
     fn(object);
   });
 
-  var bearer_token = '?bearer_token=' + User.get().bearer_token;
-
   // We need to create a new object that can be transformed for viewing
   object = Object.clone(object);
 
@@ -198,8 +196,9 @@ exports.prepare = function(object, type, fn) {
 
   if (length(metadata.tags)) metadata.tags = metadata.tags.join(', ');
 
+  var token = User.getToken('?bearer_token=');
   media_files = media_files.sortByKey('format').map(function(file) {
-    return file.url + bearer_token;
+    return file.url + token;
   });
 
   object.media_files = length(media_files) ? JSON.stringify(media_files) : null;

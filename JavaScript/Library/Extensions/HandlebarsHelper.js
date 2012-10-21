@@ -11,11 +11,8 @@ var time = Date.now();
 Handlebars.registerHelper('image', function(url) {
   if (!url) return 'data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==';
 
-  var user = User.get();
-  var token = (user ? 'bearer_token=' + user.bearer_token + '&' : '');
-
   var now = Date.now();
   if (now - 60000 > time) time = now;
 
-  return new Handlebars.SafeString(url + (~url.indexOf('?') ? '&' : '?') + token + time);
+  return new Handlebars.SafeString(url + (~url.indexOf('?') ? '&' : '?') + time + User.getToken('&bearer_token='));
 });

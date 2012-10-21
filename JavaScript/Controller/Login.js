@@ -48,7 +48,7 @@ Controller.define('/login', function() {
 
     var error = function() {
       if (notice) notice.push();
-      else notice = new Notice('Invalid username or password. Please try again.', {
+      else notice = new Notice('You entered an invalid username or password. Please try again.', {
         type: 'error'
       });
 
@@ -58,21 +58,31 @@ Controller.define('/login', function() {
 
     API.authenticate(data).on({
       success: function(response) {
-        spinner.stop();
-
-        if (!response || !response.access_token) {
+        var access_token = response && response.access_token;
+        if (!access_token) {
           error();
           return;
         }
 
         if (notice) notice.close();
-        login.empty();
         API.invalidate();
-        User.set({
-          name: data.username,
-          bearer_token: response.access_token
+
+        var user = {token: access_token};
+        User.set(user);
+
+        // We need to fetch the real user name in case the user logged in using his email
+        API.call('user').on({
+          success: function(response) {
+            spinner.stop();
+            login.empty();
+            user.name = response.data.username;
+            user.email = response.data.email;
+            User.set(user);
+            History.push('/');
+          },
+
+          error: error
         });
-        History.push('/');
       },
 
       error: error
