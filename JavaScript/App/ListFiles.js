@@ -4,6 +4,8 @@ var View = require('View');
 
 var Source = require('./Source');
 
+var Notice = require('UI/Notice');
+
 var files = {};
 
 var setFile = exports.setFile = function(store, filename) {
@@ -67,6 +69,12 @@ exports.createView = function(store) {
         }
       });
       View.getMain().push(object);
+    },
+
+    error: function(event) {
+      event.preventDefault();
+
+      new Notice('There are no files on this external service. Please try another service or make a recording.');
     }
 
   });
