@@ -161,7 +161,7 @@ Controller.define('/preset/{uuid}/summary', function(req) {
   var preset = presets[req.uuid];
   View.getMain().push('preset', new View.Object({
     title: preset.preset_name,
-    content: UI.render('preset-detail-summary', preset)
+    content: UI.render('detail-summary', preset)
   }));
 });
 

@@ -68,7 +68,7 @@ templates['detail-summary'] = template(function (Handlebars,depth0,helpers,parti
   var buffer = "", stack1, functionType="function", escapeExpression=this.escapeExpression;
 
 
-  buffer += "<div class=\"content detail\">\n  ";
+  buffer += "<div class=\"content\">\n  ";
   stack1 = depth0.metadata;
   stack1 = stack1 == null || stack1 === false ? stack1 : stack1.summary;
   stack1 = typeof stack1 === functionType ? stack1() : stack1;
