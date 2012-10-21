@@ -156,6 +156,9 @@ var showAll = function() {
 var statusOptions = {
   url: 'production/{uuid}',
   onFinish: function(production) {
+    if (production.status == Auphonic.ErrorStatus)
+      new Notice('There was an error with your production. Please ensure that the file format is supported and correctly encoded.');
+
     productions[production.uuid] = production;
     showOne(production, {refresh: true});
   }

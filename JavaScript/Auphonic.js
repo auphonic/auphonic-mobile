@@ -58,6 +58,8 @@ var statusStrings = {
 exports.LUFSAlgorithmName = 'loudnesstarget';
 exports.LUFSDisplayFilter = /^.*?lufs/i;
 
+exports.ErrorStatus = 2;
+
 exports.getStatusString = function(type) {
   return statusStrings[type] || 'Processing';
 };
