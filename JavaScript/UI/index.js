@@ -68,13 +68,21 @@ Object.append(UI, {
     var parent = element.getParent('li');
     if (!parent) return;
 
+    this.highlightedElement = element;
     var lists = parent.getSiblings().getElements('a.selected');
     Elements.removeClass(lists.flatten(), 'selected');
   },
 
   unhighlight: function(element) {
     element = document.id(element);
-    if (element && this.isHighlighted(element)) element.removeClass('selected');
+    if (element && this.isHighlighted(element)) {
+      element.removeClass('selected');
+      this.highlightedElement = null;
+    }
+  },
+
+  getHighlightedElement: function() {
+    return this.highlightedElement;
   },
 
   isHighlighted: function(element) {

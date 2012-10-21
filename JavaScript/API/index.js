@@ -113,8 +113,18 @@ API.call = function(url, method, requestData) {
 
       var options = API.on(url).options;
       if (options && options.silent) return;
-      if (errorFn) errorFn(data);
-      listeners.fireEvent('error', data);
+      var preventDefault = false;
+      var event = {
+        preventDefault: function() {
+          preventDefault = true;
+        },
+        isPrevented: function() {
+          return preventDefault;
+        }
+      };
+
+      listeners.fireEvent('error', [event, data]);
+      if (errorFn) errorFn(event, data);
     },
 
     onSuccess: function(data) {
