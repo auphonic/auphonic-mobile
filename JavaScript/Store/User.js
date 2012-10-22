@@ -19,11 +19,16 @@ exports.isLoggedIn = function() {
 };
 
 exports.reset = function() {
+  LocalStorage.set('previousUsername', getAttribute('name'));
   set(null);
 };
 
 exports.getSafeUsername = function() {
   return Base64.encode(getAttribute('name') || '');
+};
+
+exports.getPreviousUsername = function() {
+  return LocalStorage.get('previousUsername');
 };
 
 exports.getToken = function(prefix) {

@@ -27,7 +27,8 @@ Controller.define('/login', function() {
   login.set('html', UI.render('login', {
     client_id: APIKeys.ID,
     client_secret: APIKeys.secret,
-    registerURL: Auphonic.RegisterURL
+    registerURL: Auphonic.RegisterURL,
+    username: User.getPreviousUsername()
   }));
 
   UI.update(login);

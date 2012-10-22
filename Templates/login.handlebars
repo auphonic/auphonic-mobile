@@ -3,8 +3,12 @@
   <input type="hidden" name="client_secret" value="{{client_secret}}" />
   <input type="hidden" name="grant_type" value="password" />
   <div class="formcontent">
-    <input type="text" name="username" value="{{username}}" placeholder="email or username" autocapitalize="off" autocorrect="off" data-clearable="1" />
-    <input type="password" name="password" placeholder="password" data-clearable="1" />
+    <div>
+      <input type="text" name="username" value="{{username}}" placeholder="email or username" autocapitalize="off" autocorrect="off" data-clearable="1" />
+    </div>
+    <div>
+      <input type="password" name="password" placeholder="password" />
+    </div>
   </div>
   <div>
     <input type="submit" name="submit" value="Login" />
