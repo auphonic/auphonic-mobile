@@ -38,7 +38,7 @@
     {{/if}}
     <li>
       <label class="left">
-        <input type="text" name="title" data-required="1" value="{{name}}" placeholder="choose production title" class="right" />
+        <input type="text" name="title" data-required="1" data-clearable="1" value="{{name}}" placeholder="choose production title" class="right" />
         Title
       </label>
     </li>
@@ -47,7 +47,7 @@
   {{#if preset}}
     <li>
       <label class="left">
-        <input type="text" name="preset_name" data-required="1" value="{{name}}" placeholder="choose a preset name" class="right" />
+        <input type="text" name="preset_name" data-required="1" data-clearable="1" value="{{name}}" placeholder="type a preset name" class="right" />
         Name
       </label>
     </li>
@@ -61,7 +61,7 @@
 <ul class="output_files">
   <li>
     <label class="left">
-      <input type="text" name="output_basename" value="{{#if output_basename}}{{output_basename}}{{else}}{{input_file_basename}}{{/if}}" placeholder="without extension" class="right" />
+      <input type="text" name="output_basename" value="{{#if output_basename}}{{output_basename}}{{else}}{{input_file_basename}}{{/if}}" data-clearable="1" placeholder="without extension" class="right" />
       Filename
     </label>
   </li>

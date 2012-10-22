@@ -246,6 +246,9 @@ window.__BOOTAPP = function() {
       margin: 12
     }),
 
+    'input[data-clearable]': Class.Instantiate(Form.Clearable, {
+      className: 'clearable-visible'
+    }),
     'div.checkbox': Class.Instantiate(Form.Checkbox),
 
     'select.empty': Class.Instantiate(Form.EmptySelect, {

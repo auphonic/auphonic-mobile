@@ -716,7 +716,7 @@ templates['form-new-chapter'] = template(function (Handlebars,depth0,helpers,par
   
 
 
-  return "<ul class=\"formcontent\">\n  <li>\n    <label class=\"left\">\n      <input type=\"text\" name=\"start\" placeholder=\"00:00:00\" class=\"right\" data-required=\"1\" data-format-time=\"1\" data-matches=\"^(\\d?\\d)?:([0-5]\\d?)(:([0-5]\\d?(\\.(\\d{1,6})?)?)?)?$\" />\n      Start\n    </label>\n  </li>\n  <li>\n    <label class=\"left\">\n      <input type=\"text\" name=\"title\" class=\"right\" data-required=\"1\" />\n      Title\n    </label>\n  </li>\n</ul>\n";});
+  return "<ul class=\"formcontent\">\n  <li>\n    <label class=\"left\">\n      <input type=\"text\" name=\"start\" placeholder=\"00:00:00\" class=\"right\" data-required=\"1\" data-format-time=\"1\" data-matches=\"^(\\d?\\d)?:([0-5]\\d?)(:([0-5]\\d?(\\.(\\d{1,6})?)?)?)?$\" />\n      Start\n    </label>\n  </li>\n  <li>\n    <label class=\"left\">\n      <input type=\"text\" name=\"title\" class=\"right\" data-required=\"1\" data-clearable=\"1\" />\n      Title\n    </label>\n  </li>\n</ul>\n";});
 templates['form-new-main'] = template(function (Handlebars,depth0,helpers,partials,data) {
   helpers = helpers || Handlebars.helpers; partials = partials || Handlebars.partials;
   var buffer = "", stack1, functionType="function", escapeExpression=this.escapeExpression, self=this;
@@ -822,7 +822,7 @@ function program18(depth0,data) {
   stack1 = depth0.isNewProduction;
   stack1 = helpers['if'].call(depth0, stack1, {hash:{},inverse:self.noop,fn:self.program(19, program19, data)});
   if(stack1 || stack1 === 0) { buffer += stack1; }
-  buffer += "\n    <li>\n      <label class=\"left\">\n        <input type=\"text\" name=\"title\" data-required=\"1\" value=\"";
+  buffer += "\n    <li>\n      <label class=\"left\">\n        <input type=\"text\" name=\"title\" data-required=\"1\" data-clearable=\"1\" value=\"";
   stack1 = depth0.name;
   stack1 = typeof stack1 === functionType ? stack1() : stack1;
   buffer += escapeExpression(stack1) + "\" placeholder=\"choose production title\" class=\"right\" />\n        Title\n      </label>\n    </li>\n  ";
@@ -860,10 +860,10 @@ function program21(depth0,data) {
 function program23(depth0,data) {
   
   var buffer = "", stack1;
-  buffer += "\n    <li>\n      <label class=\"left\">\n        <input type=\"text\" name=\"preset_name\" data-required=\"1\" value=\"";
+  buffer += "\n    <li>\n      <label class=\"left\">\n        <input type=\"text\" name=\"preset_name\" data-required=\"1\" data-clearable=\"1\" value=\"";
   stack1 = depth0.name;
   stack1 = typeof stack1 === functionType ? stack1() : stack1;
-  buffer += escapeExpression(stack1) + "\" placeholder=\"choose a preset name\" class=\"right\" />\n        Name\n      </label>\n    </li>\n  ";
+  buffer += escapeExpression(stack1) + "\" placeholder=\"type a preset name\" class=\"right\" />\n        Name\n      </label>\n    </li>\n  ";
   return buffer;}
 
 function program25(depth0,data) {
@@ -998,7 +998,7 @@ function program39(depth0,data) {
   stack1 = depth0.output_basename;
   stack1 = helpers['if'].call(depth0, stack1, {hash:{},inverse:self.program(29, program29, data),fn:self.program(27, program27, data)});
   if(stack1 || stack1 === 0) { buffer += stack1; }
-  buffer += "\" placeholder=\"without extension\" class=\"right\" />\n      Filename\n    </label>\n  </li>\n  <li><a href=\"";
+  buffer += "\" data-clearable=\"1\" placeholder=\"without extension\" class=\"right\" />\n      Filename\n    </label>\n  </li>\n  <li><a href=\"";
   stack1 = depth0.baseURL;
   stack1 = typeof stack1 === functionType ? stack1() : stack1;
   buffer += escapeExpression(stack1) + "new/output_file\" class=\"plus\"><span></span>Add Audio Format</a></li>\n</ul>\n\n";
@@ -1332,7 +1332,10 @@ templates['login'] = template(function (Handlebars,depth0,helpers,partials,data)
   buffer += escapeExpression(stack1) + "\" />\n  <input type=\"hidden\" name=\"client_secret\" value=\"";
   stack1 = depth0.client_secret;
   stack1 = typeof stack1 === functionType ? stack1() : stack1;
-  buffer += escapeExpression(stack1) + "\" />\n  <input type=\"hidden\" name=\"grant_type\" value=\"password\" />\n  <div class=\"formcontent\">\n    <input type=\"text\" name=\"username\" placeholder=\"email or username\" autocapitalize=\"off\" autocorrect=\"off\" />\n    <input type=\"password\" name=\"password\" placeholder=\"password\" />\n  </div>\n  <div>\n    <input type=\"submit\" name=\"submit\" value=\"Login\" />\n    <a href=\"";
+  buffer += escapeExpression(stack1) + "\" />\n  <input type=\"hidden\" name=\"grant_type\" value=\"password\" />\n  <div class=\"formcontent\">\n    <input type=\"text\" name=\"username\" value=\"";
+  stack1 = depth0.username;
+  stack1 = typeof stack1 === functionType ? stack1() : stack1;
+  buffer += escapeExpression(stack1) + "\" placeholder=\"email or username\" autocapitalize=\"off\" autocorrect=\"off\" data-clearable=\"1\" />\n    <input type=\"password\" name=\"password\" placeholder=\"password\" data-clearable=\"1\" />\n  </div>\n  <div>\n    <input type=\"submit\" name=\"submit\" value=\"Login\" />\n    <a href=\"";
   stack1 = depth0.registerURL;
   stack1 = typeof stack1 === functionType ? stack1() : stack1;
   buffer += escapeExpression(stack1) + "\" value=\"Register\" class=\"register button\">Register</a>\n  </div>\n</form>\n";
