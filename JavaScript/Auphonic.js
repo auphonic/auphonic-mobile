@@ -5,7 +5,8 @@ exports.IssuesURL = 'https://github.com/auphonic/auphonic-mobile/issues';
 exports.RegisterURL = 'https://auphonic.com/accounts/register/';
 exports.DefaultTitle = 'Mobile App: New Production';
 exports.DefaultFileName = 'mobile-recording-{uuid}';
-exports.DefaultFileNameFilter = /mobile-recording-(\d+)/i;
+exports.DefaultVideoFileName = 'mobile-video-{uuid}';
+exports.DefaultFileNameFilter = /mobile-(?:video|recording)-(\d+)/i;
 
 exports.DefaultOutputFile = {
   format: 'mp3',

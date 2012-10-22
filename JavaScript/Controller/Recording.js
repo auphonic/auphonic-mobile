@@ -64,7 +64,12 @@ Controller.define('/recording/{id}', function(req) {
 
       View.getMain().push('recording', new View.Object({
         title: Recording.getRecordingName(recording),
-        content: UI.render('recording', recording)
+        content: UI.render('recording', recording),
+        action: {
+          title: 'Upload',
+          url: '/production/recording/upload/{id}'.substitute(recording),
+          className: 'big'
+        }
       }));
     }, function() {});
   }, function() {});

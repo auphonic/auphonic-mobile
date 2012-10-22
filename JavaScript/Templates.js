@@ -1552,10 +1552,7 @@ function program2(depth0,data) {
   stack1 = depth0;
   stack1 = self.invokePartial(partials.player, 'player', stack1, helpers, partials);;
   if(stack1 || stack1 === 0) { buffer += stack1; }
-  buffer += "\n\n<a href=\"/production/recording/upload/";
-  stack1 = depth0.id;
-  stack1 = typeof stack1 === functionType ? stack1() : stack1;
-  buffer += escapeExpression(stack1) + "\" class=\"clear button green expand\">Upload</a>\n\n";
+  buffer += "\n\n";
   stack1 = depth0.hasChapters;
   stack1 = helpers['if'].call(depth0, stack1, {hash:{},inverse:self.noop,fn:self.program(1, program1, data)});
   if(stack1 || stack1 === 0) { buffer += stack1; }
@@ -1675,13 +1672,25 @@ templates['settings'] = template(function (Handlebars,depth0,helpers,partials,da
   return buffer;});
 templates['ui-action'] = template(function (Handlebars,depth0,helpers,partials,data) {
   helpers = helpers || Handlebars.helpers;
-  var buffer = "", stack1, functionType="function", escapeExpression=this.escapeExpression;
+  var buffer = "", stack1, functionType="function", escapeExpression=this.escapeExpression, self=this;
 
+function program1(depth0,data) {
+  
+  var buffer = "", stack1;
+  buffer += " ";
+  stack1 = depth0.className;
+  stack1 = typeof stack1 === functionType ? stack1() : stack1;
+  buffer += escapeExpression(stack1);
+  return buffer;}
 
   buffer += "<a href=\"";
   stack1 = depth0.url;
   stack1 = typeof stack1 === functionType ? stack1() : stack1;
-  buffer += escapeExpression(stack1) + "\" class=\"button-right hidden\" data-hit-target=\"1\"><span class=\"button\">";
+  buffer += escapeExpression(stack1) + "\" class=\"button-right hidden\" data-hit-target=\"1\"><span class=\"button";
+  stack1 = depth0.className;
+  stack1 = helpers['if'].call(depth0, stack1, {hash:{},inverse:self.noop,fn:self.program(1, program1, data)});
+  if(stack1 || stack1 === 0) { buffer += stack1; }
+  buffer += "\">";
   stack1 = depth0.title;
   stack1 = typeof stack1 === functionType ? stack1() : stack1;
   buffer += escapeExpression(stack1) + "</span></a>\n";
