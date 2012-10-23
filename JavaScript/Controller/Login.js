@@ -76,7 +76,7 @@ Controller.define('/login', function() {
           success: function(response) {
             spinner.stop();
             login.empty();
-            User.set(Object.append(user, response.data));
+            User.set(Object.append(user, {name: response.data.username}, response.data));
             History.push('/');
           },
 

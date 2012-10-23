@@ -13,7 +13,9 @@ module.exports = {
   }.overloadSetter(),
 
   get: function(key){
-    return JSON.parse(storage.getItem(key));
+    return Function.attempt(function() {
+      return JSON.parse(storage.getItem(key));
+    });
   }.overloadGetter(),
 
   erase: function(){
