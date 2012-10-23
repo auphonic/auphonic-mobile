@@ -119,7 +119,7 @@ var clickExternal = function(event) {
 };
 
 var onLabelClick = function() {
-  var input = this.getElement('input, select');
+  var input = this.getElement('input, select, textarea');
   if (input) input.focus();
 };
 
@@ -242,14 +242,11 @@ window.__BOOTAPP = function() {
       arrowHeight: 14
     }),
 
-    'textarea.autogrow': Class.Instantiate(Form.AutoGrow, {
-      margin: 12
-    }),
-
     'input[data-clearable]': Class.Instantiate(Form.Clearable, {
       className: 'clearable-visible'
     }),
     'div.checkbox': Class.Instantiate(Form.Checkbox),
+    'textarea.autogrow': Class.Instantiate(Form.AutoGrow),
 
     'select.empty': Class.Instantiate(Form.EmptySelect, {
       placeholderPosition: '!',
@@ -276,6 +273,9 @@ window.__BOOTAPP = function() {
     }),
 
     'label': function(elements) {
+      // Show the keyboard immediately without a 300ms delay (iOS 6 feature)
+      elements.addEvent('click', onLabelClick);
+      // However, without this, the keyboard will go away again immediately
       elements.each(function(element) {
         element.onclick = onLabelClick;
       });
