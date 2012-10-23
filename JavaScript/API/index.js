@@ -72,6 +72,18 @@ var getAuthorization = function() {
   return User.getToken('Bearer ');
 };
 
+var createEvent = function() {
+  var preventDefault = false;
+  return {
+    preventDefault: function() {
+      preventDefault = true;
+    },
+    isPrevented: function() {
+      return preventDefault;
+    }
+  };
+};
+
 API.call = function(url, method, requestData) {
   var listeners = listenersFor(url);
   if (typeof requestData != 'string') requestData = Object.toQueryString(requestData);
@@ -99,7 +111,7 @@ API.call = function(url, method, requestData) {
     },
 
     onTimeout: function() {
-      if (timeoutFn) timeoutFn();
+      if (timeoutFn) timeoutFn(createEvent());
     },
 
     onFailure: function(data) {
@@ -113,16 +125,8 @@ API.call = function(url, method, requestData) {
 
       var options = API.on(url).options;
       if (options && options.silent) return;
-      var preventDefault = false;
-      var event = {
-        preventDefault: function() {
-          preventDefault = true;
-        },
-        isPrevented: function() {
-          return preventDefault;
-        }
-      };
 
+      var event = createEvent();
       listeners.fireEvent('error', [event, data]);
       if (errorFn) errorFn(event, data);
     },
