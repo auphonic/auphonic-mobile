@@ -22,12 +22,14 @@ module.exports = new Class({
   },
 
   initialize: function(options) {
-    if (!options.uses) options.uses = [];
+    if (!options) options = {};
 
     var scroll = this.bound('onScroll');
-    options.uses.push(Class.Instantiate(ScrollLoader, {onScroll: function() {
-      scroll(this);
-    }}));
+    (options.plugins || (options.plugins = [])).push(function(element) {
+      return new ScrollLoader(element, {onScroll: function() {
+        scroll(this);
+      }});
+    });
 
     this.parent(options);
 

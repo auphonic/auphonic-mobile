@@ -6,6 +6,15 @@ var Element = Core.Element;
 
 var UI = require('UI');
 
+var getTypePlugin = function(type) {
+  return function(element) {
+    element.addClass(type);
+    return {detach: function() {
+      element.removeClass(type);
+    }};
+  };
+};
+
 module.exports = new Class({
 
   Implements: [Events],
@@ -21,9 +30,12 @@ module.exports = new Class({
     backTitle: null,
     backOptions: null,
 
-    type: null,
     scrollTop: 0,
-    uses: null
+    plugins: null
+
+    /* Virtual Properties
+    type: null,
+    */
 
     /*
     onShow: function() {},
@@ -31,11 +43,16 @@ module.exports = new Class({
     */
   },
 
+  activePlugins: [],
+
   initialize: function(options) {
     if (options) for (var option in options){
       if (typeOf(options[option]) != 'function' || !(/^on[A-Z]/).test(option)) continue;
       this.addEvent(option, options[option]);
     }
+
+    if (options && options.type)
+      (options.plugins || (options.plugins = [])).push(getTypePlugin(options.type));
 
     this
       .setURL(options.url)
@@ -45,12 +62,16 @@ module.exports = new Class({
       .setAction(options.action)
       .setBack(options.back)
       .setBackOptions(options.backOptions)
-      .setType(options.type)
-      .setUses(options.uses);
+      .setPlugins(options.plugins);
   },
 
   toElement: function() {
     return this.render();
+  },
+
+  setElement: function(element) {
+    this.element = document.id(element);
+    return this;
   },
 
   render: function() {
@@ -61,18 +82,31 @@ module.exports = new Class({
 
     var template = view.getOption('template');
     var selector = view.getOption('contentSelector');
-    var type = this.getType();
-
     var element = Element.from(UI.render(template));
-    if (type) element.addClass(type);
-    element.getElement(selector).set('html', this.getContent());
 
-    var uses = this.getUses();
-    Array.each(Array.from(uses), function(klass) {
-      klass([element]);
+    this.setElement(element);
+    element.getElement(selector).set('html', this.getContent());
+    return element;
+  },
+
+  attachPlugins: function() {
+    if (!this.element) return;
+    this.detachPlugins();
+
+    var element = this.element;
+    var activePlugins = this.activePlugins = [];
+    Array.each(this.getPlugins(), function(fn) {
+      activePlugins.push(fn(element));
     });
 
-    return this.element = element;
+    return this;
+  },
+
+  detachPlugins: function() {
+    this.activePlugins.invoke('detach');
+    this.activePlugins = [];
+
+    return this;
   },
 
   rememberScroll: function() {
