@@ -369,8 +369,12 @@ module.exports = new Class({
   onUploadProgress: function(data) {
     if (data.uuid != this.uuid) return;
 
-    var uploading = this.object.toElement().getElement('.input_file_label .uploading');
+    var element = this.object.toElement();
+    var uploading = element.getElement('.input_file_label .uploading');
     if (uploading) uploading.show().set('text', ' (' + data.percentage + ' %)');
+
+    var progressBar = element.getElement('.progress-bar');
+    if (progressBar) progressBar.show().setStyle('width', data.percentage + '%');
   },
 
   // When the upload finishes, onRefresh is being called
@@ -382,6 +386,9 @@ module.exports = new Class({
 
     var uploading = label.getElement('.uploading');
     if (uploading) uploading.hide().set('text', '');
+
+    var progressBar = element.getElement('.progress-bar');
+    if (progressBar) progressBar.hide().setStyle('width', '0%');
 
     label.removeClass('info');
     label.getInstanceOf(Popover).detach();
