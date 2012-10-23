@@ -78,9 +78,7 @@ module.exports = new Class({
   },
 
   stop: function() {
-    this.isRecording = false;
     this.recorder.stop();
-    this.button.removeClass('pulse').set('text', 'Start');
     return this;
   },
 
@@ -103,6 +101,7 @@ module.exports = new Class({
 
   onCancel: function() {
     this.isRecording = false;
+    this.button.removeClass('pulse').set('text', 'Start');
     this.object.removeEvent('hide:once', this.bound('onHide'));
     this.status.addClass('out').addEvent('transitionComplete:once', function() {
       this.addClass('hidden');
