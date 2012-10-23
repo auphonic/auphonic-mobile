@@ -66,8 +66,12 @@ module.exports = new Class({
     this.hideIndicator();
 
     var rotated = false;
+    var container;
     if (!this.isCurrentStack(stack)) {
-      if (this._current) this.getCurrentObject().fireEvent('hide', ['left']);
+      if (this._current) {
+        container = this.getCurrentObject().toElement();
+        this.getCurrentObject().fireEvent('hide', ['left']);
+      }
       rotated = true;
       this.rotate(stack);
     }
@@ -110,7 +114,6 @@ module.exports = new Class({
     // This block of code attempts to reuse an existing ScrollView and replaces its contents
     // with the content from the new container. Without doubt, this code will cause unexpected
     // issues in the future. Trust me, it is the right trade off.
-    var container = this.element.getFirst();
     if (this.options.iOSScrollFlashFix && container && isImmediate && !previous) {
       object.setElement(container).render();
       object.fireEvent('show', [direction]);

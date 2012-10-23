@@ -75,9 +75,9 @@ module.exports = new Class({
   },
 
   render: function() {
-    if (this.isRendered) return this.element;
+    if (this._isRendered) return this.element;
 
-    this.isRendered = true;
+    this._isRendered = true;
     var view = this.getView();
     if (!view) return;
 
@@ -131,7 +131,7 @@ module.exports = new Class({
   getScrollableElement: function() {
     var selector = this.getView().getOption('scrollableSelector');
     var element = this.toElement();
-    return element.match(selector) ? element : element.getElement(selector);
+    return element && (element.match(selector) ? element : element.getElement(selector));
   },
 
   getTitleTemplate: function() {
@@ -171,6 +171,10 @@ module.exports = new Class({
 
   isInvalid: function() {
     return !!this.isInvalidated;
+  },
+
+  isRendered: function() {
+    return !!this._isRendered;
   }
 
 });

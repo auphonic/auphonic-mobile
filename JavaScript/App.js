@@ -390,8 +390,7 @@ window.__BOOTAPP = function() {
     onTransitionEnd: function() {
       var stack = this.getStack();
       var previous = stack && stack.getPrevious();
-      if (previous)
-        previous.toElement().getElements('ul li a.selected').removeClass('selected');
+      if (previous && previous.isRendered()) previous.toElement().getElements('ul li a.selected').removeClass('selected');
     }
   }));
 
