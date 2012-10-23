@@ -69,7 +69,7 @@ var preventDefault = function(event) {
   event.preventDefault();
 };
 
-var cancelText = 'Are you sure you want to cancel?';
+var cancelText = 'Navigating away will discard all your changes. Press "Cancel" to stay.';
 // This should catch all important editing URLs
 var formURLs = /^\/?(production|preset)\/(edit|new|recording)/i;
 var popoverSelector = 'div.popover';
@@ -88,7 +88,7 @@ var click = function(event) {
     // This is unbelieveably hacky but mobile safari alerts show parts of the URL
     // which isn't very pretty. This way the title of the alert says "Please Confirm".
     History.detach();
-    window.history.pushState(null, null, '/Please Confirm');
+    window.history.pushState(null, null, '/Hey, wait a second.');
     var confirmed = window.confirm(cancelText);
     window.history.pushState(null, null, currentPath);
     History.attach();
