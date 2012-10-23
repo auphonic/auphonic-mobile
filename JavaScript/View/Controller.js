@@ -184,22 +184,7 @@ module.exports = new Class({
     if (this.indicatorIsVisible) return;
 
     this.indicatorIsVisible = true;
-    var current = this.getCurrentObject();
-    var element = current.toElement();
-
-    // Fade if the stack is different.
-    if (options && options.stack != this.getStack().getName()) {
-      document.id(this.title).addClass('fade');
-      document.id(this.action).addClass('fade');
-      document.id(this.back).addClass('fade');
-      element.addClass('fade').addEvent('transitionComplete:once', (function() {
-        document.id(this.title).dispose();
-        document.id(this.action).dispose();
-        document.id(this.back).dispose();
-      }).bind(this));
-    }
-
-    this.indicator.spin(element.getParent());
+    this.indicator.spin(this.getCurrentObject().toElement());
   },
 
   hideIndicator: function() {
