@@ -1,4 +1,3 @@
-var Base64 = require('Utility/Base64');
 var LocalStorage = require('Utility/LocalStorage');
 
 var set = exports.set = function(user) {
@@ -23,8 +22,8 @@ exports.reset = function() {
   set(null);
 };
 
-exports.getSafeUsername = function() {
-  return Base64.encode(getAttribute('name') || '');
+exports.getId = function() {
+  return getAttribute('user_id');
 };
 
 exports.getPreviousUsername = function() {

@@ -5,7 +5,7 @@ var User = require('Store/User');
 var Auphonic = require('Auphonic');
 
 var key = function(key) {
-  return User.getSafeUsername() + '-recordings' + (key ? '-' + key : '');
+  return User.getId() + '-recordings' + (key ? '-' + key : '');
 };
 
 var get = function() {
