@@ -53,6 +53,11 @@ module.exports = new Class({
   },
 
   swipe: function() {
+    this.element.getParent().show();
+    this._swipe.delay(0, this);
+  },
+
+  _swipe: function() {
     this.element.addClass('visible');
 
     UI.disable(this.getScrollable(), this.element);
@@ -77,7 +82,7 @@ module.exports = new Class({
     if (node) return;
 
     event.preventDefault();
-    this.element.removeClass('visible');
+    this.element.removeClass('visible').transition(this.bound('hideElement'));
   },
 
   touchend: function() {
@@ -87,7 +92,7 @@ module.exports = new Class({
       this.hasClick = false;
       if (hasClick) return;
 
-      this.element.removeClass('visible');
+      this.element.removeClass('visible').transition(this.bound('hideElement'));
       this.end();
     }).delay(10, this);
   },
@@ -95,6 +100,10 @@ module.exports = new Class({
   end: function(event) {
     UI.enable(this.getScrollable(), this.element);
     this.fireEvent('complete');
+  },
+
+  hideElement: function() {
+    this.element.getParent().hide();
   },
 
   preventDefault: function(event) {
