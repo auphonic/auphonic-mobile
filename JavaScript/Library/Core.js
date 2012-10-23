@@ -24,7 +24,7 @@ provides: [Core, MooTools, Type, typeOf, instanceOf]
 
 this.MooTools = {
 	version: '1.5.0-custom',
-	build: '14e81d9d56942c4ea9ae052868f28998d1a0ceea'
+	build: 'a8a2c48edb58aed67ecfb6f459da9dff2ad88877'
 };
 
 // typeOf, instanceOf
@@ -2320,46 +2320,15 @@ Document.implement({
 		return this.window;
 	},
 
-	id: (function(){
-
-		var types = {
-
-			string: function(id, nocash, doc){
-				id = Slick.find(doc, '#' + id.replace(/(\W)/g, '\\$1'));
-				return (id) ? types.element(id, nocash) : null;
-			},
-
-			element: function(el, nocash){
-				Slick.uidOf(el);
-				if (!nocash && !el.$family && !(/^(?:object|embed)$/i).test(el.tagName)){
-					var fireEvent = el.fireEvent;
-					// wrapping needed in IE7, or else crash
-					el._fireEvent = function(type, event){
-						return fireEvent(type, event);
-					};
-					Object.append(el, Element.Prototype);
-				}
-				return el;
-			},
-
-			object: function(obj, nocash, doc){
-				if (obj.toElement) return types.element(obj.toElement(doc), nocash);
-				return null;
-			}
-
-		};
-
-		types.textnode = types.whitespace = types.window = types.document = function(zero){
-			return zero;
-		};
-
-		return function(el, nocash, doc){
-			if (el && el.$family && el.uniqueNumber) return el;
-			var type = typeOf(el);
-			return (types[type]) ? types[type](el, nocash, doc || document) : null;
-		};
-
-	})()
+	id: function(el, nocash, doc) {
+		if (!el) return null;
+		if (el.uniqueNumber) return el;
+		if (el.nodeName && el.nodeType == 1) return el;
+		if (el.toElement) return el.toElement();
+		if (typeof el == 'string') return (doc || document).getElementById(el);
+		if (el.$family && el.$family() == 'element') return el;
+		return null;
+	}
 
 });
 
