@@ -66,7 +66,7 @@ module.exports = new Class({
   },
 
   toElement: function() {
-    return this.render();
+    return this.element;
   },
 
   setElement: function(element) {
@@ -75,14 +75,14 @@ module.exports = new Class({
   },
 
   render: function() {
-    if (this.element) return this.element;
+    if (this.isRendered) return this.element;
 
+    this.isRendered = true;
     var view = this.getView();
     if (!view) return;
 
-    var template = view.getOption('template');
+    var element = this.element || Element.from(UI.render(view.getOption('template')));
     var selector = view.getOption('contentSelector');
-    var element = Element.from(UI.render(template));
 
     this.setElement(element);
     element.getElement(selector).set('html', this.getContent());
@@ -129,10 +129,8 @@ module.exports = new Class({
   },
 
   getScrollableElement: function() {
-    var view = this.getView();
-    var selector = view.getOption('scrollableSelector');
+    var selector = this.getView().getOption('scrollableSelector');
     var element = this.toElement();
-
     return element.match(selector) ? element : element.getElement(selector);
   },
 

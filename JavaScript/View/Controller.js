@@ -102,14 +102,33 @@ module.exports = new Class({
 
     UI.disable();
 
-    object.fireEvent('show', [direction]);
+    // This is an unpleasant and unhappy block of code.
+    // It fixes an issue introduced in iOS 6 where replacing a ScrollView with another
+    // ScrollView flashes the first one for a short time. While technically not a
+    // problem, it has huge implications on user experience who might find this behavior
+    // buggy, slow and non-native.
+    // This block of code attempts to reuse an existing ScrollView and replaces its contents
+    // with the content from the new container. Without doubt, this code will cause unexpected
+    // issues in the future. Trust me, it is the right trade off.
+    var container = this.element.getFirst();
+    if (this.options.iOSScrollFlashFix && container && isImmediate && !previous) {
+      object.setElement(container).render();
+      object.fireEvent('show', [direction]);
+      UI.update(this.element);
+      this.onTransitionEnd.delay(0, this);
+    } else {
+    // Everything after this is happy code again.
+      object.render();
+      object.fireEvent('show', [direction]);
+      if (isImmediate) this.element.empty();
+      UI.transition(this.element, previous && previous.toElement(), object.toElement(), {
+        immediate: isImmediate,
+        direction: direction,
+        onTransitionEnd: this.bound('onTransitionEnd')
+      });
+    }
 
-    UI.transition(this.element, previous && previous.toElement(), object.render(), {
-      immediate: isImmediate,
-      direction: direction,
-      onTransitionEnd: this.bound('onTransitionEnd')
-    });
-
+    object.attachPlugins();
     object.fireEvent('insert', [direction]);
     object.revertScrollTop();
 
@@ -132,7 +151,8 @@ module.exports = new Class({
   },
 
   rotate: function(stack) {
-    this.element.empty();
+    var object = this.getCurrentObject();
+    if (object) object.detachPlugins();
     this._current = new Stack(this, stack);
 
     return this;

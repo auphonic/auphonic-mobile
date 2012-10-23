@@ -64,3 +64,5 @@ exports.ErrorStatus = 2;
 exports.getStatusString = function(type) {
   return statusStrings[type] || 'Processing';
 };
+
+exports.EnableIOSScrollFlashFix = true;
