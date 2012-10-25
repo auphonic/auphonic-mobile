@@ -41,6 +41,15 @@ exports.ViewSpinnerOptionsSmall = {
   className: 'spinner-inline-bottom'
 };
 
+exports.PlayerSpinnerOptions = {
+  lines: 9,
+  length: 4,
+  width: 3,
+  radius: 4,
+  trail: 30,
+  color: '#000'
+};
+
 var statusStrings = {
   '0': 'Incoming',
   '1': 'Waiting',

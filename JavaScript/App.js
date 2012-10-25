@@ -45,11 +45,13 @@ var API = require('API');
 var UI = require('UI');
 var View = require('View');
 var Controller = require('Controller');
-var AudioPlayer = require('App/AudioPlayer');
 var SwipeAble = require('UI/Actions/SwipeAble');
 var Popover = require('UI/Actions/Popover');
 var Notice = require('UI/Notice');
 var Spinner = require('Spinner');
+
+var AudioPlayer = require('Player/AudioPlayer');
+var WebAudioService = require('Player/WebAudioService');
 
 var Auphonic = require('Auphonic');
 
@@ -287,20 +289,14 @@ window.__BOOTAPP = function() {
       playSelector: 'a.play',
       waveformSelector: 'div.waveform',
       positionSelector: 'div.waveform div.position',
+      spinnerOptions: Auphonic.PlayerSpinnerOptions,
+
+      getAudioService: function() {
+        return WebAudioService;
+      },
 
       onSetup: function() {
-        View.getMain().getCurrentObject().addEvent('hide:once', this.bound('stop'));
-      },
-
-      onLoad: function() {
-        View.getMain().showIndicator({
-          immediate: true,
-          stack: View.getMain().getStack().getName()
-        });
-      },
-
-      onLoadFinished: function() {
-        View.getMain().hideIndicator();
+        View.getMain().getCurrentObject().addEvent('hide', this.bound('reset'));
       },
 
       onSeek: function(position, pixel) {
