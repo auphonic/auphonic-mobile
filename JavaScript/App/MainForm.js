@@ -384,11 +384,14 @@ module.exports = new Class({
     var element = this.object.toElement();
     var label = element.getElement('.input_file_label');
 
+    var progressBar = element.getElement('.progress-bar');
+    if (progressBar) progressBar.hide().setStyle('width', '0%');
+
     var uploading = label.getElement('.uploading');
     if (uploading) uploading.hide().set('text', '');
 
-    var progressBar = element.getElement('.progress-bar');
-    if (progressBar) progressBar.hide().setStyle('width', '0%');
+    var inputFileName = label.getElement('.input_file_name');
+    if (inputFileName) inputFileName.show();
 
     label.removeClass('info');
     label.getInstanceOf(Popover).detach();
