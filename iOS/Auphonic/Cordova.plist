@@ -49,8 +49,6 @@
 		<string>CDVContacts</string>
 		<key>Debug Console</key>
 		<string>CDVDebugConsole</string>
-		<key>Echo</key>
-		<string>CDVEcho</string>
 		<key>File</key>
 		<string>CDVFile</string>
 		<key>FileTransfer</key>

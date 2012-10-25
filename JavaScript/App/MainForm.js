@@ -371,7 +371,7 @@ module.exports = new Class({
 
     var element = this.object.toElement();
     var uploading = element.getElement('.input_file_label .uploading');
-    if (uploading) uploading.show().set('text', ' (' + data.percentage + ' %)');
+    if (uploading) uploading.show().set('text', ' ' + data.percentage + ' %');
 
     var progressBar = element.getElement('.progress-bar');
     if (progressBar) progressBar.show().setStyle('width', data.percentage + '%');
