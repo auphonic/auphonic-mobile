@@ -32,8 +32,8 @@ module.exports = new Class({
   },
 
   stop: function() {
-    IdleTimer.enable();
     clearInterval(this.timer);
+    IdleTimer.enable();
     this.media.stopRecord();
 
     this.fireEvent('cancel');
@@ -71,6 +71,7 @@ module.exports = new Class({
   },
 
   onError: function() {
+    clearInterval(this.timer);
     this.fireEvent('cancel');
     this.fireEvent('error');
     if (this.file) this.file.remove(function() {}, function() {});
@@ -81,6 +82,7 @@ module.exports = new Class({
     this.canceled = false;
     if (canceled) return;
 
+    clearInterval(this.timer);
     this.fireEvent('cancel');
     this.fireEvent('error');
     this.file.remove(function() {}, function() {});

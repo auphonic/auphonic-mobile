@@ -406,6 +406,8 @@ Controller.define('/production/new/outgoing_services', function() {
 
 // Recording
 var upload = function(file) {
+  View.getMain().showIndicator({stack: 'production'});
+
   Recording.add(file);
 
   var onCreateSuccess = function(response) {

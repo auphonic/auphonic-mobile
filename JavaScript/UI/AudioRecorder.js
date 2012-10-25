@@ -16,10 +16,10 @@ module.exports = new Class({
 
     this.object = object;
     var element = object.toElement();
+    var button = this.button = element.getElement('.recorder');
 
     this.recorder = new recorderClass(fileName);
 
-    this.button = element.getElement('.recorder');
     this.status = element.getElement('.status');
     this.recordingLengthElement = this.status.getElement('.recording-length');
     this.chapterMarkElement = this.status.getElement('.add-chapter-mark');
@@ -34,6 +34,10 @@ module.exports = new Class({
       cancel: this.bound('onCancel'),
       error: this.bound('onError'),
       success: this.bound('onSuccess')
+    });
+
+    this.object.addEvent('show', function() {
+      button.removeClass('fade');
     });
   },
 
@@ -78,19 +82,20 @@ module.exports = new Class({
   },
 
   stop: function() {
-    this.recorder.stop();
+    if (this.hasStarted) this.recorder.stop();
     return this;
   },
 
   onStart: function() {
+    this.hasStarted = true;
     this.time = 0;
     this.chapterID = 0;
     this.chapters = [];
     this.status.show();
     this.recordingLengthElement.set('text', '');
 
-    this.status.removeClass('hidden');
-    (function() {
+    this.status.show();
+    this.statusTimer = (function() {
       this.status.removeClass('out');
     }).delay(50, this);
   },
@@ -100,12 +105,18 @@ module.exports = new Class({
   },
 
   onCancel: function() {
+    this.hasStarted = false;
     this.isRecording = false;
     this.button.removeClass('pulse').set('text', 'Start');
     this.object.removeEvent('hide:once', this.bound('onHide'));
-    this.status.addClass('out').addEvent('transitionComplete:once', function() {
-      this.addClass('hidden');
-    });
+    if (this.status.hasClass('out')) {
+      this.status.addClass('out').addEvent('transitionComplete:once', function() {
+        this.hide();
+      });
+    } else {
+      clearTimeout(this.statusTimer);
+      this.status.hide();
+    }
   },
 
   onError: function() {
@@ -117,6 +128,7 @@ module.exports = new Class({
   },
 
   onSuccess: function(file) {
+    this.button.addClass('fade');
     file.chapters = this.chapters;
     this.fireEvent('success', [file]);
   }

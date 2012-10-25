@@ -23,6 +23,14 @@
     border-radius 50%
     box-shadow 0 0 5px rgba(0, 0, 0, 0.3)
 
+    transition-property opacity
+    transition-timing-function ease-in-out
+    transition-duration 350ms
+    opacity 1
+
+    &.fade
+      opacity 0
+
     &.pulse
       animation-name pulse
       animation-iteration-count infinite
