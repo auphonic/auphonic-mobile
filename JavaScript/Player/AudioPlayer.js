@@ -9,7 +9,6 @@ var Notice = require('UI/Notice');
 
 var WebAudioService = require('./WebAudioService');
 
-
 module.exports = new Class({
 
   Implements: [Class.Singleton, Class.Binds, Events, Options],

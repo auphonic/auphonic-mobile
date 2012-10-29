@@ -42,6 +42,7 @@ module.exports = new Class({
   },
 
   play: function() {
+    if (this._isPlaying) return;
     this.setup();
 
     if (this.player) this.player.play();
@@ -112,7 +113,6 @@ module.exports = new Class({
 
   onStop: function() {
     this.onPause();
-    this._isPlaying = false;
     this.fireEvent('stop');
   },
 

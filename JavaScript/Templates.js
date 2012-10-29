@@ -1384,7 +1384,7 @@ function program3(depth0,data) {
   buffer += escapeExpression(stack1) + "</span>\n      <span class=\"hidden\" data-length=\"1\">";
   stack1 = depth0.length;
   stack1 = typeof stack1 === functionType ? stack1() : stack1;
-  buffer += escapeExpression(stack1) + "</span></a>\n  </div>\n  <div class=\"waveform content full show-popover\" data-popover-open-event=\"touchstart\" data-popover-open-delay=\"300\" data-popover-close-event=\"touchend\">\n    ";
+  buffer += escapeExpression(stack1) + "</span>\n    </a>\n  </div>\n  <div class=\"waveform content full show-popover\" data-popover-open-event=\"touchstart\" data-popover-open-delay=\"300\" data-popover-close-event=\"touchend\">\n    ";
   stack1 = depth0.waveform_image;
   stack1 = helpers['if'].call(depth0, stack1, {hash:{},inverse:self.program(3, program3, data),fn:self.program(1, program1, data)});
   if(stack1 || stack1 === 0) { buffer += stack1; }
