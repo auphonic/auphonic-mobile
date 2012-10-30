@@ -7,7 +7,11 @@ templates['about'] = template(function (Handlebars,depth0,helpers,partials,data)
   buffer += "<ul>\n  <li><span class=\"right\">";
   stack1 = depth0.version;
   stack1 = typeof stack1 === functionType ? stack1() : stack1;
-  buffer += escapeExpression(stack1) + "</span><label class=\"left\">Version</label></li>\n  <li><a href=\"";
+  buffer += escapeExpression(stack1) + "</span><label class=\"left\">Version</label></li>\n  <li><span class=\"right\">";
+  stack1 = depth0.user;
+  stack1 = stack1 == null || stack1 === false ? stack1 : stack1.name;
+  stack1 = typeof stack1 === functionType ? stack1() : stack1;
+  buffer += escapeExpression(stack1) + "</span><label class=\"left\">User</label></li>\n  <li><a href=\"";
   stack1 = depth0.repository;
   stack1 = typeof stack1 === functionType ? stack1() : stack1;
   buffer += escapeExpression(stack1) + "\" class=\"share\"><span></span>Repository <span class=\"light\">";
@@ -57,12 +61,6 @@ templates['container'] = template(function (Handlebars,depth0,helpers,partials,d
 
 
   return "<div class=\"container scrolling scrollable\">\n  <div class=\"scroll-content\"></div>\n</div>\n";});
-templates['default'] = template(function (Handlebars,depth0,helpers,partials,data) {
-  helpers = helpers || Handlebars.helpers;
-  
-
-
-  return "<div class=\"logo\"></div>\n<ul>\n  <li><a href=\"/production/recording/new-audio\" class=\"arrow\"><span></span>Start a new Recording</a></li>\n  <li><a href=\"/production/source\" class=\"arrow\"><span></span>Create a new Production</a></li>\n  <li><a href=\"/preset/new\" class=\"arrow\"><span></span>Define a Preset</a></li>\n</ul>\n";});
 templates['detail-summary'] = template(function (Handlebars,depth0,helpers,partials,data) {
   helpers = helpers || Handlebars.helpers;
   var buffer = "", stack1, functionType="function", escapeExpression=this.escapeExpression;
@@ -1042,7 +1040,7 @@ function program3(depth0,data) {
   
   return " hidden";}
 
-  buffer += "<ul class=\"formcontent\">\n  <li>\n    <label class=\"left\"><input type=\"text\" name=\"metadata.title\" class=\"right\" />Title</label>\n  </li>\n  <li>\n    <label class=\"left\"><input type=\"text\" name=\"metadata.album\" class=\"right\" />Album</label>\n  </li>\n  <li>\n    <label class=\"left\"><input type=\"text\" name=\"metadata.artist\" class=\"right\" />Artist</label>\n  </li>\n  <li>\n    <label class=\"left\"><input type=\"text\" pattern=\"[0-9]*\" name=\"metadata.track\" class=\"right\" />Track</label>\n  </li>\n</ul>\n\n<h1>Cover Photo</h1>\n<img src=\"";
+  buffer += "<ul class=\"formcontent\">\n  <li>\n    <label class=\"left\"><input type=\"text\" name=\"metadata.title\" class=\"right\" data-clearable=\"1\" />Title</label>\n  </li>\n  <li>\n    <label class=\"left\"><input type=\"text\" name=\"metadata.album\" class=\"right\" />Album</label>\n  </li>\n  <li>\n    <label class=\"left\"><input type=\"text\" name=\"metadata.artist\" class=\"right\" />Artist</label>\n  </li>\n  <li>\n    <label class=\"left\"><input type=\"text\" pattern=\"[0-9]*\" name=\"metadata.track\" class=\"right\" />Track</label>\n  </li>\n</ul>\n\n<h1>Cover Photo</h1>\n<img src=\"";
   stack1 = depth0.thumbnail;
   foundHelper = helpers.image;
   stack1 = foundHelper ? foundHelper.call(depth0, stack1, {hash:{}}) : helperMissing.call(depth0, "image", stack1, {hash:{}});
@@ -1355,6 +1353,16 @@ function program20(depth0,data) {
   stack1 = helpers['if'].call(depth0, stack1, {hash:{},inverse:self.program(20, program20, data),fn:self.program(1, program1, data)});
   if(stack1 || stack1 === 0) { buffer += stack1; }
   buffer += "\n";
+  return buffer;});
+templates['home'] = template(function (Handlebars,depth0,helpers,partials,data) {
+  helpers = helpers || Handlebars.helpers;
+  var buffer = "", stack1, functionType="function", escapeExpression=this.escapeExpression;
+
+
+  buffer += "<div class=\"logo\"></div>\n<ul>\n  <li><a href=\"/production/recording/new-audio\" class=\"arrow\"><span></span>Start a new Recording</a></li>\n  <li><a href=\"/production/source\" class=\"arrow\"><span></span>Create a new Production</a></li>\n  <li><a href=\"/preset/new\" class=\"arrow\"><span></span>Define a Preset</a></li>\n  <li><a href=\"/about\" class=\"arrow\"><span></span>About</a></li>\n  <li><a href=\"";
+  stack1 = depth0.feedback;
+  stack1 = typeof stack1 === functionType ? stack1() : stack1;
+  buffer += escapeExpression(stack1) + "\" class=\"share\"><span></span>Feedback</a></li>\n</ul>\n\n<a href=\"/logout\" class=\"button red expand\">Logout</a>\n";
   return buffer;});
 templates['login'] = template(function (Handlebars,depth0,helpers,partials,data) {
   helpers = helpers || Handlebars.helpers;
@@ -1729,14 +1737,11 @@ templates['settings'] = template(function (Handlebars,depth0,helpers,partials,da
   var buffer = "", stack1, functionType="function", escapeExpression=this.escapeExpression;
 
 
-  buffer += "<ul>\n  <li><a href=\"/settings/about\" class=\"arrow\"><span></span>About</a></li>\n  <li><a href=\"";
-  stack1 = depth0.feedback;
-  stack1 = typeof stack1 === functionType ? stack1() : stack1;
-  buffer += escapeExpression(stack1) + "\" class=\"share\"><span></span>Feedback</a></li>\n</ul>\n\n<ul>\n  <li><span class=\"right\">";
+  buffer += "<ul>\n  <li><span class=\"right\">";
   stack1 = depth0.user;
   stack1 = stack1 == null || stack1 === false ? stack1 : stack1.name;
   stack1 = typeof stack1 === functionType ? stack1() : stack1;
-  buffer += escapeExpression(stack1) + "</span><label class=\"left\">User</label></li>\n</ul>\n\n<a href=\"/logout\" class=\"button red expand\">Logout</a>\n";
+  buffer += escapeExpression(stack1) + "</span><label class=\"left\">User</label></li>\n</ul>\n\n\n";
   return buffer;});
 templates['ui-action'] = template(function (Handlebars,depth0,helpers,partials,data) {
   helpers = helpers || Handlebars.helpers;
@@ -1856,4 +1861,4 @@ templates['ui'] = template(function (Handlebars,depth0,helpers,partials,data) {
   
 
 
-  return "<div id=\"ui\" class=\"hidden\">\n  <header></header>\n  <footer>\n    <ul>\n      <li><a href=\"/production\" class=\"production\"><span></span><span>Productions</span></a></li>\n      <li><a href=\"/preset\" class=\"preset\"><span></span><span>Presets</span></a></li>\n      <li><a href=\"/recording\" class=\"record\"><span></span><span>Recordings</span></a></li>\n      <li><a href=\"/settings\" class=\"settings\"><span></span><span>Settings</span></a></li>\n    </ul>\n  </footer>\n  <div class=\"headerBackground\"></div>\n  <div class=\"footerBackground\"></div>\n  <div id=\"main\"></div>\n</div>\n";});
+  return "<div id=\"ui\" class=\"hidden\">\n  <header></header>\n  <footer>\n    <ul>\n      <li><a href=\"/\" class=\"home\"><span></span><span>Home</span></a></li>\n      <li><a href=\"/production\" class=\"production\"><span></span><span>Productions</span></a></li>\n      <li><a href=\"/recording\" class=\"record\"><span></span><span>Recordings</span></a></li>\n      <li><a href=\"/preset\" class=\"preset\"><span></span><span>Presets</span></a></li>\n    </ul>\n  </footer>\n  <div class=\"headerBackground\"></div>\n  <div class=\"footerBackground\"></div>\n  <div id=\"main\"></div>\n</div>\n";});

@@ -161,6 +161,11 @@ module.exports = new Class({
     return this;
   },
 
+  resetStack: function() {
+    this._current = null;
+    return this;
+  },
+
   isCurrentStack: function(stack) {
     return (this._current && stack == this._current.getName());
   },

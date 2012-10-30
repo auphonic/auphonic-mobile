@@ -34,7 +34,6 @@ require('Controller/Login');
 require('Controller/Preset');
 require('Controller/Production');
 require('Controller/Recording');
-require('Controller/Settings');
 
 var History = require('History');
 var Form = require('Form');
@@ -106,7 +105,7 @@ var click = function(event) {
     if (currentPath == href) {
       // Invalidate and rename stack to force re-evaluation
       View.getMain().getCurrentObject().invalidate();
-      View.getMain().getStack().setName('default');
+      View.getMain().getStack().setName('invalid');
     }
   }
 
@@ -404,10 +403,30 @@ window.__BOOTAPP = function() {
      // It'll also take care of showing the UI.
     load();
 
-    View.getMain().push('default', new View.Object({
+    View.getMain().push('home', new View.Object({
       title: 'Home',
-      content: UI.render('default')
+      content: UI.render('home', {
+        feedback: Auphonic.FeedbackURL
+      })
     }));
+  });
+
+  Controller.define('/about', function() {
+    View.getMain().push('home', new View.Object({
+      title: 'About',
+      content: UI.render('about', {
+        user: User.get(),
+        version: Auphonic.Version,
+        repository: Auphonic.RepositoryURL
+      })
+    }));
+  });
+
+  Controller.define('/logout', function() {
+    User.reset();
+    View.getMain().resetStack();
+
+    History.push('/login');
   });
 
   if (!isLoggedIn) History.push('/login');
