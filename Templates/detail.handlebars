@@ -42,25 +42,6 @@
     {{/if}}
   {{/if}}
 
-  {{#if input_file}}
-    <h1>Input Source{{#if service_display_type}} - {{service_display_type}}{{/if}}</h1>
-    <ul>
-      <li>
-        <label>
-          {{#if service_display_name}}
-            <span class="light">{{service_display_name}}</span>
-            <small>{{input_file}}</small>
-          {{else}}
-            {{input_file}}
-          {{/if}}
-        </label>
-      </li>
-      {{#if duration_string}}
-        <li><span class="right light">{{duration_string}}</span><label class="left">Duration</label></li>
-      {{/if}}
-    </ul>
-  {{/if}}
-
   {{#if hasDetails}}
     <h1>Details</h1>
     <ul>
@@ -127,6 +108,22 @@
           </label>
         </li>
       {{/each}}
+    </ul>
+  {{/if}}
+
+  {{#if input_file}}
+    <h1>Input Source{{#if service_display_type}} - {{service_display_type}}{{/if}}</h1>
+    <ul>
+      <li>
+        <label>
+          {{#if service_display_name}}
+            <span class="light">{{service_display_name}}</span>
+            <small>{{input_file}}</small>
+          {{else}}
+            {{input_file}}
+          {{/if}}
+        </label>
+      </li>
     </ul>
   {{/if}}
 

@@ -2,6 +2,8 @@ var Controller = require('./');
 var UI = require('UI');
 var View = require('View');
 
+var Data = require('App/Data');
+
 var Recording = require('Store/Recording');
 
 var Auphonic = require('Auphonic');
@@ -60,10 +62,12 @@ var showAll = function() {
 
 var showOne = function(req) {
   var recording = Recording.findById(req.id);
-  recording.media_files = JSON.stringify([recording.fullPath]);
-  recording.display_date = formatTimestamp(recording.timestamp);
   recording.hasChapters = recording.chapters && recording.chapters.length;
+  recording.media_files = JSON.stringify([recording.fullPath]);
+  recording.player_chapters = recording.hasChapters ? JSON.stringify(recording.chapters) : null;
+  recording.display_date = formatTimestamp(recording.timestamp);
   recording.display_size = formatFileSize(recording.size);
+  recording.duration_string = Data.formatDuration(recording.duration, ' ');
   recording.isLocal = true;
 
   View.getMain().push('recording', new View.Object({

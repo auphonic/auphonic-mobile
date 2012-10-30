@@ -1,7 +1,8 @@
-<div class="player clear">
+<div class="player content clear">
   <div class="play-button content full">
     <a class="play">
       <span class="hidden" data-media="1">{{media_files}}</span>
+      <span class="hidden" data-chapters="1">{{player_chapters}}</span>
       <span class="hidden" data-duration="1">{{duration}}</span>
       {{#if isLocal}}<span class="hidden" data-local="1" />{{/if}}
     </a>
@@ -14,5 +15,11 @@
     {{/if}}
     <div class="position"></div>
       <div class="hidden popover top center auto-width" data-position="top"></div>
+  </div>
+
+  <div class="player-details">
+    <div class="duration light">{{duration_string}}</div>
+    <div class="current-time light"></div>
+    <div class="chapter-mark bold"></div>
   </div>
 </div>

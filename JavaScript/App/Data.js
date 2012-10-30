@@ -203,6 +203,7 @@ exports.prepare = function(object, type, fn) {
   });
 
   object.media_files = length(media_files) ? JSON.stringify(media_files) : null;
+  object.player_chapters = length(object.chapters) ? JSON.stringify(object.chapters) : null;
   object.output_files = length(object.output_files) ? object.output_files.map(OutputFiles.createUIData) : null;
 
   object.is_uploading = CurrentUpload.has(object.uuid);

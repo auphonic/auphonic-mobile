@@ -10,7 +10,11 @@
     overflow visible
     border-radius 50%
     margin-right 10px
+    margin-bottom 10px
+
+    border 1px solid #DDD
     background -webkit-radial-gradient(40% 40%, #fff, #ddd)
+    box-shadow none
 
     a
       position absolute
@@ -26,7 +30,10 @@
   div.waveform
     position relative
     cursor pointer
-    height 35px
+    height 37px
+    margin-bottom 10px
+
+    box-shadow none
 
     div.line
       width 100%
@@ -49,3 +56,23 @@
 
       border-radius 10px
       background rgba(0, 0, 0, 0.2)
+
+  div.player-details
+    line-height 1.2em
+
+    div.current-time
+      float left
+
+    div.duration
+      float right
+
+    div.chapter-mark
+      margin 0 75px
+      text-align center
+      overflow ellipsis
+      transition-property opacity
+      transition-duration 350ms
+      opacity 0
+
+      &.fade
+        opacity 1

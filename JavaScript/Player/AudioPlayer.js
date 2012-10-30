@@ -5,6 +5,8 @@ var Options = Core.Options;
 
 var Spinner = require('Thirdparty/Spinner');
 
+var Data = require('App/Data');
+
 var Notice = require('UI/Notice');
 
 var WebAudioService = require('./WebAudioService');
@@ -20,6 +22,9 @@ module.exports = new Class({
     selector: '[data-media]',
     durationSelector: '[data-duration]',
     localSelector: '[data-local]',
+    chapterSelector: '[data-chapters]',
+    currentTimeSelector: 'div.player-details div.current-time',
+    chapterMarkSelector: 'div.player-details div.chapter-mark',
     playSelector: 'a.play',
     waveformSelector: 'div.waveform',
     positionSelector: 'div.waveform div.position',
@@ -29,6 +34,7 @@ module.exports = new Class({
   isAvailable: false,
   isLoading: false,
   position: 0,
+  chapters: [],
 
   initialize: function(element, options) {
     return this.check(element) || this.setup(element, options);
@@ -41,13 +47,16 @@ module.exports = new Class({
     this.button = element.getElement(this.options.playSelector);
     this.waveform = element.getElement(this.options.waveformSelector);
     this.positionIndicator = element.getElement(this.options.positionSelector);
+    this.currentTimeElement = element.getElement(this.options.currentTimeSelector);
+    this.chapterMarkElement = element.getElement(this.options.chapterMarkSelector);
+
     this.button.addEvent('click', this.bound('toggle'));
     this.waveform.addEvent('touchstart', this.bound('onSeek'));
     this.waveform.addEvent('touchmove', this.bound('onSeek'));
 
     this.duration = Math.round(parseFloat(element.getElement(this.options.durationSelector).get('text'))) || -1;
     this.isLocal = !!element.getElement(this.options.localSelector);
-    var mediaFiles = JSON.parse(element.getElement(this.options.selector).get('html'));
+    var mediaFiles = JSON.parse(element.getElement(this.options.selector).get('html') || 'null');
     var audioService = this.options.getAudioService.call(this);
     this.service = new audioService(mediaFiles);
 
@@ -60,6 +69,9 @@ module.exports = new Class({
     });
 
     this.fireEvent('setup');
+
+    this.prepareChapters(JSON.parse(element.getElement(this.options.chapterSelector).get('html') || 'null'));
+    this.onTimeupdate(0);
   },
 
   toggle: function(event) {
@@ -120,7 +132,9 @@ module.exports = new Class({
   },
 
   seek: function() {
+    this.currentChapter = 0;
     this.service.seek(this.position);
+    this.onTimeupdate(this.position);
   },
 
   onStart: function() {
@@ -131,7 +145,7 @@ module.exports = new Class({
 
   onStop: function() {
     this.position = 0;
-    this.updateIndicator(0);
+    this.onTimeupdate(this.position);
   },
 
   onPause: function() {
@@ -145,6 +159,11 @@ module.exports = new Class({
   },
 
   onTimeupdate: function(position) {
+    this.currentTimeElement.set('text', Data.formatDuration(position / 1000, ' '));
+    var chapter = this.getCurrentChapter(position);
+    if (position == 0 || !chapter) this.chapterMarkElement.removeClass('fade');
+    else this.chapterMarkElement.set('text', chapter.title).addClass('fade');
+
     this.updateIndicator(this.convertDurationToPixel(position));
   },
 
@@ -192,6 +211,37 @@ module.exports = new Class({
     var duration = this.getDuration();
     var width = this.waveform.offsetWidth;
     return position / duration * width / 1000;
+  },
+
+  prepareChapters: function(chapters) {
+    if (chapters) this.chapters = Array.map(chapters, function(chapter) {
+      var time = chapter.start.split(':');
+      var hours = parseInt(time[0] || 0, 10);
+      var minutes = parseInt(time[1] || 0, 10);
+      var seconds = parseInt(time[2] || 0, 10);
+      chapter.time = seconds + minutes * 60 + hours * 3600;
+      return chapter;
+    });
+  },
+
+  getCurrentChapter: function(position) {
+    var chapters = this.chapters;
+    if (!chapters.length) return;
+
+    position /= 1000;
+    if (!this.currentChapter) this.currentChapter = 0;
+    if (position < chapters[this.currentChapter].time) return;
+
+    var next;
+    var chapter;
+    do {
+      next = this.currentChapter + 1;
+      chapter = chapters[next];
+      if (chapter && position > chapter.time)
+        this.currentChapter = next;
+    } while (chapter && this.currentChapter == next);
+
+    return chapters[this.currentChapter];
   },
 
   getDuration: function() {
