@@ -10,6 +10,7 @@ module.exports = new Class({
 
   options: {
     selector: 'input[type=checkbox]',
+    eventSelector: '!',
     thumbSelector: '.thumb',
     leftSelector: '.left',
     className: 'checked',
@@ -20,7 +21,6 @@ module.exports = new Class({
     this.setOptions(options);
 
     this.container = container = document.id(container);
-
     return this.check(container) || this.setup();
   },
 
@@ -38,7 +38,7 @@ module.exports = new Class({
   },
 
   attach: function() {
-    this.container.addEvents({
+    this.container.getElement(this.options.eventSelector).addEvents({
       touchstart: this.bound('touchstart'),
       touchmove: this.bound('touchmove'),
       touchend: this.bound('touchend'),
@@ -49,7 +49,7 @@ module.exports = new Class({
   },
 
   detach: function() {
-    this.container.removeEvents({
+    this.container.getElement(this.options.eventSelector).removeEvents({
       touchstart: this.bound('touchstart'),
       touchmove: this.bound('touchmove'),
       touchend: this.bound('touchend'),
@@ -65,8 +65,10 @@ module.exports = new Class({
 
   update: function() {
     var checked = this.isChecked();
+    var className = this.options.className;
 
-    this.container[(checked ? 'add' : 'remove') + 'Class'](this.options.className);
+    if (checked) this.container.addClass(className);
+    else this.container.removeClass(className);
     this.updateStyle(checked ? this.options.max : 0);
   },
 
