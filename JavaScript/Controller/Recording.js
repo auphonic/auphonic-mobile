@@ -57,21 +57,16 @@ Controller.define('/recording/{id}', function(req) {
   recording.media_files = JSON.stringify([recording.fullPath]);
   recording.display_date = months[date.getMonth()] + ' ' + date.getDate() + ', ' + date.getHours() + ':' + date.getMinutes();
   recording.hasChapters = recording.chapters && recording.chapters.length;
+  recording.display_size = formatFileSize(recording.size);
 
-  Recording.read(recording.id, function(fileEntry) {
-    fileEntry.file(function(file) {
-      recording.display_size = formatFileSize(file.size);
-
-      View.getMain().push('recording', new View.Object({
-        title: Recording.getRecordingName(recording),
-        content: UI.render('recording', recording),
-        action: {
-          title: 'Upload',
-          url: '/production/recording/upload/{id}'.substitute(recording),
-          className: 'big'
-        }
-      }));
-    }, function() {});
-  }, function() {});
+  View.getMain().push('recording', new View.Object({
+    title: Recording.getRecordingName(recording),
+    content: UI.render('recording', recording),
+    action: {
+      title: 'Upload',
+      url: '/production/recording/upload/{id}'.substitute(recording),
+      className: 'big'
+    }
+  }));
 
 });

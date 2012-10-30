@@ -38,7 +38,6 @@ var findById = exports.findById = function(id) {
   return get()[id];
 };
 
-exports.read = read;
 exports.findAll = get;
 
 exports.generateRecordingId = function() {

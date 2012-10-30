@@ -53,7 +53,18 @@ module.exports = new Class({
     this.canceled = false;
     if (canceled) return;
 
-    this.fireEvent('success', [this.file]);
+    this.file.media_type = 'audio';
+    this.media.play();
+    this.media.pause();
+    // Duration can only be accessed asynchronously
+    (function() {
+      this.file.duration = this.media.getDuration();
+      // Access the "File" Object
+      this.file.file((function(file) {
+        this.file.size = file.size;
+        this.fireEvent('success', [this.file]);
+      }).bind(this));
+    }).delay(0, this);
   },
 
   onFileSystemReady: function(fileSystem) {
