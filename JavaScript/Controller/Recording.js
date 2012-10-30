@@ -58,6 +58,7 @@ Controller.define('/recording/{id}', function(req) {
   recording.display_date = months[date.getMonth()] + ' ' + date.getDate() + ', ' + date.getHours() + ':' + date.getMinutes();
   recording.hasChapters = recording.chapters && recording.chapters.length;
   recording.display_size = formatFileSize(recording.size);
+  recording.isLocal = true;
 
   View.getMain().push('recording', new View.Object({
     title: Recording.getRecordingName(recording),

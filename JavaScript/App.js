@@ -52,6 +52,7 @@ var Spinner = require('Spinner');
 
 var AudioPlayer = require('Player/AudioPlayer');
 var WebAudioService = require('Player/WebAudioService');
+var CordovaAudioService = require('Player/CordovaAudioService');
 
 var Auphonic = require('Auphonic');
 
@@ -286,13 +287,16 @@ window.__BOOTAPP = function() {
     '.player': Class.Instantiate(AudioPlayer, {
       selector: '[data-media]',
       durationSelector: '[data-duration]',
+      localSelector: '[data-local]',
       playSelector: 'a.play',
       waveformSelector: 'div.waveform',
       positionSelector: 'div.waveform div.position',
       spinnerOptions: Auphonic.PlayerSpinnerOptions,
 
       getAudioService: function() {
-        return WebAudioService;
+        // Use CordovaAudioService for local files because it is faster/better/prettier
+        console.log('Using ' + (this.isLocal && window.Media ? 'cordova' : 'web'));
+        return (this.isLocal && window.Media) ? CordovaAudioService : WebAudioService;
       },
 
       onSetup: function() {

@@ -19,6 +19,7 @@ module.exports = new Class({
     },
     selector: '[data-media]',
     durationSelector: '[data-duration]',
+    localSelector: '[data-local]',
     playSelector: 'a.play',
     waveformSelector: 'div.waveform',
     positionSelector: 'div.waveform div.position',
@@ -40,13 +41,14 @@ module.exports = new Class({
     this.button = element.getElement(this.options.playSelector);
     this.waveform = element.getElement(this.options.waveformSelector);
     this.positionIndicator = element.getElement(this.options.positionSelector);
-    this.duration = Math.round(parseFloat(element.getElement(this.options.durationSelector).get('text'))) || -1;
     this.button.addEvent('click', this.bound('toggle'));
     this.waveform.addEvent('touchstart', this.bound('onSeek'));
     this.waveform.addEvent('touchmove', this.bound('onSeek'));
 
+    this.duration = Math.round(parseFloat(element.getElement(this.options.durationSelector).get('text'))) || -1;
+    this.isLocal = !!element.getElement(this.options.localSelector);
     var mediaFiles = JSON.parse(element.getElement(this.options.selector).get('html'));
-    var audioService = this.options.getAudioService();
+    var audioService = this.options.getAudioService.call(this);
     this.service = new audioService(mediaFiles);
 
     this.service.addEvents({
