@@ -32,7 +32,14 @@ module.exports = new Class({
     this.element = container.getElement(this.options.selector);
     this.element.store(':checkbox', this);
 
-    this.update();
+    // Prevent animation
+    this.thumb.addClass('immediate');
+    this.left.addClass('immediate');
+    this.update.delay(1, this);
+    (function() {
+      this.thumb.removeClass('immediate');
+      this.left.removeClass('immediate');
+    }).delay(50, this); // Needs a higher delay, assume there won't be a user interaction within 50ms of display
 
     this.attach();
   },

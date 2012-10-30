@@ -228,7 +228,11 @@ exports.createView = function(store, editId) {
       parent.getElements('> :not(li:first-child)').dispose();
       if (item) parent.adopt(item.clone());
 
-      Elements.from(UI.render('form-new-output-file-detail', files[value])).inject(parent);
+      Elements.from(UI.render('form-new-output-file-detail', {
+        has_options: files[value].has_options,
+        mono_mixdown: data.mono_mixdown,
+        split_on_chapters: data.split_on_chapters
+      })).inject(parent);
 
       // Restore previous values
       object.unserialize(data);

@@ -5,7 +5,7 @@
         <div class="checkbox">
           <div>
             <span class="left"></span><span class="thumb" data-on="YES" data-off="NO"></span>
-            <input type="checkbox" name="mono_mixdown" value="1" />
+            <input type="checkbox" name="mono_mixdown" value="1" {{#if mono_mixdown}} checked="checked"{{/if}}/>
           </div>
         </div>
       </div>
@@ -18,7 +18,7 @@
         <div class="checkbox">
           <div>
             <span class="left"></span><span class="thumb" data-on="YES" data-off="NO"></span>
-            <input type="checkbox" name="split_on_chapters" value="1" />
+            <input type="checkbox" name="split_on_chapters" value="1" {{#if split_on_chapters}} checked="checked"{{/if}}/>
           </div>
         </div>
       </div>
