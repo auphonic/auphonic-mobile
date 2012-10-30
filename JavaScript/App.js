@@ -298,7 +298,6 @@ window.__BOOTAPP = function() {
 
       getAudioService: function() {
         // Use CordovaAudioService for local files because it is faster/better/prettier
-        console.log('Using ' + (this.isLocal && window.Media ? 'cordova' : 'web'));
         return (this.isLocal && window.Media) ? CordovaAudioService : WebAudioService;
       },
 

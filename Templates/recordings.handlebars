@@ -8,7 +8,11 @@
       <div class="hidden popover top justify" data-position="top">
         <a class="button expand red deleteable">Delete</a>
       </div>
-      <a href="/recording/{{id}}" class="arrow"><span></span>{{display_name}}</a>
+      <a href="/recording/{{id}}" class="arrow">
+        <span></span>
+        {{display_name}}
+        <small class="light">{{display_date}}</small>
+      </a>
     </li>
   {{/each}}
   </ul>

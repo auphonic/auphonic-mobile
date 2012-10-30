@@ -1625,10 +1625,13 @@ function program2(depth0,data) {
   buffer += escapeExpression(stack1) + "\" data-fire-event=\"remove\">\n      <span class=\"right removable hidden\">\n        <span><a class=\"button red small\">Delete</a></span>\n      </span>\n      <div class=\"hidden popover top justify\" data-position=\"top\">\n        <a class=\"button expand red deleteable\">Delete</a>\n      </div>\n      <a href=\"/recording/";
   stack1 = depth0.id;
   stack1 = typeof stack1 === functionType ? stack1() : stack1;
-  buffer += escapeExpression(stack1) + "\" class=\"arrow\"><span></span>";
+  buffer += escapeExpression(stack1) + "\" class=\"arrow\">\n        <span></span>\n        ";
   stack1 = depth0.display_name;
   stack1 = typeof stack1 === functionType ? stack1() : stack1;
-  buffer += escapeExpression(stack1) + "</a>\n    </li>\n  ";
+  buffer += escapeExpression(stack1) + "\n        <small class=\"light\">";
+  stack1 = depth0.display_date;
+  stack1 = typeof stack1 === functionType ? stack1() : stack1;
+  buffer += escapeExpression(stack1) + "</small>\n      </a>\n    </li>\n  ";
   return buffer;}
 
 function program4(depth0,data) {

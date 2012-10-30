@@ -6,8 +6,27 @@ var Recording = require('Store/Recording');
 
 var Auphonic = require('Auphonic');
 
+var months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+var sizes = ['b', 'KB', 'MB', 'GB', 'TB'];
+
+var formatFileSize = function(bytes) {
+  if (!bytes) bytes = 0;
+  var base = Math.log(bytes) / Math.log(1024);
+  return Math.round(Math.pow(1024, base - Math.floor(base)), 0) + ' ' + sizes[Math.floor(base)];
+};
+
+var formatTimestamp = function(timestamp) {
+  var date = new Date(timestamp);
+  return months[date.getMonth()] + ' ' + date.getDate() + ', ' + date.getHours() + ':' + date.getMinutes();
+};
+
 var showAll = function() {
   var recordings = Object.values(Recording.findAll()).sortByKey('timestamp').reverse();
+
+  recordings.forEach(function(recording) {
+    recording.display_date = formatTimestamp(recording.timestamp);
+  });
+
   var object = new View.Object({
     title: 'Recordings',
     content: UI.render('recordings', {
@@ -39,23 +58,10 @@ var showAll = function() {
   });
 };
 
-var months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-var sizes = ['b', 'KB', 'MB', 'GB', 'TB'];
-
-var formatFileSize = function(bytes) {
-  if (!bytes) bytes = 0;
-  var base = Math.log(bytes) / Math.log(1024);
-  return Math.round(Math.pow(1024, base - Math.floor(base)), 0) + ' ' + sizes[Math.floor(base)];
-};
-
-Controller.define('/recording', {isGreedy: true}, showAll);
-
-Controller.define('/recording/{id}', function(req) {
-
+var showOne = function(req) {
   var recording = Recording.findById(req.id);
-  var date = new Date(recording.timestamp);
   recording.media_files = JSON.stringify([recording.fullPath]);
-  recording.display_date = months[date.getMonth()] + ' ' + date.getDate() + ', ' + date.getHours() + ':' + date.getMinutes();
+  recording.display_date = formatTimestamp(recording.timestamp);
   recording.hasChapters = recording.chapters && recording.chapters.length;
   recording.display_size = formatFileSize(recording.size);
   recording.isLocal = true;
@@ -69,5 +75,7 @@ Controller.define('/recording/{id}', function(req) {
       className: 'big'
     }
   }));
+};
 
-});
+Controller.define('/recording', {isGreedy: true}, showAll);
+Controller.define('/recording/{id}', showOne);
