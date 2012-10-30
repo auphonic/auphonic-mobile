@@ -169,7 +169,7 @@ var showOne = function(req, options) {
     addPlaceholder();
 
     var object = new View.Object({
-      title: production.metadata.title,
+      title: production.metadata.title || 'Untitled',
       content: UI.render('detail', production),
       action: {
         title: 'Edit',
@@ -298,6 +298,7 @@ var edit = function(production) {
 
     // Check if we are currently uploading
     var currentUpload = CurrentUpload.retrieve(data.uuid);
+    var isNew = currentUpload && !reuse;
     if (currentUpload) {
       data.input_file = currentUpload.file.name;
       // Remove an eventual service uuid.
@@ -308,7 +309,7 @@ var edit = function(production) {
     ListFiles.setFile(form, data.input_file);
 
     getPresets(function(presets) {
-      form.show('main', data, presets);
+      form.show('main', data, presets, isNew);
     });
   };
 
@@ -453,10 +454,7 @@ var upload = function(file) {
     return;
   }
 
-  var data = {
-    metadata: {title: Auphonic.DefaultTitle},
-    chapters: file.chapters
-  };
+  var data = {chapters: file.chapters};
   API.call('productions', 'post', JSON.stringify(data)).on({
     success: onCreateSuccess
   });

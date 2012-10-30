@@ -8,10 +8,10 @@
     {{/if}}
     <div class="detail-inner">
       {{#metadata}}
-        {{#if hasDescription}}<h1>{{title}}</h1>{{/if}}
+        {{#if hasDescription}}<h1>{{#if title}}{{title}}{{else}}Untitled{{/if}}</h1>{{/if}}
         {{#if year}}<span class="year">{{year}}</span>{{/if}}
         {{#if genre}}<span class="genre">{{genre}}</span>{{/if}}
-        {{#unless hasDescription}}<h1>{{title}}</h1>{{/unless}}
+        {{#unless hasDescription}}<h1>{{#if title}}{{title}}{{else}}Untitled{{/if}}</h1>{{/unless}}
 
         {{#if album}}<span class="album">{{album}}</span>{{/if}}
         {{#if track}}<span class="track">#{{track}}</span>{{/if}}

@@ -20,35 +20,27 @@
     {{/if}}
   {{/if}}
 
-  {{#if production}}
-    {{#if isNewProduction}}
-      {{#if presets}}
-        <li>
-          <label class="left">
-            <select class="preset-chooser right empty" data-select-type="preserve-null-state">
-              <option value="" selected>No Preset</option>
-              {{#each presets}}
-                <option value="{{uuid}}">{{preset_name}}</option>
-              {{/each}}
-            </select>
-            <span class="right placeholder">choose a preset</span>
-            Preset
-          </label>
-        </li>
-      {{/if}}
+  {{#if isNewProduction}}
+    {{#if presets}}
+      <li>
+        <label class="left">
+          <select class="preset-chooser right empty" data-select-type="preserve-null-state">
+            <option value="" selected>No Preset</option>
+            {{#each presets}}
+              <option value="{{uuid}}">{{preset_name}}</option>
+            {{/each}}
+          </select>
+          <span class="right placeholder">choose a preset</span>
+          Preset
+        </label>
+      </li>
     {{/if}}
-    <li>
-      <label class="left">
-        <input type="text" name="title" data-required="1" data-clearable="1" value="{{name}}" placeholder="choose production title" class="right" />
-        Title
-      </label>
-    </li>
   {{/if}}
 
   {{#if preset}}
     <li>
       <label class="left">
-        <input type="text" name="preset_name" data-required="1" data-clearable="1" value="{{name}}" placeholder="type a preset name" class="right" />
+        <input type="text" name="preset_name" data-clearable="1" value="{{name}}" placeholder="type a preset name" class="right" />
         Name
       </label>
     </li>

@@ -84,27 +84,6 @@ module.exports = new Class({
     this.uploadFile = null;
   },
 
-  showAction: function() {
-    this.object.getView().updateElement('action', null, {
-      title: 'Save',
-      onClick: this.bound('onActionClick')
-    });
-  },
-
-  hideAction: function() {
-    this.object.getView().updateElement('action');
-  },
-
-  updateAction: function(hasValue) {
-    if (hasValue && !this.actionIsVisible) {
-      this.showAction();
-      this.actionIsVisible = true;
-    } else if (!hasValue && this.actionIsVisible) {
-      this.hideAction();
-      this.actionIsVisible = false;
-    }
-  },
-
   update: function(data) {
     var object = this.object;
     var store = this.store;
@@ -125,25 +104,7 @@ module.exports = new Class({
         view.setData(store, data && data[type], this.getBaseURL(), object, this.isRendered);
     }, this);
 
-    if (this.isRendered) {
-      this.updateTitle();
-      this.updateAlgorithms(data);
-    }
-  },
-
-  // Title is used twice in productions
-  updateTitle: function() {
-    if (!this.isProduction) return;
-    var title = Metadata.getData(this.store)['metadata.title'];
-    this.object.unserialize({title: title});
-    this.updateAction(!!title);
-  },
-
-  updateMetadataTitle: function() {
-    if (!this.isProduction) return;
-    // Use metadata.title in both forms in productions.
-    var data = this.object.serialize();
-    if (data.title && data.title !== '') Metadata.getData(this.store)['metadata.title'] = data.title;
+    if (this.isRendered) this.updateAlgorithms(data);
   },
 
   updateAlgorithms: function(data) {
@@ -155,12 +116,12 @@ module.exports = new Class({
     this.object.unserialize(Object.flatten({algorithms: data.algorithms}));
   },
 
-  createView: function(store, data, presets) {
+  createView: function(store, data, presets, isNew) {
     this.isRendered = false;
     var inputFile, inputBasename;
     var isProduction = this.isProduction = (this.getDisplayType() == 'production');
     var isEditMode = this.isEditMode = !!data;
-    var isNewProduction = this.isNewProduction = (isProduction && !isEditMode);
+    var isNewProduction = this.isNewProduction = (isProduction && !isEditMode) || isNew;
     var hasPopover = !isNewProduction;
     var hasUpload = false;
     this.store = store;
@@ -170,12 +131,6 @@ module.exports = new Class({
       this.uuid = data.uuid;
       hasUpload = CurrentUpload.has(this.uuid);
       if (!hasPopover) hasPopover = hasUpload;
-    }
-
-    // This is a placeholder title created by the mobile app, remove it if possible
-    if (isEditMode && isProduction && data.metadata.title == Auphonic.DefaultTitle) {
-      data.metadata.title = '';
-      isNewProduction = this.isNewProduction = true;
     }
 
     var service = Source.getObject(store);
@@ -201,8 +156,11 @@ module.exports = new Class({
       title: this.getObjectName(data) ||  'New ' + this.getDisplayName(),
       content: UI.render('form-new-main', uiData),
       back: (isEditMode ? {title: 'Cancel'} : null),
+      action: {
+        title: 'Save',
+        onClick: this.bound('onActionClick')
+      },
 
-      onShow: this.bound('onShow'),
       onHide: this.bound('onHide'),
       onUploadProgress: this.bound('onUploadProgress'),
       onRefresh: this.bound('onRefresh')
@@ -215,22 +173,15 @@ module.exports = new Class({
 
     this.update(data);
 
-    this.actionIsVisible = (isEditMode && !!this.getObjectName(data));
-    var updateAction = this.bound('updateAction');
     var cancelUpload = this.bound('cancelUpload');
     object.addEvent('show:once', function() {
       if (hasUpload) {
         var cancelButton = object.toElement().getElement('.cancelUpload');
         if (cancelButton) cancelButton.addEvent('click', cancelUpload);
       }
-
-      // This only affects either preset_name or metadata.title
-      object.toElement().getElement('[data-required]').addEvent('input', function() {
-        updateAction(!!this.get('value'));
-      });
     });
 
-    if (this.isEditMode) object.addEvent('show:once', (function() {
+    if (isEditMode) object.addEvent('show:once', (function() {
       this.updateAlgorithms(data);
     }).bind(this));
 
@@ -265,16 +216,8 @@ module.exports = new Class({
     });
   },
 
-  onShow: function() {
-    this.updateTitle();
-
-    this.actionIsVisible = false;
-    this.updateAction(!!this.object.toElement().getElement('[data-required]').get('value'));
-  },
-
   onHide: function(direction) {
     if (direction == 'left') this.reset();
-    else this.updateMetadataTitle();
   },
 
   onPresetSelect: function() {
@@ -302,6 +245,9 @@ module.exports = new Class({
 
     // Always reset output_files/outgoing_services/chapters
     data.reset_data = true;
+
+    if (this.getDisplayType() == 'preset' && !data.preset_name)
+      data.preset_name = 'Untitled';
 
     store.eachView(function(view, type) {
       if (view.getData) Object.append(data, view.getData(store, element));
