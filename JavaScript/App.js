@@ -79,10 +79,11 @@ var popoverSelector = 'div.popover';
 var click = function(event) {
   event.preventDefault();
   var href = this.get('href');
+  var activeElement = document.activeElement;
 
   if (!href) return;
   if (event.touches && event.touches.length > 1) return;
-  if (document.activeElement && document.activeElement.match('input, select, textarea')) return;
+  if (activeElement && activeElement.match('input, select, textarea')) activeElement.blur();
 
   var currentPath = History.getPath();
   var isFooter = !!this.getParent('footer');
