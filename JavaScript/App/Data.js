@@ -151,6 +151,7 @@ exports.prepare = function(object, type, fn) {
 
   var duration_string = exports.formatDuration(object.length, ' ');
   if (duration_string != '0s') object.duration_string = duration_string;
+  object.duration = object.length;
 
   if (object.hasChapters) object.chapters.sortByKey('start');
 

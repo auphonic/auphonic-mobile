@@ -1381,8 +1381,8 @@ function program3(depth0,data) {
   buffer += "<div class=\"player clear\">\n  <div class=\"play-button content full\">\n    <a class=\"play\">\n      <span class=\"hidden\" data-media=\"1\">";
   stack1 = depth0.media_files;
   stack1 = typeof stack1 === functionType ? stack1() : stack1;
-  buffer += escapeExpression(stack1) + "</span>\n      <span class=\"hidden\" data-length=\"1\">";
-  stack1 = depth0.length;
+  buffer += escapeExpression(stack1) + "</span>\n      <span class=\"hidden\" data-duration=\"1\">";
+  stack1 = depth0.duration;
   stack1 = typeof stack1 === functionType ? stack1() : stack1;
   buffer += escapeExpression(stack1) + "</span>\n    </a>\n  </div>\n  <div class=\"waveform content full show-popover\" data-popover-open-event=\"touchstart\" data-popover-open-delay=\"300\" data-popover-close-event=\"touchend\">\n    ";
   stack1 = depth0.waveform_image;

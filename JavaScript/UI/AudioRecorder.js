@@ -130,6 +130,7 @@ module.exports = new Class({
   onSuccess: function(file) {
     this.button.addClass('fade');
     file.chapters = this.chapters;
+
     this.fireEvent('success', [file]);
   }
 

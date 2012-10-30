@@ -285,7 +285,7 @@ window.__BOOTAPP = function() {
 
     '.player': Class.Instantiate(AudioPlayer, {
       selector: '[data-media]',
-      lengthSelector: '[data-length]',
+      durationSelector: '[data-duration]',
       playSelector: 'a.play',
       waveformSelector: 'div.waveform',
       positionSelector: 'div.waveform div.position',

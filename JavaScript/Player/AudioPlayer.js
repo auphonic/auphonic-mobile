@@ -18,7 +18,7 @@ module.exports = new Class({
       return WebAudioService;
     },
     selector: '[data-media]',
-    lengthSelector: '[data-length]',
+    durationSelector: '[data-duration]',
     playSelector: 'a.play',
     waveformSelector: 'div.waveform',
     positionSelector: 'div.waveform div.position',
@@ -40,7 +40,7 @@ module.exports = new Class({
     this.button = element.getElement(this.options.playSelector);
     this.waveform = element.getElement(this.options.waveformSelector);
     this.positionIndicator = element.getElement(this.options.positionSelector);
-    this.duration = Math.round(parseFloat(element.getElement(this.options.lengthSelector).get('text'))) || -1;
+    this.duration = Math.round(parseFloat(element.getElement(this.options.durationSelector).get('text'))) || -1;
     this.button.addEvent('click', this.bound('toggle'));
     this.waveform.addEvent('touchstart', this.bound('onSeek'));
     this.waveform.addEvent('touchmove', this.bound('onSeek'));
