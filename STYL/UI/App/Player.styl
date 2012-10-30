@@ -58,7 +58,11 @@
       background rgba(0, 0, 0, 0.2)
 
   div.player-details
+    position relative
+    overflow hidden
+    white-space nowrap
     line-height 1.2em
+    transform translate3d(0, 0, 0)
 
     div.current-time
       float left
@@ -67,12 +71,27 @@
       float right
 
     div.chapter-mark
-      margin 0 75px
+      position absolute
+      top 0
+      bottom 0
+      left 75px
+      right 75px
       text-align center
       overflow ellipsis
-      transition-property opacity
-      transition-duration 350ms
-      opacity 0
+
+      transition-property opacity, -webkit-transform
+      transition-timing-function cubic-bezier(.2, .14, .25, .81), ease-in-out
+      transition-duration 400ms
+      opacity 1
+      transform translate3d(0, 0, 0)
+
+      &.right
+        opacity 0
+        transform translate3d(100%, 0, 0)
+
+      &.left
+        opacity 0
+        transform translate3d(-100%, 0, 0)
 
       &.fade
-        opacity 1
+        opacity 0

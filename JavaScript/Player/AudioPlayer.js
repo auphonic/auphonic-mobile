@@ -7,6 +7,7 @@ var Spinner = require('Thirdparty/Spinner');
 
 var Data = require('App/Data');
 
+var UI = require('UI');
 var Notice = require('UI/Notice');
 
 var WebAudioService = require('./WebAudioService');
@@ -34,6 +35,9 @@ module.exports = new Class({
   isAvailable: false,
   isLoading: false,
   position: 0,
+  previousPosition: 0,
+  previousChapterPosition: -1,
+  currentChapter: -1,
   chapters: [],
 
   initialize: function(element, options) {
@@ -111,6 +115,8 @@ module.exports = new Class({
     this.stopLoading();
     this.isLoading = false;
     this.isAvailable = false;
+    this.currentChapter = -1;
+    this.previousChapterPosition = -1;
   },
 
   _seek: function(event) {
@@ -132,7 +138,6 @@ module.exports = new Class({
   },
 
   seek: function() {
-    this.currentChapter = 0;
     this.service.seek(this.position);
     this.onTimeupdate(this.position);
   },
@@ -159,11 +164,8 @@ module.exports = new Class({
   },
 
   onTimeupdate: function(position) {
-    this.currentTimeElement.set('text', Data.formatDuration(position / 1000, ' '));
-    var chapter = this.getCurrentChapter(position);
-    if (position == 0 || !chapter) this.chapterMarkElement.removeClass('fade');
-    else this.chapterMarkElement.set('text', chapter.title).addClass('fade');
-
+    this.updateCurrentTime(position);
+    this.updateChapter(position);
     this.updateIndicator(this.convertDurationToPixel(position));
   },
 
@@ -229,19 +231,54 @@ module.exports = new Class({
     if (!chapters.length) return;
 
     position /= 1000;
-    if (!this.currentChapter) this.currentChapter = 0;
-    if (position < chapters[this.currentChapter].time) return;
-
+    var direction = (position == 0 || position > this.previousChapterPosition) ? 1 : -1;
+    this.previousChapterPosition = position;
     var next;
     var chapter;
     do {
-      next = this.currentChapter + 1;
+      next = this.currentChapter + direction;
       chapter = chapters[next];
-      if (chapter && position > chapter.time)
+      if (next == -1)
+        this.currentChapter = next;
+      else if (chapter && position * direction > chapter.time * direction)
         this.currentChapter = next;
     } while (chapter && this.currentChapter == next);
 
+    // When seeking backwards we have to decrease the index once more
+    if (direction == -1) this.currentChapter -= 1;
     return chapters[this.currentChapter];
+  },
+
+  updateChapter: function(position) {
+    if (!this.chapters.length) return;
+
+    var previousChapter = this.currentChapter;
+    var chapter = this.getCurrentChapter(position);
+    var currentChapter = this.currentChapter;
+
+    if (position == 0 || !chapter) {
+      this.chapterMarkElement.addClass('fade');
+      return;
+    }
+
+    if (previousChapter == currentChapter) {
+      this.chapterMarkElement.removeClass('fade');
+      return;
+    }
+
+    if (this.chapterMarkElement.hasClass('fade'))
+      this.chapterMarkElement.set('text', '').removeClass('fade');
+
+    var previous = this.chapterMarkElement;
+    var current = this.chapterMarkElement = previous.clone().set('text', chapter.title);
+
+    UI.transition(previous.getParent(), previous, current, {
+      direction: (previousChapter < currentChapter) ? 'right' : 'left',
+    });
+  },
+
+  updateCurrentTime: function(position) {
+    this.currentTimeElement.set('text', Data.formatDuration(position / 1000, ' '));
   },
 
   getDuration: function() {
