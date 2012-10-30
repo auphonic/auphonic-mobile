@@ -121,7 +121,9 @@ var clickExternal = function(event) {
   window.location.href = href + (~href.indexOf('#') ? '' : '#') + '!external';
 };
 
-var onLabelClick = function() {
+var onLabelClick = function(event) {
+  event.preventDefault();
+
   var input = this.getElement('input, select, textarea');
   if (input) input.focus();
 };
