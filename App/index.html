@@ -16,8 +16,9 @@
     (function() {
       this.__CORDOVA_VERSION = '2.2.0rc2';
       this.__API_DOMAIN = 'https://auphonic.com/';
-      this.__SERVER_URL = 'https://auphonic.com/mobile/';
+      this.__SERVER_URL = 'https://auphonic.com/mobile/' + this.__CORDOVA_VERSION + '/';
 
+      // REMOVE WHEN DEPLOYING
       // Update this if you are testing the application locally.
       var DEVbaseURL = '/Thesis/App/';
       // Local test URL for the Server scripts. Remove this when deploying.
@@ -26,11 +27,10 @@
         this.__LOCALHOST__ = true;
         this.__baseURL = DEVbaseURL;
         this.__API_DOMAIN = '../wrapper.php?';
-        this.__SERVER_URL = DEVbaseURL + '../Server/';
+        this.__SERVER_URL = DEVbaseURL + '../Server/' + this.__CORDOVA_VERSION + '/';
         document.write('<base href="' + DEVbaseURL + '" />');
       }
-
-      this.__SERVER_URL += this.__CORDOVA_VERSION + '/';
+      // END REMOVE WHEN DEPLOYING
     })();
 
     // define __loadResource
