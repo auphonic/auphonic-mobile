@@ -140,6 +140,7 @@ exports.prepare = function(object, type, fn) {
 
   metadata.hasLicense = !!(metadata.license || metadata.license_url);
   object.hasDetails =
+    object.image ||
     metadata.summary ||
     metadata.publisher ||
     metadata.url ||

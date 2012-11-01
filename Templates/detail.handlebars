@@ -46,6 +46,9 @@
     <h1>Details</h1>
     <ul>
       {{#if metadata.summary}}<li><a href="{{baseURL}}/{{uuid}}/summary" class="arrow"><span></span>Summary</a></li>{{/if}}
+      {{#if image}}
+        <li><a href="{{{image image}}}" class="share"><span></span>Cover Photo</a></li>
+      {{/if}}
       {{#metadata}}
         {{#if publisher}}<li><label>Publisher <span class="light">{{publisher}}</span></label></li>{{/if}}
         {{#if url}}
