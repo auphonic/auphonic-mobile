@@ -48,10 +48,12 @@ module.exports = new Class({
 
   onScroll: function(loader) {
     if (this.finished) return;
+    if (this.getView().getCurrentObject() != this) return;
 
-    this.loadOptions.offset += this.loadOptions.limit;
+    var options = Object.clone(this.loadOptions);
+    options.offset += options.limit;
     this.getSpinner().spin(this.getItemContainerElement().getParent());
-    this.getLoadMoreFunction()(this.loadOptions, this.bound('onLoadMore'));
+    this.getLoadMoreFunction()(options, this.bound('onLoadMore'));
 
     this.loader = loader;
     loader.detach();
@@ -60,6 +62,10 @@ module.exports = new Class({
   onLoadMore: function(response) {
     this.loader.attach();
     this.getSpinner().stop();
+
+    if (this.getView().getCurrentObject() != this) return;
+
+    this.loadOptions.offset += this.loadOptions.limit;
 
     var element = this.getItemContainerElement();
     if (!response.data || !response.data.length) {
