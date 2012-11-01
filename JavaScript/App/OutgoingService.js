@@ -157,13 +157,19 @@ exports.createView = function(store) {
         var container = parent.getElement('[data-service-uuid="' + uuid + '"]');
         if (!container) return;
 
-        container.store('offsetHeight', container.offsetHeight);
-        if (element.get('checked')) {
-          container.setStyle('height', container.offsetHeight);
-          container.getElements('select').fireEvent('focus:once').fireEvent('change');
-        } else {
-          container.setStyle('height', 0).addClass('hidden').addClass('out');
-        }
+        container.addClass('immediate');
+        (function() {
+          container.store('offsetHeight', container.offsetHeight);
+          if (element.get('checked')) {
+            container.setStyle('height', container.offsetHeight);
+            container.getElements('select').fireEvent('focus:once').fireEvent('change');
+          } else {
+            container.setStyle('height', 0).addClass('hidden').addClass('out');
+          }
+          (function() {
+            container.removeClass('immediate');
+          }).delay(1);
+        }).delay(1);
       });
     });
 

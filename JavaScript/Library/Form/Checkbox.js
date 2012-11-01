@@ -128,10 +128,7 @@ module.exports = new Class({
     this.moved = false;
 
     (function() {
-      this.element.set('checked', checked);
-      // iOS doesn't fire the change event when setting the checked attribute manually.
-      if (Browser.Platform.ios) this.element.fireEvent('change');
-      this.update();
+      this.element.set('checked', checked).fireEvent('change');
     }).delay(10, this);
   }
 
