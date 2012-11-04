@@ -346,7 +346,8 @@ module.exports = new Class({
 
     // We actually need to prune the stack because Change Source is supposed
     // to transition to the right.
-    View.getMain().getStack().prune();
+    if (View.getMain().getCurrentObject == this.object)
+      View.getMain().getStack().prune();
   }
 
 });

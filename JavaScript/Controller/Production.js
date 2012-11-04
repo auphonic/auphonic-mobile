@@ -418,7 +418,7 @@ var upload = function(file) {
       success: function(uploadResponse) {
         new Notice('The recording <span class="bold">"' + file.name + '"</span> was successfully uploaded and attached to your production.');
         CurrentUpload.remove(uuid);
-        View.getMain().getCurrentObject().fireEvent('refresh', [uploadResponse.data]);
+        View.getMain().getStack().notifyAll('refresh', [uploadResponse.data]);
       },
 
       error: function() {
@@ -430,7 +430,7 @@ var upload = function(file) {
         // Bound this between 0 and 100 just to make sure to never have a crazy percentage here :)
         var percentage = Math.max(0, Math.min(100, Math.round(event.loaded / event.total * 100)));
 
-        View.getMain().getCurrentObject().fireEvent('uploadProgress', [{
+        View.getMain().getStack().notifyAll('uploadProgress', [{
           uuid: uuid,
           percentage: percentage
         }]);

@@ -90,6 +90,10 @@ module.exports = new Class({
 
   getName: function() {
     return this.name;
+  },
+
+  notifyAll: function(event, args) {
+    this.stack.invoke('fireEvent', event, args);
   }
 
 });
