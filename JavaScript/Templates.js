@@ -1390,10 +1390,10 @@ templates['login'] = template(function (Handlebars,depth0,helpers,partials,data)
   buffer += escapeExpression(stack1) + "\" />\n  <input type=\"hidden\" name=\"client_secret\" value=\"";
   stack1 = depth0.client_secret;
   stack1 = typeof stack1 === functionType ? stack1() : stack1;
-  buffer += escapeExpression(stack1) + "\" />\n  <input type=\"hidden\" name=\"grant_type\" value=\"password\" />\n  <div class=\"formcontent\">\n    <div>\n      <input type=\"text\" name=\"username\" value=\"";
+  buffer += escapeExpression(stack1) + "\" />\n  <input type=\"hidden\" name=\"grant_type\" value=\"password\" />\n  <div class=\"formcontent\">\n    <label>\n      <input type=\"text\" name=\"username\" value=\"";
   stack1 = depth0.username;
   stack1 = typeof stack1 === functionType ? stack1() : stack1;
-  buffer += escapeExpression(stack1) + "\" placeholder=\"email or username\" autocapitalize=\"off\" autocorrect=\"off\" data-clearable=\"1\" />\n    </div>\n    <div>\n      <input type=\"password\" name=\"password\" placeholder=\"password\" />\n    </div>\n  </div>\n  <div>\n    <input type=\"submit\" name=\"submit\" value=\"Login\" />\n    <a href=\"";
+  buffer += escapeExpression(stack1) + "\" placeholder=\"email or username\" autocapitalize=\"off\" autocorrect=\"off\" data-clearable=\"1\" />\n    </label>\n    <label>\n      <input type=\"password\" name=\"password\" placeholder=\"password\" />\n    </label>\n  </div>\n  <div>\n    <input type=\"submit\" name=\"submit\" value=\"Login\" />\n    <a href=\"";
   stack1 = depth0.registerURL;
   stack1 = typeof stack1 === functionType ? stack1() : stack1;
   buffer += escapeExpression(stack1) + "\" value=\"Register\" class=\"register button\">Register</a>\n  </div>\n</form>\n";
