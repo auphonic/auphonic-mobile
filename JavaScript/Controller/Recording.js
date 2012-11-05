@@ -1,3 +1,4 @@
+var API = require('API');
 var Controller = require('./');
 var UI = require('UI');
 var View = require('View');
@@ -60,6 +61,18 @@ var showAll = function() {
   });
 };
 
+var show = function(recording) {
+  View.getMain().push('recording', new View.Object({
+    title: Recording.getRecordingName(recording),
+    content: UI.render('recording', recording),
+    action: {
+      title: 'Upload',
+      url: '/production/recording/upload/{id}'.substitute(recording),
+      className: 'big'
+    }
+  }));
+};
+
 var showOne = function(req) {
   var recording = Recording.findById(req.id);
   recording.hasChapters = recording.chapters && recording.chapters.length;
@@ -70,15 +83,32 @@ var showOne = function(req) {
   recording.duration_string = Data.formatDuration(recording.duration, ' ');
   recording.isLocal = true;
 
-  View.getMain().push('recording', new View.Object({
-    title: Recording.getRecordingName(recording),
-    content: UI.render('recording', recording),
-    action: {
-      title: 'Upload',
-      url: '/production/recording/upload/{id}'.substitute(recording),
-      className: 'big'
-    }
-  }));
+  if (recording.productions) {
+    var loaded = 0;
+    var complete = function() {
+      if (++loaded == recording.productions.length) show(recording);
+    };
+
+    View.getMain().showIndicator({stack: 'recording'});
+    recording.display_productions = [];
+    // This is wasteful but realistically this will only make one or two requests.
+    recording.productions.each(function(uuid) {
+      API.call('production/{uuid}'.substitute({uuid: uuid})).on({
+        success: function(response) {
+          recording.hasProductions = true;
+          recording.display_productions.push({
+            uuid: uuid,
+            title: response.data.metadata.title
+          });
+          complete();
+        },
+        error: complete
+      });
+    });
+    return;
+  }
+
+  show(recording);
 };
 
 Controller.define('/recording', {isGreedy: true}, showAll);

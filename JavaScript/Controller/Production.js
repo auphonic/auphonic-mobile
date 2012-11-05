@@ -413,10 +413,13 @@ Controller.define('/production/new/outgoing_services', function() {
 var upload = function(file) {
   View.getMain().showIndicator({stack: 'production'});
 
-  Recording.add(file);
+  var recording = Recording.add(file);
 
   var onCreateSuccess = function(response) {
     var uuid = response.data.uuid;
+
+    Recording.addProduction(recording.id, uuid);
+
     var transfer = API.upload('production/{uuid}/upload'.substitute(response.data), file, 'input_file').on({
 
       success: function(uploadResponse) {

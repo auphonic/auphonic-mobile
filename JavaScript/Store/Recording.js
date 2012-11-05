@@ -51,22 +51,34 @@ exports.getRecordingName = function(recording) {
   return (match && match[1] ? 'Recording ' + match[1] : recording.name);
 };
 
-exports.add = function(recording) {
-  if (recording.uploaded) return;
-
+var update = function(id, recording) {
   var recordings = get();
-  var id = String.uniqueID();
+  recordings[id] = recording;
+  set(recordings);
+};
 
+exports.add = function(recording) {
+  if (recording.uploaded) return recording;
+
+  var id = String.uniqueID();
   recording = Object.append({}, recording);
   recording.id = id;
   recording.timestamp = Date.now();
   recording.display_name = exports.getRecordingName(recording);
   recording.uploaded = true;
-
-  recordings[id] = recording;
-  set(recordings);
+  update(id, recording);
+  return recording;
 };
 
+exports.addProduction = function(id, productionUUID) {
+  var recording = findById(id);
+  if (!recording) return;
+
+  if (!recording.productions) recording.productions = [];
+  recording.productions.include(productionUUID);
+  update(id, recording);
+  return recording;
+};
 
 exports.remove = function(id) {
   var recording = findById(id);

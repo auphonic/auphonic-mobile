@@ -23,3 +23,21 @@
     {{/each}}
   </ul>
 {{/if}}
+
+{{#if hasProductions}}
+  <h1>Associated Productions</h1>
+  <ul>
+    {{#each display_productions}}
+      <li>
+        <a href="/production/{{uuid}}" class="arrow">
+          <span></span>
+          {{#if title}}
+            {{title}}
+          {{else}}
+            Untitled
+          {{/if}}
+        </a>
+      </li>
+    {{/each}}
+  </ul>
+{{/if}}
