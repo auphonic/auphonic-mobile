@@ -138,7 +138,7 @@ var showOne = function(req, options) {
       },
 
       onRefresh: function(data) {
-        if (data.uuid == preset.uuid) {
+        if (data.uuid == preset.uuid && object == View.getMain().getCurrentObject()) {
           presets[data.uuid] = data;
           showOne(data, {refresh: true});
         }

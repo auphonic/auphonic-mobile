@@ -27,7 +27,10 @@
   <div class="clear"></div>
 
   {{#if is_uploading}}
-    <div class="content uploading">Uploading</div>
+    <div class="content uploading">
+      <span></span>
+      <div class="progress-bar hidden"><div></div></div>
+    </div>
     <a class="clear button red expand cancelUpload" data-id="{{uuid}}">Cancel Upload</a>
   {{/if}}
 

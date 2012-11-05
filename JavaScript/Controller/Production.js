@@ -192,7 +192,7 @@ var showOne = function(req, options) {
 
       onRefresh: function(data) {
         // If the production is currently being viewed, refresh.
-        if (data.uuid == production.uuid) {
+        if (data.uuid == production.uuid && object == View.getMain().getCurrentObject()) {
           productions[data.uuid] = data;
           showOne(data, {refresh: true});
         }
@@ -201,8 +201,12 @@ var showOne = function(req, options) {
       onUploadProgress: function(data) {
         if (data.uuid != production.uuid) return;
 
-        var uploading = object.toElement().getElement('.uploading');
+        var element = object.toElement();
+        var uploading = element.getElement('.uploading > span');
         if (uploading) uploading.set('text', 'Uploading ' + data.percentage + ' %');
+
+        var progressBar = element.getElement('.uploading .progress-bar');
+        if (progressBar) progressBar.show().setStyle('width', data.percentage + '%');
       }
 
     });

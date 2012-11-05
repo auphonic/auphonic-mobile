@@ -230,7 +230,7 @@ function program28(depth0,data) {
 function program30(depth0,data) {
   
   var buffer = "", stack1;
-  buffer += "\n    <div class=\"content uploading\">Uploading</div>\n    <a class=\"clear button red expand cancelUpload\" data-id=\"";
+  buffer += "\n    <div class=\"content uploading\">\n      <span></span>\n      <div class=\"progress-bar hidden\"><div></div></div>\n    </div>\n    <a class=\"clear button red expand cancelUpload\" data-id=\"";
   stack1 = depth0.uuid;
   stack1 = typeof stack1 === functionType ? stack1() : stack1;
   buffer += escapeExpression(stack1) + "\">Cancel Upload</a>\n  ";
