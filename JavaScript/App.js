@@ -328,7 +328,19 @@ window.__BOOTAPP = function() {
         if (!popover.isOpen() && popover.getOpenDelay())
           reposition.delay(popover.getOpenDelay());
       }
-    })
+    }),
+
+    '[data-belongs-to]': function(elements) {
+      elements.each(function(element) {
+        if (element.retrieve(':belongs-to-attached')) return;
+        element.store(':belongs-to-attached', true);
+        var owner = document.getElement('input[name=' + element.get('data-belongs-to') + ']');
+        if (owner) owner.addEvent('change', function() {
+          if (this.get('checked')) element.removeClass('fade');
+          else element.addClass('fade');
+        });
+      });
+    }
 
   }).update();
 

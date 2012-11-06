@@ -71,8 +71,8 @@
 <h1>Algorithms</h1>
 <ul class="formcontent">
   {{#each algorithm}}
-    {{#if checkbox}}
-      <li class="wide">
+    <li class="wide{{#if belongs_to}} transition-able{{/if}}"{{#if belongs_to}} data-belongs-to="algorithms.{{belongs_to}}"{{/if}}>
+      {{#if checkbox}}
         <div class="right">
           <div class="checkbox">
             <div>
@@ -88,20 +88,18 @@
             {{description}}
           </div>
         </label>
-      </li>
-    {{/if}}
-    {{#if select}}
-      <li class="wide">
+      {{/if}}
+      {{#if select}}
         <select name="algorithms.{{key}}" class="right">
           {{#each options}}
             <option value="{{value}}"{{#if selected}}selected="selected"{{/if}}>{{short_display_name}}</option>
           {{/each}}
         </select>
         <label class="left info">
-          {{display_name}}
+          {{short_display_name}}
           {{> algorithm-popover}}
         </label>
-      </li>
-    {{/if}}
+      {{/if}}
+    </li>
   {{/each}}
 </ul>

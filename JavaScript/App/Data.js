@@ -50,13 +50,16 @@ API.on('presets', {
 
 exports.formatInfos = function(response) {
   // Process Algorithms into a usable format
-  response.data.algorithms_array = Object.values(Object.map(response.data.algorithms, function(item, algorithm) {
+  var algorithms = response.data.algorithms;
+  response.data.algorithms_array = Object.values(Object.map(algorithms, function(item, algorithm) {
     var object = Object.clone(item);
     object.key = algorithm;
     object[object.type] = true;
     object[algorithm] = true;
-    // Put algorithms with values on the bottom
-    object.order = (object.type == 'select') ? 2 : 1;
+    // Sort alphabetically, belonging algorithms last
+    object.order = ((algorithms[object.belongs_to] || object).display_name) + (object.belongs_to ? 2 : 1);
+
+    object.short_display_name = Auphonic.getAlgorithmShortString(object);
 
     if (object.type == 'select') object.options.each(function(option) {
       if (option.value == object.default_value)
@@ -169,6 +172,8 @@ exports.prepare = function(object, type, fn) {
     if (!value) return null;
     algorithm = Object.clone(algorithm);
     algorithm.value = value;
+
+    if (algorithm.belongs_to && !object.algorithms[algorithm.belongs_to]) return null;
 
     if (algorithm.type == 'select') {
       // Search for the correct value string in options

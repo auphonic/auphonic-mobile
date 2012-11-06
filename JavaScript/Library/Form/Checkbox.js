@@ -140,6 +140,7 @@ Element.Properties.checked = {
     this.setProperty('checked', value);
     var instance = this.retrieve(':checkbox');
     if (instance) instance.update();
+    this.fireEvent('change');
   }
 
 };

@@ -109,9 +109,10 @@ module.exports = new Class({
 
   updateAlgorithms: function(data) {
     // Use default values
-    if (!data) data = {algorithms: Object.map(API.getInfo('algorithms'), function(algorithm) {
+    if (!data) data = {};
+    if (!data.algorithms) data.algorithms = Object.map(API.getInfo('algorithms'), function(algorithm) {
       return algorithm.default_value;
-    })};
+    });
 
     this.object.unserialize(Object.flatten({algorithms: data.algorithms}));
   },
@@ -181,9 +182,7 @@ module.exports = new Class({
       }
     });
 
-    if (isEditMode) object.addEvent('show:once', (function() {
-      this.updateAlgorithms(data);
-    }).bind(this));
+    object.addEvent('insert:once', this.updateAlgorithms.bind(this, data));
 
     if (isNewProduction) object.addEvent('show:once', (function() {
       var select = object.toElement().getElement(this.options.presetChooserSelector);

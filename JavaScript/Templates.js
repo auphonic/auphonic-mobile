@@ -647,7 +647,7 @@ function program94(depth0,data) {
   stack1 = helpers['if'].call(depth0, stack1, {hash:{},inverse:self.program(101, program101, data),fn:self.program(99, program99, data)});
   if(stack1 || stack1 === 0) { buffer += stack1; }
   buffer += "\n          ";
-  stack1 = depth0.display_name;
+  stack1 = depth0.short_display_name;
   stack1 = typeof stack1 === functionType ? stack1() : stack1;
   buffer += escapeExpression(stack1) + "\n          ";
   stack1 = depth0;
@@ -927,25 +927,47 @@ function program34(depth0,data) {
 function program36(depth0,data) {
   
   var buffer = "", stack1;
-  buffer += "\n    ";
-  stack1 = depth0.checkbox;
+  buffer += "\n    <li class=\"wide";
+  stack1 = depth0.belongs_to;
   stack1 = helpers['if'].call(depth0, stack1, {hash:{},inverse:self.noop,fn:self.program(37, program37, data)});
   if(stack1 || stack1 === 0) { buffer += stack1; }
-  buffer += "\n    ";
-  stack1 = depth0.select;
-  stack1 = helpers['if'].call(depth0, stack1, {hash:{},inverse:self.noop,fn:self.program(40, program40, data)});
+  buffer += "\"";
+  stack1 = depth0.belongs_to;
+  stack1 = helpers['if'].call(depth0, stack1, {hash:{},inverse:self.noop,fn:self.program(39, program39, data)});
   if(stack1 || stack1 === 0) { buffer += stack1; }
-  buffer += "\n  ";
+  buffer += ">\n      ";
+  stack1 = depth0.checkbox;
+  stack1 = helpers['if'].call(depth0, stack1, {hash:{},inverse:self.noop,fn:self.program(41, program41, data)});
+  if(stack1 || stack1 === 0) { buffer += stack1; }
+  buffer += "\n      ";
+  stack1 = depth0.select;
+  stack1 = helpers['if'].call(depth0, stack1, {hash:{},inverse:self.noop,fn:self.program(44, program44, data)});
+  if(stack1 || stack1 === 0) { buffer += stack1; }
+  buffer += "\n    </li>\n  ";
   return buffer;}
 function program37(depth0,data) {
   
+  
+  return " transition-able";}
+
+function program39(depth0,data) {
+  
   var buffer = "", stack1;
-  buffer += "\n      <li class=\"wide\">\n        <div class=\"right\">\n          <div class=\"checkbox\">\n            <div>\n              <span class=\"left\"></span><span class=\"thumb\" data-on=\"ON\" data-off=\"OFF\"></span>\n              <input type=\"checkbox\" name=\"algorithms.";
+  buffer += " data-belongs-to=\"algorithms.";
+  stack1 = depth0.belongs_to;
+  stack1 = typeof stack1 === functionType ? stack1() : stack1;
+  buffer += escapeExpression(stack1) + "\"";
+  return buffer;}
+
+function program41(depth0,data) {
+  
+  var buffer = "", stack1;
+  buffer += "\n        <div class=\"right\">\n          <div class=\"checkbox\">\n            <div>\n              <span class=\"left\"></span><span class=\"thumb\" data-on=\"ON\" data-off=\"OFF\"></span>\n              <input type=\"checkbox\" name=\"algorithms.";
   stack1 = depth0.key;
   stack1 = typeof stack1 === functionType ? stack1() : stack1;
   buffer += escapeExpression(stack1) + "\" value=\"1\"";
   stack1 = depth0.default_value;
-  stack1 = helpers['if'].call(depth0, stack1, {hash:{},inverse:self.noop,fn:self.program(38, program38, data)});
+  stack1 = helpers['if'].call(depth0, stack1, {hash:{},inverse:self.noop,fn:self.program(42, program42, data)});
   if(stack1 || stack1 === 0) { buffer += stack1; }
   buffer += " />\n            </div>\n          </div>\n        </div>\n        <label class=\"left info\">\n          ";
   stack1 = depth0.display_name;
@@ -956,33 +978,33 @@ function program37(depth0,data) {
   buffer += escapeExpression(stack1) + "</h1>\n            ";
   stack1 = depth0.description;
   stack1 = typeof stack1 === functionType ? stack1() : stack1;
-  buffer += escapeExpression(stack1) + "\n          </div>\n        </label>\n      </li>\n    ";
+  buffer += escapeExpression(stack1) + "\n          </div>\n        </label>\n      ";
   return buffer;}
-function program38(depth0,data) {
+function program42(depth0,data) {
   
   
   return " checked=\"checked\"";}
 
-function program40(depth0,data) {
+function program44(depth0,data) {
   
   var buffer = "", stack1;
-  buffer += "\n      <li class=\"wide\">\n        <select name=\"algorithms.";
+  buffer += "\n        <select name=\"algorithms.";
   stack1 = depth0.key;
   stack1 = typeof stack1 === functionType ? stack1() : stack1;
   buffer += escapeExpression(stack1) + "\" class=\"right\">\n          ";
   stack1 = depth0.options;
-  stack1 = helpers.each.call(depth0, stack1, {hash:{},inverse:self.noop,fn:self.program(41, program41, data)});
+  stack1 = helpers.each.call(depth0, stack1, {hash:{},inverse:self.noop,fn:self.program(45, program45, data)});
   if(stack1 || stack1 === 0) { buffer += stack1; }
   buffer += "\n        </select>\n        <label class=\"left info\">\n          ";
-  stack1 = depth0.display_name;
+  stack1 = depth0.short_display_name;
   stack1 = typeof stack1 === functionType ? stack1() : stack1;
   buffer += escapeExpression(stack1) + "\n          ";
   stack1 = depth0;
   stack1 = self.invokePartial(partials['algorithm-popover'], 'algorithm-popover', stack1, helpers, partials);;
   if(stack1 || stack1 === 0) { buffer += stack1; }
-  buffer += "\n        </label>\n      </li>\n    ";
+  buffer += "\n        </label>\n      ";
   return buffer;}
-function program41(depth0,data) {
+function program45(depth0,data) {
   
   var buffer = "", stack1;
   buffer += "\n            <option value=\"";
@@ -990,14 +1012,14 @@ function program41(depth0,data) {
   stack1 = typeof stack1 === functionType ? stack1() : stack1;
   buffer += escapeExpression(stack1) + "\"";
   stack1 = depth0.selected;
-  stack1 = helpers['if'].call(depth0, stack1, {hash:{},inverse:self.noop,fn:self.program(42, program42, data)});
+  stack1 = helpers['if'].call(depth0, stack1, {hash:{},inverse:self.noop,fn:self.program(46, program46, data)});
   if(stack1 || stack1 === 0) { buffer += stack1; }
   buffer += ">";
   stack1 = depth0.short_display_name;
   stack1 = typeof stack1 === functionType ? stack1() : stack1;
   buffer += escapeExpression(stack1) + "</option>\n          ";
   return buffer;}
-function program42(depth0,data) {
+function program46(depth0,data) {
   
   
   return "selected=\"selected\"";}

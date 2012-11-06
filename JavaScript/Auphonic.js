@@ -66,6 +66,9 @@ var statusStrings = {
 
 exports.AlgorithmFilters = ['loudnesstarget', 'denoiseamount'];
 exports.AlgorithmDisplayFilter = /^.*?(db|lufs)/i;
+exports.getAlgorithmShortString = function(algorithm) {
+  return (algorithm.key == 'denoiseamount') ? 'Reduction Amount' : algorithm.display_name;
+};
 
 exports.ErrorStatus = 2;
 

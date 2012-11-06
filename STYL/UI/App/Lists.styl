@@ -108,3 +108,19 @@ div.container ul
       margin 0 10px 0 0
 
       border-radius 2px
+
+    &.transition-able
+      overflow hidden
+
+      transition-property border, opacity, height
+      transition-timing-function ease-in-out
+      transition-duration 350ms
+
+      transform translate3d(0, 0, 0)
+      height 41px
+      opacity 1
+
+      &.fade
+        height 0
+        opacity 0
+        border 0
