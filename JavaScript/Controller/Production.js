@@ -258,7 +258,19 @@ UI.register({
 Controller.define('/production', showAll);
 
 Controller.define('/production/{uuid}', function(req) {
-  showOne(req);
+  var production = productions[req.uuid];
+  if (production) {
+    showOne(production);
+    return;
+  }
+
+  View.getMain().showIndicator({stack: 'production'});
+  API.call('production/{uuid}'.substitute(req)).on({
+    success: function(response) {
+      productions[response.data.uuid] = response.data;
+      showOne(response.data);
+    }
+  });
 });
 
 Controller.define('/production/{uuid}/summary', function(req) {

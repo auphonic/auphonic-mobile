@@ -216,7 +216,7 @@ module.exports = new Class({
     if (this.indicatorIsVisible) return;
 
     this.indicatorIsVisible = true;
-    this.indicator.spin(this.getCurrentObject().toElement().getParent());
+    this.indicator.spin(this.element);
   },
 
   hideIndicator: function() {
