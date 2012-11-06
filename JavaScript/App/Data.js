@@ -63,7 +63,7 @@ exports.formatInfos = function(response) {
         option.selected = true;
 
       var substring = null;
-      if (algorithm == Auphonic.LUFSAlgorithmName) substring = option.display_name.match(Auphonic.LUFSDisplayFilter);
+      if (Auphonic.AlgorithmFilters.contains(algorithm)) substring = option.display_name.match(Auphonic.AlgorithmDisplayFilter);
       option.short_display_name = (substring && substring[0]) || option.display_name;
     });
 

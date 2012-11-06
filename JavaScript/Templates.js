@@ -50,7 +50,7 @@ function program2(depth0,data) {
   stack1 = depth0.description;
   stack1 = typeof stack1 === functionType ? stack1() : stack1;
   buffer += escapeExpression(stack1) + "\n  ";
-  stack1 = depth0.loudnesstarget;
+  stack1 = depth0.options;
   stack1 = helpers['if'].call(depth0, stack1, {hash:{},inverse:self.noop,fn:self.program(1, program1, data)});
   if(stack1 || stack1 === 0) { buffer += stack1; }
   buffer += "\n</div>\n";
@@ -993,7 +993,7 @@ function program41(depth0,data) {
   stack1 = helpers['if'].call(depth0, stack1, {hash:{},inverse:self.noop,fn:self.program(42, program42, data)});
   if(stack1 || stack1 === 0) { buffer += stack1; }
   buffer += ">";
-  stack1 = depth0.display_name;
+  stack1 = depth0.short_display_name;
   stack1 = typeof stack1 === functionType ? stack1() : stack1;
   buffer += escapeExpression(stack1) + "</option>\n          ";
   return buffer;}

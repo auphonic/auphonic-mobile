@@ -64,8 +64,8 @@ var statusStrings = {
   '11': 'Outdated'
 };
 
-exports.LUFSAlgorithmName = 'loudnesstarget';
-exports.LUFSDisplayFilter = /^.*?lufs/i;
+exports.AlgorithmFilters = ['loudnesstarget', 'denoiseamount'];
+exports.AlgorithmDisplayFilter = /^.*?(db|lufs)/i;
 
 exports.ErrorStatus = 2;
 
