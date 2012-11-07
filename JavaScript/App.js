@@ -416,7 +416,7 @@ window.__BOOTAPP = function() {
     load();
 
     View.getMain().push('home', new View.Object({
-      title: 'Home',
+      backTitle: 'Home',
       content: UI.render('home', {
         feedback: Auphonic.FeedbackURL
       })
