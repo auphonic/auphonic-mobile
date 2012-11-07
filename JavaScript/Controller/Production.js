@@ -475,10 +475,9 @@ var upload = function(recording) {
     History.push(url);
   };
 
-  if (currentEditUUID) {
-    onCreateSuccess({data: {uuid: currentEditUUID}});
-    return;
-  }
+  // Either create a new production or overwrite the chapters
+  var url = 'productions';
+  if (currentEditUUID) url = 'production/{uuid}'.substitute({uuid: currentEditUUID});
 
   var data = {chapters: recording.chapters};
   API.call('productions', 'post', JSON.stringify(data)).on({
