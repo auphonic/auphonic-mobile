@@ -16,6 +16,8 @@ var Handlebars = require('Handlebars');
 var locked = false;
 var isVisible = false;
 
+var transitionDelay = 1;
+
 var preventDefault = function(event) {
   event.preventDefault();
 };
@@ -55,7 +57,7 @@ Object.append(UI, {
 
       if (previous) previous.addClass(oppositeDirection);
       if (current) current.removeClass(direction);
-    }).delay(50, this); // Use a higher delay to account for DOM insertion delays
+    }).delay(transitionDelay, this); // Use a higher delay to account for DOM insertion delays
 
     this.update(container);
   },
@@ -130,7 +132,7 @@ Object.append(UI, {
     (function() {
       login.addClass('fade');
       splash.addClass('fade');
-    }).delay(50);
+    }).delay(transitionDelay);
   },
 
   hideChrome: function(options) {
@@ -151,7 +153,15 @@ Object.append(UI, {
     (function() {
       login.removeClass('fade');
       splash.removeClass('fade');
-    }).delay(50);
+    }).delay(transitionDelay);
+  },
+
+  setTransitionDelay: function(delay) {
+    transitionDelay = delay;
+  },
+
+  getTransitionDelay: function() {
+    return transitionDelay;
   }
 
 });

@@ -30,6 +30,8 @@ Element.defineCustomEvent('transitionStart', {
 
 });
 
+var transitionDelay = 1;
+
 Element.implement('transition', function(options, fn) {
 	var isImmediate = options && options.immediate;
 
@@ -44,7 +46,11 @@ Element.implement('transition', function(options, fn) {
 		}
 
 		if (fn) this.addEvent('transitionComplete:once', fn);
-	}).delay(50, this);
+	}).delay(transitionDelay, this);
 
 	return this;
 });
+
+Element.defineDefaultTransitionDelay = function(delay) {
+	transitionDelay = delay;
+};

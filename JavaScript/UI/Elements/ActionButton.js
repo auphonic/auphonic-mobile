@@ -19,7 +19,7 @@ module.exports = new Class({
     element.transition(options, element.dispose.bind(element));
     (function() {
       element.removeClass(this.options.className);
-    }).delay(50, this);
+    }).delay(UI.getTransitionDelay(), this);
 
     if (!data) return this;
 
@@ -39,7 +39,7 @@ module.exports = new Class({
     if (isImmediate) element.addClass(className);
     else (function() {
       element.addClass(className);
-    }).delay(50);
+    }).delay(UI.getTransitionDelay());
 
     return this;
   }

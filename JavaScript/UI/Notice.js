@@ -83,7 +83,7 @@ module.exports = new Class({
     (function() {
       this.reposition();
       this.element.addEvent('transformComplete:once', this.bound('observe'));
-    }).delay(50, this);
+    }).delay(UI.getTransitionDelay(), this);
 
     return this;
   },

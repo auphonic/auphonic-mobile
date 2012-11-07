@@ -139,7 +139,7 @@ exports.createView = function(store) {
         container.removeClass('hidden');
         (function() {
           container.setStyle('height', container.retrieve('offsetHeight')).removeClass('out');
-        }).delay(50);
+        }).delay(UI.getTransitionDelay());
       } else {
         container.setStyle('height', 0).addClass('out').addEvent('transitionComplete:once', function() {
           container.addClass('hidden');

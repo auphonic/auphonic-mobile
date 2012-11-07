@@ -5,6 +5,7 @@ var Options = Core.Options;
 
 var Data = require('App/Data');
 
+var UI = require('UI');
 var Notice = require('UI/Notice');
 
 module.exports = new Class({
@@ -108,7 +109,7 @@ module.exports = new Class({
     this.status.show();
     this.statusTimer = (function() {
       this.status.removeClass('out');
-    }).delay(50, this);
+    }).delay(UI.getTransitionDelay(), this);
   },
 
   onUpdate: function() {

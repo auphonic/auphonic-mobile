@@ -211,7 +211,12 @@ window.__BOOTAPP = function() {
 
     // Prevent all clicks from working normally
     window.addEventListener('click', preventDefault, false);
+
+    var iPhone5 = (window.screen.height == 568);
+    if (!iPhone5) UI.setTransitionDelay(50);
   }
+
+  Element.defineDefaultTransitionDelay(UI.getTransitionDelay());
 
   document.body.adopt(Element.from(UI.render('ui')));
 
