@@ -89,7 +89,7 @@ var showOne = function(req) {
       if (++loaded == recording.productions.length) show(recording);
     };
 
-    View.getMain().showIndicator({stack: 'recording'});
+    View.getMain().showIndicator();
     recording.display_productions = [];
     // This is wasteful but realistically this will only make one or two requests.
     recording.productions.each(function(uuid) {

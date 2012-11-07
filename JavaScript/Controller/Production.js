@@ -99,7 +99,7 @@ var showAll = function() {
     });
   };
 
-  View.getMain().showIndicator({stack: 'production'});
+  View.getMain().showIndicator();
 
   load(options, function(response) {
     add(response.data);
@@ -264,7 +264,7 @@ Controller.define('/production/{uuid}', function(req) {
     return;
   }
 
-  View.getMain().showIndicator({stack: 'production'});
+  View.getMain().showIndicator();
   API.call('production/{uuid}'.substitute(req)).on({
     success: function(response) {
       productions[response.data.uuid] = response.data;
@@ -340,7 +340,7 @@ Controller.define('/production/edit/{uuid}', function(req) {
     return;
   }
 
-  View.getMain().showIndicator({stack: 'production'});
+  View.getMain().showIndicator();
 
   // Maybe we haven't loaded productions yet
   API.call('production/{uuid}'.substitute(req)).on({
@@ -386,7 +386,7 @@ Controller.define('/production/source/{service}', function(req) {
 Controller.define('/production/selectFile/{index}', function(req) {
   ListFiles.setData(form, req.index);
   if (currentEditUUID) {
-    View.getMain().showIndicator({stack: 'production'});
+    View.getMain().showIndicator();
 
     API.call('production/{uuid}'.substitute({uuid: currentEditUUID}), 'post', JSON.stringify(Object.append({},
       Source.getData(form),
@@ -423,9 +423,9 @@ Controller.define('/production/new/outgoing_services', function() {
 
 // Recording
 var upload = function(file) {
-  View.getMain().showIndicator({stack: 'production'});
 
   var recording = Recording.add(file);
+  View.getMain().showIndicator();
 
   var onCreateSuccess = function(response) {
     var uuid = response.data.uuid;

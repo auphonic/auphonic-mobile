@@ -197,7 +197,7 @@ module.exports = new Class({
     if (this.indicatorIsPending) return;
     if (options && options.immediate) {
       UI.disable();
-      this._showIndicator(options);
+      this._showIndicator();
       return;
     }
 
@@ -207,11 +207,11 @@ module.exports = new Class({
     // Don't disable the UI if we have cached API resources
     this.disableUITimer = UI.disable.delay(1, UI);
     this.timer = (function() {
-      this._showIndicator(options);
+      this._showIndicator();
     }).delay(this.options.indicatorDelay, this);
   },
 
-  _showIndicator: function(options) {
+  _showIndicator: function() {
     if (!this.getStack()) return;
     if (this.indicatorIsVisible) return;
 

@@ -76,7 +76,7 @@ var showAll = function() {
     });
   };
 
-  View.getMain().showIndicator({stack: 'preset'});
+  View.getMain().showIndicator();
 
   load(options, function(response) {
     add(response.data);
