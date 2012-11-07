@@ -69,7 +69,7 @@ var parseFromContainer = function(container) {
     var check = function(ending) {
       return file.lastIndexOf('.' + ending) == file.length - 1 - ending.length;
     };
-    if (file && !endings.some(check))
+    if (file && endings && !endings.some(check))
       outputFile.filename += '.' + endings[0];
 
     return outputFile;
