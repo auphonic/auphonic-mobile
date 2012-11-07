@@ -83,6 +83,9 @@ var showOne = function(req) {
   recording.duration_string = Data.formatDuration(recording.duration, ' ');
   recording.isLocal = true;
 
+  if (recording.type == 'audio') recording.isAudio = true;
+  else recording.isVideo = true;
+
   if (recording.productions) {
     var loaded = 0;
     var complete = function() {

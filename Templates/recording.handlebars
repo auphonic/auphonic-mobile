@@ -9,7 +9,14 @@
   </li>
 </ul>
 
-{{> player}}
+{{#if isAudio}}
+  {{> player}}
+{{else}}
+  <h1>Video</h1>
+  <video controls>
+    <source src="{{fullPath}}" />
+  </video>
+{{/if}}
 
 {{#if hasChapters}}
   <h1>Chapter Marks</h1>

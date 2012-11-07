@@ -191,21 +191,27 @@ exports.prepare = function(object, type, fn) {
 
   object.hasAlgorithms = !!length(object.algorithms);
 
+  var token = User.getToken('?bearer_token=');
   var media_files = [];
   if (object.output_files) object.output_files.each(function(file) {
     if (!file.download_url) return;
 
+    if (file.format == 'video') {
+      object.hasVideo = true;
+      object.videoPath = file.download_url + token;
+      return;
+    }
+
     media_files.push({
       format: parseFloat((preferredFormats[file.format] || preferredFormats.dflt) + '.' + String('000' + (file.bitrate || 0)).slice(-3)),
-      url: encodeURI(file.download_url)
+      url: file.download_url
     });
   });
 
   if (length(metadata.tags)) metadata.tags = metadata.tags.join(', ');
 
-  var token = User.getToken('?bearer_token=');
   media_files = media_files.sortByKey('format').map(function(file) {
-    return file.url + token;
+    return encodeURI(file.url + token);
   });
 
   object.media_files = length(media_files) ? JSON.stringify(media_files) : null;

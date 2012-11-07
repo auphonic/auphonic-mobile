@@ -422,9 +422,7 @@ Controller.define('/production/new/outgoing_services', function() {
 });
 
 // Recording
-var upload = function(file) {
-
-  var recording = Recording.add(file);
+var upload = function(recording) {
   View.getMain().showIndicator();
 
   var onCreateSuccess = function(response) {
@@ -432,16 +430,16 @@ var upload = function(file) {
 
     Recording.addProduction(recording.id, uuid);
 
-    var transfer = API.upload('production/{uuid}/upload'.substitute(response.data), file, 'input_file').on({
+    var transfer = API.upload('production/{uuid}/upload'.substitute(response.data), recording, 'input_file').on({
 
       success: function(uploadResponse) {
-        new Notice('The recording <span class="bold">"' + file.name + '"</span> was successfully uploaded and attached to your production.');
+        new Notice('The recording <span class="bold">"' + recording.name + '"</span> was successfully uploaded and attached to your production.');
         CurrentUpload.remove(uuid);
         View.getMain().getStack().notifyAll('refresh', [uploadResponse.data]);
       },
 
       error: function() {
-        new Notice('There was an error uploading your recording <span class="bold">"' + file.name + '"</span>. You can find your recording in the "Recordings" tab and you can try uploading it again later.');
+        new Notice('There was an error uploading your recording <span class="bold">"' + recording.name + '"</span>. You can find your recording in the "Recordings" tab and you can try uploading it again later.');
         CurrentUpload.remove(uuid);
       },
 
@@ -459,7 +457,7 @@ var upload = function(file) {
 
     CurrentUpload.add(uuid, {
       transfer: transfer,
-      file: file
+      file: recording
     });
 
     var url = '/production/edit/{uuid}'.substitute(response.data);
@@ -473,10 +471,15 @@ var upload = function(file) {
     return;
   }
 
-  var data = {chapters: file.chapters};
+  var data = {chapters: recording.chapters};
   API.call('productions', 'post', JSON.stringify(data)).on({
     success: onCreateSuccess
   });
+};
+
+var showRecording = function(file) {
+  var recording = Recording.add(file);
+  History.push('/recording/{id}'.substitute(recording));
 };
 
 Controller.define('/production/recording/upload/{id}', function(req) {
@@ -487,8 +490,15 @@ Controller.define('/production/recording/upload/{id}', function(req) {
 });
 
 Controller.define('/production/recording/new-video', function() {
-  new CordovaVideoRecorder().addEvents({
-    success: upload
+  new CordovaVideoRecorder({
+      generateFileName: function() {
+        return Auphonic.DefaultVideoFileName.substitute({uuid: Recording.generateRecordingId()});
+      }
+    }).addEvents({
+    success: showRecording,
+    cancel: function() {
+      UI.unhighlight(UI.getHighlightedElement());
+    }
   }).start();
 });
 

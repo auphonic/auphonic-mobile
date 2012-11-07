@@ -27,6 +27,13 @@
   {{/if}}
   <div class="clear"></div>
 
+  {{#if hasVideo}}
+    <h1>Video</h1>
+    <video controls>
+      <source src="{{videoPath}}" />
+    </video>
+  {{/if}}
+
   {{#if is_uploading}}
     <div class="content uploading">
       <span></span>
