@@ -98,7 +98,8 @@ module.exports = new Class({
     }
 
     store.eachView(function(view, type) {
-      if (view.getType() == 'chapters') return;
+      // If a preset gets selected, don't remove chapters
+      if (this.isRendered && view.getType() == Chapter.getType()) return;
 
       if (view.setData)
         view.setData(store, data && data[type], this.getBaseURL(), object, this.isRendered);
