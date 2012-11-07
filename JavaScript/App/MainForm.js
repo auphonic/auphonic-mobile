@@ -90,7 +90,7 @@ module.exports = new Class({
 
     if (data) store.set('thumbnail', data.thumbnail);
 
-    if (this.isNewProduction) {
+    if (!this.isEditMode || this.isNewProduction) {
       // Set the default output file
       var type = OutputFiles.getType();
       if (!data) data = {};
