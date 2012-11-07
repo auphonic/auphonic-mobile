@@ -72,13 +72,20 @@ var addPlaceholder = function() {
   if (stack.getName() == 'production' && (stack.getLength() > 1 || stack.getByURL('/production')))
     return;
 
-  View.getMain().push('production', new View.Object({
+  var object = new View.Object({
     url: '/production',
     title: 'Productions',
     backOptions: {
       className: 'small'
     }
-  }).invalidate());
+  }).invalidate();
+
+  View.getMain().push('production', object);
+
+  // Subsequent invalidations should invalidate the cache
+  object.addEvent('invalidate', function() {
+    API.invalidate('productions');
+  });
 };
 
 var showAll = function() {
@@ -423,6 +430,8 @@ Controller.define('/production/new/outgoing_services', function() {
 
 // Recording
 var upload = function(recording) {
+  API.invalidate('productions');
+
   View.getMain().showIndicator();
 
   var onCreateSuccess = function(response) {
