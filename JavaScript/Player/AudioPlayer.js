@@ -231,21 +231,19 @@ module.exports = new Class({
     if (!chapters.length) return;
 
     position /= 1000;
-    var direction = (position == 0 || position > this.previousChapterPosition) ? 1 : -1;
+    // When seeking backwards, let's start from the first poosition on the left
+    if (position < this.previousChapterPosition) this.currentChapter = -1;
+
     this.previousChapterPosition = position;
     var next;
     var chapter;
     do {
-      next = this.currentChapter + direction;
+      next = this.currentChapter + 1;
       chapter = chapters[next];
-      if (next == -1)
-        this.currentChapter = next;
-      else if (chapter && position * direction > chapter.time * direction)
+      if (chapter && position > chapter.time)
         this.currentChapter = next;
     } while (chapter && this.currentChapter == next);
 
-    // When seeking backwards we have to decrease the index once more
-    if (direction == -1) this.currentChapter -= 1;
     return chapters[this.currentChapter];
   },
 
