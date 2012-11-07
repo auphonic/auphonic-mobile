@@ -352,6 +352,7 @@ Controller.define('/production/edit/{uuid}', function(req) {
 });
 
 Controller.define('/production/new', {priority: 1, isGreedy: true}, function() {
+  addPlaceholder();
   resetEditUUID();
   getPresets(function(presets) {
     form.show('main', null, presets);
@@ -371,7 +372,6 @@ Controller.define('/production/source', {priority: 1, isGreedy: true}, function(
     delete serializedData.input_file;
   }
 
-  addPlaceholder();
   form = createForm(form && currentEditUUID ? {saveURL: 'production/' + currentEditUUID} : null);
   form.show('service');
 });
@@ -503,15 +503,13 @@ Controller.define('/production/recording/new-video', function() {
 });
 
 Controller.define('/production/recording/new-audio', function() {
-  addPlaceholder();
-
   var object = new View.Object({
     title: 'Audio Recording',
     backTitle: 'Recorder',
     content: UI.render('record-audio')
   });
 
-  View.getMain().push('production', object);
+  View.getMain().push(object);
 
   new AudioRecorder(CordovaAudioRecorder, object, {
     generateFileName: function() {

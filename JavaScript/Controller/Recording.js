@@ -62,7 +62,7 @@ var showAll = function() {
 };
 
 var show = function(recording) {
-  View.getMain().push('recording', new View.Object({
+  View.getMain().push(new View.Object({
     title: Recording.getRecordingName(recording),
     content: UI.render('recording', recording),
     action: {
