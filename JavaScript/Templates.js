@@ -89,6 +89,11 @@ function program3(depth0,data) {
   foundHelper = helpers.image;
   stack1 = foundHelper ? foundHelper.call(depth0, stack1, {hash:{}}) : helperMissing.call(depth0, "image", stack1, {hash:{}});
   if(stack1 || stack1 === 0) { buffer += stack1; }
+  buffer += ");\"></div>\n      <div class=\"cover-photo\" style=\"background-image: url(";
+  stack1 = depth0.image;
+  foundHelper = helpers.image;
+  stack1 = foundHelper ? foundHelper.call(depth0, stack1, {hash:{}}) : helperMissing.call(depth0, "image", stack1, {hash:{}});
+  if(stack1 || stack1 === 0) { buffer += stack1; }
   buffer += ");\"></div>\n      <div class=\"gradient\"></div>\n    ";
   return buffer;}
 
