@@ -81,7 +81,7 @@ module.exports = new Class({
       (function() {
         // In case all media files are unsupported, ignore
         if (!this.mediaFile) return;
-        this.player.seekTo(this.position || 1); // pass 1ms, 0 doesn't work
+        this.player.seekTo(this.position);
       }).delay(0, this);
       return;
     }
@@ -89,7 +89,7 @@ module.exports = new Class({
     if (!this._isPlaying) this.play();
     else this.startTimer();
 
-    this.player.seekTo(position || 1); // pass 1ms, 0 doesn't work
+    this.player.seekTo(position);
   },
 
   pickMediaFile: function() {
