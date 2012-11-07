@@ -11,14 +11,19 @@ module.exports = new Class({
 
   Implements: [Class.Binds, Options, Events],
 
-  initialize: function(recorderClass, object, fileName, options) {
+  options: {
+    generateFileName: function() {
+      return 'recording';
+    }
+  },
+
+  initialize: function(recorderClass, object, options) {
     this.setOptions(options);
 
+    this.recorderClass = recorderClass;
     this.object = object;
     var element = object.toElement();
     var button = this.button = element.getElement('.recorder');
-
-    this.recorder = new recorderClass(fileName);
 
     this.status = element.getElement('.status');
     this.recordingLengthElement = this.status.getElement('.recording-length');
@@ -28,6 +33,16 @@ module.exports = new Class({
     this.chapterMarkElement.addEvent('click', this.bound('onChapterMarkClick'));
     this.markerHighlight = this.chapterMarkElement.getElement('span');
 
+    this.object.addEvent('hide:once', this.bound('onHide'));
+    this.object.addEvent('show', function() {
+      button.removeClass('fade');
+    });
+  },
+
+  setupRecorder: function() {
+    if (this.recorder) return;
+
+    this.recorder = new this.recorderClass(this.options.generateFileName.call(this));
     this.recorder.addEvents({
       start: this.bound('onStart'),
       update: this.bound('onUpdate'),
@@ -35,13 +50,10 @@ module.exports = new Class({
       error: this.bound('onError'),
       success: this.bound('onSuccess')
     });
-
-    this.object.addEvent('show', function() {
-      button.removeClass('fade');
-    });
   },
 
   onClick: function(event) {
+    this.setupRecorder();
     event.preventDefault();
 
     this.toggle();
@@ -75,7 +87,6 @@ module.exports = new Class({
 
   start: function() {
     this.isRecording = true;
-    this.object.addEvent('hide:once', this.bound('onHide'));
     this.recorder.start();
     this.button.addClass('pulse').set('text', 'Stop');
     return this;
@@ -108,7 +119,6 @@ module.exports = new Class({
     this.hasStarted = false;
     this.isRecording = false;
     this.button.removeClass('pulse').set('text', 'Start');
-    this.object.removeEvent('hide:once', this.bound('onHide'));
     if (this.status.hasClass('out')) {
       this.status.addClass('out').addEvent('transitionComplete:once', function() {
         this.hide();
@@ -124,7 +134,9 @@ module.exports = new Class({
   },
 
   onHide: function() {
-    this.recorder.cancel();
+    if (this.isRecording) this.recorder.cancel();
+
+    this.recorder = null;
   },
 
   onSuccess: function(file) {

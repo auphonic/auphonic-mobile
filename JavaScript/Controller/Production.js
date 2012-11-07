@@ -497,14 +497,17 @@ Controller.define('/production/recording/new-audio', function() {
 
   var object = new View.Object({
     title: 'Audio Recording',
+    backTitle: 'Recorder',
     content: UI.render('record-audio')
   });
 
   View.getMain().push('production', object);
 
-  var name = Auphonic.DefaultFileName.substitute({uuid: Recording.generateRecordingId()});
-  new AudioRecorder(CordovaAudioRecorder, object, name, {
-    onSuccess: upload
+  new AudioRecorder(CordovaAudioRecorder, object, {
+    generateFileName: function() {
+      return Auphonic.DefaultFileName.substitute({uuid: Recording.generateRecordingId()});
+    },
+    onSuccess: showRecording
   });
 });
 
