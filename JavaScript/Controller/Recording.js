@@ -62,6 +62,20 @@ var showAll = function() {
 };
 
 var show = function(recording) {
+  var updateRecordingName = function() {
+    var value = this.get('value');
+    if (!value) value = 'Untitled';
+
+    recording.display_name = value;
+    Recording.update(recording.id, recording);
+    View.getMain().getTitle().toElement().set('text', value);
+  };
+
+  var invalidateView = function() {
+    var object = View.getMain().getStack().getByURL('/recording');
+    if (object) object.invalidate();
+  };
+
   View.getMain().push(new View.Object({
     title: Recording.getRecordingName(recording),
     content: UI.render('recording', recording),
@@ -69,6 +83,12 @@ var show = function(recording) {
       title: 'Upload',
       url: '/production/recording/upload/{id}'.substitute(recording),
       className: 'big'
+    },
+    onShow: function() {
+      this.toElement().getElement('input[name="display_name"]').addEvents({
+        'input': updateRecordingName,
+        'input:once': invalidateView
+      });
     }
   }));
 };

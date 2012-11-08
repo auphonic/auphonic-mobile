@@ -57,6 +57,8 @@ var update = function(id, recording) {
   set(recordings);
 };
 
+exports.update = update;
+
 exports.add = function(recording) {
   if (recording.uploaded) return recording;
 

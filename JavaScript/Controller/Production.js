@@ -479,7 +479,10 @@ var upload = function(recording) {
   var url = 'productions';
   if (currentEditUUID) url = 'production/{uuid}'.substitute({uuid: currentEditUUID});
 
-  var data = {chapters: recording.chapters};
+  var data = {
+    metadata: {title: recording.display_name},
+    chapters: recording.chapters
+  };
   API.call('productions', 'post', JSON.stringify(data)).on({
     success: onCreateSuccess
   });

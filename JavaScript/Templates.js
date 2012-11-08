@@ -1724,7 +1724,10 @@ function program12(depth0,data) {
   
   return "\n            Untitled\n          ";}
 
-  buffer += "<ul>\n  <li>\n    <span class=\"right light bold\">";
+  buffer += "<ul class=\"formcontent\">\n  <li>\n    <label class=\"left\"><input type=\"text\" name=\"display_name\" value=\"";
+  stack1 = depth0.display_name;
+  stack1 = typeof stack1 === functionType ? stack1() : stack1;
+  buffer += escapeExpression(stack1) + "\" class=\"right\" data-clearable=\"1\" />Name</label>\n  </li>\n  <li>\n    <span class=\"right light bold\">";
   stack1 = depth0.display_size;
   stack1 = typeof stack1 === functionType ? stack1() : stack1;
   buffer += escapeExpression(stack1) + "</span>\n    <label class=\"left\">Size</label>\n  </li>\n  <li>\n    <span class=\"right light bold\">";
@@ -1950,10 +1953,7 @@ templates['ui-title'] = template(function (Handlebars,depth0,helpers,partials,da
   var buffer = "", stack1, functionType="function", escapeExpression=this.escapeExpression;
 
 
-  buffer += "<h1 title=\"";
-  stack1 = depth0.title;
-  stack1 = typeof stack1 === functionType ? stack1() : stack1;
-  buffer += escapeExpression(stack1) + "\">";
+  buffer += "<h1>";
   stack1 = depth0.title;
   stack1 = typeof stack1 === functionType ? stack1() : stack1;
   buffer += escapeExpression(stack1) + "</h1>\n";
