@@ -1,5 +1,11 @@
 #!/bin/bash
 DIR=$(cd `dirname $0` && pwd)
 source $DIR/variables
+
+rm $DIR/$AUPHONIC_OUTPUT/$AUPHONIC_CORDOVA_VERSION/App-*.*
+
 source $DIR/compile -e prod -m --no-watch
 source $DIR/stylus --no-watch -c
+
+cd $DIR/$AUPHONIC_OUTPUT/
+zip -r $AUPHONIC_CORDOVA_VERSION.zip $AUPHONIC_CORDOVA_VERSION/ -x "$AUPHONIC_CORDOVA_VERSION/.*"
