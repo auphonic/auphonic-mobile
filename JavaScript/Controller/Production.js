@@ -519,23 +519,10 @@ Controller.define('/production/recording/new-video', function() {
 
 Controller.define('/production/recording/new-audio', function() {
   var recorder;
-  var onPause = function() {
-    // When the user presses the pause button for the first time we show the
-    // "Done" button on the right top
-    View.getMain().updateElement('action', {}, {
-      title: 'Done',
-      onClick: recorder.bound('stop')
-    });
-    recorder.removeEvent('pause', onPause);
-  };
-
   var object = new View.Object({
     title: 'Audio Recording',
     backTitle: 'Recorder',
-    content: UI.render('record-audio'),
-    onShow: function() {
-      if (recorder) recorder.addEvent('pause', onPause);
-    }
+    content: UI.render('record-audio')
   });
 
   View.getMain().push(object);
@@ -543,7 +530,15 @@ Controller.define('/production/recording/new-audio', function() {
     generateFileName: function() {
       return Auphonic.DefaultFileName.substitute({uuid: Recording.generateRecordingId()});
     },
-    onPause: onPause,
+    onPause: function() {
+      View.getMain().updateElement('action', {}, {
+        title: 'Done',
+        onClick: recorder.bound('stop')
+      });
+    },
+    onStart: function() {
+      View.getMain().updateElement('action');
+    },
     onSuccess: showRecording
   });
 });

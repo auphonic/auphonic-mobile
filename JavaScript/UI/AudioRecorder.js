@@ -130,6 +130,7 @@ module.exports = new Class({
       this.recordingLengthElement.set('text', '');
     }
 
+    this.fireEvent('start');
     this.hasStarted = true;
     this.status.show();
     this.statusTimer = (function() {
