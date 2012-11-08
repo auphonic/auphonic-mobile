@@ -153,7 +153,7 @@ Object.append(UI, {
     (function() {
       login.removeClass('fade');
       splash.removeClass('fade');
-    }).delay(transitionDelay);
+    }).delay(50); // Let's keep the higher delay here for now.
   },
 
   setTransitionDelay: function(delay) {
