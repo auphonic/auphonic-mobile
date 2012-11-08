@@ -1,6 +1,6 @@
 // commit e3ed532ddda1837d324cc759df52dff952b10e28
 
-// File generated at :: Thu Nov 08 2012 14:14:30 GMT+0100 (CET)
+// File generated at :: Thu Nov 08 2012 17:51:10 GMT+0100 (CET)
 
 /*
  Licensed to the Apache Software Foundation (ASF) under one
@@ -3227,6 +3227,7 @@ Media.MEDIA_STARTING = 1;
 Media.MEDIA_RUNNING = 2;
 Media.MEDIA_PAUSED = 3;
 Media.MEDIA_STOPPED = 4;
+Media.MEDIA_INTERRUPTED = 5;
 Media.MEDIA_MSG = ["None", "Starting", "Running", "Paused", "Stopped"];
 
 // "static" function to return existing objs.

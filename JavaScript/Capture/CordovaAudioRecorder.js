@@ -116,10 +116,16 @@ module.exports = new Class({
     this.fireEvent('pause');
   },
 
+  onInterrupt: function() {
+    this.onPause();
+    this.fireEvent('interrupt');
+  },
+
   onStatus: function(status) {
     // We are calling .pause() when we get the duration but we don't want to fire the Pause event.
     if (this.statusEventIsDisabled) return;
     if (status == window.Media.MEDIA_PAUSED) this.onPause();
+    if (status == window.Media.MEDIA_INTERRUPTED) this.onInterrupt();
   },
 
   onLevelUpdate: function(averageLevel, peakLevel) {

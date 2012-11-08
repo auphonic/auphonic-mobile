@@ -18,6 +18,10 @@ module.exports = new Class({
     }
   },
 
+  hasStarted: false,
+  isRecording: false,
+  isInterrupted: false,
+
   initialize: function(recorderClass, object, options) {
     this.setOptions(options);
 
@@ -53,6 +57,7 @@ module.exports = new Class({
       pause: this.bound('onPause'),
       cancel: this.bound('onCancel'),
       error: this.bound('onError'),
+      interrupt: this.bound('onInterrupt'),
       success: this.bound('onSuccess'),
       levelUpdate: this.bound('onLevelUpdate')
     });
@@ -92,6 +97,16 @@ module.exports = new Class({
   },
 
   start: function() {
+    if (this.isInterrupted) {
+      this.object.addEvent('hide:once', function() {
+        (function() {
+          new Notice('It seems like your audio session was interrupted because of a phone call. Please put your phone into Airplane Mode when recording. Because of a bug in iOS your recording cannot be resumed at this time :(', {type: 'error'});
+        }).delay(400);
+      });
+      this.stop();
+      return;
+    }
+
     this.isRecording = true;
     this.recorder.start();
     this.button.addClass('pulse').set('text', 'Pause');
@@ -143,6 +158,12 @@ module.exports = new Class({
     document.removeEventListener('pause', this.bound('pause'), false);
   },
 
+  onInterrupt: function() {
+    // An interrupt through a phone call in iOS means that the recording cannot
+    // be continued. We'll tell the user to stop
+    this.isInterrupted = true;
+  },
+
   onError: function() {
     new Notice('There was an error with your recording. Please try again.');
   },
@@ -154,6 +175,7 @@ module.exports = new Class({
   },
 
   onSuccess: function(file) {
+    this.isInterrupted = false;
     this.button.addClass('fade');
     file.chapters = this.chapters;
 
