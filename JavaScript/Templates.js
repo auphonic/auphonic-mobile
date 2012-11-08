@@ -1671,8 +1671,8 @@ function program3(depth0,data) {
 function program5(depth0,data) {
   
   var buffer = "", stack1;
-  buffer += "\n  <h1>Chapter Marks</h1>\n  <ul>\n    ";
-  stack1 = depth0.chapters;
+  buffer += "\n  <h1>Associated Productions</h1>\n  <ul>\n    ";
+  stack1 = depth0.display_productions;
   stack1 = helpers.each.call(depth0, stack1, {hash:{},inverse:self.noop,fn:self.program(6, program6, data)});
   if(stack1 || stack1 === 0) { buffer += stack1; }
   buffer += "\n  </ul>\n";
@@ -1680,37 +1680,16 @@ function program5(depth0,data) {
 function program6(depth0,data) {
   
   var buffer = "", stack1;
-  buffer += "\n      <li>\n        <label>\n          <small class=\"light\">";
-  stack1 = depth0.start;
-  stack1 = typeof stack1 === functionType ? stack1() : stack1;
-  buffer += escapeExpression(stack1) + "</small> ";
-  stack1 = depth0.title;
-  stack1 = typeof stack1 === functionType ? stack1() : stack1;
-  buffer += escapeExpression(stack1) + "\n        </label>\n      </li>\n    ";
-  return buffer;}
-
-function program8(depth0,data) {
-  
-  var buffer = "", stack1;
-  buffer += "\n  <h1>Associated Productions</h1>\n  <ul>\n    ";
-  stack1 = depth0.display_productions;
-  stack1 = helpers.each.call(depth0, stack1, {hash:{},inverse:self.noop,fn:self.program(9, program9, data)});
-  if(stack1 || stack1 === 0) { buffer += stack1; }
-  buffer += "\n  </ul>\n";
-  return buffer;}
-function program9(depth0,data) {
-  
-  var buffer = "", stack1;
   buffer += "\n      <li>\n        <a href=\"/production/";
   stack1 = depth0.uuid;
   stack1 = typeof stack1 === functionType ? stack1() : stack1;
   buffer += escapeExpression(stack1) + "\" class=\"arrow\">\n          <span></span>\n          ";
   stack1 = depth0.title;
-  stack1 = helpers['if'].call(depth0, stack1, {hash:{},inverse:self.program(12, program12, data),fn:self.program(10, program10, data)});
+  stack1 = helpers['if'].call(depth0, stack1, {hash:{},inverse:self.program(9, program9, data),fn:self.program(7, program7, data)});
   if(stack1 || stack1 === 0) { buffer += stack1; }
   buffer += "\n        </a>\n      </li>\n    ";
   return buffer;}
-function program10(depth0,data) {
+function program7(depth0,data) {
   
   var buffer = "", stack1;
   buffer += "\n            ";
@@ -1719,7 +1698,7 @@ function program10(depth0,data) {
   buffer += escapeExpression(stack1) + "\n          ";
   return buffer;}
 
-function program12(depth0,data) {
+function program9(depth0,data) {
   
   
   return "\n            Untitled\n          ";}
@@ -1737,13 +1716,9 @@ function program12(depth0,data) {
   stack1 = depth0.isAudio;
   stack1 = helpers['if'].call(depth0, stack1, {hash:{},inverse:self.program(3, program3, data),fn:self.program(1, program1, data)});
   if(stack1 || stack1 === 0) { buffer += stack1; }
-  buffer += "\n\n";
-  stack1 = depth0.hasChapters;
-  stack1 = helpers['if'].call(depth0, stack1, {hash:{},inverse:self.noop,fn:self.program(5, program5, data)});
-  if(stack1 || stack1 === 0) { buffer += stack1; }
-  buffer += "\n\n";
+  buffer += "\n\n<h1>Chapter Marks</h1>\n<ul class=\"chapter_marks\">\n  <li><a href=\"/recording/new/chapter\" class=\"plus\"><span></span>Add Chapter Mark</a></li>\n</ul>\n\n";
   stack1 = depth0.hasProductions;
-  stack1 = helpers['if'].call(depth0, stack1, {hash:{},inverse:self.noop,fn:self.program(8, program8, data)});
+  stack1 = helpers['if'].call(depth0, stack1, {hash:{},inverse:self.noop,fn:self.program(5, program5, data)});
   if(stack1 || stack1 === 0) { buffer += stack1; }
   buffer += "\n";
   return buffer;});

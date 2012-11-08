@@ -3,7 +3,9 @@ var Controller = require('./');
 var UI = require('UI');
 var View = require('View');
 
+var Chapter = require('App/Chapter');
 var Data = require('App/Data');
+var Form = require('App/Form');
 
 var Recording = require('Store/Recording');
 
@@ -11,6 +13,7 @@ var Auphonic = require('Auphonic');
 
 var months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 var sizes = ['b', 'KB', 'MB', 'GB', 'TB'];
+var form = null;
 
 var formatFileSize = function(bytes) {
   if (!bytes) bytes = 0;
@@ -66,8 +69,10 @@ var show = function(recording) {
     var value = this.get('value');
     if (!value) value = 'Untitled';
 
-    recording.display_name = value;
-    Recording.update(recording.id, recording);
+    // We don't want to copy *all* temporary properties to storage
+    var updated = Recording.findById(recording.id);
+    updated.display_name = value;
+    Recording.update(updated);
     View.getMain().getTitle().toElement().set('text', value);
   };
 
@@ -76,8 +81,8 @@ var show = function(recording) {
     if (object) object.invalidate();
   };
 
-  View.getMain().push(new View.Object({
-    title: Recording.getRecordingName(recording),
+  var object = new View.Object({
+    title: recording.display_name,
     content: UI.render('recording', recording),
     action: {
       title: 'Upload',
@@ -90,12 +95,27 @@ var show = function(recording) {
         'input:once': invalidateView
       });
     }
-  }));
+  });
+
+  form = new Form({
+    use: [Chapter]
+  });
+
+  var baseURL = '/recording/';
+  Chapter.setup(form, baseURL, object);
+  Chapter.setData(form, recording.chapters, baseURL, object, false);
+
+  form.addEvent('update:chapters', function() {
+    var updated = Recording.findById(recording.id);
+    updated.chapters = Chapter.getData(form, object).chapters;
+    Recording.update(updated);
+  });
+
+  View.getMain().push(object);
 };
 
 var showOne = function(req) {
   var recording = Recording.findById(req.id);
-  recording.hasChapters = recording.chapters && recording.chapters.length;
   recording.media_files = JSON.stringify([recording.fullPath]);
   recording.player_chapters = recording.hasChapters ? JSON.stringify(recording.chapters) : null;
   recording.display_date = formatTimestamp(recording.timestamp);
@@ -136,3 +156,7 @@ var showOne = function(req) {
 
 Controller.define('/recording', {isGreedy: true}, showAll);
 Controller.define('/recording/{id}', showOne);
+
+Controller.define('/recording/new/chapter/:id:', function(req) {
+  form.show('chapters', req.id);
+});

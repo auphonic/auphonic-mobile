@@ -46,14 +46,14 @@ exports.generateRecordingId = function() {
   return id;
 };
 
-exports.getRecordingName = function(recording) {
+var getRecordingName = function(recording) {
   var match = recording.name.match(Auphonic.DefaultFileNameFilter);
   return (match && match[1] ? 'Recording ' + match[1] : recording.name);
 };
 
-var update = function(id, recording) {
+var update = function(recording) {
   var recordings = get();
-  recordings[id] = recording;
+  recordings[recording.id] = recording;
   set(recordings);
 };
 
@@ -66,9 +66,9 @@ exports.add = function(recording) {
   recording = Object.append({}, recording);
   recording.id = id;
   recording.timestamp = Date.now();
-  recording.display_name = exports.getRecordingName(recording);
+  recording.display_name = getRecordingName(recording);
   recording.uploaded = true;
-  update(id, recording);
+  update(recording);
   return recording;
 };
 
@@ -78,7 +78,7 @@ exports.addProduction = function(id, productionUUID) {
 
   if (!recording.productions) recording.productions = [];
   recording.productions.include(productionUUID);
-  update(id, recording);
+  update(recording);
   return recording;
 };
 

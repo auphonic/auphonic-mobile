@@ -21,18 +21,10 @@
   </video>
 {{/if}}
 
-{{#if hasChapters}}
-  <h1>Chapter Marks</h1>
-  <ul>
-    {{#each chapters}}
-      <li>
-        <label>
-          <small class="light">{{start}}</small> {{title}}
-        </label>
-      </li>
-    {{/each}}
-  </ul>
-{{/if}}
+<h1>Chapter Marks</h1>
+<ul class="chapter_marks">
+  <li><a href="/recording/new/chapter" class="plus"><span></span>Add Chapter Mark</a></li>
+</ul>
 
 {{#if hasProductions}}
   <h1>Associated Productions</h1>
