@@ -10,36 +10,72 @@
 }
 
 .audio-recorder
-  div.audio-level
-    position relative
-    height 40px
+  .meter
     margin -10px -10px 15px -10px
-
-    background linear-gradient(left, #0f0 0%, #0f0 30%, #ff0 60%, #ff0 80%, #f00 100%)
     box-shadow 0 1px 2px rgba(0, 0, 0, 0.2)
+    background #fff
 
-    .peak-meter
-      position absolute
-      top 0
-      bottom 0
-      right 0
-      width 100%
-      background #fff
+    div.audio-level
+      position relative
+      height 40px
 
-    .average-meter
-      position absolute
-      top 0
-      bottom 0
-      left 0
-      width 0
-      background rgba(0, 0, 0, 0.25)
+      background linear-gradient(left, lime 0%, lime 30%, yellow 50%, yellow 70%, red 100%)
+      box-shadow 0 1px 2px rgba(0, 0, 0, 0.2)
 
-    .stripes
-      position absolute
-      top 0
-      bottom 0
-      left 0
-      right 0
+      .peak-meter
+        position absolute
+        top 0
+        bottom 0
+        right 0
+        width 100%
+        background #fff
+
+      .average-meter
+        position absolute
+        top 0
+        bottom 0
+        left 0
+        width 0
+        background rgba(0, 0, 0, 0.25)
+
+      .stripes
+        position absolute
+        top 0
+        bottom 0
+        left 0
+        right 0
+
+    div.scale
+      position relative
+      height 16px
+
+      font-size 10px
+      line-height 16px
+
+      div
+        position absolute
+        left 0
+        top 0
+        bottom 0
+
+        &.scale-48
+          left 2%
+        &.scale-42
+          left 12.5%
+        &.scale-36
+          left 25%
+        &.scale-30
+          left 37.5%
+        &.scale-24
+          left 50%
+        &.scale-18
+          left 62.5%
+        &.scale-12
+          left 75%
+        &.scale-6
+          left 87.5%
+        &.scale-0
+          left 98%
 
   a.button.red.recorder
     display block
