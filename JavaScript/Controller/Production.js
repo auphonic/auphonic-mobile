@@ -544,6 +544,10 @@ Controller.define('/production/recording/new-audio', function() {
   });
 });
 
+Controller.define('/', {isGreedy: false}, function() {
+  resetEditUUID();
+});
+
 Controller.define('/recording', {isGreedy: true}, function() {
   resetEditUUID();
 });
