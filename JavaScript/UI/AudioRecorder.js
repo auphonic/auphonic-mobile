@@ -21,6 +21,7 @@ module.exports = new Class({
   hasStarted: false,
   isRecording: false,
   isInterrupted: false,
+  isSilent: false,
 
   initialize: function(recorderClass, object, options) {
     this.setOptions(options);
@@ -41,7 +42,6 @@ module.exports = new Class({
     this.levelElement = element.getElement('.audio-level .peak-meter');
     this.averageLevelElement = element.getElement('.audio-level .average-meter');
 
-    this.object.addEvent('hide:once', this.bound('onHide'));
     this.object.addEvent('show', function() {
       button.removeClass('fade');
     });
@@ -50,12 +50,13 @@ module.exports = new Class({
   setupRecorder: function() {
     if (this.recorder) return;
 
+    this.object.addEvent('hide:once', this.bound('onHide'));
     this.recorder = new this.recorderClass(this.options.generateFileName.call(this));
     this.recorder.addEvents({
       start: this.bound('onStart'),
-      update: this.bound('onUpdate'),
+      stop: this.bound('onStop'),
       pause: this.bound('onPause'),
-      cancel: this.bound('onCancel'),
+      update: this.bound('onUpdate'),
       error: this.bound('onError'),
       interrupt: this.bound('onInterrupt'),
       success: this.bound('onSuccess'),
@@ -139,8 +140,12 @@ module.exports = new Class({
     document.addEventListener('pause', this.bound('pause'), false);
   },
 
-  onUpdate: function() {
-    this.recordingLengthElement.set('text', Data.formatDuration(++this.time, ' '));
+  onStop: function() {
+    this.hasStarted = false;
+    this.isRecording = false;
+    this.button.removeClass('pulse').set('text', 'Start');
+    this.hideStatus();
+    document.removeEventListener('pause', this.bound('pause'), false);
   },
 
   onPause: function() {
@@ -151,12 +156,8 @@ module.exports = new Class({
     document.removeEventListener('pause', this.bound('pause'), false);
   },
 
-  onCancel: function() {
-    this.hasStarted = false;
-    this.isRecording = false;
-    this.button.removeClass('pulse').set('text', 'Start');
-    this.hideStatus();
-    document.removeEventListener('pause', this.bound('pause'), false);
+  onUpdate: function() {
+    this.recordingLengthElement.set('text', Data.formatDuration(++this.time, ' '));
   },
 
   onInterrupt: function() {
@@ -170,7 +171,10 @@ module.exports = new Class({
   },
 
   onHide: function() {
-    if (this.isRecording) this.recorder.cancel();
+    if (this.hasStarted) {
+      this.isSilent = true;
+      this.recorder.stop();
+    }
 
     this.recorder = null;
   },
@@ -180,7 +184,7 @@ module.exports = new Class({
     this.button.addClass('fade');
     file.chapters = this.chapters;
 
-    this.fireEvent('success', [file]);
+    this.fireEvent('success', [file, this.isSilent]);
   },
 
   onLevelUpdate: function(average, peak) {

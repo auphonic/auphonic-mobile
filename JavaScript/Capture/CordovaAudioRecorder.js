@@ -10,7 +10,6 @@ module.exports = new Class({
   Implements: [Class.Binds, Options, Events],
 
   extension: 'm4a',
-  canceled: false,
   statusEventIsDisabled: false,
 
   initialize: function(filename, options) {
@@ -26,7 +25,7 @@ module.exports = new Class({
   },
 
   _start: function() {
-    if (!this.media) this.media = new window.Media(this.file.fullPath, this.bound('onCaptureSuccess'), this.bound('onCaptureError'), this.bound('onStatus'), this.bound('onLevelUpdate'));
+    if (!this.media) this.media = new window.Media(this.file.fullPath, this.bound('onCaptureSuccess'), this.bound('onError'), this.bound('onStatus'), this.bound('onLevelUpdate'));
     IdleTimer.disable();
     this.fireEvent('start');
     this.media.startRecord();
@@ -42,12 +41,7 @@ module.exports = new Class({
     clearInterval(this.timer);
     this.media.stopRecord();
 
-    this.fireEvent('cancel');
-  },
-
-  cancel: function() {
-    this.canceled = true;
-    this.stop();
+    this.fireEvent('stop');
   },
 
   update: function() {
@@ -55,10 +49,6 @@ module.exports = new Class({
   },
 
   onCaptureSuccess: function() {
-    var canceled = this.canceled;
-    this.canceled = false;
-    if (canceled) return;
-
     this.file.media_type = 'audio';
     this.statusEventIsDisabled = true;
     this.media.play();
@@ -92,22 +82,11 @@ module.exports = new Class({
 
   onError: function() {
     clearInterval(this.timer);
-    this.fireEvent('cancel');
+    IdleTimer.enable();
+    this.fireEvent('stop');
     this.fireEvent('error');
     this.media = null;
     if (this.file) this.file.remove(function() {}, function() {});
-  },
-
-  onCaptureError: function() {
-    var canceled = this.canceled;
-    this.canceled = false;
-    if (canceled) return;
-
-    clearInterval(this.timer);
-    this.fireEvent('cancel');
-    this.fireEvent('error');
-    this.media = null;
-    this.file.remove(function() {}, function() {});
   },
 
   onPause: function() {

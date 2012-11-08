@@ -488,13 +488,14 @@ var upload = function(recording) {
   });
 };
 
-var showRecording = function(file) {
+var showRecording = function(file, isSilent) {
+  var recording = Recording.add(file);
+
   // Invalidate recordings view we are in the recordings tab.
   var object = View.getMain().getStack().getByURL('/recording');
   if (object) object.invalidate();
 
-  var recording = Recording.add(file);
-  History.push('/recording/{id}'.substitute(recording));
+  if (!isSilent) History.push('/recording/{id}'.substitute(recording));
 };
 
 Controller.define('/production/recording/upload/{id}', function(req) {
