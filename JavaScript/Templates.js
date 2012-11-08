@@ -1831,7 +1831,13 @@ templates['team'] = template(function (Handlebars,depth0,helpers,partials,data) 
   buffer += "<div class=\"detailView\">\n  <div class=\"detail expand with-image\">\n    <div class=\"cover-photo\" style=\"background-image: url(";
   stack1 = depth0.image;
   stack1 = typeof stack1 === functionType ? stack1() : stack1;
-  buffer += escapeExpression(stack1) + ");\"></div>\n    <div class=\"gradient\"></div>\n    <div class=\"detail-inner\">\n      <span class=\"year\">2012</span>\n      <span class=\"genre\">Graz</span>\n      <h1>Auphonic Team</h1>\n      <span class=\"artist small wrap\">\n        André Rattinger, Ferdinand Fuhrmann, Christoph Pojer, Georg Holzmann and Florian Hollerweger\n      </span>\n    </div>\n    <div class=\"clear\"></div>\n  </div>\n  <div class=\"clear\"></div>\n\n  <div class=\"content\">\n    Our service is being developed in the lovely City of Graz, Austria.\n    <br/><br/>\n    We develop new algorithms in the area of music information retrieval and audio signal processing to create an automatic audio post production web service for broadcasters, podcasts, radio shows, audio books, lecture recordings, screencasts and more.\n  </div>\n</div>\n";
+  buffer += escapeExpression(stack1) + ");\"></div>\n    <div class=\"gradient\"></div>\n    <div class=\"detail-inner\">\n      <span class=\"year\">2012</span>\n      <span class=\"genre\">Graz</span>\n      <h1>Auphonic Team</h1>\n      <span class=\"artist small wrap\">\n        André Rattinger, Ferdinand Fuhrmann, Christoph Pojer, Georg Holzmann and Florian Hollerweger\n      </span>\n    </div>\n    <div class=\"clear\"></div>\n  </div>\n  <div class=\"clear\"></div>\n\n  <div class=\"content\">\n    Our service is being developed in the lovely City of Graz, Austria.\n    <br/><br/>\n    We develop new algorithms in the area of music information retrieval and audio signal processing to create an automatic audio post production web service for broadcasters, podcasts, radio shows, audio books, lecture recordings, screencasts and more.\n  </div>\n</div>\n\n<ul>\n  <li><a href=\"";
+  stack1 = depth0.twitter;
+  stack1 = typeof stack1 === functionType ? stack1() : stack1;
+  buffer += escapeExpression(stack1) + "\" class=\"share\"><span></span>Auphonic on Twitter</a></li>\n  <li><a href=\"";
+  stack1 = depth0.facebook;
+  stack1 = typeof stack1 === functionType ? stack1() : stack1;
+  buffer += escapeExpression(stack1) + "\" class=\"share\"><span></span>Auphonic on Facebook</a></li>\n</ul>\n";
   return buffer;});
 templates['ui-action'] = template(function (Handlebars,depth0,helpers,partials,data) {
   helpers = helpers || Handlebars.helpers;

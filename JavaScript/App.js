@@ -450,7 +450,9 @@ window.__BOOTAPP = function() {
     View.getMain().push(new View.Object({
       title: 'Team',
       content: UI.render('team', {
-        image: Auphonic.TeamImage
+        image: Auphonic.TeamImage,
+        twitter: Auphonic.TwitterURL,
+        facebook: Auphonic.FacebookURL
       })
     }));
   });
