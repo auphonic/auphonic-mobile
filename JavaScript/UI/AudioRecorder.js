@@ -116,6 +116,7 @@ module.exports = new Class({
     this.statusTimer = (function() {
       this.status.removeClass('out');
     }).delay(UI.getTransitionDelay(), this);
+    document.addEventListener('pause', this.bound('pause'), false);
   },
 
   onUpdate: function() {
@@ -127,6 +128,7 @@ module.exports = new Class({
     this.button.removeClass('pulse').set('text', 'Resume');
     this.hideStatus();
     this.fireEvent('pause');
+    document.removeEventListener('pause', this.bound('pause'), false);
   },
 
   onCancel: function() {
@@ -134,6 +136,7 @@ module.exports = new Class({
     this.isRecording = false;
     this.button.removeClass('pulse').set('text', 'Start');
     this.hideStatus();
+    document.removeEventListener('pause', this.bound('pause'), false);
   },
 
   onError: function() {
