@@ -3,6 +3,7 @@ exports.FeedbackURL = 'mailto:christoph.pojer+auphonic@gmail.com?subject=Auphoni
 exports.RepositoryURL = 'https://github.com/auphonic/auphonic-mobile';
 exports.IssuesURL = 'https://github.com/auphonic/auphonic-mobile/issues';
 exports.RegisterURL = 'https://auphonic.com/accounts/register/';
+exports.TeamImage = 'https://auphonic.com/media/pics/AuphonicTeam1_small.jpg';
 exports.DefaultFileName = 'mobile-recording-{uuid}';
 exports.DefaultVideoFileName = 'mobile-video-{uuid}';
 exports.DefaultFileNameFilter = /mobile-(?:video|recording)-(\d+)/i;

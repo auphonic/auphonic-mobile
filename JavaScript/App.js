@@ -422,7 +422,6 @@ window.__BOOTAPP = function() {
     load();
 
     View.getMain().push('home', new View.Object({
-      backTitle: 'Home',
       content: UI.render('home', {
         feedback: Auphonic.FeedbackURL
       })
@@ -430,12 +429,21 @@ window.__BOOTAPP = function() {
   });
 
   Controller.define('/about', function() {
-    View.getMain().push('home', new View.Object({
+    View.getMain().push(new View.Object({
       title: 'About',
       content: UI.render('about', {
         user: User.get(),
         version: Auphonic.Version,
         repository: Auphonic.RepositoryURL
+      })
+    }));
+  });
+
+  Controller.define('/team', function() {
+    View.getMain().push(new View.Object({
+      title: 'Team',
+      content: UI.render('team', {
+        image: Auphonic.TeamImage
       })
     }));
   });

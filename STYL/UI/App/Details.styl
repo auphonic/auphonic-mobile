@@ -63,6 +63,9 @@ div.detail
     clear right
     padding 3px 0 0 3px
 
+  span.wrap
+    white-space normal
+
   div.white-background
     position absolute
     left 0
@@ -71,7 +74,7 @@ div.detail
     height 250px
     background #fff
 
-  &.with-thumbnail
+  &.with-thumbnail, &.with-image
     height 130px
     padding 0
 
@@ -102,3 +105,23 @@ div.detail
       h1, span
         color #fff
         text-shadow 0 1px 0 #000
+
+  &.with-image
+    height 270px
+
+    div.cover-photo
+      position absolute
+      top 0
+      left 0
+      right 0
+      height 270px
+      background-size 400px
+      background-position center -30px
+      background-repeat no-repeat
+
+    div.gradient
+      height 270px
+      top auto
+      bottom 0
+
+
