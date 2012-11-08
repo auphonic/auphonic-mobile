@@ -12,7 +12,8 @@ module.exports = new Class({
   options: {
     selector: '.removable > span',
     anchorSelector: 'a',
-    scrollableSelector: 'div.scrollable'
+    scrollableSelector: 'div.scrollable',
+    removedClass: 'item-removed'
 
     /*
     onSwipe: function() {},
@@ -71,6 +72,7 @@ module.exports = new Class({
     event.preventDefault();
 
     this.end();
+    this.container.addClass(this.options.removedClass);
     this.fireEvent('click');
   },
 

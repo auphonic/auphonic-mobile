@@ -267,6 +267,7 @@ window.__BOOTAPP = function() {
 
       selector: '.removable > span',
       scrollableSelector: 'div.scrollable',
+      removedClass: 'item-removed',
 
       onClick: function() {
         removeItem(this.container);

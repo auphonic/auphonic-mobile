@@ -29,6 +29,7 @@ var createUIElement = function(href, store, content, id) {
   var instance = element.getInstanceOf(SwipeAble);
   if (instance) instance.addEvent('click', function() {
     delete outputFiles[id];
+    store.fireEvent('update:' + exports.getType());
   });
 
   return element;
@@ -48,6 +49,8 @@ var add = function(baseURL, store, container, outputFile, id) {
 
   if (previous) element.replaces(previous);
   else element.inject(container);
+
+  store.fireEvent('update:' + exports.getType());
 };
 
 var createUIData = exports.createUIData = function(content) {
@@ -62,7 +65,7 @@ var createUIData = exports.createUIData = function(content) {
 
 var parseFromContainer = function(container) {
   var outputFiles = API.getInfo('output_files');
-  return container.getChildren().retrieve('value').clean().map(function(outputFile) {
+  return container.getChildren(':not(.item-removed)').retrieve('value').clean().map(function(outputFile) {
     // Add filename if necessary
     var file = outputFile.filename;
     var endings = outputFiles[outputFile.format].endings;

@@ -26,6 +26,7 @@ var createUIElement = function(baseURL, store, content, id) {
   var instance = element.getInstanceOf(SwipeAble);
   if (instance) instance.addEvent('click', function() {
     delete chapters[id];
+    store.fireEvent('update:' + exports.getType());
   });
 
   return element;
@@ -56,10 +57,12 @@ var add = function(baseURL, store, container, chapter, id) {
   // No elements found or add as last
   if (!element.getParent())
     element.inject(container);
+
+  store.fireEvent('update:' + exports.getType());
 };
 
 var parseFromContainer = function(container) {
-  return container.getChildren().retrieve('value').clean();
+  return container.getChildren(':not(.item-removed)').retrieve('value').clean();
 };
 
 var showAction = function(object, id) {
