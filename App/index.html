@@ -172,7 +172,7 @@
         __loadResource(__SERVER_URL + 'Version.js?' + Date.now(), function() {
           // __APP_VERSION is now available
           loaded = 0;
-          resources = ['Style-' + __APP_VERSION + '.css', 'App-' + __APP_VERSION + '.js'];
+          resources = ['App-' + __APP_VERSION + '.css', 'App-' + __APP_VERSION + '.js'];
 
           resources.forEach(function(resource) {
             __loadResource(__SERVER_URL + resource, success, error);
