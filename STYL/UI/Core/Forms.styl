@@ -38,17 +38,17 @@ textarea.autogrow
 // Checkbox, losely based on http://vxjs.org/switch.html
 .checkbox
   margin-top -6px
-  border 1px solid #979797
+  border 1px solid rgba(151, 151, 151, 0.5)
   border-radius 20px
 
   > div
     position relative
     height 28px
-    width 77px
+    width 79px
 
     border-radius 20px
     -webkit-mask-image url(../Images/CheckBoxMask.png)
-    -webkit-mask-size 77px 28px
+    -webkit-mask-size 79px 28px
     box-shadow inset 0 1px 3px #bababa, inset 0 12px 3px 2px rgba(232, 232, 232, 0.5)
     cursor pointer
     overflow hidden
@@ -76,26 +76,26 @@ textarea.autogrow
     & > .thumb
       z-index 3
       position relative
-      width 26px
-      height 26px
-      top 0
+      width 28px
+      height 28px
+      top -1px
       display block
       font-size 0.9em
 
       transition -webkit-transform 200ms ease-in-out
       transform translate3d(0, 0, 0)
 
-      border solid 1px #919191
+      border solid 1px rgba(151, 151, 151, 0.5)
       border-radius 50%
 
-      box-shadow inset 0 2px 1px white, inset 0 -2px 1px white
+      box-shadow inset 0 2px 1px rgba(255, 255, 255, 0.5), inset 0 -2px 1px rgba(255, 255, 255, 0.5)
       background-color #cecece
       background-image linear-gradient(top, #cecece, #fbfbfb)
 
       &:before
         content attr(data-on)
         position absolute
-        top 5px
+        top 7px
         left -70px
         right 0
         color #fff
@@ -106,7 +106,7 @@ textarea.autogrow
       &::after
         content attr(data-off)
         position absolute
-        top 5px
+        top 7px
         left 33px
         right 0
         color #888
@@ -114,7 +114,6 @@ textarea.autogrow
         font-weight bold
 
     &:hover > .thumb
-      box-shadow inset 0 2px 1px #fff, inset 0 -2px 1px #fff
       background-image none
 
 // Select
@@ -126,5 +125,6 @@ div.container ul li span.right.placeholder
   text-align left
 
 div.container ul li select.right
+  height 41px // This is required for fade-out animations
   padding-top 0
   padding-bottom 0

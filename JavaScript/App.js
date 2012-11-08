@@ -341,7 +341,14 @@ window.__BOOTAPP = function() {
         if (element.retrieve(':belongs-to-attached')) return;
         element.store(':belongs-to-attached', true);
         var owner = document.getElement('input[name=' + element.get('data-belongs-to') + ']');
-        if (owner) owner.addEvent('change', function() {
+        if (!owner) return;
+
+        // HACKY: Prevent ghost clicks on the underlying <select> element on iOS
+        owner.getParent('div.checkbox').addEventListener('click', function(event) {
+          event.stopPropagation();
+        }, false);
+
+        owner.addEvent('change', function() {
           if (this.get('checked')) element.removeClass('fade');
           else element.addClass('fade');
         });
