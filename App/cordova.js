@@ -1,6 +1,6 @@
-// commit 0b9a05462fdcb3b318d773da6ce2699c7d61ef12
+// commit e3ed532ddda1837d324cc759df52dff952b10e28
 
-// File generated at :: Thu Nov 08 2012 01:59:35 GMT+0100 (CET)
+// File generated at :: Thu Nov 08 2012 14:14:30 GMT+0100 (CET)
 
 /*
  Licensed to the Apache Software Foundation (ASF) under one
@@ -3176,7 +3176,7 @@ var mediaObjects = {};
  * @param statusCallback        The callback to be called when media status has changed.
  *                                  statusCallback(int statusCode) - OPTIONAL
  */
-var Media = function(src, successCallback, errorCallback, statusCallback) {
+var Media = function(src, successCallback, errorCallback, statusCallback, levelCallback) {
 
     // successCallback optional
     if (successCallback && (typeof successCallback !== "function")) {
@@ -3196,12 +3196,19 @@ var Media = function(src, successCallback, errorCallback, statusCallback) {
         return;
     }
 
+    // levelCallback optional
+    if (levelCallback && (typeof levelCallback !== "function")) {
+        console.log("Media Error: levelCallback is not a function");
+        return;
+    }
+
     this.id = utils.createUUID();
     mediaObjects[this.id] = this;
     this.src = src;
     this.successCallback = successCallback;
     this.errorCallback = errorCallback;
     this.statusCallback = statusCallback;
+    this.levelCallback = levelCallback;
     this._duration = -1;
     this._position = -1;
     exec(null, this.errorCallback, "Media", "create", [this.id, this.src]);
@@ -3211,6 +3218,7 @@ var Media = function(src, successCallback, errorCallback, statusCallback) {
 Media.MEDIA_STATE = 1;
 Media.MEDIA_DURATION = 2;
 Media.MEDIA_POSITION = 3;
+Media.MEDIA_LEVEL = 4;
 Media.MEDIA_ERROR = 9;
 
 // Media states
@@ -3324,7 +3332,7 @@ Media.prototype.setVolume = function(volume) {
  * @param msgType       The 'type' of update this is
  * @param value         Use of value is determined by the msgType
  */
-Media.onStatus = function(id, msgType, value) {
+Media.onStatus = function(id, msgType, value, peakLevel) {
 
     var media = mediaObjects[id];
 
@@ -3344,6 +3352,9 @@ Media.onStatus = function(id, msgType, value) {
                 break;
             case Media.MEDIA_POSITION :
                 media._position = Number(value);
+                break;
+            case Media.MEDIA_LEVEL :
+                media.levelCallback && media.levelCallback(value, peakLevel);
                 break;
             default :
                 console && console.error && console.error("Unhandled Media.onStatus :: " + msgType);

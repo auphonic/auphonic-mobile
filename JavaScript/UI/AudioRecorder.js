@@ -34,6 +34,9 @@ module.exports = new Class({
     this.chapterMarkElement.addEvent('click', this.bound('onChapterMarkClick'));
     this.markerHighlight = this.chapterMarkElement.getElement('span');
 
+    this.levelElement = element.getElement('.audio-level .peak-meter');
+    this.averageLevelElement = element.getElement('.audio-level .average-meter');
+
     this.object.addEvent('hide:once', this.bound('onHide'));
     this.object.addEvent('show', function() {
       button.removeClass('fade');
@@ -50,7 +53,8 @@ module.exports = new Class({
       pause: this.bound('onPause'),
       cancel: this.bound('onCancel'),
       error: this.bound('onError'),
-      success: this.bound('onSuccess')
+      success: this.bound('onSuccess'),
+      levelUpdate: this.bound('onLevelUpdate')
     });
   },
 
@@ -154,6 +158,14 @@ module.exports = new Class({
     file.chapters = this.chapters;
 
     this.fireEvent('success', [file]);
+  },
+
+  onLevelUpdate: function(average, peak) {
+    var peakWidth = (-Math.max(-50, peak)) / 0.5;
+    this.levelElement.setStyle('width', peakWidth + '%');
+
+    var averageWidth = 100 - (-Math.max(-50, average)) / 0.5;
+    this.averageLevelElement.setStyle('width', averageWidth + '%');
   },
 
   hideStatus: function() {

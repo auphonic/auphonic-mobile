@@ -26,7 +26,7 @@ module.exports = new Class({
   },
 
   _start: function() {
-    if (!this.media) this.media = new window.Media(this.file.fullPath, this.bound('onCaptureSuccess'), this.bound('onCaptureError'), this.bound('onStatus'));
+    if (!this.media) this.media = new window.Media(this.file.fullPath, this.bound('onCaptureSuccess'), this.bound('onCaptureError'), this.bound('onStatus'), this.bound('onLevelUpdate'));
     IdleTimer.disable();
     this.fireEvent('start');
     this.media.startRecord();
@@ -116,6 +116,10 @@ module.exports = new Class({
     // We are calling .pause() when we get the duration but we don't want to fire the Pause event.
     if (this.statusEventIsDisabled) return;
     if (status == window.Media.MEDIA_PAUSED) this.fireEvent('pause');
+  },
+
+  onLevelUpdate: function(averageLevel, peakLevel) {
+    this.fireEvent('levelUpdate', [averageLevel, peakLevel]);
   },
 
   getFileName: function() {
