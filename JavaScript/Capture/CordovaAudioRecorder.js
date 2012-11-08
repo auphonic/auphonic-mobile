@@ -34,10 +34,8 @@ module.exports = new Class({
   },
 
   pause: function() {
-    clearInterval(this.timer);
-    IdleTimer.enable();
-    this.media.pauseRecord();
     // onPause gets fired through onStatus
+    this.media.pauseRecord();
   },
 
   stop: function() {
@@ -112,10 +110,16 @@ module.exports = new Class({
     this.file.remove(function() {}, function() {});
   },
 
+  onPause: function() {
+    clearInterval(this.timer);
+    IdleTimer.enable();
+    this.fireEvent('pause');
+  },
+
   onStatus: function(status) {
     // We are calling .pause() when we get the duration but we don't want to fire the Pause event.
     if (this.statusEventIsDisabled) return;
-    if (status == window.Media.MEDIA_PAUSED) this.fireEvent('pause');
+    if (status == window.Media.MEDIA_PAUSED) this.onPause();
   },
 
   onLevelUpdate: function(averageLevel, peakLevel) {
