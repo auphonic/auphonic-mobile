@@ -1,6 +1,6 @@
-// commit 02b91c5313ff37d74a58f71775170afd360f4a1f
+// commit 0b9a05462fdcb3b318d773da6ce2699c7d61ef12
 
-// File generated at :: Wed Oct 31 2012 14:34:26 GMT-0700 (PDT)
+// File generated at :: Thu Nov 08 2012 01:59:35 GMT+0100 (CET)
 
 /*
  Licensed to the Apache Software Foundation (ASF) under one
@@ -915,12 +915,12 @@ module.exports = {
 // file: lib/ios/exec.js
 define("cordova/exec", function(require, exports, module) {
 
-    /**
-     * Creates a gap bridge iframe used to notify the native code about queued
-     * commands.
-     *
-     * @private
-     */
+/**
+ * Creates a gap bridge iframe used to notify the native code about queued
+ * commands.
+ *
+ * @private
+ */
 var cordova = require('cordova'),
     channel = require('cordova/channel'),
     utils = require('cordova/utils'),
@@ -930,10 +930,7 @@ var cordova = require('cordova'),
         XHR_WITH_PAYLOAD: 2,
         XHR_OPTIONAL_PAYLOAD: 3
     },
-    // XHR mode does not work on iOS 4.2, so default to IFRAME_NAV for such devices.
-    // XHR mode's main advantage is working around a bug in -webkit-scroll, which
-    // doesn't exist in 4.X devices anyways.
-    bridgeMode = navigator.userAgent.indexOf(' 4_') == -1 ? jsToNativeModes.XHR_NO_PAYLOAD : jsToNativeModes.IFRAME_NAV,
+    bridgeMode,
     execIframe,
     execXhr,
     requestCount = 0,
@@ -963,10 +960,11 @@ function shouldBundleCommandJson() {
 }
 
 function iOSExec() {
-    if (channel.onCordovaReady.state != 2) {
-        utils.alert("ERROR: Attempting to call cordova.exec()" +
-              " before 'deviceready'. Ignoring.");
-        return;
+    // XHR mode does not work on iOS 4.2, so default to IFRAME_NAV for such devices.
+    // XHR mode's main advantage is working around a bug in -webkit-scroll, which
+    // doesn't exist in 4.X devices anyways.
+    if (bridgeMode === undefined) {
+        bridgeMode = navigator.userAgent.indexOf(' 4_') == -1 ? jsToNativeModes.XHR_NO_PAYLOAD : jsToNativeModes.IFRAME_NAV;
     }
 
     var successCallback, failCallback, service, action, actionArgs, splitCommand;
@@ -1007,16 +1005,18 @@ function iOSExec() {
     // the command is executed.
     commandQueue.push(JSON.stringify(command));
 
-    if (!isInContextOfEvalJs) {
+    // If we're in the context of a stringByEvaluatingJavaScriptFromString call,
+    // then the queue will be flushed when it returns; no need for a poke.
+    // Also, if there is already a command in the queue, then we've already
+    // poked the native side, so there is no reason to do so again.
+    if (!isInContextOfEvalJs && commandQueue.length == 1) {
         if (bridgeMode != jsToNativeModes.IFRAME_NAV) {
-            // Re-using the XHR improves exec() performance by about 10%.
-            // It is possible for a native stringByEvaluatingJavascriptFromString call
-            // to cause us to reach this point when a request is already in progress,
-            // so we check the readyState to guard agains re-using an inprogress XHR.
-            // Refer to CB-1404.
+            // This prevents sending an XHR when there is already one being sent.
+            // This should happen only in rare circumstances (refer to unit tests).
             if (execXhr && execXhr.readyState != 4) {
                 execXhr = null;
             }
+            // Re-using the XHR improves exec() performance by about 10%.
             execXhr = execXhr || new XMLHttpRequest();
             // Changing this to a GET will make the XHR reach the URIProtocol on 4.2.
             // For some reason it still doesn't work though...
@@ -1059,7 +1059,7 @@ iOSExec.nativeFetchMessages = function() {
 
 iOSExec.nativeCallback = function(callbackId, status, payload, keepCallback) {
     return iOSExec.nativeEvalAndFetch(function() {
-        var success = status == 0 || status == 1;
+        var success = status === 0 || status === 1;
         cordova.callbackFromNative(callbackId, success, status, payload, keepCallback);
     });
 };
@@ -5833,6 +5833,30 @@ utils.defineGetter = function(obj, key, func) {
     }
 };
 
+utils.arrayIndexOf = function(a, item) {
+    if (a.indexOf) {
+        return a.indexOf(item);
+    }
+    var len = a.length;
+    for (var i = 0; i < len; ++i) {
+        if (a[i] == item) {
+            return i;
+        }
+    }
+    return -1;
+};
+
+/**
+ * Returns whether the item was found in the array.
+ */
+utils.arrayRemove = function(a, item) {
+    var index = utils.arrayIndexOf(a, item);
+    if (index != -1) {
+        a.splice(index, 1);
+    }
+    return index != -1;
+};
+
 /**
  * Returns an indication of whether the argument is an array or not
  */
@@ -6028,10 +6052,10 @@ window.cordova = require('cordova');
 (function (context) {
     // Replace navigator before any modules are required(), to ensure it happens as soon as possible.
     // We replace it so that properties that can't be clobbered can instead be overridden.
-    if (typeof navigator != 'undefined') {
+    if (typeof context.navigator != 'undefined') {
         var CordovaNavigator = function () {};
-        CordovaNavigator.prototype = navigator;
-        navigator = new CordovaNavigator();
+        CordovaNavigator.prototype = context.navigator;
+        context.navigator = new CordovaNavigator();
     }
 
     var channel = require("cordova/channel"),
@@ -6046,17 +6070,15 @@ window.cordova = require('cordova');
                         platform = require('cordova/platform');
 
                     // Drop the common globals into the window object, but be nice and don't overwrite anything.
-                    builder.build(base.objects).intoButDoNotClobber(window);
+                    builder.build(base.objects).intoButDoNotClobber(context);
 
                     // Drop the platform-specific globals into the window object
                     // and clobber any existing object.
-                    builder.build(platform.objects).intoAndClobber(window);
+                    builder.build(platform.objects).intoAndClobber(context);
 
                     // Merge the platform-specific overrides/enhancements into
                     // the window object.
-                    if (typeof platform.merges !== 'undefined') {
-                        builder.build(platform.merges).intoAndMerge(window);
-                    }
+                    builder.build(platform.merges).intoAndMerge(context);
 
                     // Call the platform-specific initialization
                     platform.initialize();
