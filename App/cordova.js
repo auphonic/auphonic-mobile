@@ -3289,6 +3289,13 @@ Media.prototype.startRecord = function() {
 };
 
 /**
+ * Pause recording audio file.
+ */
+Media.prototype.pauseRecord = function() {
+    exec(null, this.errorCallback, "Media", "pauseRecordingAudio", [this.id]);
+};
+
+/**
  * Stop recording audio file.
  */
 Media.prototype.stopRecord = function() {

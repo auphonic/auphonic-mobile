@@ -11,6 +11,7 @@ module.exports = new Class({
 
   extension: 'wav',
   canceled: false,
+  statusEventIsDisabled: false,
 
   initialize: function(filename, options) {
     this.setOptions(options);
@@ -19,21 +20,28 @@ module.exports = new Class({
   },
 
   start: function() {
-    window.requestFileSystem(window.LocalFileSystem.PERSISTENT, 0, this.bound('onFileSystemReady'), this.bound('onError'));
+    this.statusEventIsDisabled = false;
+    if (this.media) this._start();
+    else window.requestFileSystem(window.LocalFileSystem.PERSISTENT, 0, this.bound('onFileSystemReady'), this.bound('onError'));
   },
 
-  _capture: function() {
+  _start: function() {
+    if (!this.media) this.media = new window.Media(this.file.fullPath, this.bound('onCaptureSuccess'), this.bound('onCaptureError'), this.bound('onStatus'));
     IdleTimer.disable();
     this.fireEvent('start');
-    this.media = new window.Media(this.file.fullPath, this.bound('onCaptureSuccess'), this.bound('onCaptureError'));
     this.media.startRecord();
-
     this.timer = this.update.periodical(1000, this);
+  },
+
+  pause: function() {
+    clearInterval(this.timer);
+    IdleTimer.enable();
+    this.media.pauseRecord();
+    // onPause gets fired through onStatus
   },
 
   stop: function() {
     clearInterval(this.timer);
-    IdleTimer.enable();
     this.media.stopRecord();
 
     this.fireEvent('cancel');
@@ -54,6 +62,7 @@ module.exports = new Class({
     if (canceled) return;
 
     this.file.media_type = 'audio';
+    this.statusEventIsDisabled = true;
     this.media.play();
     this.media.pause();
     // Duration can only be accessed asynchronously
@@ -63,6 +72,8 @@ module.exports = new Class({
       this.file.file((function(file) {
         this.file.size = file.size;
         this.fireEvent('success', [this.file]);
+        // We are getting rid of the media object so it will be recreated on the next call to start().
+        this.media = null;
       }).bind(this));
     }).delay(0, this);
   },
@@ -78,13 +89,14 @@ module.exports = new Class({
 
   onFileLoadSuccess: function(file) {
     this.file = file;
-    this._capture();
+    this._start();
   },
 
   onError: function() {
     clearInterval(this.timer);
     this.fireEvent('cancel');
     this.fireEvent('error');
+    this.media = null;
     if (this.file) this.file.remove(function() {}, function() {});
   },
 
@@ -96,7 +108,14 @@ module.exports = new Class({
     clearInterval(this.timer);
     this.fireEvent('cancel');
     this.fireEvent('error');
+    this.media = null;
     this.file.remove(function() {}, function() {});
+  },
+
+  onStatus: function(status) {
+    // We are calling .pause() when we get the duration but we don't want to fire the Pause event.
+    if (this.statusEventIsDisabled) return;
+    if (status == window.Media.MEDIA_PAUSED) this.fireEvent('pause');
   },
 
   getFileName: function() {

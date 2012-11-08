@@ -47,6 +47,7 @@ module.exports = new Class({
     this.recorder.addEvents({
       start: this.bound('onStart'),
       update: this.bound('onUpdate'),
+      pause: this.bound('onPause'),
       cancel: this.bound('onCancel'),
       error: this.bound('onError'),
       success: this.bound('onSuccess')
@@ -82,15 +83,19 @@ module.exports = new Class({
   },
 
   toggle: function() {
-    if (this.isRecording) this.stop();
+    if (this.isRecording) this.pause();
     else this.start();
   },
 
   start: function() {
     this.isRecording = true;
     this.recorder.start();
-    this.button.addClass('pulse').set('text', 'Stop');
+    this.button.addClass('pulse').set('text', 'Pause');
     return this;
+  },
+
+  pause: function() {
+    if (this.hasStarted) this.recorder.pause();
   },
 
   stop: function() {
@@ -99,13 +104,14 @@ module.exports = new Class({
   },
 
   onStart: function() {
-    this.hasStarted = true;
-    this.time = 0;
-    this.chapterID = 0;
-    this.chapters = [];
-    this.status.show();
-    this.recordingLengthElement.set('text', '');
+    if (!this.hasStarted) {
+      this.time = 0;
+      this.chapterID = 0;
+      this.chapters = [];
+      this.recordingLengthElement.set('text', '');
+    }
 
+    this.hasStarted = true;
     this.status.show();
     this.statusTimer = (function() {
       this.status.removeClass('out');
@@ -116,18 +122,18 @@ module.exports = new Class({
     this.recordingLengthElement.set('text', Data.formatDuration(++this.time, ' '));
   },
 
+  onPause: function() {
+    this.isRecording = false;
+    this.button.removeClass('pulse').set('text', 'Resume');
+    this.hideStatus();
+    this.fireEvent('pause');
+  },
+
   onCancel: function() {
     this.hasStarted = false;
     this.isRecording = false;
     this.button.removeClass('pulse').set('text', 'Start');
-    if (this.status.hasClass('out')) {
-      this.status.addClass('out').addEvent('transitionComplete:once', function() {
-        this.hide();
-      });
-    } else {
-      clearTimeout(this.statusTimer);
-      this.status.hide();
-    }
+    this.hideStatus();
   },
 
   onError: function() {
@@ -145,6 +151,17 @@ module.exports = new Class({
     file.chapters = this.chapters;
 
     this.fireEvent('success', [file]);
+  },
+
+  hideStatus: function() {
+    if (this.status.hasClass('out')) {
+      this.status.addClass('out').addEvent('transitionComplete:once', function() {
+        this.hide();
+      });
+    } else {
+      clearTimeout(this.statusTimer);
+      this.status.hide();
+    }
   }
 
 });
