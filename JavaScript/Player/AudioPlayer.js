@@ -212,7 +212,7 @@ module.exports = new Class({
   convertDurationToPixel: function(position) {
     var duration = this.getDuration();
     var width = this.waveform.offsetWidth;
-    return position / duration * width / 1000;
+    return Math.max(0, Math.min(this.waveform.offsetWidth, position / duration * width / 1000));
   },
 
   prepareChapters: function(chapters) {
@@ -276,7 +276,7 @@ module.exports = new Class({
   },
 
   updateCurrentTime: function(position) {
-    this.currentTimeElement.set('text', Data.formatDuration(position / 1000, ' '));
+    this.currentTimeElement.set('text', Data.formatDuration(Math.min(position / 1000, this.getDuration()), ' '));
   },
 
   getDuration: function() {
