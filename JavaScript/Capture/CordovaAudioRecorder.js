@@ -9,7 +9,7 @@ module.exports = new Class({
 
   Implements: [Class.Binds, Options, Events],
 
-  extension: 'wav',
+  extension: 'aac',
   canceled: false,
   statusEventIsDisabled: false,
 
