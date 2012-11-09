@@ -3,4 +3,5 @@ DIR=$(cd `dirname $0` && pwd)
 
 source $DIR/variables
 
+rm $DIR/$AUPHONIC_OUTPUT/$AUPHONIC_CORDOVA_VERSION/*-*.css
 $DIR/stylus-executable --use "$DIR/../node_modules/nib/lib/nib.js" --name "$AUPHONIC_CSS_FILENAME" --out "$DIR/$AUPHONIC_OUTPUT/$AUPHONIC_CORDOVA_VERSION/" --watch "$DIR/$AUPHONIC_STYL" --use url --with "{\"paths\":[\"$DIR/$AUPHONIC_IMAGES\"],\"limit\":false}" $@
