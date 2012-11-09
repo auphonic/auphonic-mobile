@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!-- 
+/*
        Licensed to the Apache Software Foundation (ASF) under one
        or more contributor license agreements.  See the NOTICE file
        distributed with this work for additional information
@@ -16,22 +15,21 @@
        KIND, either express or implied.  See the License for the
        specific language governing permissions and limitations
        under the License.
--->
-<cordova>
-	<!--  
-	access elements control the Android whitelist.  
-	Domains are assumed blocked unless set otherwise
-	 -->
+ */
 
-    <access origin="http://127.0.0.1*"/> <!-- allow local pages -->
+package com.auphonic.www;
 
-	<!-- <access origin="https://example.com" /> allow any secure requests to example.com -->
-	<!-- <access origin="https://example.com" subdomains="true" /> such as above, but including subdomains, such as www -->
-	<!-- <access origin=".*"/> Allow all domains, suggested development use only -->
+import android.app.Activity;
+import android.os.Bundle;
+import org.apache.cordova.*;
 
-    <log level="DEBUG"/>
-    <preference name="classicRender" value="true" />
-</cordova>
-
-
+public class Auphonic extends DroidGap
+{
+    @Override
+    public void onCreate(Bundle savedInstanceState)
+    {
+        super.onCreate(savedInstanceState);
+        super.loadUrl("file:///android_asset/App/index.html");
+    }
+}
 

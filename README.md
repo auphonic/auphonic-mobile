@@ -21,7 +21,13 @@ Run
 * Use Google Chrome and open `App/` on a local server.
  * Be sure to enable touch events in Web Inspector (see: Web Inspector Settings)
  * *Note:* When developing locally in a browser the relative path of the project in `App/index.html` needs to be adjusted and the local server needs to be added to Cordova.plist in XCode.
-* The Android version is not functional yet
+* Android
+ * Download and Install Eclipse
+ * Download and Install the Android SDK
+ * Create an Android Project from existing sources and point it to `Android/`
+ * Copy all files from `App/` except `cordova.js` to `Android/assets/App`
+ * Launch the Emulator from within Eclipse (Run As > Android Application)
+ * Shoot yourself
 
 Logo
 ----
