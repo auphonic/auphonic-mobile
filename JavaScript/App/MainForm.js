@@ -203,11 +203,7 @@ module.exports = new Class({
     var upload = CurrentUpload.remove(this.uuid);
     if (upload) upload.transfer.cancel();
 
-    var element = this.object.toElement();
-    element.getElement('.input_file').dispose();
-    element.getElement('.change_source').show();
-
-    ListFiles.setFile(this.store, null);
+    this.onCancel();
   },
 
   upload: function(file) {
@@ -314,8 +310,21 @@ module.exports = new Class({
     this.options.onUploadSuccess.call(this, response.data);
   },
 
+  onCancel: function() {
+    var element = this.object.toElement();
+    element.getElement('.input_file').dispose();
+    element.getElement('.change_source').show();
+
+    ListFiles.setFile(this.store, null);
+  },
+
   onUploadProgress: function(data) {
     if (data.uuid != this.uuid) return;
+
+    if (data.hasError) {
+      this.onCancel();
+      return;
+    }
 
     var element = this.object.toElement();
     var uploading = element.getElement('.input_file_label .uploading');

@@ -450,6 +450,11 @@ var upload = function(recording) {
       error: function() {
         new Notice('There was an error uploading your recording <span class="bold">"' + recording.name + '"</span>. You can find your recording in the "Recordings" tab and you can try uploading it again later.');
         CurrentUpload.remove(uuid);
+
+        View.getMain().getStack().notifyAll('uploadProgress', [{
+          uuid: uuid,
+          hasError: true
+        }]);
       },
 
       progress: function(event) {
