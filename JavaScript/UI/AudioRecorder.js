@@ -28,7 +28,8 @@ module.exports = new Class({
 
     this.recorderClass = recorderClass;
     this.object = object;
-    var element = object.toElement();
+    var element = object.toElement().getElement('.audio-recorder');
+
     var button = this.button = element.getElement('.recorder');
 
     this.status = element.getElement('.status');
@@ -149,6 +150,7 @@ module.exports = new Class({
   },
 
   onPause: function() {
+    this.onLevelUpdate(-50, -50);
     this.isRecording = false;
     this.button.removeClass('pulse').set('text', 'Resume');
     this.hideStatus();
