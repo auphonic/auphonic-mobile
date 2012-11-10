@@ -13,6 +13,7 @@ module.exports = new Class({
   Implements: [Class.Binds, Options, Events],
 
   options: {
+    chapterTitle: 'Chapter {id}',
     generateFileName: function() {
       return 'recording';
     }
@@ -30,28 +31,33 @@ module.exports = new Class({
     this.object = object;
     var element = object.toElement().getElement('.audio-recorder');
 
-    var button = this.button = element.getElement('.recorder');
+    element.addEvent('touchmove', this.preventDefault);
 
+    this.button = element.getElement('.recorder');
     this.status = element.getElement('.status');
     this.recordingLengthElement = this.status.getElement('.recording-length');
     this.chapterMarkElement = this.status.getElement('.add-chapter-mark');
 
-    this.button.addEvent('click', this.bound('onClick'));
     this.chapterMarkElement.addEvent('click', this.bound('onChapterMarkClick'));
+    this.chapterElement = element.getElement('.chapter-text');
+    this.chapterInput = this.chapterElement.getElement('input');
     this.markerHighlight = this.chapterMarkElement.getElement('span');
-
     this.levelElement = element.getElement('.audio-level .peak-meter');
     this.averageLevelElement = element.getElement('.audio-level .average-meter');
 
-    this.object.addEvent('show', function() {
-      button.removeClass('fade');
-    });
+    this.button.addEvent('click', this.bound('onClick'));
+    this.chapterInput.addEvent('input', this.bound('onChapterChange'));
+
+    this.object.addEvent('show', this.bound('onShow'));
+    this.object.addEvent('hide', this.bound('onHide'));
+
+    this.status.inject(document.id('main'));
   },
 
   setupRecorder: function() {
     if (this.recorder) return;
 
-    this.object.addEvent('hide:once', this.bound('onHide'));
+    this.object.addEvent('hide:once', this.bound('onHideOnce'));
     this.recorder = new this.recorderClass(this.options.generateFileName.call(this));
     this.recorder.addEvents({
       start: this.bound('onStart'),
@@ -63,34 +69,6 @@ module.exports = new Class({
       success: this.bound('onSuccess'),
       levelUpdate: this.bound('onLevelUpdate')
     });
-  },
-
-  onClick: function(event) {
-    this.setupRecorder();
-    event.preventDefault();
-
-    this.toggle();
-  },
-
-  onChapterMarkClick: function() {
-    if (!this.isRecording) return;
-
-    var time = Data.formatDuration(this.time, ':', true, [60, 60, 0], ['', '', '']);
-
-    // The API expects hh:mm[:ss]
-    if (time.length == 2) time = '00:00:' + time;
-    else if (time.length == 5) time = '00:' + time;
-
-    this.chapters.push({
-      start: time,
-      title: 'Chapter {id}'.substitute({id: ++this.chapterID})
-    });
-
-    clearTimeout(this.timer);
-    this.markerHighlight.set('text', time).removeClass('out');
-    this.timer = (function() {
-      this.markerHighlight.addClass('out');
-    }).delay(2500, this);
   },
 
   toggle: function() {
@@ -122,6 +100,40 @@ module.exports = new Class({
   stop: function() {
     if (this.hasStarted) this.recorder.stop();
     return this;
+  },
+
+  onClick: function(event) {
+    this.setupRecorder();
+    event.preventDefault();
+
+    this.toggle();
+  },
+
+  onChapterMarkClick: function(event) {
+    event.stopPropagation(); // Prevent iOS Ghost Clicks
+
+    if (!this.isRecording) return;
+
+    var time = Data.formatDuration(this.time, ':', true, [60, 60, 0], ['', '', '']);
+
+    // The API expects hh:mm[:ss]
+    if (time.length == 2) time = '00:00:' + time;
+    else if (time.length == 5) time = '00:' + time;
+
+    var title = this.options.chapterTitle.substitute({id: ++this.chapterID});
+    this.chapters.push({
+      start: time,
+      title: title
+    });
+
+    clearTimeout(this.timer);
+    this.markerHighlight.set('text', time).removeClass('out');
+    this.timer = (function() {
+      this.markerHighlight.addClass('out');
+    }).delay(2500, this);
+
+    this.chapterElement.removeClass('fade');
+    this.chapterInput.set('value', title).set('placeholder', title);
   },
 
   onStart: function() {
@@ -172,7 +184,17 @@ module.exports = new Class({
     new Notice('There was an error with your recording. Please try again.');
   },
 
+  onShow: function() {
+    this.status.inject(document.id('main'));
+    this.button.removeClass('fade');
+  },
+
   onHide: function() {
+    this.status.dispose();
+    this.chapterElement.addClass('fade');
+  },
+
+  onHideOnce: function() {
     if (this.hasStarted) {
       this.isSilent = true;
       this.recorder.stop();
@@ -197,8 +219,14 @@ module.exports = new Class({
     this.averageLevelElement.setStyle('width', averageWidth + '%');
   },
 
+  onChapterChange: function() {
+    var value = this.chapterInput.get('value');
+    if (!value) value = this.options.chapterTitle.substitute({id: this.chapterID});
+    this.chapters[this.chapters.length - 1].title = value;
+  },
+
   hideStatus: function() {
-    if (this.status.hasClass('out')) {
+    if (!this.status.hasClass('out')) {
       this.status.addClass('out').addEvent('transitionComplete:once', function() {
         this.hide();
       });
@@ -206,6 +234,10 @@ module.exports = new Class({
       clearTimeout(this.statusTimer);
       this.status.hide();
     }
+  },
+
+  preventDefault: function(event) {
+    event.preventDefault();
   }
 
 });

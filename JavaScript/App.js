@@ -73,7 +73,7 @@ var preventDefault = function(event) {
 
 var cancelText = 'Navigating away will discard all your changes. Press "Cancel" to stay.';
 // This should catch all important editing URLs
-var formURLs = /^\/?(production|preset)\/(edit|new|recording)/i;
+var formURLs = /^\/?(production|preset)\/(edit|new)/i;
 var popoverSelector = 'div.popover';
 var click = function(event) {
   event.preventDefault();

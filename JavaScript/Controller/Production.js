@@ -530,7 +530,7 @@ Controller.define('/production/recording/new-audio', function() {
   var object = new View.Object({
     title: 'Audio Recording',
     backTitle: 'Recorder',
-    content: UI.render('record-audio')
+    content: UI.render('audio-recorder')
   });
 
   View.getMain().push(object);

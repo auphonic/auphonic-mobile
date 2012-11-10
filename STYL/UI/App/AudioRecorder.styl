@@ -10,8 +10,14 @@
 }
 
 .audio-recorder
+  position absolute
+  top 0
+  bottom 0
+  left 0
+  right 0
+
   .meter
-    margin -10px -10px 15px -10px
+    margin 0 0 15px 0
     box-shadow 0 1px 2px rgba(0, 0, 0, 0.2)
     background #fff
 
@@ -105,11 +111,26 @@
       animation-direction alternate
       animation-duration 1s
 
+div.main ul.status
+  z-index 11
+  position absolute
+  bottom 0
+  left 0
+  right 0
+
+  &.expand
+    margin 0
+
+  &.out
+    transform translate3d(0, 100%, 0)
+
   a.add-chapter-mark
     span
+      transition-property opacity
       transition-timing-function ease-in-out
       transition-duration 350ms
       opacity 1
 
       &.out
         opacity 0
+

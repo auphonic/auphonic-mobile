@@ -55,6 +55,12 @@ function program2(depth0,data) {
   if(stack1 || stack1 === 0) { buffer += stack1; }
   buffer += "\n</div>\n";
   return buffer;});
+templates['audio-recorder'] = template(function (Handlebars,depth0,helpers,partials,data) {
+  helpers = helpers || Handlebars.helpers;
+  
+
+
+  return "<div class=\"audio-recorder\">\n  <div class=\"meter\">\n    <div class=\"audio-level\">\n      <div class=\"peak-meter\"></div>\n      <div class=\"average-meter\"></div>\n      <div class=\"stripes\"></div>\n    </div>\n    <div class=\"scale\">\n      <div class=\"scale-48\">-48</div>\n      <div class=\"scale-42\">-42</div>\n      <div class=\"scale-36\">-36</div>\n      <div class=\"scale-30\">-30</div>\n      <div class=\"scale-24\">-24</div>\n      <div class=\"scale-18\">-18</div>\n      <div class=\"scale-12\">-12</div>\n      <div class=\"scale-6\">-6</div>\n      <div class=\"scale-0\">0</div>\n    </div>\n  </div>\n\n  <a class=\"button red recorder\">Start</a>\n\n  <ul class=\"status expand hidden fade out\">\n    <li>\n      <span class=\"recording-length right light\"></span>\n      <label>Length</label>\n    </li>\n    <li class=\"wide\">\n      <a class=\"add-chapter-mark\" class=\"left\">\n        <span class=\"right light out\"></span>\n        Add Chapter Mark\n      </a>\n    </li>\n    <li class=\"chapter-text transition-able fade\">\n      <input type=\"text\" data-clearable=\"1\">\n    </li>\n  </ul>\n</div>\n";});
 templates['container'] = template(function (Handlebars,depth0,helpers,partials,data) {
   helpers = helpers || Handlebars.helpers;
   
@@ -1678,12 +1684,6 @@ function program4(depth0,data) {
   if(stack1 || stack1 === 0) { buffer += stack1; }
   buffer += "\n";
   return buffer;});
-templates['record-audio'] = template(function (Handlebars,depth0,helpers,partials,data) {
-  helpers = helpers || Handlebars.helpers;
-  
-
-
-  return "<div class=\"audio-recorder\">\n  <div class=\"meter\">\n    <div class=\"audio-level\">\n      <div class=\"peak-meter\"></div>\n      <div class=\"average-meter\"></div>\n      <div class=\"stripes\"></div>\n    </div>\n    <div class=\"scale\">\n      <div class=\"scale-48\">-48</div>\n      <div class=\"scale-42\">-42</div>\n      <div class=\"scale-36\">-36</div>\n      <div class=\"scale-30\">-30</div>\n      <div class=\"scale-24\">-24</div>\n      <div class=\"scale-18\">-18</div>\n      <div class=\"scale-12\">-12</div>\n      <div class=\"scale-6\">-6</div>\n      <div class=\"scale-0\">0</div>\n    </div>\n  </div>\n\n  <a class=\"button red recorder\">Start</a>\n\n  <ul class=\"status hidden fade out\">\n    <li>\n      <span class=\"recording-length right light\"></span>\n      <label>Length</label>\n    </li>\n    <li class=\"wide\">\n      <a class=\"add-chapter-mark\" class=\"left\">\n        <span class=\"right light out\"></span>\n        Add Chapter Mark\n      </a>\n    </li>\n  </ul>\n</div>\n";});
 templates['recording'] = template(function (Handlebars,depth0,helpers,partials,data) {
   helpers = helpers || Handlebars.helpers; partials = partials || Handlebars.partials;
   var buffer = "", stack1, self=this, functionType="function", escapeExpression=this.escapeExpression;
@@ -1993,4 +1993,4 @@ templates['ui'] = template(function (Handlebars,depth0,helpers,partials,data) {
   
 
 
-  return "<div id=\"ui\" class=\"hidden\">\n  <header></header>\n  <footer>\n    <ul>\n      <li><a href=\"/\" class=\"home\"><span></span><span>Home</span></a></li>\n      <li><a href=\"/production\" class=\"production\"><span></span><span>Productions</span></a></li>\n      <li><a href=\"/recording\" class=\"record\"><span></span><span>Recordings</span></a></li>\n      <li><a href=\"/preset\" class=\"preset\"><span></span><span>Presets</span></a></li>\n    </ul>\n  </footer>\n  <div class=\"headerBackground\"></div>\n  <div class=\"footerBackground\"></div>\n  <div id=\"main\"></div>\n</div>\n";});
+  return "<div id=\"ui\" class=\"hidden\">\n  <header></header>\n  <footer>\n    <ul>\n      <li><a href=\"/\" class=\"home\"><span></span><span>Home</span></a></li>\n      <li><a href=\"/production\" class=\"production\"><span></span><span>Productions</span></a></li>\n      <li><a href=\"/recording\" class=\"record\"><span></span><span>Recordings</span></a></li>\n      <li><a href=\"/preset\" class=\"preset\"><span></span><span>Presets</span></a></li>\n    </ul>\n  </footer>\n  <div class=\"headerBackground\"></div>\n  <div class=\"footerBackground\"></div>\n  <div id=\"main\" class=\"main\"></div>\n</div>\n";});
