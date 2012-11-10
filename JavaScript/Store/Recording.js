@@ -82,6 +82,15 @@ exports.addProduction = function(id, productionUUID) {
   return recording;
 };
 
+exports.removeProduction = function(id, productionUUID) {
+  var recording = findById(id);
+  if (!recording) return;
+
+  if (recording.productions) recording.productions.erase(productionUUID);
+  update(recording);
+  return recording;
+};
+
 exports.remove = function(id) {
   var recording = findById(id);
   if (!recording) return;

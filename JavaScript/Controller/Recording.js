@@ -126,7 +126,7 @@ var showOne = function(req) {
   if (recording.media_type == 'audio') recording.isAudio = true;
   else recording.isVideo = true;
 
-  if (recording.productions) {
+  if (recording.productions && recording.productions.length) {
     var loaded = 0;
     var complete = function() {
       if (++loaded == recording.productions.length) show(recording);
@@ -145,7 +145,15 @@ var showOne = function(req) {
           });
           complete();
         },
-        error: complete
+        error: function(event, response) {
+          event.preventDefault();
+
+          // Remove deleted productions from this recording
+          if (response && response.status_code == 404)
+            Recording.removeProduction(recording.id, uuid);
+
+          complete();
+        }
       });
     });
     return;
