@@ -42,11 +42,11 @@
     <a class="clear button red expand cancelUpload" data-id="{{uuid}}">Cancel Upload</a>
   {{/if}}
 
-  {{#if start_allowed}}
-    <a data-api-url="/production/{{uuid}}/start" data-method="post" class="clear button green expand startProduction">Start Production</a>
-    <div class="content processing hidden"></div>
-  {{else}}
-    {{#if production}}
+  {{#if production}}
+    {{#if start_allowed}}
+      <a data-api-url="/production/{{uuid}}/start" data-method="post" class="clear button green expand startProduction">Start Production</a>
+      <div class="content processing hidden"></div>
+    {{else}}
       {{#unless change_allowed}}
         <div class="content processing">Processing</div>
       {{/unless}}
@@ -89,9 +89,9 @@
     </ul>
   {{/if}}
 
-  {{#if output_files}}
-    <h1>Output Files</h1>
-    <ul>
+  <h1>Output Files</h1>
+  <ul>
+    {{#if output_files}}
       {{#if output_basename}}
         <li>
           <label>Filename <small class="light">{{output_basename}}</small></label>
@@ -109,8 +109,19 @@
           </li>
         {{/if}}
       {{/each}}
-    </ul>
-  {{/if}}
+    {{else}}
+        <li>
+          <label class="info">
+            <span></span>
+            No Output Files are set
+            <div class="hidden popover top justify" data-position="top">
+              <h1>Missing Output Files</h1>
+              Add at least one output file to be able to start the production.
+            </div>
+          </label>
+        </li>
+    {{/if}}
+  </ul>
 
   {{#if hasChapters}}
     <h1>Chapter Marks</h1>
