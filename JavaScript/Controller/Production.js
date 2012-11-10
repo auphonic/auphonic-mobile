@@ -481,8 +481,10 @@ var upload = function(recording) {
 
   var data = {
     metadata: {title: recording.display_name},
+    output_files: [Auphonic.DefaultOutputFile],
     chapters: recording.chapters
   };
+
   API.call('productions', 'post', JSON.stringify(data)).on({
     success: onCreateSuccess
   });
