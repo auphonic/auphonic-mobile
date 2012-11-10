@@ -38,10 +38,12 @@ module.exports = new Class({
   },
 
   check: function(production) {
+    this.production = production;
     var url = this.options.url.substitute(production);
     API.invalidate(url); // prevent caching
     API.call(url).on({
-      success: this.bound('update')
+      success: this.bound('update'),
+      error: this.bound('error')
     });
 
     return this;
@@ -54,7 +56,7 @@ module.exports = new Class({
       return;
     }
 
-    var production = response.data;
+    var production = this.production = response.data;
     // change_allowed means processing has finished
     if (production.change_allowed) {
       this.fireEvent('finish', [production]);
@@ -66,6 +68,19 @@ module.exports = new Class({
     this.timer = this.check.delay(this.options.delay, this, [production]);
 
     return this;
+  },
+
+  onOnline: function() {
+    this.check(this.production);
+
+    window.removeEventListener('online', this.bound('onOnline'), false);
+    document.removeEventListener('online', this.bound('onOnline'), false);
+  },
+
+  error: function() {
+    window.addEventListener('online', this.bound('onOnline'), false);
+    document.addEventListener('online', this.bound('onOnline'), false);
   }
 
 });
+
