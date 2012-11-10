@@ -457,6 +457,22 @@ window.__BOOTAPP = function() {
     }));
   });
 
+  Controller.define('/external-services', function() {
+    View.getMain().showIndicator();
+
+    API.call('services').on({
+      success: function(response) {
+        View.getMain().push(new View.Object({
+          title: 'External Services',
+          content: UI.render('external-services', {
+            url: Auphonic.ExternalServicesURL,
+            services: response.data
+          })
+        }));
+      }
+    });
+  });
+
   Controller.define('/logout', function() {
     User.reset();
     View.getMain().resetStack();

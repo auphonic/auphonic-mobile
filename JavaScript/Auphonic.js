@@ -3,6 +3,7 @@ exports.FeedbackURL = 'mailto:christoph.pojer+auphonic@gmail.com?subject=Auphoni
 exports.RepositoryURL = 'https://github.com/auphonic/auphonic-mobile';
 exports.IssuesURL = 'https://github.com/auphonic/auphonic-mobile/issues';
 exports.RegisterURL = 'https://auphonic.com/accounts/register/';
+exports.ExternalServicesURL = 'https://auphonic.com/engine/services/';
 exports.TeamImage = 'https://auphonic.com/media/pics/AuphonicTeam1_small.jpg';
 exports.TwitterURL = 'https://twitter.com/auphonic';
 exports.FacebookURL = 'https://www.facebook.com/pages/auphonic/217115551651035';

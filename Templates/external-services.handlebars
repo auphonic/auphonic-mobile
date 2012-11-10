@@ -1,0 +1,12 @@
+<ul>
+  <li><a href="{{url}}" class="share"><span></span>Add an external service</a></li>
+</ul>
+
+{{#if services}}
+  <h1>External Services</h1>
+  <ul>
+    {{#each services}}
+      <li><label><span class="light">{{display_type}}</span> <small>{{display_name}}</small></label></li>
+    {{/each}}
+  </ul>
+{{/if}}
