@@ -10,6 +10,10 @@ module.exports = new Class({
 
   template: 'ui-back',
 
+  options: {
+    className: 'fade'
+  },
+
   initialize: function(container, element, options) {
     if (!options) options = {};
     options.back = true;
@@ -19,8 +23,21 @@ module.exports = new Class({
   update: function(options, data) {
     var next;
 
-    if (this.getView().getStack().getLength() > 1)
+    if (data && this.getView().getStack().getLength() > 1)
       next = this.create(data);
+
+    if (options && options.fade) {
+      if (next) {
+        next.toElement().addClass('fade').inject(this.container);
+        (function() {
+          next.toElement().removeClass('fade');
+        }).delay(UI.getTransitionDelay());
+      }
+      this.toElement().transition(function() {
+        this.dispose();
+      }).addClass('fade');
+      return next || this;
+    }
 
     UI.transition(this.container, this.toElement(), next && next.toElement(), options);
 

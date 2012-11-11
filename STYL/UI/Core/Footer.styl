@@ -10,6 +10,18 @@ div.footerBackground, footer
   right 0
   height $footer-height
 
+  transition-property -webkit-transform, opacity, height
+  transition-timing-function ease-in-out
+  transition-duration 350ms
+
+  transform translate3d(0, 0, 0)
+  opacity 1
+
+  &.out
+    transform translate3d(0, 100%, 0)
+    opacity 0
+    height 0
+
 div.footerBackground
   z-index 9
   background-color #111

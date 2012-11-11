@@ -539,6 +539,7 @@ Controller.define('/production/recording/new-audio', function() {
       return Auphonic.DefaultFileName.substitute({uuid: Recording.generateRecordingId()});
     },
     onPause: function() {
+      View.getMain().updateElement('back', {fade: true}, object.getBackTemplate());
       View.getMain().updateElement('action', {}, {
         title: 'Done',
         onClick: recorder.bound('stop')
@@ -546,6 +547,7 @@ Controller.define('/production/recording/new-audio', function() {
     },
     onStart: function() {
       View.getMain().updateElement('action');
+      View.getMain().updateElement('back', {fade: true});
     },
     onSuccess: showRecording
   });

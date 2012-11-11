@@ -51,6 +51,7 @@ module.exports = new Class({
     this.object.addEvent('show', this.bound('onShow'));
     this.object.addEvent('hide', this.bound('onHide'));
 
+    this.footer = document.getElements('footer, div.footerBackground');
     this.status.inject(document.id('main'));
   },
 
@@ -132,6 +133,7 @@ module.exports = new Class({
       this.markerHighlight.addClass('out');
     }).delay(2500, this);
 
+    this.status.addClass('hasChapters');
     this.chapterElement.removeClass('fade');
     this.chapterInput.set('value', title).set('placeholder', title);
   },
@@ -147,6 +149,8 @@ module.exports = new Class({
     this.fireEvent('start');
     this.hasStarted = true;
     this.status.show();
+    this.status.removeClass('paused');
+    this.footer.addClass('out');
     this.statusTimer = (function() {
       this.status.removeClass('out');
     }).delay(UI.getTransitionDelay(), this);
@@ -157,7 +161,9 @@ module.exports = new Class({
     this.hasStarted = false;
     this.isRecording = false;
     this.button.removeClass('pulse').set('text', 'Start');
-    this.hideStatus();
+    this.status.removeClass('paused').removeClass('hasChapters');
+    this.status.addClass('out').addEvent('transitionComplete:once', this.bound('hideStatus'));
+    this.footer.removeClass('out');
     document.removeEventListener('pause', this.bound('pause'), false);
   },
 
@@ -165,7 +171,7 @@ module.exports = new Class({
     this.onLevelUpdate(-50, -50);
     this.isRecording = false;
     this.button.removeClass('pulse').set('text', 'Resume');
-    this.hideStatus();
+    this.status.addClass('paused');
     this.fireEvent('pause');
     document.removeEventListener('pause', this.bound('pause'), false);
   },
@@ -191,6 +197,8 @@ module.exports = new Class({
 
   onHide: function() {
     this.status.dispose();
+    this.status.removeEvent('transitionComplete:once', this.bound('hideStatus'));
+    this.footer.removeClass('out');
     this.chapterElement.addClass('fade');
   },
 
@@ -226,14 +234,7 @@ module.exports = new Class({
   },
 
   hideStatus: function() {
-    if (!this.status.hasClass('out')) {
-      this.status.addClass('out').addEvent('transitionComplete:once', function() {
-        this.hide();
-      });
-    } else {
-      clearTimeout(this.statusTimer);
-      this.status.hide();
-    }
+    this.status.hide();
   },
 
   preventDefault: function(event) {
