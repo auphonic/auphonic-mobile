@@ -16,7 +16,7 @@
     (function() {
       this.__CORDOVA_VERSION = '2.2.0';
       this.__API_DOMAIN = 'https://auphonic.com/';
-      this.__SERVER_URL = 'https://auphonic.com/mobile/' + this.__CORDOVA_VERSION + '/';
+      this.__SERVER_URL = this.__FALLBACK_SERVER_URL = 'https://auphonic.com/mobile/' + this.__CORDOVA_VERSION + '/';
 
       // REMOVE WHEN DEPLOYING
       // Update this if you are testing the application locally.
@@ -150,6 +150,7 @@
         noticeElement.style.display = '';
         retry.className = 'retry hidden';
         retryElement.querySelector('a.button').removeEventListener('click', retryClick, false);
+        __SERVER_URL = __FALLBACK_SERVER_URL;
         load();
       };
 
