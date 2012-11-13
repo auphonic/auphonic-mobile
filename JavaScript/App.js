@@ -55,6 +55,8 @@ var CordovaAudioService = require('Player/CordovaAudioService');
 
 var Auphonic = require('Auphonic');
 
+API.setAPIURL(Auphonic.APIURL);
+
 // Register Partials for Handlebars
 Handlebars.registerPartial('preset', Handlebars.templates.preset);
 Handlebars.registerPartial('production', Handlebars.templates.production);

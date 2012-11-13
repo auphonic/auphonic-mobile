@@ -12,7 +12,7 @@ var User = require('Store/User');
 
 var Queue = require('Queue').Queue;
 
-
+var APIURL = '';
 var urls = {};
 var cache = {};
 var errorFn;
@@ -60,7 +60,7 @@ var listenersFor = function(url) {
 };
 
 var getURL = function(url) {
-  return window.__API_DOMAIN + 'api/' + url + '.json';
+  return APIURL + 'api/' + url + '.json';
 };
 
 var formatGetURL = function(url, data) {
@@ -206,7 +206,7 @@ API.authenticate = function(requestData) {
 
   new Request.JSON({
 
-    url: window.__API_DOMAIN + url,
+    url: APIURL + url,
     method: 'post',
     headers: {
       'Authorization': authentication,
@@ -253,3 +253,8 @@ API.setErrorHandler = function(fn) {
 API.setTimeoutHandler = function(fn) {
   timeoutFn = fn;
 };
+
+API.setAPIURL = function(url) {
+  APIURL = url;
+};
+
