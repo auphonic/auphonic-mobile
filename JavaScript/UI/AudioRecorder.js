@@ -31,8 +31,6 @@ module.exports = new Class({
     this.object = object;
     var element = object.toElement().getElement('.audio-recorder');
 
-    element.addEvent('touchmove', this.preventDefault);
-
     this.button = element.getElement('.recorder');
     this.status = element.getElement('.status');
     this.recordingLengthElement = this.status.getElement('.recording-length');
@@ -44,14 +42,16 @@ module.exports = new Class({
     this.markerHighlight = this.chapterMarkElement.getElement('span');
     this.levelElement = element.getElement('.audio-level .peak-meter');
     this.averageLevelElement = element.getElement('.audio-level .average-meter');
+    this.footer = document.getElements('footer, div.footerBackground');
 
     this.button.addEvent('click', this.bound('onClick'));
+    this.chapterInput.addEvent('swipe', this.bound('removeLastChapter'));
     this.chapterInput.addEvent('input', this.bound('onChapterChange'));
-
     this.object.addEvent('show', this.bound('onShow'));
     this.object.addEvent('hide', this.bound('onHide'));
+    element.addEvent('touchmove', this.preventDefault);
+    this.status.addEvent('touchmove', this.preventDefault);
 
-    this.footer = document.getElements('footer, div.footerBackground');
     this.status.inject(document.id('main'));
   },
 
@@ -137,6 +137,22 @@ module.exports = new Class({
 
     this.status.addClass('hasChapters');
     this.chapterElement.removeClass('fade');
+    this.chapterInput.set('value', title).set('placeholder', title);
+  },
+
+  removeLastChapter: function(event) {
+    event.stop(); // Don't focus the input element
+    this.chapterInput.blur();
+
+    var chapters = this.chapters;
+    chapters.pop();
+    if (!chapters.length) {
+      this.status.removeClass('hasChapters');
+      this.chapterElement.addClass('fade');
+      return;
+    }
+
+    var title = chapters[chapters.length - 1].title;
     this.chapterInput.set('value', title).set('placeholder', title);
   },
 
