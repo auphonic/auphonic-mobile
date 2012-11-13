@@ -55,6 +55,12 @@ function program2(depth0,data) {
   if(stack1 || stack1 === 0) { buffer += stack1; }
   buffer += "\n</div>\n";
   return buffer;});
+templates['audio-editor'] = template(function (Handlebars,depth0,helpers,partials,data) {
+  helpers = helpers || Handlebars.helpers;
+  
+
+
+  return "<div class=\"editor\">\n  <div class=\"content\">\n    <a class=\"editor-copy\">Copy</a>\n    <a class=\"editor-paste\">Paste</a>\n    <a class=\"editor-cut\">Cut</a>\n    <a class=\"editor-remove\">Delete</a>\n    <a class=\"editor-select-all\">Select All</a>\n    <a class=\"editor-zoom\">Zoom</a>\n    <a class=\"editor-show-all\">Show All</a>\n  </div>\n\n  <h1>Editor</h1>\n  <div class=\"content\">\n    <div class=\"audio-editor\"></div>\n  </div>\n\n  <div class=\"content\">\n    <a class=\"editor-play\">Play</a>\n    <a class=\"editor-pause\">Pause</a>\n    <a class=\"editor-stop\">Stop</a>\n    <a class=\"editor-toggle-loop\">Loop</a>\n    <a class=\"editor-save\">Save</a>\n  </div>\n\n  <ul>\n    <li><a class=\"editor-filter-normalize\">Normalize</a></li>\n    <li><a class=\"editor-filter-silence\">Silence</a></li>\n    <li><a class=\"editor-filter-fade-in\">Fade In</a></li>\n    <li><a class=\"editor-filter-fade-out\">Fade Out</a></li>\n  </ul>\n</div>\n";});
 templates['audio-recorder'] = template(function (Handlebars,depth0,helpers,partials,data) {
   helpers = helpers || Handlebars.helpers;
   
@@ -1459,7 +1465,7 @@ templates['home'] = template(function (Handlebars,depth0,helpers,partials,data) 
   var buffer = "", stack1, functionType="function", escapeExpression=this.escapeExpression;
 
 
-  buffer += "<div class=\"logo\"></div>\n<ul>\n  <li><a href=\"/production/recording/new-audio\" class=\"arrow\"><span></span>Start a new Audio Recording</a></li>\n  <li><a href=\"/production/source\" class=\"arrow\"><span></span>Create a new Production</a></li>\n  <li><a href=\"/preset/new\" class=\"arrow\"><span></span>Define a Preset</a></li>\n  <li><a href=\"/external-services\" class=\"arrow\"><span></span>External Services</a></li>\n  <li><a href=\"/about\" class=\"arrow\"><span></span>About</a></li>\n  <li><a href=\"/team\" class=\"arrow\"><span></span>Team</a></li>\n  <li><a href=\"";
+  buffer += "<div class=\"logo\"></div>\n<ul>\n  <li><a href=\"/edit\" class=\"arrow\"><span></span>Editor</a></li>\n  <li><a href=\"/production/recording/new-audio\" class=\"arrow\"><span></span>Start a new Audio Recording</a></li>\n  <li><a href=\"/production/source\" class=\"arrow\"><span></span>Create a new Production</a></li>\n  <li><a href=\"/preset/new\" class=\"arrow\"><span></span>Define a Preset</a></li>\n  <li><a href=\"/external-services\" class=\"arrow\"><span></span>External Services</a></li>\n  <li><a href=\"/about\" class=\"arrow\"><span></span>About</a></li>\n  <li><a href=\"/team\" class=\"arrow\"><span></span>Team</a></li>\n  <li><a href=\"";
   stack1 = depth0.feedback;
   stack1 = typeof stack1 === functionType ? stack1.apply(depth0) : stack1;
   buffer += escapeExpression(stack1) + "\" class=\"share\"><span></span>Feedback</a></li>\n</ul>\n\n<a href=\"/logout\" class=\"button red expand\">Logout</a>\n";
@@ -1742,7 +1748,10 @@ function program9(depth0,data) {
   
   return "\n            Untitled\n          ";}
 
-  buffer += "<ul class=\"formcontent\">\n  <li>\n    <label class=\"left\"><input type=\"text\" name=\"display_name\" value=\"";
+  buffer += "<ul>\n  <li><a href=\"/editor/";
+  stack1 = depth0.id;
+  stack1 = typeof stack1 === functionType ? stack1.apply(depth0) : stack1;
+  buffer += escapeExpression(stack1) + "\" class=\"arrow\"><span></span>Crash Everything</a></li>\n</ul>\n<ul class=\"formcontent\">\n  <li>\n    <label class=\"left\"><input type=\"text\" name=\"display_name\" value=\"";
   stack1 = depth0.display_name;
   stack1 = typeof stack1 === functionType ? stack1.apply(depth0) : stack1;
   buffer += escapeExpression(stack1) + "\" class=\"right\" data-clearable=\"1\" />Name</label>\n  </li>\n  <li>\n    <span class=\"right light bold\">";

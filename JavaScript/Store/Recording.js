@@ -27,7 +27,7 @@ var removeFile = function(file) {
   file.remove(function() {}, error);
 };
 
-var read = function(id, success, error) {
+var read = exports.read = function(id, success, error) {
   var recording = findById(id);
   if (recording) window.requestFileSystem(window.LocalFileSystem.PERSISTENT, 0, function(fileSystem) {
     fileSystem.root.getFile(recording.fullPath, null, success, error);

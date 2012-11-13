@@ -168,3 +168,72 @@ Controller.define('/recording/{id}', showOne);
 Controller.define('/recording/new/chapter/:id:', function(req) {
   form.show('chapters', req.id);
 });
+
+var loadEditor = function(object, data) {
+  var element = object.toElement().getElement('.editor');
+  var editor = new AudioEditor(element.getElement('.audio-editor'));
+  editor.loadFromArrayBuffer(Base64.decodeAsArrayBuffer(data.substr(24)));
+
+  element.getElement('.editor-copy').addEvent('click', editor.bound('copy'));
+  element.getElement('.editor-cut').addEvent('click', editor.bound('cut'));
+  element.getElement('.editor-paste').addEvent('click', editor.bound('paste'));
+  element.getElement('.editor-remove').addEvent('click', editor.bound('remove'));
+  element.getElement('.editor-select-all').addEvent('click', editor.bound('selectAll'));
+  element.getElement('.editor-zoom').addEvent('click', editor.bound('zoom'));
+  element.getElement('.editor-show-all').addEvent('click', editor.bound('showAll'));
+
+  element.getElement('.editor-play').addEvent('click', editor.bound('play'));
+  element.getElement('.editor-pause').addEvent('click', editor.bound('pause'));
+  element.getElement('.editor-stop').addEvent('click', editor.bound('stop'));
+  element.getElement('.editor-toggle-loop').addEvent('click', editor.bound('toggleLoop'));
+  element.getElement('.editor-save').addEvent('click', function() {
+    editor.render('application/octet-stream', function(url) {
+      window.location.href = url;
+    });
+  });
+
+  element.getElement('.editor-filter-normalize').addEvent('click', editor.bound('filterNormalize'));
+  element.getElement('.editor-filter-silence').addEvent('click', editor.bound('filterSilence'));
+  element.getElement('.editor-filter-fade-in').addEvent('click', editor.bound('filterFadeIn'));
+  element.getElement('.editor-filter-fade-out').addEvent('click', editor.bound('filterFadeOut'));
+};
+
+var AudioEditor = require('Editor/AudioEditor');
+var Base64 = require('Utility/Base64');
+var Request = require('Request');
+Controller.define('/edit', function() {
+  new Request({
+    url: '../../file.base64',
+    onSuccess: function(data) {
+      var object = new View.Object({
+        title: 'Editor',
+        content: UI.render('audio-editor'),
+        onShow: function() {
+          loadEditor(object, data);
+        }
+      });
+
+      View.getMain().push(object);
+    }
+  }).send();
+});
+
+Controller.define('/editor/{id}', function(req) {
+  var recording = Recording.findById(req.id);
+  var object = new View.Object({
+    title: recording.display_name,
+    content: UI.render('audio-editor', recording),
+    onShow: function() {
+      Recording.read(req.id, function(entry) {
+        entry.file(function(file) {
+            var reader = new FileReader();
+            reader.onloadend = function(event) {
+              loadEditor(object, reader.result);
+            };
+            reader.readAsDataURL(file);
+        });
+      });
+    }
+  });
+  View.getMain().push(object);
+});
