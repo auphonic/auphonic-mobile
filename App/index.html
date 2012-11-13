@@ -181,7 +181,14 @@
         }, error);
       };
 
-      load();
+      var onLoad = function() {
+        document.removeEventListener('deviceready', onLoad, false);
+        document.removeEventListener('DOMContentLoaded', onLoad, false);
+        load();
+      };
+
+      document.addEventListener('deviceready', onLoad, false);
+      document.addEventListener('DOMContentLoaded', onLoad, false);
     })();
   </script>
 </body>
