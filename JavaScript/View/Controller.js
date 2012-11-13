@@ -70,7 +70,7 @@ module.exports = new Class({
     if (!this.isCurrentStack(stack)) {
       if (this._current) {
         container = this.getCurrentObject().toElement();
-        this.getCurrentObject().fireEvent('hide', ['left']);
+        this.getCurrentObject().fireEvent('hide', ['left'], 1);
       }
       rotated = true;
       this.rotate(stack);
@@ -90,7 +90,7 @@ module.exports = new Class({
 
     current.push(object);
     this.fireEvent('change');
-    if (previous) previous.fireEvent('hide', [direction]);
+    if (previous) previous.fireEvent('hide', [direction], 1);
 
     // Pushing an invalid item on the stack, don't start a transition
     if (object.isInvalid()) return;
@@ -116,13 +116,13 @@ module.exports = new Class({
     // issues in the future. Trust me, it is the right trade off.
     if (this.options.iOSScrollFlashFix && container && isImmediate && !previous) {
       object.setElement(container).render();
-      object.fireEvent('show', [direction]);
+      object.fireEvent('show', [direction], 1);
       UI.update(this.element);
       this.onTransitionEnd.delay(0, this);
     } else {
     // Everything after this is happy code again.
       object.render();
-      object.fireEvent('show', [direction]);
+      object.fireEvent('show', [direction], 1);
       if (isImmediate) this.element.empty();
       UI.transition(this.element, previous && previous.toElement(), object.toElement(), {
         immediate: isImmediate,
@@ -132,7 +132,7 @@ module.exports = new Class({
     }
 
     object.attachPlugins();
-    object.fireEvent('insert', [direction]);
+    object.fireEvent('insert', [direction], 1);
     object.revertScrollTop();
 
     return this;
