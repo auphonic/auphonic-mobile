@@ -17,6 +17,7 @@ var urls = {};
 var cache = {};
 var errorFn;
 var timeoutFn;
+var loggerFn;
 
 var setCache = function(type, data, lifetime) {
   cache[type] = {
@@ -115,20 +116,20 @@ API.call = function(url, method, requestData) {
     },
 
     onFailure: function(data) {
-      // Delete requests don't return anything
-      if (method == 'delete') {
-        listeners.fireEvent('success', null);
-        return;
-      }
-
-      if (__DEV__) console.log(data);
-
       var options = API.on(url).options;
       if (options && options.silent) return;
 
       var event = createEvent();
       listeners.fireEvent('error', [event, data]);
       if (errorFn) errorFn(event, data);
+
+      // app/log is a silent call so it doesn't get stuck here and loops the error logging.
+      API.log({
+        type: 'xhr-error',
+        url: url + '.json',
+        method: method,
+        message: data
+      });
     },
 
     onSuccess: function(data) {
@@ -150,18 +151,31 @@ API.call = function(url, method, requestData) {
 };
 
 var queue = new Queue;
+var logUpload = function(type, file, progress, message) {
+  API.log({
+    type: type,
+    message: message,
+    name: file.name,
+    size: file.size,
+    duration: file.duration,
+    media_type: file.media_type,
+    progress: progress,
+    percentage: Math.round((file.size ? progress / file.size : 0) * 100)
+  });
+};
 
 API.upload = function(url, file, field) {
   IdleTimer.disable();
 
   var transfer;
   var canceled = false;
+  var progress = 0;
   var listeners = listenersFor(url);
   var success = function(response) {
     IdleTimer.enable();
 
     listeners.fireEvent('success', JSON.parse(response.response));
-    if (__DEV__) console.log('Code: ' + response.responseCode + ', Bytes: ' + response.bytesSent);
+    logUpload('upload-success', file, progress);
   };
 
   var error = function(error) {
@@ -170,7 +184,7 @@ API.upload = function(url, file, field) {
     if (canceled) return;
 
     listeners.fireEvent('error', error);
-    if (__DEV__) console.log(error.code);
+    logUpload('upload-error', file, progress, error.code + '; ' + error.status);
   };
 
   var options = new window.FileUploadOptions();
@@ -184,6 +198,7 @@ API.upload = function(url, file, field) {
   queue.chain(function() {
     transfer = new window.FileTransfer();
     transfer.onprogress = function(event) {
+      progress = event.loaded;
       listeners.fireEvent('progress', event);
     };
     transfer.upload(file.fullPath, getURL(url) + (url.contains('?') ? '&' : '?') + Date.now(), success, error, options);
@@ -194,6 +209,7 @@ API.upload = function(url, file, field) {
   listeners.cancel = function() {
     canceled = true;
     if (transfer) transfer.abort();
+    logUpload('upload-cancel', file, progress);
   };
 
   return listeners;
@@ -213,7 +229,6 @@ API.authenticate = function(requestData) {
     },
 
     onFailure: function(data) {
-      if (__DEV__) console.log(data);
       listeners.fireEvent('error', data);
     },
 
@@ -224,6 +239,13 @@ API.authenticate = function(requestData) {
   }).send(requestData);
 
   return listeners;
+};
+
+API.on('app/log', {silent: true});
+
+API.log = function(data) {
+  data = loggerFn(data);
+  if (data) API.call('app/log', 'post', JSON.stringify(data));
 };
 
 API.invalidate = function(url) {
@@ -254,7 +276,10 @@ API.setTimeoutHandler = function(fn) {
   timeoutFn = fn;
 };
 
+API.setLogHandler = function(fn) {
+  loggerFn = fn;
+};
+
 API.setAPIURL = function(url) {
   APIURL = url;
 };
-

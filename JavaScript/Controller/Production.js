@@ -503,6 +503,23 @@ var showRecording = function(file, isSilent) {
   if (object) object.invalidate();
 
   if (!isSilent) History.push('/recording/{id}'.substitute(recording));
+
+  API.log({
+    type: 'recording',
+    name: file.name,
+    size: file.size,
+    duration: file.duration,
+    media_type: file.media_type,
+    chapter_count: file.chapters && file.chapters.length,
+    silent: isSilent
+  });
+};
+
+var error = function(event) {
+  API.log({
+    type: 'recording-error',
+    event: event
+  });
 };
 
 Controller.define('/production/recording/upload/{id}', function(req) {
@@ -519,6 +536,7 @@ Controller.define('/production/recording/new-video', function() {
       }
     }).addEvents({
     success: showRecording,
+    error: error,
     cancel: function() {
       UI.unhighlight(UI.getHighlightedElement());
     }
@@ -549,6 +567,7 @@ Controller.define('/production/recording/new-audio', function() {
       View.getMain().updateElement('action');
       View.getMain().updateElement('back', {fade: true});
     },
+    onError: error,
     onSuccess: showRecording
   });
 });

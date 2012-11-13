@@ -55,8 +55,6 @@ var CordovaAudioService = require('Player/CordovaAudioService');
 
 var Auphonic = require('Auphonic');
 
-API.setAPIURL(Auphonic.APIURL);
-
 // Register Partials for Handlebars
 Handlebars.registerPartial('preset', Handlebars.templates.preset);
 Handlebars.registerPartial('production', Handlebars.templates.production);
@@ -485,4 +483,38 @@ window.__BOOTAPP = function() {
   if (!isLoggedIn) History.push('/login');
 
   delete window.__BOOTAPP; // bye!
+};
+
+API.setAPIURL(Auphonic.APIURL);
+API.setLogHandler(function(data) {
+  if (window.__DEV__) return null;
+
+  var device = window.device;
+  data.platform = ((device && device.platform) || (Browser.name + '; ' + (Browser.Device.name != 'other' ? Browser.Device.name : Browser.Platform.name))).toLowerCase();
+  data.os_version = (device && device.version) || Browser.version;
+  data.version = Auphonic.Version;
+  return data;
+});
+
+window.onerror = function(msg, url, line) {
+  // Just in case…
+  UI.enable();
+  View.getMain().hideIndicator();
+
+  var stack;
+  try {
+    throw new Error;
+  } catch(e) {
+    stack = e.stack;
+  }
+
+  API.log({
+    type: 'js-error',
+    message: msg,
+    url: url,
+    line: line,
+    stack: stack // Praying that this is set.
+  });
+
+  return false;
 };

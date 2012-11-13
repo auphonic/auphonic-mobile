@@ -31,8 +31,9 @@ module.exports = new Class({
     window.requestFileSystem(window.LocalFileSystem.PERSISTENT, 0, this.bound('onFileSystemReady'), this.bound('onCaptureError'));
   },
 
-  onCaptureError: function() {
+  onCaptureError: function(event) {
     this.fireEvent('cancel');
+    this.fireEvent('error', event);
   },
 
   onFileSystemReady: function(fileSystem) {

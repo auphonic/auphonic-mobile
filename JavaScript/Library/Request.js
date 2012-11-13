@@ -115,19 +115,20 @@ Request.JSON = new Class({
 	response: null,
 
 	onReadyStateChange: function() {
-		if (this.xhr.readyState !== 4) return;
+		var xhr = this.xhr;
+		if (xhr.readyState !== 4) return;
 
-		this.response = Function.attempt((function() {
-			return JSON.parse(this.xhr.responseText);
-		}).bind(this)) || undefined;
-		if ((this.xhr.status >= 200 && this.xhr.status < 300) || this.xhr.status === 0) this.success();
+		this.response = Function.attempt(function() {
+			return JSON.parse(xhr.responseText);
+		});
+		if ((xhr.status >= 200 && xhr.status < 300) || xhr.status === 0) this.success();
 		else this.failure();
 		this.fireEvent('complete', this.response, 1);
 		this.end();
 	},
 
 	success: function() {
-		if (this.response === undefined)
+		if (this.xhr.responseText && this.response === null)
 			return this.fireEvent('failure', this.response, 1);
 
 		this.fireEvent('success', this.response, 1);

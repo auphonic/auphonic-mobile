@@ -80,11 +80,11 @@ module.exports = new Class({
     this._start();
   },
 
-  onError: function() {
+  onError: function(event) {
     clearInterval(this.timer);
     IdleTimer.enable();
     this.fireEvent('stop');
-    this.fireEvent('error');
+    this.fireEvent('error', event);
     this.media = null;
     if (this.file) this.file.remove(function() {}, function() {});
   },

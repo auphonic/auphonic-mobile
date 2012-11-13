@@ -204,8 +204,9 @@ module.exports = new Class({
     this.isInterrupted = true;
   },
 
-  onError: function() {
+  onError: function(event) {
     new Notice('There was an error with your recording. Please try again.');
+    this.fireEvent('error', event);
   },
 
   onShow: function() {

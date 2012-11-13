@@ -173,6 +173,7 @@ module.exports = new Class({
         view.setup(store, this.getBaseURL(), object);
     }, this);
 
+    store.addEvent('upload', this.bound('onUpload'));
     this.update(data);
 
     var cancelUpload = this.bound('cancelUpload');
@@ -184,13 +185,10 @@ module.exports = new Class({
     });
 
     object.addEvent('insert:once', this.updateAlgorithms.bind(this, data));
-
     if (isNewProduction) object.addEvent('show:once', (function() {
       var select = object.toElement().getElement(this.options.presetChooserSelector);
       if (select) select.addEvent('change', this.bound('onPresetSelect'));
     }).bind(this));
-
-    store.addEvent('upload', this.bound('onUpload'));
 
     View.getMain().push(this.getDisplayType(), object);
     this.isRendered = true;
@@ -202,7 +200,6 @@ module.exports = new Class({
 
     var upload = CurrentUpload.remove(this.uuid);
     if (upload) upload.transfer.cancel();
-
     this.onCancel();
   },
 
