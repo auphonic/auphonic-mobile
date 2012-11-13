@@ -116,13 +116,15 @@ module.exports = new Class({
     if (!this.isRecording) return;
 
     var time = Data.formatDuration(this.time, ':', true, [60, 60, 0], ['', '', '']);
-
     // The API expects hh:mm[:ss]
     if (time.length == 2) time = '00:00:' + time;
     else if (time.length == 5) time = '00:' + time;
 
+    var chapters = this.chapters;
+    if (chapters.length && chapters[chapters.length - 1].start == time) return;
+
     var title = this.options.chapterTitle.substitute({id: ++this.chapterID});
-    this.chapters.push({
+    chapters.push({
       start: time,
       title: title
     });
