@@ -26,7 +26,6 @@
       if (new RegExp('^' + DEVbaseURL).test(location.pathname)) {
         this.__LOCALHOST__ = true;
         this.__baseURL = DEVbaseURL;
-        this.__API_DOMAIN = '../wrapper.php?';
         document.write('<base href="' + DEVbaseURL + '" />');
       }
       // END REMOVE WHEN DEPLOYING

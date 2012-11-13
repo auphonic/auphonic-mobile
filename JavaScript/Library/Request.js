@@ -13,8 +13,7 @@ var Request = module.exports = new Class({
 		url: window.location,
 		timeout: 0,
 		headers: {
-			'Accept': 'text/plain,text/html,application/xhtml+xml,application/xml',
-			'X-Requested-With': 'XMLHttpRequest'
+			'Accept': 'text/plain,text/html,application/xhtml+xml,application/xml'
 		}
 	},
 
