@@ -179,7 +179,9 @@ module.exports = new Class({
     var cancelUpload = this.bound('cancelUpload');
     object.addEvent('show:once', function() {
       if (hasUpload) {
-        var cancelButton = object.toElement().getElement('.cancelUpload');
+        var label = object.toElement().getElement('.input_file_label');
+        var popover = label ? label.getInstanceOf(Popover) : null;
+        var cancelButton = popover ? popover.getPopover().getElement('.cancelUpload') : null;
         if (cancelButton) cancelButton.addEvent('click', cancelUpload);
       }
     });
