@@ -196,6 +196,11 @@ API.upload = function(url, file, field) {
   };
 
   queue.chain(function() {
+    if (canceled) {
+      this.next();
+      return;
+    }
+
     transfer = new window.FileTransfer();
     transfer.onprogress = function(event) {
       progress = event.loaded;
