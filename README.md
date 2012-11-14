@@ -17,6 +17,9 @@ Install
 * `npm install` in the root folder
 * Create an App at https://auphonic.com/api/apps/ and insert your API Keys in `JavaScript/APIKeys.js.rename`, rename the file to `APIKeys.js`
 * Run `Scripts/watch --once` to compile all resources. Run the script without the `--once` flag to watch for changes during development.
+* In Cordova, run `lib/ios/bin/update_cordova_subproject` to update Cordova references in the iOS project.
+* Android: Download and Install Eclipse and the Android SDK
+* (optional) Download and install [Roboto](http://developer.android.com/design/style/typography.html)
 
 Run
 ---
@@ -26,17 +29,21 @@ Run
  * Be sure to enable touch events in Web Inspector (see: Web Inspector Settings)
  * *Note:* When developing locally in a browser the relative path of the project in `App/index.html` needs to be adjusted and the local server needs to be added to Cordova.plist in XCode.
 * Android
- * Download and Install Eclipse
- * Download and Install the Android SDK
  * Create an Android Project from existing sources and point it to `Android/`
  * Copy all files from `App/` except `cordova.js` to `Android/assets/App`
  * Launch the Emulator from within Eclipse (Run As > Android Application)
  * Shoot yourself
 
-Deploy
-------
+Deployment
+----------
 
 * Run `Scripts/compile` to generate a compressed file with all server resources ready for deployment.
+* Remove "REMOVE WHEN DEPLOYING" block from index.html
+* iOS: Update Cordova.plist and remove all but auphonic.com from ExternalHosts
+* Android: Update config.xml and remove all but auphonic.com from access-origin
+* Ensure that index.html says `this.__PLATFORM = 'ios'` for iOS and `this.__PLATFORM = 'android'` for Android
+* Build and ship with the appropriate toolset for either iOS or Android
+* Rethink this list and automate all the above steps.
 
 Logo
 ----
