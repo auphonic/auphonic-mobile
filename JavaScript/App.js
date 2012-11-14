@@ -194,6 +194,8 @@ var load = function(event) {
 
 // This is a lot of glue code !
 window.__BOOTAPP = function() {
+  document.body.addClass(window.__PLATFORM);
+
   load();
 
   var activeState = (new ActiveState({
@@ -550,3 +552,6 @@ var css = new Element('style');
 css.type = 'text/css';
 css.innerHTML = 'div.detail div.dark-background { background-image: url(./Splash.jpg); }';
 css.inject(document.head);
+
+// REMOVE after pushing an update to Cordova 2.2.0/1.0.1 on iOS
+if (!window.__PLATFORM) window.__PLATFORM = 'ios';
