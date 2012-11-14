@@ -1,4 +1,5 @@
 var UI = require('UI');
+var Popover = require('UI/Actions/Popover');
 
 var CordovaImageRecorder = require('Capture/CordovaImageRecorder');
 
@@ -81,9 +82,11 @@ exports.createView = function(store, object) {
 
   var attachListeners = function() {
     var container = object.toElement();
-    container.getElement('.upload_take_photo').addEvent('click', uploadTakePhoto);
-    container.getElement('.upload_from_library').addEvent('click', uploadFromLibrary);
     container.getElement('.remove_thumbnail a').addEvent('click', removeCoverPhoto);
+
+    var popover = container.getElement('.upload-cover-photo').getInstanceOf(Popover).getPopover();
+    popover.getElement('.upload_take_photo').addEvent('click', uploadTakePhoto);
+    popover.getElement('.upload_from_library').addEvent('click', uploadFromLibrary);
   };
 
   object.addEvent('show:once', attachListeners);

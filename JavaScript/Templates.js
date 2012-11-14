@@ -1149,7 +1149,7 @@ function program3(depth0,data) {
   stack1 = depth0.thumbnail;
   stack1 = helpers.unless.call(depth0, stack1, {hash:{},inverse:self.noop,fn:self.program(1, program1, data)});
   if(stack1 || stack1 === 0) { buffer += stack1; }
-  buffer += "\" />\n<ul>\n  <li>\n    <label class=\"show-popover\">\n      Upload\n      <div class=\"hidden popover top justify\" data-position=\"top\">\n        <a href=\"#\" class=\"button expand upload_take_photo\">Take a Photo</a>\n        <a href=\"#\" class=\"button expand upload_from_library\">Choose from Library</a>\n      </div>\n    </label>\n  </li>\n  <li class=\"remove_thumbnail";
+  buffer += "\" />\n<ul>\n  <li>\n    <label class=\"upload-cover-photo show-popover\">\n      Upload\n      <div class=\"hidden popover top justify\" data-position=\"top\">\n        <a href=\"#\" class=\"button expand upload_take_photo\">Take a Photo</a>\n        <a href=\"#\" class=\"button expand upload_from_library\">Choose from Library</a>\n      </div>\n    </label>\n  </li>\n  <li class=\"remove_thumbnail";
   stack1 = depth0.thumbnail;
   stack1 = helpers.unless.call(depth0, stack1, {hash:{},inverse:self.noop,fn:self.program(3, program3, data)});
   if(stack1 || stack1 === 0) { buffer += stack1; }
