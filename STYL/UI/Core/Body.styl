@@ -3,7 +3,7 @@
 @import 'Font'
 
 body
-  font-family $font
+  font-family $font-ios
   font-weight normal
   font-size $font-size
   color $color
@@ -12,4 +12,10 @@ body
   -webkit-touch-callout none
   -webkit-user-drag none
   -webkit-user-select none
-  overflow hidden
+  background #efefef
+
+  &.ios
+    overflow hidden
+
+  &.android
+    font-family $font-android

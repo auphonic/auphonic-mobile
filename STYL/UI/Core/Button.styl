@@ -12,7 +12,6 @@
   text-decoration none
   padding 0em 0.5em
   cursor pointer
-  text-shadow 0 1px 0 #333
   -webkit-appearance none
 
   &.expand
@@ -30,42 +29,57 @@
     line-height 28px
 
   border none
-  border-radius 10px
+
   background-color #444
-  background-image linear-gradient(top, #555 0%, #111 100%)
-  box-shadow inset 0 1px 0 #666, inset 0 -1px 0 #111
+
+  .ios &
+    text-shadow 0 1px 0 #333
+    border-radius 10px
+    background-image linear-gradient(top, #555 0%, #111 100%)
+    box-shadow inset 0 1px 0 #666, inset 0 -1px 0 #111
 
   &.active, &.selected, .active &, .selected &
     background-color #333
-    background-image linear-gradient(center top, #444 0%, #111 100%)
-    box-shadow none
+
+    .ios &
+      background-image linear-gradient(center top, #444 0%, #111 100%)
+      box-shadow none
 
   &.red
     border-width 0
     background-color #df5d5d
-    background-image linear-gradient(top, #df5d5d 0%, #912f2f 100%)
-    box-shadow inset 0 1px 0 #e40e0e, inset 0 -1px 0 #5e0000
+
+    .ios &
+      background-image linear-gradient(top, #df5d5d 0%, #912f2f 100%)
+      box-shadow inset 0 1px 0 #e40e0e, inset 0 -1px 0 #5e0000
 
     &.active, &.selected, .active &, .selected &
       background-color #C25252
-      background-image linear-gradient(top, #C25252 0%, #702424 100%)
-      box-shadow none
+
+      .ios &
+        background-image linear-gradient(top, #C25252 0%, #702424 100%)
+        box-shadow none
 
   &.green
     border-width 0
     background-color #73de5d
-    background-image linear-gradient(top, #73de5d 0%, #2f912f 100%)
-    box-shadow inset 0 1px 0 #0ee30e, inset 0 -1px 0 #005e00
+
+    .ios &
+      background-image linear-gradient(top, #73de5d 0%, #2f912f 100%)
+      box-shadow inset 0 1px 0 #0ee30e, inset 0 -1px 0 #005e00
 
     &.active, &.selected, .active &, .selected &
       background-color #64c251
-      background-image linear-gradient(top, #64c251 0%, #317024 100%)
-      box-shadow none
+      .ios &
+        background-image linear-gradient(top, #64c251 0%, #317024 100%)
+        box-shadow none
 
   .popover &
-    border-radius 10px
     box-shadow none
     margin 10px 0
+
+    .ios &
+      border-radius 10px
 
     &:first-child
       margin-top 0

@@ -26,7 +26,13 @@ div.uploading
 
 div.detail
   position relative
-  margin -10px -10px 15px -10px
+
+  .ios &
+    margin -10px -10px 15px -10px
+
+  .android &
+    margin -10px 0 15px 0px
+
   padding 10px 10px 5px 10px
   background #fff
   box-shadow 0 1px 2px rgba(0, 0, 0, 0.2)
@@ -97,6 +103,24 @@ div.detail
       h1, span
         color #fff
         text-shadow 0 1px 0 #000
+
+  .android &.with-thumbnail, &.with-image
+    height 270px
+
+    div.cover-photo
+      position absolute
+      top 0
+      left 0
+      right 0
+      height 270px
+      background-size 400px
+      background-position center -30px
+      background-repeat no-repeat
+
+    div.gradient
+      height 270px
+      top auto
+      bottom 0
 
 div.light-background, div.dark-background
   position absolute

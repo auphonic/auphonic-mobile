@@ -1,14 +1,23 @@
 @import 'nib'
 @import 'Font'
+@import 'Header'
 
-$footer-height = 44px
+$footer-height-ios = 44px
+$footer-height-android = 30px
 
 div.footerBackground, footer
   position absolute
-  bottom 0
   left 0
   right 0
-  height $footer-height
+
+  .ios &
+    bottom 0
+    height $footer-height-ios
+
+  .android &
+    position fixed
+    top $header-height - 1px // Account for missing header border-top style
+    height $footer-height-android
 
   transition-property -webkit-transform, opacity, height
   transition-timing-function ease-in-out
@@ -32,9 +41,14 @@ footer
 
   border-bottom-right-radius 4px
   border-bottom-left-radius 4px
-  background-color #444
-  background-image linear-gradient(top, #555 0%, #111 100%)
-  box-shadow 0 -1px 5px rgba(0, 0, 0, 0.5)
+
+  .ios &
+    background-color #444
+    background-image linear-gradient(top, #555 0%, #111 100%)
+    box-shadow 0 -1px 5px rgba(0, 0, 0, 0.5)
+
+  .android &
+    background-color #333
 
   ul
     margin 0
@@ -43,43 +57,66 @@ footer
     li
       display block
       float left
-      width 25%
+
+      .ios &
+        width 25%
+
       list-style-type none
 
       > a
         position relative
         display block
-        height $footer-height
 
         text-decoration none
 
-        &.selected
-          background-image linear-gradient(top, #222 0%, #000 100%)
-          border-top 2px solid #cd5c5c
+        .ios &
+          height $footer-height-ios
 
-        > span:first-child
-          display block
-          height $footer-height
-          background-position center 4px
-          background-repeat no-repeat
-          opacity 0.95
+          &.selected
+            border-top 2px solid #cd5c5c
+            background-color #222
+            background-image linear-gradient(top, #222 0%, #000 100%)
 
-        &.selected > span:first-child
-          opacity 1
-          background-position center 2px
+          > span:first-child
+            display block
+            height $footer-height-ios
+            background-position center 4px
+            background-repeat no-repeat
+            .ios &
+              opacity 0.95
 
-        > span:last-child
-          position absolute
-          left 0
-          right 0
-          bottom 3px
+          &.selected > span:first-child
+            opacity 1
+            background-position center 2px
 
-          color #6f6f6f
-          text-align center
-          font-family $font-footer
-          font-weight bold
-          font-size 10px
-          text-shadow 0 -1pxx 0 rgba(0, 0, 0, 1)
+          > span:last-child
+            position absolute
+            left 0
+            right 0
+            bottom 3px
 
-        &.selected > span:last-child
-          bottom 5px
+            color #6f6f6f
+            font-family $font-footer-ios
+            text-align center
+            font-weight bold
+            font-size 10px
+            text-shadow 0 -1px 0 rgba(0, 0, 0, 1)
+
+          &.selected > span:last-child
+            bottom 5px
+
+        .android &
+          padding 0 10px
+          height $footer-height-android
+
+          &.selected
+            height $footer-height-android - 2px
+            border-bottom 2px solid #cd5c5c
+            background-color #222
+
+          > span:first-child
+            display none
+
+          > span:last-child
+            color #eee
+            line-height $footer-height-android

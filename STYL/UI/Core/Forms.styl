@@ -11,9 +11,11 @@ input, textarea, select
   color $color
   outline none
 
-  border 0
-  border-radius 10px // Needed so first/last elements don't overlay the container
   -webkit-appearance none
+  border 0
+
+  .ios &
+    border-radius 10px // Needed so first/last elements don't overlay the container
 
   div.main ul li &.right.clearable-visible
     padding-right 30px

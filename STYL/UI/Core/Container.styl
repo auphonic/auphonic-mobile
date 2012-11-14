@@ -6,11 +6,20 @@ div.container
   position absolute
   left 0
   right 0
-  top $header-height
-  bottom $footer-height
+
+  .ios &
+    top $header-height
+    bottom $footer-height-ios
+
+  .android &
+    top $header-height + $footer-height-android - 1px // Account for missing header top border
 
   div.scroll-content
     padding 10px
+
+    .android &
+      padding-left 0
+      padding-right 0
 
   transition-property -webkit-transform, opacity
   transition-timing-function ease-in-out
