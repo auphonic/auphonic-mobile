@@ -12,13 +12,16 @@ div.player
 
     float left
     overflow visible
-    border-radius 50%
     margin-right 10px
     margin-bottom 10px
 
     border 1px solid #DDD
-    background -webkit-radial-gradient(40% 40%, #fff, #ddd)
+    background #fff
     box-shadow none
+
+    .ios &
+      border-radius 50%
+      background -webkit-radial-gradient(40% 40%, #fff, #ddd)
 
     a
       position absolute

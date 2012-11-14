@@ -8,13 +8,15 @@
   color #fff
   background #444
   border-radius 10px
-  box-shadow 0 0 2px rgba(0, 0, 0, 0.4)
 
   transition-property opacity, -webkit-transform
   transition-duration 250ms
   transition-timing-function cubic-bezier(.11,.99,.28,1.21)
   transform scale(1)
   opacity 1
+
+  .ios &
+    box-shadow 0 0 2px rgba(0, 0, 0, 0.4)
 
   h1
     margin 10px 0 10px 0
