@@ -85,7 +85,7 @@ templates['detail'] = template(function (Handlebars,depth0,helpers,partials,data
 function program1(depth0,data) {
   
   
-  return " with-thumbnail";}
+  return " with-image";}
 
 function program3(depth0,data) {
   

@@ -74,40 +74,9 @@ div.detail
     height 250px
     background #fff
 
-  &.with-thumbnail, &.with-image
-    height 130px
-    padding 0
-
-    div.cover-photo
-      position absolute
-      left 0
-      right 0
-      top -210px
-      height 340px
-      background-size 400px 400px
-      background-position center -50%
-      background-repeat no-repeat
-
-    div.gradient
-      position absolute
-      left 0
-      right 0
-      top -70px
-      height 200px
-      background-image linear-gradient(top, rgba(0,0,0,0) 50%, rgba(0, 0, 0, 0.6) 100%)
-
-    div.detail-inner
-      position absolute
-      left 10px
-      right 10px
-      bottom 5px
-
-      h1, span
-        color #fff
-        text-shadow 0 1px 0 #000
-
   &.with-image
     height 270px
+    padding 0
 
     div.cover-photo
       position absolute
@@ -120,8 +89,19 @@ div.detail
       background-repeat no-repeat
 
     div.gradient
-      height 270px
-      top auto
+      position absolute
+      left 0
+      right 0
       bottom 0
+      height 270px
+      background-image linear-gradient(top, rgba(0,0,0,0) 50%, rgba(0, 0, 0, 0.6) 100%)
 
+    div.detail-inner
+      position absolute
+      left 10px
+      right 10px
+      bottom 5px
 
+      h1, span
+        color #fff
+        text-shadow 0 1px 0 #000
