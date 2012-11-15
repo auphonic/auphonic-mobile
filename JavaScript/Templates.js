@@ -2014,7 +2014,7 @@ templates['ui-title'] = template(function (Handlebars,depth0,helpers,partials,da
   var buffer = "", stack1, functionType="function", escapeExpression=this.escapeExpression;
 
 
-  buffer += "<h1>";
+  buffer += "<h1><span></span>";
   stack1 = depth0.title;
   stack1 = typeof stack1 === functionType ? stack1.apply(depth0) : stack1;
   buffer += escapeExpression(stack1) + "</h1>\n";

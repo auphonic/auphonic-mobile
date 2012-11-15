@@ -104,6 +104,8 @@ module.exports = new Class({
       .updateElement('title', options, object.getTitleTemplate())
       .updateElement('action', options, object.getActionTemplate());
 
+    this.fireEvent('headerChange');
+
     UI.disable();
 
     // This is an unpleasant and unhappy block of code.

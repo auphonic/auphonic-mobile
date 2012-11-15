@@ -42,7 +42,7 @@ var showAll = function() {
     }
   });
 
-  View.getMain().push('recording', object);
+  View.getMain().push('record', object);
   var getElements = function() {
     return object.toElement().getElements('ul.main-list >');
   };

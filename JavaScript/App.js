@@ -425,6 +425,11 @@ window.__BOOTAPP = function() {
       UI.highlight(document.getElement('footer .' + stackName));
     },
 
+    onHeaderChange: function() {
+      var stackName = this.getStack().getName();
+      this.getTitle().toElement().addClass(stackName);
+    },
+
     onTransitionEnd: function() {
       var stack = this.getStack();
       var previous = stack && stack.getPrevious();
