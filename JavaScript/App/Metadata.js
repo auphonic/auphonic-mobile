@@ -4,6 +4,8 @@ var View = require('View');
 
 var CoverPhoto = require('./CoverPhoto');
 
+var Auphonic = require('Auphonic');
+
 exports.getType = function() {
   return 'metadata';
 };
@@ -39,7 +41,7 @@ exports.createView = function(store, data) {
       var metadata = store.get('metadata');
       this.unserialize(Object.append({
         'metadata.year': (new Date).getFullYear(),
-        'metadata.genre': 'Podcast'
+        'metadata.genre': Auphonic.DefaultGenre
       }, metadata));
     }
   });

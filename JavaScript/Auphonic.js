@@ -6,6 +6,7 @@ exports.IssuesURL = 'https://github.com/auphonic/auphonic-mobile/issues';
 exports.RegisterURL = 'https://auphonic.com/accounts/register/';
 exports.ExternalServicesURL = 'https://auphonic.com/engine/services/';
 exports.TeamImage = 'https://auphonic.com/media/pics/AuphonicTeam1_small.jpg';
+exports.DefaultGenre = 'Auphonic Production';
 exports.TwitterURL = 'https://twitter.com/auphonic';
 exports.FacebookURL = 'https://www.facebook.com/pages/auphonic/217115551651035';
 exports.DefaultFileName = 'mobile-recording-{uuid}';
