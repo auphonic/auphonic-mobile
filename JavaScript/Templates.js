@@ -90,7 +90,7 @@ function program1(depth0,data) {
 function program3(depth0,data) {
   
   var buffer = "", stack1, foundHelper;
-  buffer += "\n      <div class=\"cover-photo\" style=\"background-image: url(";
+  buffer += "\n      <div class=\"dark-background\"></div>\n      <div class=\"cover-photo\" style=\"background-image: url(";
   stack1 = depth0.thumbnail;
   foundHelper = helpers.image;
   stack1 = foundHelper ? foundHelper.call(depth0, stack1, {hash:{}}) : helperMissing.call(depth0, "image", stack1, {hash:{}});
@@ -106,7 +106,7 @@ function program3(depth0,data) {
 function program5(depth0,data) {
   
   
-  return "\n      <div class=\"white-background\"></div>\n    ";}
+  return "\n      <div class=\"light-background\"></div>\n    ";}
 
 function program7(depth0,data) {
   
@@ -1867,7 +1867,7 @@ templates['team'] = template(function (Handlebars,depth0,helpers,partials,data) 
   var buffer = "", stack1, functionType="function", escapeExpression=this.escapeExpression;
 
 
-  buffer += "<div class=\"detailView\">\n  <div class=\"detail expand with-image\">\n    <div class=\"cover-photo\" style=\"background-image: url(";
+  buffer += "<div class=\"detailView\">\n  <div class=\"detail expand with-image\">\n    <div class=\"dark-background\"></div>\n    <div class=\"cover-photo\" style=\"background-image: url(";
   stack1 = depth0.image;
   stack1 = typeof stack1 === functionType ? stack1() : stack1;
   buffer += escapeExpression(stack1) + ");\"></div>\n    <div class=\"gradient\"></div>\n    <div class=\"detail-inner\">\n      <span class=\"year\">2012</span>\n      <span class=\"genre\">Graz</span>\n      <h1>Auphonic Team</h1>\n      <span class=\"artist small wrap\">\n        André Rattinger, Ferdinand Fuhrmann, Christoph Pojer, Georg Holzmann and Florian Hollerweger\n      </span>\n    </div>\n    <div class=\"clear\"></div>\n  </div>\n  <div class=\"clear\"></div>\n\n  <div class=\"content\">\n    Our service is being developed in the lovely City of Graz, Austria.\n    <br/><br/>\n    We develop new algorithms in the area of music information retrieval and audio signal processing to create an automatic audio post production web service for broadcasters, podcasts, radio shows, audio books, lecture recordings, screencasts and more.\n  </div>\n</div>\n\n<ul>\n  <li><a href=\"";
