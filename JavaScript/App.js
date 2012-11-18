@@ -423,10 +423,6 @@ window.__BOOTAPP = function() {
     onChange: function() {
       var stackName = this.getStack().getName();
       UI.highlight(document.getElement('footer .' + stackName));
-    },
-
-    onHeaderChange: function() {
-      var stackName = this.getStack().getName();
       this.getTitle().toElement().addClass(stackName);
     },
 
