@@ -10,7 +10,7 @@ Install
 * Install [Cordova (PhoneGap)](http://phonegap.com/). Note that for iOS a fork of Cordova is currently being used: https://github.com/cpojer/incubator-cordova-ios
 * Install NodeJS and npm (`brew install node npm` on OS X using [Homebrew](http://mxcl.github.com/homebrew/))
 * `npm install` in the root folder
-* Create an App at https://auphonic.com/api/apps/ and insert your API Keys in `JavaScript/APIKeys.js`
+* Create an App at https://auphonic.com/api/apps/ and insert your API Keys in `JavaScript/APIKeys.js.rename`, rename the file to `APIKeys.js`
 * Changes to `Templates/` can be applied by running `Scripts/compileTemplates`.
 * Use `Scripts/compile` to compile JavaScript, `Scripts/stylus` to compile Stylus to CSS and `Scripts/stylus-client` to compile the Stylus to CSS that is bundled with the App
 
