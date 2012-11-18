@@ -492,6 +492,7 @@ API.setLogHandler(function(data) {
   var device = window.device;
   data.platform = ((device && device.platform) || (Browser.name + '; ' + (Browser.Device.name != 'other' ? Browser.Device.name : Browser.Platform.name))).toLowerCase();
   data.os_version = (device && device.version) || Browser.version;
+  data.device = ((device && device.name) || '').toLowerCase();
   data.version = Auphonic.Version;
   return data;
 });
