@@ -42,7 +42,7 @@ var createForm = function(options) {
         baseURL: '/production/',
         saveURL: 'productions',
         getObjectName: function(object) {
-          return object && object.metadata && object.metadata.title;
+          return (object ? ((object.metadata && object.metadata.title) || 'Untitled') : null);
         },
         onSave: function(object) {
           productions[object.uuid] = object;
