@@ -89,7 +89,7 @@ module.exports = new Class({
       isImmediate = true;
 
     current.push(object);
-    this.fireEvent('change');
+    this.fireEvent('change', null, 1);
     if (previous) previous.fireEvent('hide', [direction], 1);
 
     // Pushing an invalid item on the stack, don't start a transition
@@ -116,13 +116,11 @@ module.exports = new Class({
     // issues in the future. Trust me, it is the right trade off.
     if (this.options.iOSScrollFlashFix && container && isImmediate && !previous) {
       object.setElement(container).render();
-      object.fireEvent('show', [direction], 1);
       UI.update(this.element);
       this.onTransitionEnd.delay(0, this);
     } else {
     // Everything after this is happy code again.
       object.render();
-      object.fireEvent('show', [direction], 1);
       if (isImmediate) this.element.empty();
       UI.transition(this.element, previous && previous.toElement(), object.toElement(), {
         immediate: isImmediate,
@@ -131,8 +129,8 @@ module.exports = new Class({
       });
     }
 
+    object.fireEvent('show', [direction], 1);
     object.attachPlugins();
-    object.fireEvent('insert', [direction], 1);
     object.revertScrollTop();
 
     return this;

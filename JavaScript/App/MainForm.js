@@ -28,6 +28,7 @@ module.exports = new Class({
 
   options: {
     displayName: '',
+    pluralDisplayName: '',
     displayType: '',
     baseURL: null,
     saveURL: null,
@@ -48,6 +49,10 @@ module.exports = new Class({
 
   getDisplayName: function() {
     return this.options.displayName;
+  },
+
+  getPluralDisplayName: function() {
+    return this.options.pluralDisplayName;
   },
 
   getDisplayType: function() {
@@ -158,6 +163,8 @@ module.exports = new Class({
       title: this.getObjectName(data) ||  'New ' + this.getDisplayName(),
       content: UI.render('form-new-main', uiData),
       back: (isEditMode ? {title: 'Cancel'} : null),
+      backTitle: this.getPluralDisplayName(),
+      backOptions: isProduction ? {className: 'small'} : null,
       action: {
         title: 'Save',
         onClick: this.bound('onActionClick')
@@ -352,9 +359,8 @@ module.exports = new Class({
     label.removeClass('info');
     label.getInstanceOf(Popover).detach();
 
-    // We actually need to prune the stack because Change Source is supposed
-    // to transition to the right.
-    if (View.getMain().getCurrentObject == this.object)
+    // We need to prune the stack because Change Source is supposed to transition to the right.
+    if (View.getMain().getCurrentObject() == this.object)
       View.getMain().getStack().prune();
   }
 

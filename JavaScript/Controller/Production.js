@@ -37,6 +37,7 @@ var createForm = function(options) {
     use: [
       new MainForm(Object.append({
         displayName: 'Production',
+        pluralDisplayName: 'Productions',
         displayType: 'production',
         baseURL: '/production/',
         saveURL: 'productions',

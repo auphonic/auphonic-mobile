@@ -26,6 +26,7 @@ var createForm = function(options) {
     use: [
       new MainForm(Object.append({
         displayName: 'Preset',
+        pluralDisplayName: 'Presets',
         displayType: 'preset',
         baseURL: '/preset/',
         saveURL: 'presets',
