@@ -1,6 +1,6 @@
 exports.Version = '1.0.1';
 exports.APIURL = 'https://auphonic.com/';
-exports.FeedbackURL = 'mailto:christoph.pojer+auphonic@gmail.com?subject=Auphonic%20Mobile%20App%20Feedback';
+exports.FeedbackURL = 'mailto:mobile@auphonic.com?subject=Auphonic%20Mobile%20App%20Feedback';
 exports.RepositoryURL = 'https://github.com/auphonic/auphonic-mobile';
 exports.IssuesURL = 'https://github.com/auphonic/auphonic-mobile/issues';
 exports.RegisterURL = 'https://auphonic.com/accounts/register/';
