@@ -1,0 +1,2 @@
+exports.ID = '<your app id>';
+exports.secret = '<your app secret>';
