@@ -5,7 +5,7 @@ $border-bottom = 1px
 $border-top = 1px
 
 div.headerBackground, header
-  z-index 10
+  z-index 11
   position absolute
   top 0
   left 0
@@ -16,7 +16,7 @@ div.headerBackground, header
     position fixed
 
 div.headerBackground
-  z-index 9
+  z-index 10
   background-color #111
 
 header
@@ -47,10 +47,10 @@ header
     overflow ellipsis
     text-transform none
     color #e9e9e9
+    text-shadow rgba(0, 0, 0, 1) 0 -1px 0
 
     .ios &
       text-align center
-      text-shadow rgba(0, 0, 0, 1) 0 -1px 0
 
       span
         display none
@@ -60,10 +60,11 @@ header
 
       span
         float left
-        width 32px
-        height 32px
+        width 36px
+        height $header-height - 2px
         display block
         margin-right 10px
+        background-position center center
         background-repeat no-repeat
 
     transition-property opacity, -webkit-transform
@@ -81,7 +82,7 @@ header
     &.left
       opacity 0
 
-      &.ios &
+      .ios &
         transform translate3d(-100%, 0, 0)
 
     &.fade
