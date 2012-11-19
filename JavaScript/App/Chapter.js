@@ -17,8 +17,6 @@ var createUIElement = function(baseURL, store, content, id) {
     }, content)
   )).set('data-chapter-id', id).store('value', content);
 
-  UI.update(element);
-
   // Store for editing
   var chapters = store.get('chapters', {});
   chapters[id] = content;
@@ -58,6 +56,7 @@ var add = function(baseURL, store, container, chapter, id) {
   if (!element.getParent())
     element.inject(container);
 
+  UI.update();
   store.fireEvent('update:' + exports.getType());
 };
 
@@ -95,6 +94,7 @@ exports.setData = function(store, list, baseURL, object, immediate) {
     var container = getContainer(object);
     container.getElements('[data-chapter-id]').dispose();
     container.adopt(elements);
+    UI.update();
   };
 
   if (immediate) fn();

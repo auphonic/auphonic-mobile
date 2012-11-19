@@ -20,8 +20,6 @@ var createUIElement = function(href, store, content, id) {
     })
   )).set('data-output-file-id', id).store('value', content);
 
-  UI.update(element);
-
   // Store for editing
   var outputFiles = store.get('output_files', {});
   outputFiles[id] = content;
@@ -50,6 +48,7 @@ var add = function(baseURL, store, container, outputFile, id) {
   if (previous) element.replaces(previous);
   else element.inject(container);
 
+  UI.update();
   store.fireEvent('update:' + exports.getType());
 };
 
@@ -114,7 +113,7 @@ exports.setData = function(store, list, baseURL, object, immediate) {
     var container = getContainer(object);
     container.getElements('[data-output-file-id]').dispose();
     container.adopt(elements);
-
+    UI.update();
     setupIndicator(store, object);
   };
 
