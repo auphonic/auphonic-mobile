@@ -183,20 +183,20 @@ module.exports = new Class({
     store.addEvent('upload', this.bound('onUpload'));
     this.update(data);
 
-    var cancelUpload = this.bound('cancelUpload');
-    object.addEvent('show:once', function() {
+    object.addEvent('show:once', (function() {
       if (hasUpload) {
         var label = object.toElement().getElement('.input_file_label');
         var popover = label ? label.getInstanceOf(Popover) : null;
         var cancelButton = popover ? popover.getPopover().getElement('.cancelUpload') : null;
-        if (cancelButton) cancelButton.addEvent('click', cancelUpload);
+        if (cancelButton) cancelButton.addEvent('click', this.bound('cancelUpload'));
       }
-    });
 
-    object.addEvent('insert:once', this.updateAlgorithms.bind(this, data));
-    if (isNewProduction) object.addEvent('show:once', (function() {
-      var select = object.toElement().getElement(this.options.presetChooserSelector);
-      if (select) select.addEvent('change', this.bound('onPresetSelect'));
+      if (isNewProduction) {
+        var select = object.toElement().getElement(this.options.presetChooserSelector);
+        if (select) select.addEvent('change', this.bound('onPresetSelect'));
+      }
+
+      this.updateAlgorithms(data);
     }).bind(this));
 
     View.getMain().push(this.getDisplayType(), object);

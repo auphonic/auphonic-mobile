@@ -147,7 +147,7 @@ exports.createView = function(store) {
       }
     };
 
-    object.addEvent('insert:once', function() {
+    object.addEvent('show:once', function() {
       var parent = object.toElement();
       var elements = parent.getElements('input[type=checkbox][data-uuid]');
       elements.addEvent('change', onChange);
