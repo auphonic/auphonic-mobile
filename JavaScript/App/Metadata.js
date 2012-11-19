@@ -40,8 +40,7 @@ exports.createView = function(store, data) {
     onShow: function() {
       var metadata = store.get('metadata');
       this.unserialize(Object.append({
-        'metadata.year': (new Date).getFullYear(),
-        'metadata.genre': Auphonic.DefaultGenre
+        'metadata.year': (new Date).getFullYear()
       }, metadata));
     }
   });
