@@ -1185,7 +1185,7 @@ function program4(depth0,data) {
   stack1 = depth0.has_options;
   stack1 = helpers['if'].call(depth0, stack1, {hash:{},inverse:self.noop,fn:self.program(1, program1, data)});
   if(stack1 || stack1 === 0) { buffer += stack1; }
-  buffer += "\n<li>\n  <label class=\"left\">\n    <input type=\"text\" name=\"filename\" placeholder=\"optional\" class=\"right\" />\n    Filename\n  </label>\n</li>\n";
+  buffer += "\n<li>\n  <label class=\"left\">\n    <input type=\"text\" name=\"suffix\" placeholder=\"optional\" class=\"right\" />\n    Suffix\n  </label>\n</li>\n";
   return buffer;});
 templates['form-new-output-file'] = template(function (Handlebars,depth0,helpers,partials,data) {
   helpers = helpers || Handlebars.helpers;

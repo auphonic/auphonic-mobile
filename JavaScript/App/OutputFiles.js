@@ -64,19 +64,7 @@ var createUIData = exports.createUIData = function(content) {
 };
 
 var parseFromContainer = function(container) {
-  var outputFiles = API.getInfo('output_files');
-  return container.getChildren(':not(.item-removed)').retrieve('value').clean().map(function(outputFile) {
-    // Add filename if necessary
-    var file = outputFile.filename;
-    var endings = outputFiles[outputFile.format].endings;
-    var check = function(ending) {
-      return file.lastIndexOf('.' + ending) == file.length - 1 - ending.length;
-    };
-    if (file && endings && !endings.some(check))
-      outputFile.filename += '.' + endings[0];
-
-    return outputFile;
-  });
+  return container.getChildren(':not(.item-removed)').retrieve('value').clean();
 };
 
 var showAction = function(object, id) {
