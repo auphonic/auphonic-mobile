@@ -50,9 +50,17 @@ module.exports = new Class({
     if (this.finished) return;
     if (this.getView().getCurrentObject() != this) return;
 
+    var container = this.getItemContainerElement();
+
+    // No container likely means a null state where we don't need to load new content anyway
+    if (!container) {
+      this.finished = true;
+      return;
+    }
+
     var options = Object.clone(this.loadOptions);
     options.offset += options.limit;
-    this.getSpinner().spin(this.getItemContainerElement().getParent());
+    this.getSpinner().spin(container.getParent());
     this.getLoadMoreFunction()(options, this.bound('onLoadMore'));
 
     this.loader = loader;
