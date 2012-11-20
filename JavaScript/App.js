@@ -495,6 +495,7 @@ API.setLogHandler(function(data) {
   data.os_version = (device && device.version) || Browser.version;
   data.device = ((device && device.name) || '').toLowerCase();
   data.version = Auphonic.Version;
+  if (data.platform == 'iphone' || data.platform == 'ipod touch') data.hardware = (window.screen.height == 568) ? 5 : 4;
   return data;
 });
 
