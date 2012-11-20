@@ -1,6 +1,6 @@
-// commit e3ed532ddda1837d324cc759df52dff952b10e28
+// commit fffec4ff65464e740102d4d8b059d58e36da12cd
 
-// File generated at :: Thu Nov 08 2012 17:51:10 GMT+0100 (CET)
+// File generated at :: Tue Nov 20 2012 14:06:05 GMT+0100 (CET)
 
 /*
  Licensed to the Apache Software Foundation (ASF) under one
@@ -329,14 +329,24 @@ function each(objects, func, context) {
     }
 }
 
+function clobber(obj, key, value) {
+    obj[key] = value;
+    // Getters can only be overridden by getters.
+    if (obj[key] !== value) {
+        utils.defineGetter(obj, key, function() {
+            return value;
+        });
+    }
+}
+
 function assignOrWrapInDeprecateGetter(obj, key, value, message) {
     if (message) {
         utils.defineGetter(obj, key, function() {
-            window.console && console.log(message);
+            console.log(message);
             return value;
         });
     } else {
-        obj[key] = value;
+        clobber(obj, key, value);
     }
 }
 
@@ -395,8 +405,11 @@ function recursiveMerge(target, src) {
                 // If the target object is a constructor override off prototype.
                 target.prototype[prop] = src[prop];
             } else {
-                target[prop] = typeof src[prop] === 'object' ? recursiveMerge(
-                        target[prop], src[prop]) : src[prop];
+                if (typeof src[prop] === 'object') {
+                    target[prop] = recursiveMerge(target[prop], src[prop]);
+                } else {
+                    clobber(target, prop, src[prop]);
+                }
             }
         }
     }
@@ -404,18 +417,14 @@ function recursiveMerge(target, src) {
 }
 
 module.exports = {
-    build: function (objects) {
-        return {
-            intoButDoNotClobber: function (target) {
-                include(target, objects, false, false);
-            },
-            intoAndClobber: function(target) {
-                include(target, objects, true, false);
-            },
-            intoAndMerge: function(target) {
-                include(target, objects, true, true);
-            }
-        };
+    buildIntoButDoNotClobber: function(objects, target) {
+        include(target, objects, false, false);
+    },
+    buildIntoAndClobber: function(objects, target) {
+        include(target, objects, true, false);
+    },
+    buildIntoAndMerge: function(objects, target) {
+        include(target, objects, true, true);
     }
 };
 
@@ -701,7 +710,7 @@ module.exports = {
 define("cordova/common", function(require, exports, module) {
 
 module.exports = {
-    objects: {
+    defaults: {
         cordova: {
             path: 'cordova',
             children: {
@@ -736,9 +745,6 @@ module.exports = {
                 },
                 compass:{
                     path: 'cordova/plugin/compass'
-                },
-                connection: {
-                    path: 'cordova/plugin/network'
                 },
                 contacts: {
                     path: 'cordova/plugin/contacts'
@@ -906,6 +912,15 @@ module.exports = {
         },
         resolveLocalFileSystemURI:{
             path: 'cordova/plugin/resolveLocalFileSystemURI'
+        }
+    },
+    clobbers: {
+        navigator: {
+            children: {
+                connection: {
+                    path: 'cordova/plugin/network'
+                }
+            }
         }
     }
 };
@@ -1093,7 +1108,7 @@ module.exports = {
         navigator.geolocation.watchPosition = geo.watchPosition;
         navigator.geolocation.clearWatch = geo.clearWatch;
     },
-    objects: {
+    clobbers: {
         File: { // exists natively, override
             path: "cordova/plugin/File"
         },
@@ -4273,6 +4288,7 @@ function Device() {
     this.name = null;
     this.uuid = null;
     this.cordova = null;
+    this.model = null;
 
     var me = this;
 
@@ -4284,6 +4300,7 @@ function Device() {
             me.name = info.name;
             me.uuid = info.uuid;
             me.cordova = info.cordova;
+            me.model = info.model;
             channel.onCordovaInfoReady.fire();
         },function(e) {
             me.available = false;
@@ -5597,49 +5614,9 @@ if (typeof navigator != 'undefined') {
     });
 }
 
-var NetworkConnection = function () {
-    this.type = null;
-    this._firstRun = true;
-    this._timer = null;
-    this.timeout = 500;
-
-    var me = this;
-
-    channel.onCordovaReady.subscribe(function() {
-        me.getInfo(function (info) {
-            me.type = info;
-            if (info === "none") {
-                // set a timer if still offline at the end of timer send the offline event
-                me._timer = setTimeout(function(){
-                    cordova.fireDocumentEvent("offline");
-                    me._timer = null;
-                    }, me.timeout);
-            } else {
-                // If there is a current offline event pending clear it
-                if (me._timer !== null) {
-                    clearTimeout(me._timer);
-                    me._timer = null;
-                }
-                cordova.fireDocumentEvent("online");
-            }
-
-            // should only fire this once
-            if (me._firstRun) {
-                me._firstRun = false;
-                channel.onCordovaConnectionReady.fire();
-            }
-        },
-        function (e) {
-            // If we can't get the network info we should still tell Cordova
-            // to fire the deviceready event.
-            if (me._firstRun) {
-                me._firstRun = false;
-                channel.onCordovaConnectionReady.fire();
-            }
-            console.log("Error initializing Network Connection: " + e);
-        });
-    });
-};
+function NetworkConnection() {
+    this.type = 'unknown';
+}
 
 /**
  * Get connection info
@@ -5647,12 +5624,48 @@ var NetworkConnection = function () {
  * @param {Function} successCallback The function to call when the Connection data is available
  * @param {Function} errorCallback The function to call when there is an error getting the Connection data. (OPTIONAL)
  */
-NetworkConnection.prototype.getInfo = function (successCallback, errorCallback) {
-    // Get info
+NetworkConnection.prototype.getInfo = function(successCallback, errorCallback) {
     exec(successCallback, errorCallback, "NetworkStatus", "getConnectionInfo", []);
 };
 
-module.exports = new NetworkConnection();
+var me = new NetworkConnection();
+var timerId = null;
+var timeout = 500;
+
+channel.onCordovaReady.subscribe(function() {
+    me.getInfo(function(info) {
+        me.type = info;
+        if (info === "none") {
+            // set a timer if still offline at the end of timer send the offline event
+            timerId = setTimeout(function(){
+                cordova.fireDocumentEvent("offline");
+                timerId = null;
+            }, timeout);
+        } else {
+            // If there is a current offline event pending clear it
+            if (timerId !== null) {
+                clearTimeout(timerId);
+                timerId = null;
+            }
+            cordova.fireDocumentEvent("online");
+        }
+
+        // should only fire this once
+        if (channel.onCordovaConnectionReady.state !== 2) {
+            channel.onCordovaConnectionReady.fire();
+        }
+    },
+    function (e) {
+        // If we can't get the network info we should still tell Cordova
+        // to fire the deviceready event.
+        if (channel.onCordovaConnectionReady.state !== 2) {
+            channel.onCordovaConnectionReady.fire();
+        }
+        console.log("Error initializing Network Connection: " + e);
+    });
+});
+
+module.exports = me;
 
 });
 
@@ -6071,8 +6084,8 @@ window.cordova = require('cordova');
 (function (context) {
     // Replace navigator before any modules are required(), to ensure it happens as soon as possible.
     // We replace it so that properties that can't be clobbered can instead be overridden.
-    if (typeof context.navigator != 'undefined') {
-        var CordovaNavigator = function () {};
+    if (context.navigator) {
+        function CordovaNavigator() {}
         CordovaNavigator.prototype = context.navigator;
         context.navigator = new CordovaNavigator();
     }
@@ -6089,15 +6102,13 @@ window.cordova = require('cordova');
                         platform = require('cordova/platform');
 
                     // Drop the common globals into the window object, but be nice and don't overwrite anything.
-                    builder.build(base.objects).intoButDoNotClobber(context);
+                    builder.buildIntoButDoNotClobber(base.defaults, context);
+                    builder.buildIntoAndMerge(base.merges, context);
+                    builder.buildIntoAndClobber(base.clobbers, context);
 
-                    // Drop the platform-specific globals into the window object
-                    // and clobber any existing object.
-                    builder.build(platform.objects).intoAndClobber(context);
-
-                    // Merge the platform-specific overrides/enhancements into
-                    // the window object.
-                    builder.build(platform.merges).intoAndMerge(context);
+                    builder.buildIntoButDoNotClobber(platform.defaults, context);
+                    builder.buildIntoAndMerge(platform.merges, context);
+                    builder.buildIntoAndClobber(platform.clobbers, context);
 
                     // Call the platform-specific initialization
                     platform.initialize();
