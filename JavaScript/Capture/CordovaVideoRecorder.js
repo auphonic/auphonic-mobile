@@ -33,7 +33,9 @@ module.exports = new Class({
 
   onCaptureError: function(event) {
     this.fireEvent('cancel');
-    this.fireEvent('error', event);
+    // Don't fire the error event if capturing was canceled
+    if (event.code != window.CaptureError.CAPTURE_NO_MEDIA_FILES)
+      this.fireEvent('error', event);
   },
 
   onFileSystemReady: function(fileSystem) {
