@@ -8,4 +8,5 @@ source $DIR/compile -e prod -m --no-watch
 source $DIR/stylus --no-watch -c
 
 cd $DIR/$AUPHONIC_OUTPUT/
+rm $AUPHONIC_CORDOVA_VERSION.zip
 zip -r $AUPHONIC_CORDOVA_VERSION.zip $AUPHONIC_CORDOVA_VERSION/ -x "$AUPHONIC_CORDOVA_VERSION/.*"
