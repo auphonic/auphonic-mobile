@@ -13,9 +13,10 @@ Install
 -------
 
 * Install [Cordova (PhoneGap)](http://phonegap.com/). Note that for iOS a fork of Cordova is currently being used: https://github.com/cpojer/incubator-cordova-ios
-* Install NodeJS and npm (`brew install node npm` on OS X using [Homebrew](http://mxcl.github.com/homebrew/))
+* Install NodeJS and npm (`brew install node npm` on OS X using [Homebrew](http://mxcl.github.com/homebrew/), `apt-get install npm` on Debian-based systems)
+* *Note*: on Linux NodeJS is sometimes called `nodejs` and not `node`
 * `npm install` in the root folder
-* Create an App at https://auphonic.com/api/apps/ and insert your API Keys in `JavaScript/APIKeys.js.rename`, rename the file to `APIKeys.js`
+* Create an App at https://auphonic.com/api/apps/ and insert your API Keys in `JavaScript/APIKeys.js.rename`, copy the file to `APIKeys.js`
 * Run `Scripts/watch --once` to compile all resources. Run the script without the `--once` flag to watch for changes during development.
 * In Cordova, run `lib/ios/bin/update_cordova_subproject` to update Cordova references in the iOS project.
 * Android: Download and Install Eclipse and the Android SDK
