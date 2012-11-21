@@ -3,7 +3,7 @@ var Class = Core.Class;
 var Events = Core.Events;
 var Options = Core.Options;
 
-var Spinner = require('Thirdparty/Spinner');
+var Spinner = require('Spinner');
 
 var Data = require('App/Data');
 
