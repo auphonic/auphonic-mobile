@@ -490,12 +490,28 @@ API.setAPIURL(Auphonic.APIURL);
 API.setLogHandler(function(data) {
   if (window.__DEV__) return null;
 
-  var device = window.device;
-  data.platform = ((device && device.platform) || (Browser.name + '; ' + (Browser.Device.name != 'other' ? Browser.Device.name : Browser.Platform.name))).toLowerCase();
-  data.os_version = (device && device.version) || Browser.version;
-  data.device = ((device && device.name) || '').toLowerCase();
-  data.version = Auphonic.Version;
-  if (data.platform == 'iphone' || data.platform == 'ipod touch') data.hardware = (window.screen.height == 568) ? 5 : 4;
+  // We don't want an error in this block to cause cancel the logging
+  // or in the worst case end in an infinite loop because of window.onerror
+  try {
+    var device = window.device;
+    data.platform = ((device && device.platform) || (Browser.name + '; ' + (Browser.Device.name != 'other' ? Browser.Device.name : Browser.Platform.name))).toLowerCase();
+    data.os_version = (device && device.version) || Browser.version;
+    data.device = ((device && device.name) || '').toLowerCase();
+    data.version = Auphonic.Version;
+    if (data.platform == 'iphone' || data.platform == 'ipod touch') data.hardware = (window.screen.height == 568) ? 5 : 4;
+
+    var stack = View.getMain().getStack();
+    data.stack = stack.getName();
+    data.stackItems = stack.map(function(object) {
+      return {
+        title: object.getTitle(),
+        url: object.getURL(),
+        i: object.isInvalid(),
+        s: object.toElement() ? object.serialize() : null
+      };
+    });
+  } catch(e) {}
+
   return data;
 });
 

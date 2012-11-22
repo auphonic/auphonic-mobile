@@ -94,6 +94,10 @@ module.exports = new Class({
 
   notifyAll: function(event, args) {
     this.stack.invoke('fireEvent', event, args);
+  },
+
+  map: function(fn) {
+    return this.stack.map(fn);
   }
 
 });
