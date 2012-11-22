@@ -1,7 +1,9 @@
 #!/bin/bash
 DIR=$(cd `dirname $0` && pwd)
-source $DIR/variables
+node $DIR/watch --prod --once
+cd $DIR/../Server/
+rm -f *.zip
 
-rm -f $DIR/$AUPHONIC_OUTPUT/$AUPHONIC_CORDOVA_VERSION/*-*.js
-echo "window.__APP_VERSION='$AUPHONIC_HASH';" > $DIR/$AUPHONIC_OUTPUT/$AUPHONIC_CORDOVA_VERSION/$AUPHONIC_VERSION_FILENAME
-$DIR/modulr --watch --out "$DIR/$AUPHONIC_OUTPUT/$AUPHONIC_CORDOVA_VERSION/$AUPHONIC_JS_FILENAME" "App" --path "$DIR/$AUPHONIC_JS/:$DIR/$AUPHONIC_JS/Library:$DIR/$AUPHONIC_JS/Library/PowerTools:$DIR/$AUPHONIC_JS/Library/ThirdParty" -e "dev" $@
+for f in $(find "./" -mindepth 1 -maxdepth 1 -type d ); do
+  zip -r "$f.zip" "$f" -x "$f/.*"
+done

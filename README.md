@@ -11,8 +11,7 @@ Install
 * Install NodeJS and npm (`brew install node npm` on OS X using [Homebrew](http://mxcl.github.com/homebrew/))
 * `npm install` in the root folder
 * Create an App at https://auphonic.com/api/apps/ and insert your API Keys in `JavaScript/APIKeys.js.rename`, rename the file to `APIKeys.js`
-* Changes to `Templates/` can be applied by running `Scripts/compileTemplates`.
-* Use `Scripts/compile` to compile JavaScript, `Scripts/stylus` to compile Stylus to CSS and `Scripts/stylus-client` to compile the Stylus to CSS that is bundled with the App
+* Run `Scripts/watch --once` to compile all resources. Run the script without the `--once` flag to watch for changes during development.
 
 Run
 ---
@@ -28,6 +27,11 @@ Run
  * Copy all files from `App/` except `cordova.js` to `Android/assets/App`
  * Launch the Emulator from within Eclipse (Run As > Android Application)
  * Shoot yourself
+
+Deploy
+------
+
+* Run `Scripts/compile` to generate a compressed file with all server resources ready for deployment.
 
 Logo
 ----
