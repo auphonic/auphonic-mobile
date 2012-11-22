@@ -3,7 +3,7 @@
 @import 'Header'
 
 $footer-height-ios = 44px
-$footer-height-android = 30px
+$footer-height-android = 38px
 
 div.footerBackground, footer
   position absolute
@@ -57,9 +57,7 @@ footer
     li
       display block
       float left
-
-      .ios &
-        width 25%
+      width 25%
 
       list-style-type none
 
@@ -106,7 +104,7 @@ footer
             bottom 5px
 
         .android &
-          padding 0 10px
+          padding 0
           height $footer-height-android
 
           &.selected
@@ -118,5 +116,9 @@ footer
             display none
 
           > span:last-child
+            display block
+            text-align center
             color #eee
+            font-size 11px
+            font-weight bold
             line-height $footer-height-android
