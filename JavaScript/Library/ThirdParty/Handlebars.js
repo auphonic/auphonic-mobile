@@ -1,7 +1,7 @@
 // lib/handlebars/base.js
 var Handlebars = module.exports = {};
 
-Handlebars.VERSION = "1.0.beta.6";
+Handlebars.VERSION = "1.0.rc.1";
 
 Handlebars.helpers  = {};
 Handlebars.partials = {};
@@ -40,29 +40,53 @@ Handlebars.registerHelper('blockHelperMissing', function(context, options) {
     return inverse(this);
   } else if(type === "[object Array]") {
     if(context.length > 0) {
-      for(var i=0, j=context.length; i<j; i++) {
-        ret = ret + fn(context[i]);
-      }
+      return Handlebars.helpers.each(context, options);
     } else {
-      ret = inverse(this);
+      return inverse(this);
     }
-    return ret;
   } else {
     return fn(context);
   }
 });
 
+Handlebars.K = function() {};
+
+Handlebars.createFrame = Object.create || function(object) {
+  Handlebars.K.prototype = object;
+  var obj = new Handlebars.K();
+  Handlebars.K.prototype = null;
+  return obj;
+};
+
 Handlebars.registerHelper('each', function(context, options) {
   var fn = options.fn, inverse = options.inverse;
-  var ret = "";
+  var i = 0, ret = "", data;
 
-  if(context && context.length > 0) {
-    for(var i=0, j=context.length; i<j; i++) {
-      ret = ret + fn(context[i]);
+  if (options.data) {
+    data = Handlebars.createFrame(options.data);
+  }
+
+  if(context && typeof context === 'object') {
+    if(context instanceof Array){
+      for(var j = context.length; i<j; i++) {
+        if (data) { data.index = i; }
+        ret = ret + fn(context[i], { data: data });
+      }
+    } else {
+      for(var key in context) {
+        if(context.hasOwnProperty(key)) {
+          if(data) { data.key = key; }
+          ret = ret + fn(context[key], {data: data});
+          i++;
+        }
+      }
     }
-  } else {
+  }
+
+  if(i === 0){
     ret = inverse(this);
   }
+
   return ret;
 });
 
@@ -94,16 +118,18 @@ Handlebars.registerHelper('log', function(context) {
 });
 
 // lib/handlebars/utils.js
+
+var errorProps = ['description', 'fileName', 'lineNumber', 'message', 'name', 'number', 'stack'];
+
 Handlebars.Exception = function(message) {
   var tmp = Error.prototype.constructor.apply(this, arguments);
 
-  for (var p in tmp) {
-    if (tmp.hasOwnProperty(p)) { this[p] = tmp[p]; }
+  // Unfortunately errors are not enumerable in Chrome (at least), so `for prop in tmp` doesn't work.
+  for (var idx = 0; idx < errorProps.length; idx++) {
+    this[errorProps[idx]] = tmp[errorProps[idx]];
   }
-
-  this.message = tmp.message;
 };
-Handlebars.Exception.prototype = new Error;
+Handlebars.Exception.prototype = new Error();
 
 // Build out our basic SafeString type
 Handlebars.SafeString = function(string) {
@@ -115,6 +141,7 @@ Handlebars.SafeString.prototype.toString = function() {
 
 (function() {
   var escape = {
+    "&": "&amp;",
     "<": "&lt;",
     ">": "&gt;",
     '"': "&quot;",
@@ -122,7 +149,7 @@ Handlebars.SafeString.prototype.toString = function() {
     "`": "&#x60;"
   };
 
-  var badChars = /&(?!\w+;)|[<>"'`]/g;
+  var badChars = /[&<>"'`]/g;
   var possible = /[&<>"'`]/;
 
   var escapeChar = function(chr) {
@@ -204,7 +231,7 @@ Handlebars.VM = {
   },
   noop: function() { return ""; },
   invokePartial: function(partial, name, context, helpers, partials, data) {
-    options = { helpers: helpers, partials: partials, data: data };
+    var options = { helpers: helpers, partials: partials, data: data };
 
     if(partial === undefined) {
       throw new Handlebars.Exception("The partial " + name + " could not be found");
@@ -213,7 +240,7 @@ Handlebars.VM = {
     } else if (!Handlebars.compile) {
       throw new Handlebars.Exception("The partial " + name + " could not be compiled when running in runtime-only mode");
     } else {
-      partials[name] = Handlebars.compile(partial);
+      partials[name] = Handlebars.compile(partial, {data: data !== undefined});
       return partials[name](context, options);
     }
   }

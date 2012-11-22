@@ -70,7 +70,7 @@ var writeVersion = function(hash) {
 var previousHash;
 
 var compileTemplates = function() {
-  run('node_modules/.bin/handlebars "' + Auphonic.Templates + '" -f "' + Auphonic.TemplatesFile + '" -o', function() {
+  run('node_modules/.bin/handlebars "' + Auphonic.Templates + '" -f "' + Auphonic.TemplatesFile + '" -o -c "Handlebars"', function() {
     console.log("  \033[90mcompiled\033[0m " + Auphonic.TemplatesFile);
   });
 };
