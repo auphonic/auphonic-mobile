@@ -52,7 +52,6 @@ module.exports = new Class({
   },
 
   onCaptureError: function() {
-    console.log('error');
     this.fireEvent('cancel');
   }
 
