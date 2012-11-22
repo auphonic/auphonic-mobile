@@ -55,7 +55,7 @@ exports.PlayerSpinnerOptions = {
 };
 
 var statusStrings = {
-  '0': 'Incoming',
+  '0': 'Upload',
   '1': 'Waiting',
   '2': 'Error',
   '3': 'Done',
@@ -66,7 +66,9 @@ var statusStrings = {
   '8': 'Splitting',
   '9': 'Incomplete',
   '10': 'Not Started',
-  '11': 'Outdated'
+  '11': 'Outdated',
+  '12': 'Incoming',
+  '13': 'Stopping'
 };
 
 exports.AlgorithmFilters = ['loudnesstarget', 'denoiseamount'];
