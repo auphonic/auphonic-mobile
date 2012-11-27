@@ -4,6 +4,8 @@ Auphonic Mobile App
 This is the source for the Auphonic Mobile Web Application targeted at iOS and Android. It is built using web technologies combined with Cordova (Phonegap).
 This application is being developed by [@cpojer](http://cpojer.net) as bachelor's thesis at the [Graz University of Technology](http://tugraz.at/) for Auphonic.
 
+[![Flattr this git repo](http://api.flattr.com/button/flattr-badge-large.png)](https://flattr.com/submit/auto?user_id=auphonic&url=https://github.com/auphonic/auphonic-mobile&title=Auphonic Mobile App&language=&tags=github&category=software)
+
 Install
 -------
 
