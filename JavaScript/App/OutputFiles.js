@@ -6,8 +6,6 @@ var API = require('API');
 var UI = require('UI');
 var View = require('View');
 
-var OutputFiles = require('./OutputFiles');
-
 var SwipeAble = require('UI/Actions/SwipeAble');
 
 var createUIElement = function(href, store, content, id) {
