@@ -14,7 +14,7 @@
     "stylus": ">= 0.14.0",
     "nib": ">= 0.1.0",
     "modulr": "git://github.com/cpojer/modulr-node.git",
-    "handlebars": "git://github.com/cpojer/handlebars.js.git",
+    "handlebars": "",
     "watch": "",
     "shelljs": ""
   }
