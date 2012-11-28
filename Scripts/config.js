@@ -36,4 +36,4 @@ exports.ServerJSOptions = {
 exports.ServerJSProductionOptions = JSON.parse(JSON.stringify(exports.ServerJSOptions)); // Cheap man's clone
 exports.ServerJSProductionOptions.environment = 'prod';
 exports.ServerJSProductionOptions.minify = true;
-exports.ServerJSProductionOptions.minifyIdentifiers = false;
+exports.ServerJSProductionOptions.minifyIdentifiers = true;
