@@ -11,6 +11,8 @@ module.exports = new Class({
 
   extension: 'm4a',
   statusEventIsDisabled: false,
+  errorIsDisabled: false,
+  hasPlaybackError: false,
 
   initialize: function(filename, options) {
     this.setOptions(options);
@@ -24,8 +26,13 @@ module.exports = new Class({
     else window.requestFileSystem(window.LocalFileSystem.PERSISTENT, 0, this.bound('onFileSystemReady'), this.bound('onError'));
   },
 
+  createMediaObject: function() {
+    if (this.media) this.media.release();
+    this.media = new window.Media(this.file.fullPath, this.bound('onCaptureSuccess'), this.bound('onError'), this.bound('onStatus'), this.bound('onLevelUpdate'));
+  },
+
   _start: function() {
-    if (!this.media) this.media = new window.Media(this.file.fullPath, this.bound('onCaptureSuccess'), this.bound('onError'), this.bound('onStatus'), this.bound('onLevelUpdate'));
+    if (!this.media) this.createMediaObject();
     IdleTimer.disable();
     this.fireEvent('start');
     this.media.startRecord();
@@ -51,19 +58,49 @@ module.exports = new Class({
   onCaptureSuccess: function() {
     this.file.media_type = 'audio';
     this.statusEventIsDisabled = true;
-    this.media.play();
-    this.media.pause();
-    // Duration can only be accessed asynchronously
-    (function() {
+
+    // Sometimes immediate playback of recorded files fails.
+    // We disable the default error event and see if an error occurs.
+    // After that the media object gets recreated and we retry getting the duration.
+    this.errorEventIsDisabled = true;
+
+    var complete;
+    var recreateMedia;
+    var hasRetried = false;
+    complete = function() {
+      if (this.hasPlaybackError && !hasRetried) {
+        hasRetried = true;
+        recreateMedia.call(this);
+        return;
+      }
+
       this.file.duration = this.media.getDuration();
       // Access the "File" Object
       this.file.file((function(file) {
         this.file.size = file.size;
         this.fireEvent('success', [this.file]);
         // We are getting rid of the media object so it will be recreated on the next call to start().
+        this.media.release();
         this.media = null;
       }).bind(this));
-    }).delay(0, this);
+    };
+
+    recreateMedia = function() {
+      this.createMediaObject();
+      this.media.play();
+      this.media.pause();
+      complete.delay(0, this);
+    };
+
+    try {
+      this.media.play();
+      this.media.pause();
+      // Duration can only be accessed asynchronously
+      complete.delay(0, this);
+    } catch(e) {
+      // This hopefully does not ever happen.
+      recreateMedia.call(this);
+    }
   },
 
   onFileSystemReady: function(fileSystem) {
@@ -81,6 +118,11 @@ module.exports = new Class({
   },
 
   onError: function(event) {
+    if (this.errorEventIsDisabled) {
+      this.hasPlaybackError = true;
+      return;
+    }
+
     clearInterval(this.timer);
     IdleTimer.enable();
     this.fireEvent('stop');
