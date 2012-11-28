@@ -17,6 +17,7 @@ var Request = module.exports = new Class({
 		}
 	},
 
+	response: null,
 	running: false,
 
 	initialize: function(options) {
@@ -59,18 +60,23 @@ var Request = module.exports = new Class({
 	onReadyStateChange: function() {
 		if (this.xhr.readyState !== 4) return;
 
+		this.processResponse();
 		if ((this.xhr.status >= 200 && this.xhr.status < 300) || this.xhr.status === 0) this.success();
 		else this.failure();
-		this.fireEvent('complete', this.responseText, 1);
+		this.fireEvent('complete', this.response, 1);
 		this.end();
 	},
 
+	processResponse: function() {
+		this.response = this.xhr.responseText;
+	},
+
 	success: function() {
-		this.fireEvent('success', this.xhr.responseText, 1);
+		this.fireEvent('success', this.response, 1);
 	},
 
 	failure: function() {
-		this.fireEvent('failure', this.xhr.responseText, 1);
+		this.fireEvent('failure', this.response, 1);
 	},
 
 	end: function() {
@@ -112,30 +118,15 @@ Request.JSON = new Class({
 		}
 	},
 
-	response: null,
-
-	onReadyStateChange: function() {
-		var xhr = this.xhr;
-		if (xhr.readyState !== 4) return;
-
-		this.response = Function.attempt(function() {
-			return JSON.parse(xhr.responseText);
-		});
-		if ((xhr.status >= 200 && xhr.status < 300) || xhr.status === 0) this.success();
-		else this.failure();
-		this.fireEvent('complete', this.response, 1);
-		this.end();
+	processResponse: function() {
+		this.response = Function.attempt((function() {
+			return JSON.parse(this.xhr.responseText);
+		}).bind(this));
 	},
 
 	success: function() {
-		if (this.xhr.responseText && this.response === null)
-			return this.fireEvent('failure', this.response, 1);
-
-		this.fireEvent('success', this.response, 1);
-	},
-
-	failure: function() {
-		this.fireEvent('failure', this.response, 1);
+		if (this.xhr.responseText && this.response === null) return this.failure();
+		this.parent();
 	}
 
 });
