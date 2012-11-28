@@ -501,7 +501,7 @@ API.setLogHandler(function(data) {
     if (data.platform == 'iphone' || data.platform == 'ipod touch') data.hardware = (window.screen.height == 568) ? 5 : 4;
 
     var stack = View.getMain().getStack();
-    data.stack = stack.getName();
+    data.stackName = stack.getName();
     data.stackItems = stack.map(function(object) {
       return {
         title: object.getTitle(),
