@@ -50,7 +50,7 @@ var fetch = exports.fetch = function(callback) {
   });
 };
 
-exports.createView = function(store) {
+exports.createView = function() {
   View.getMain().showIndicator();
 
   fetch(function(list) {

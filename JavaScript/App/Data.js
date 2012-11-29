@@ -1,11 +1,9 @@
 var Core = require('Core');
-var typeOf = Core.typeOf;
 var Browser = Core.Browser;
 
 var API = require('API');
 
 var OutputFiles = require('./OutputFiles');
-var OutgoingService = require('./OutgoingService');
 var Source = require('./Source');
 
 var CurrentUpload = require('Store/CurrentUpload');
@@ -19,7 +17,7 @@ var length = function(object) {
 
 var fields = ['output_files', 'outgoing_services', 'chapters'];
 var singular = ['file', 'service', 'chapter'];
-var format = exports.format = function(production) {
+var format = function(production) {
   production.short_status_string = Auphonic.getStatusString(production.status);
 
   var short_info = [];
@@ -32,21 +30,24 @@ var format = exports.format = function(production) {
   return production;
 };
 
-API.on('productions', {
-  formatter: function(response) {
-    if (typeOf(response.data) == 'array')
-      response.data = response.data.map(format);
-    return response;
-  }
-});
+var formatService = function(service) {
+  var type = API.getInfo('service_types')[service.type];
+  service.display_type = type && type.display_name;
+  return service;
+};
 
-API.on('presets', {
-  formatter: function(response) {
-    if (typeOf(response.data) == 'array')
-      response.data = response.data.map(format);
+var createFormatter = function(fn) {
+  return function(response) {
+    if (!response) response = {};
+    if (!Array.isArray(response.data)) response.data = [];
+    response.data = response.data.map(fn);
     return response;
-  }
-});
+  };
+};
+
+API.on('productions', {formatter: createFormatter(format)});
+API.on('presets', {formatter: createFormatter(format)});
+API.on('services', {formatter: createFormatter(formatService)});
 
 exports.formatInfos = function(response) {
   // Process Algorithms into a usable format
@@ -161,7 +162,7 @@ exports.prepare = function(object, type, fn) {
 
   // Remove duplicates. The API currently allows to add the same service more than once
   var uuids = {};
-  object.outgoing_services = length(object.outgoing_services) ? object.outgoing_services.map(OutgoingService.format).filter(function(service) {
+  object.outgoing_services = length(object.outgoing_services) ? object.outgoing_services.map(formatService).filter(function(service) {
     if (uuids[service.uuid]) return false;
     uuids[service.uuid] = true;
     return true;

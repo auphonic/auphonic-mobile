@@ -2,31 +2,17 @@ var API = require('API');
 var UI = require('UI');
 var View = require('View');
 
-var services = {};
-
-var format = exports.format = function(service) {
-  var type = API.getInfo('service_types')[service.type];
-  service.display_type = type && type.display_name;
-  return service;
-};
-
-API.on('services', {
-  formatter: function(response) {
-    response.data = response.data.map(format);
-    return response;
-  }
-});
-
 var getData = exports.getData = function(store) {
   var list = [];
   var object = Object.expand(Object.clone(store.get('outgoing_services', {})));
-  Object.each(object.outgoing_services, function(service, uuid) {
+  Object.each(object.outgoing_services, function(service) {
     if (!service.checked) return;
 
     service = Object.clone(service);
     delete service.checked;
     list.push(service);
   });
+
   return {
     outgoing_services: list
   };
