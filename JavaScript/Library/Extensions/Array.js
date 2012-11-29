@@ -7,3 +7,8 @@ Array.implement('sortByKey', function(key) {
   });
   return this;
 });
+
+var toString = Object.prototype.toString;
+Array.isArray = function(object) {
+  return toString.call(object) == '[object Array]';
+};
