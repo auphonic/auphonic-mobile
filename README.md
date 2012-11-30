@@ -1,4 +1,4 @@
-Auphonic Mobile App
+Auphonic Mobile App [![App Store](https://auphonic.com/static/images/app-store.png)](https://itunes.apple.com/app/auphonic/id575204274?mt=8)
 ===================
 
 This is the source for the Auphonic Mobile Web Application targeted at iOS and Android. It is built using web technologies combined with Cordova (Phonegap).
