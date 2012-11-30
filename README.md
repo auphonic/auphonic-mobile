@@ -6,6 +6,8 @@ This application is being developed by [@cpojer](http://cpojer.net) as bachelor'
 
 [![Flattr Button](http://api.flattr.com/button/button-static-50x60.png "Flattr This!")](https://flattr.com/thing/1035105/Auphonic-Mobile-App "Auphonic-Mobile-App")
 
+![Screenshot 1](http://dl.dropbox.com/u/1928164/App1.jpg)
+![Screenshot 2](http://dl.dropbox.com/u/1928164/App2.jpg)
 
 Install
 -------
