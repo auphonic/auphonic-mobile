@@ -14,7 +14,7 @@ exports.DefaultFileNameFilter = /mobile-(?:video|recording)-(\d+)/i;
 
 exports.DefaultOutputFile = {
   format: 'mp3',
-  bitrate: '96'
+  bitrate: '112'
 };
 
 exports.SpinnerOptions = {
