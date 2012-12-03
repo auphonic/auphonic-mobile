@@ -38,9 +38,8 @@ var formatService = function(service) {
 
 var createFormatter = function(fn) {
   return function(response) {
-    if (!response) response = {};
-    if (!Array.isArray(response.data)) response.data = [];
-    response.data = response.data.map(fn);
+    // Detect whether a list of objects or a single object was returned
+    response.data = Array.isArray(response.data) ? response.data.map(fn) : fn(response.data);
     return response;
   };
 };
