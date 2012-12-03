@@ -1446,8 +1446,12 @@ function program18(depth0,data) {
 
 function program20(depth0,data) {
   
-  
-  return "\n  <h1 class=\"null\">You have no outgoing services.</h1>\n  <p class=\"null\">Please go to the <a href=\"https://auphonic.com\">Auphonic Website</a> and add external services so you can automatically export your recordings.</p>\n";}
+  var buffer = "", stack1;
+  buffer += "\n  <h1 class=\"null\">You have no outgoing services.</h1>\n  <p class=\"null\">Please go to the Auphonic website and add external services so you can automatically export your recordings.</p>\n  <ul>\n    <li><a href=\"";
+  stack1 = depth0.url;
+  stack1 = typeof stack1 === functionType ? stack1.apply(depth0) : stack1;
+  buffer += escapeExpression(stack1) + "\" class=\"share\"><span></span>Add an external service</a></li>\n  </ul>\n";
+  return buffer;}
 
   stack1 = depth0.service;
   stack1 = helpers['if'].call(depth0, stack1, {hash:{},inverse:self.program(20, program20, data),fn:self.program(1, program1, data)});

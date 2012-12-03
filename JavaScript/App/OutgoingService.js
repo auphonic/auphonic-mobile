@@ -2,6 +2,8 @@ var API = require('API');
 var UI = require('UI');
 var View = require('View');
 
+var Auphonic = require('Auphonic');
+
 var getData = exports.getData = function(store) {
   var list = [];
   var object = Object.expand(Object.clone(store.get('outgoing_services', {})));
@@ -103,7 +105,8 @@ exports.createView = function(store) {
     var object = new View.Object({
       title: 'Transfers',
       content: UI.render('form-new-service', {
-        service: hasServices && services
+        service: hasServices && services,
+        url: Auphonic.ExternalServicesURL
       }),
       action: action,
       back: {
