@@ -484,9 +484,12 @@ var upload = function(recording) {
   var url = 'productions';
   if (currentEditUUID) url = 'production/{uuid}'.substitute({uuid: currentEditUUID});
 
+  var output_files = [Auphonic.DefaultOutputFile];
+  if (recording.media_type == 'video') output_files.push(Auphonic.DefaultVideoOutputFile);
+
   var data = {
     metadata: {title: recording.display_name},
-    output_files: [Auphonic.DefaultOutputFile],
+    output_files: output_files,
     chapters: recording.chapters
   };
 

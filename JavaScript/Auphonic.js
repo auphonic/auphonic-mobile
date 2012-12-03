@@ -17,6 +17,10 @@ exports.DefaultOutputFile = {
   bitrate: '112'
 };
 
+exports.DefaultVideoOutputFile = {
+  format: 'video'
+};
+
 exports.SpinnerOptions = {
   lines: 12,
   length: 10,
