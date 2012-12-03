@@ -439,16 +439,17 @@ var upload = function(recording) {
     var uuid = response.data.uuid;
     Recording.addProduction(recording.id, uuid);
 
+    var display_name = recording.display_name.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
     var transfer = API.upload('production/{uuid}/upload'.substitute(response.data), recording, 'input_file').on({
 
       success: function(uploadResponse) {
-        new Notice('The recording <span class="bold">"' + recording.name + '"</span> was successfully uploaded and attached to your production.');
+        new Notice('<span class="bold">' + display_name + '</span> was successfully uploaded and attached to your production.');
         CurrentUpload.remove(uuid);
         View.getMain().getStack().notifyAll('refresh', [uploadResponse.data]);
       },
 
       error: function() {
-        new Notice('There was an error uploading your recording <span class="bold">"' + recording.name + '"</span>. You can find your recording in the "Recordings" tab and you can try uploading it again later.');
+        new Notice('There was an error uploading <span class="bold">' + display_name + '</span>. You can find your recording in the "Recordings" tab and you can try uploading it again later.');
         CurrentUpload.remove(uuid);
 
         View.getMain().getStack().notifyAll('uploadProgress', [{
