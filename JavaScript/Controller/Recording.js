@@ -137,11 +137,15 @@ var showOne = function(req) {
     recording.productions.each(function(uuid) {
       API.call('production/{uuid}'.substitute({uuid: uuid})).on({
         success: function(response) {
-          recording.hasProductions = true;
-          recording.display_productions.push({
-            uuid: uuid,
-            title: response.data.metadata.title
-          });
+          // Just in case.
+          if (response.data && response.data.metadata) {
+            recording.hasProductions = true;
+            recording.display_productions.push({
+              uuid: uuid,
+              title: response.data.metadata.title
+            });
+          }
+
           complete();
         },
         error: function(event, response) {
