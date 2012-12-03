@@ -437,7 +437,6 @@ var upload = function(recording) {
 
   var onCreateSuccess = function(response) {
     var uuid = response.data.uuid;
-
     Recording.addProduction(recording.id, uuid);
 
     var transfer = API.upload('production/{uuid}/upload'.substitute(response.data), recording, 'input_file').on({

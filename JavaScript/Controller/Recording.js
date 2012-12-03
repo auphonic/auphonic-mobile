@@ -9,8 +9,6 @@ var Form = require('App/Form');
 
 var Recording = require('Store/Recording');
 
-var Auphonic = require('Auphonic');
-
 var months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 var sizes = ['b', 'KB', 'MB', 'GB', 'TB'];
 var form = null;
@@ -81,12 +79,13 @@ var show = function(recording) {
     if (object) object.invalidate();
   };
 
+  recording.uploadURL = '/production/recording/upload/{id}'.substitute(recording);
   var object = new View.Object({
     title: recording.display_name,
     content: UI.render('recording', recording),
     action: {
       title: 'Upload',
-      url: '/production/recording/upload/{id}'.substitute(recording),
+      url: recording.uploadURL,
       className: 'big'
     },
     onShow: function() {

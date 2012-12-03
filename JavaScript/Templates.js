@@ -1759,7 +1759,10 @@ function program9(depth0,data) {
   stack1 = depth0.isAudio;
   stack1 = helpers['if'].call(depth0, stack1, {hash:{},inverse:self.program(3, program3, data),fn:self.program(1, program1, data)});
   if(stack1 || stack1 === 0) { buffer += stack1; }
-  buffer += "\n\n<h1>Chapter Marks</h1>\n<ul class=\"chapter_marks\">\n  <li><a href=\"/recording/new/chapter\" class=\"plus\"><span></span>Add Chapter Mark</a></li>\n</ul>\n\n";
+  buffer += "\n\n<a href=\"";
+  stack1 = depth0.uploadURL;
+  stack1 = typeof stack1 === functionType ? stack1.apply(depth0) : stack1;
+  buffer += escapeExpression(stack1) + "\" class=\"clear button green expand startProduction\">Upload and create a Production</a>\n\n<h1>Chapter Marks</h1>\n<ul class=\"chapter_marks\">\n  <li><a href=\"/recording/new/chapter\" class=\"plus\"><span></span>Add Chapter Mark</a></li>\n</ul>\n\n";
   stack1 = depth0.hasProductions;
   stack1 = helpers['if'].call(depth0, stack1, {hash:{},inverse:self.noop,fn:self.program(5, program5, data)});
   if(stack1 || stack1 === 0) { buffer += stack1; }
