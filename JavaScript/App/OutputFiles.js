@@ -214,7 +214,7 @@ exports.createView = function(store, editId) {
       var item = bitrateContainer.getElement('[data-output-file=' + value + ']');
 
       parent.getElements('> :not(li:first-child)').dispose();
-      if (item) parent.adopt(item.clone());
+      if (item) parent.adopt(item.cloneNode(true));
 
       Elements.from(UI.render('form-new-output-file-detail', {
         has_options: files[value].has_options,

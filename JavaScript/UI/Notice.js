@@ -2,7 +2,6 @@ var Core = require('Core');
 var Class = Core.Class;
 var Options = Core.Options;
 var Element = Core.Element;
-var Browser = Core.Browser;
 
 var UI = require('UI');
 
@@ -31,7 +30,7 @@ module.exports = new Class({
 
     var type = this.options.type;
     var duration = this.options.duration;
-    var element = this.element = templateElement.clone();
+    var element = this.element = templateElement.cloneNode(true);
 
     if (type == 'error') duration = 0;
 

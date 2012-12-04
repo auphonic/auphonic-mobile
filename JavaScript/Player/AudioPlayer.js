@@ -268,7 +268,7 @@ module.exports = new Class({
       this.chapterMarkElement.set('text', '').removeClass('fade');
 
     var previous = this.chapterMarkElement;
-    var current = this.chapterMarkElement = previous.clone().set('text', chapter.title);
+    var current = this.chapterMarkElement = previous.cloneNode(true).set('text', chapter.title);
 
     UI.transition(previous.getParent(), previous, current, {
       direction: (previousChapter < currentChapter) ? 'right' : 'left',
