@@ -24,7 +24,7 @@ provides: [Core, MooTools, Type, typeOf, instanceOf]
 
 exports.MooTools = {
 	version: '1.5.0-custom',
-	build: 'db9c33b9620234b43c96f5825d3f45de4578039f'
+	build: '571165da9f409f8fab43d91d13e3b2804be01daf'
 };
 
 // typeOf, instanceOf
@@ -2566,27 +2566,6 @@ Element.implement({
 
 	dispose: function(){
 		return (this.parentNode) ? this.parentNode.removeChild(this) : this;
-	},
-
-	clone: function(contents, keepid){
-		contents = contents !== false;
-		var clone = this.cloneNode(contents), ce = [clone], te = [this], i;
-
-		if (contents){
-			ce.append(Array.from(clone.getElementsByTagName('*')));
-			te.append(Array.from(this.getElementsByTagName('*')));
-		}
-
-		for (i = ce.length; i--;){
-			var node = ce[i], element = te[i];
-			if (!keepid) node.removeAttribute('id');
-			
-			var prop = formProps[element.tagName.toLowerCase()];
-			if (prop && element[prop]) node[prop] = element[prop];
-		}
-
-		
-		return document.id(clone);
 	}
 
 });
@@ -2921,20 +2900,6 @@ Element.Properties.events = {set: function(events){
 			if (delay) fn.delay(delay, this, args);
 			else fn.apply(this, args);
 		}, this);
-		return this;
-	},
-
-	cloneEvents: function(from, type){
-		from = document.id(from);
-		var events = from.retrieve('events');
-		if (!events) return this;
-		if (!type){
-			for (var eventType in events) this.cloneEvents(from, eventType);
-		} else if (events[type]){
-			events[type].keys.each(function(fn){
-				this.addEvent(type, fn);
-			}, this);
-		}
 		return this;
 	}
 
