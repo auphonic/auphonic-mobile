@@ -9,7 +9,7 @@ img.thumbnail
   margin 0 10px 10px 0
 
   border-radius 5px
-  box-shadow 0 1px 3px rgba(0, 0, 0, 0.4)
+  box-shadow 0 1px 2px rgba(0, 0, 0, 0.2)
 
 div.processing, div.uploading
   padding 10px 37%
@@ -29,7 +29,7 @@ div.detail
   margin -10px -10px 15px -10px
   padding 10px 10px 5px 10px
   background #fff
-  box-shadow 0 1px 3px rgba(0, 0, 0, 0.4)
+  box-shadow 0 1px 2px rgba(0, 0, 0, 0.2)
 
   h1
     text-shadow none
@@ -66,18 +66,6 @@ div.detail
   span.wrap
     white-space normal
 
-  div.light-background, div.dark-background
-    position absolute
-    left 0
-    right 0
-    top -450px
-    height 450px
-    background #fff
-
-  div.dark-background
-    background #111
-    background-position center bottom
-
   &.with-image
     height 270px
     padding 0
@@ -109,3 +97,15 @@ div.detail
       h1, span
         color #fff
         text-shadow 0 1px 0 #000
+
+div.light-background, div.dark-background
+  position absolute
+  left 0
+  right 0
+  top -450px
+  height 450px
+  background #fff
+
+div.dark-background
+  background #111
+  background-position center bottom

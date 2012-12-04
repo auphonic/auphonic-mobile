@@ -1512,7 +1512,7 @@ function program5(depth0,data) {
   
   return "\n      <div class=\"line\"></div>\n    ";}
 
-  buffer += "<div class=\"player content clear\">\n  <div class=\"play-button content full\">\n    <a class=\"play\">\n      <span class=\"hidden\" data-media=\"1\">";
+  buffer += "<div class=\"player content expand with-shadow clear\">\n  <div class=\"play-button content full\">\n    <a class=\"play\">\n      <span class=\"hidden\" data-media=\"1\">";
   stack1 = depth0.media_files;
   stack1 = typeof stack1 === functionType ? stack1.apply(depth0) : stack1;
   buffer += escapeExpression(stack1) + "</span>\n      <span class=\"hidden\" data-chapters=\"1\">";
@@ -1746,7 +1746,7 @@ function program9(depth0,data) {
   
   return "\n            Untitled\n          ";}
 
-  buffer += "<ul class=\"formcontent\">\n  <li>\n    <label class=\"left\"><input type=\"text\" name=\"display_name\" value=\"";
+  buffer += "<div class=\"light-background\"></div>\n<ul class=\"formcontent expand with-shadow\">\n  <li>\n    <label class=\"left\"><input type=\"text\" name=\"display_name\" value=\"";
   stack1 = depth0.display_name;
   stack1 = typeof stack1 === functionType ? stack1.apply(depth0) : stack1;
   buffer += escapeExpression(stack1) + "\" class=\"right\" data-clearable=\"1\" />Name</label>\n  </li>\n  <li>\n    <span class=\"right light bold\">";
