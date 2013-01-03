@@ -8,7 +8,7 @@ var sys = require('sys');
 var shell = require('shelljs');
 var watchMonitor = require('watch');
 
-var Auphonic = require('./config');
+var config = require('./config');
 var modulr = require('./modulr');
 var projectPath = path.resolve(__dirname, '../');
 
@@ -64,40 +64,40 @@ var watch = function(directory, fn) {
 };
 
 var writeVersion = function(hash) {
-  fs.writeFile(Auphonic.VersionFile, "window.__APP_VERSION='" + hash + "';");
+  fs.writeFile(config.VersionFile, "window.__APP_VERSION='" + hash + "';");
 };
 
 var previousHash;
 
 var compileTemplates = function() {
-  run('node_modules/.bin/handlebars "' + Auphonic.Templates + '" -f "' + Auphonic.TemplatesFile + '" -o -c "Handlebars"', function() {
-    console.log("  \033[90mcompiled\033[0m " + Auphonic.TemplatesFile);
+  run('node_modules/.bin/handlebars "' + config.Templates + '" -f "' + config.TemplatesFile + '" -o -c "Handlebars"', function() {
+    console.log("  \033[90mcompiled\033[0m " + config.TemplatesFile);
   });
 };
 
 var compileSTYL = function() {
-  shell.rm('-f', path.resolve(Auphonic.Server, '*-*.css'));
-  run('node_modules/.bin/stylus --use "' + path.resolve(projectPath, 'node_modules/nib/lib/nib.js') + '" --out "' + Auphonic.Server + '" --use url --with "' + JSON.stringify(Auphonic.StylusOptions).replace(/"/g, '\\\"') + '" "' + Auphonic.STYL_Server + '"' + (compileForProduction ? ' -c' : ''), function() {
+  shell.rm('-f', path.resolve(config.Server, '*-*.css'));
+  run('node_modules/.bin/stylus --use "' + path.resolve(projectPath, 'node_modules/nib/lib/nib.js') + '" --out "' + config.Server + '" --use url --with "' + JSON.stringify(config.StylusOptions).replace(/"/g, '\\\"') + '" "' + config.STYL_Server + '"' + (compileForProduction ? ' -c' : ''), function() {
     getCommitHash(function(hash) {
       if (previousHash && hash != previousHash) compileJS();
       previousHash = hash;
       writeVersion(hash);
-      shell.mv('-f', path.resolve(Auphonic.Server, 'App.css'), path.resolve(Auphonic.Server, Auphonic.ServerCSSFile.replace(/\{hash\}/, hash)));
+      shell.mv('-f', path.resolve(config.Server, 'App.css'), path.resolve(config.Server, config.ServerCSSFile.replace(/\{hash\}/, hash)));
     });
   });
-  run('node_modules/.bin/stylus --use "' + path.resolve(projectPath, 'node_modules/nib/lib/nib.js') + '" --out "' + Auphonic.App + '" --use url --with "' + JSON.stringify(Auphonic.StylusOptions).replace(/"/g, '\\\"') + '" "' + Auphonic.STYL_Client + '"');
+  run('node_modules/.bin/stylus --use "' + path.resolve(projectPath, 'node_modules/nib/lib/nib.js') + '" --out "' + config.App + '" --use url --with "' + JSON.stringify(config.StylusOptions).replace(/"/g, '\\\"') + '" "' + config.STYL_Client + '"');
 };
 
 var compileJS = function() {
-  shell.rm('-f', path.resolve(Auphonic.Server, '*-*.js'));
+  shell.rm('-f', path.resolve(config.Server, '*-*.js'));
   getCommitHash(function(hash) {
     if (previousHash && hash != previousHash) compileSTYL();
     previousHash = hash;
     writeVersion(hash);
-    modulr.build(path.resolve(Auphonic.Server, Auphonic.ServerJSFile.replace(/\{hash\}/, hash)), compileForProduction ? Auphonic.ServerJSProductionOptions : Auphonic.ServerJSOptions);
+    modulr.build(path.resolve(config.Server, config.ServerJSFile.replace(/\{hash\}/, hash)), compileForProduction ? config.ServerJSProductionOptions : config.ServerJSOptions);
   });
 };
 
-watch(Auphonic.Templates, compileTemplates);
-watch(Auphonic.STYL, compileSTYL);
-watch(Auphonic.JS, compileJS);
+watch(config.Templates, compileTemplates);
+watch(config.STYL, compileSTYL);
+watch(config.JS, compileJS);
