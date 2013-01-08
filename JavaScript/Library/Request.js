@@ -53,8 +53,8 @@ var Request = module.exports = new Class({
 			this.xhr.setRequestHeader(header, headers[header]);
 
 		this.running = true;
-
 		this.xhr.send(data);
+		return this;
 	},
 
 	onReadyStateChange: function() {
@@ -88,9 +88,10 @@ var Request = module.exports = new Class({
 	cancel: function() {
 		if (!this.running) return;
 		this.end();
-		this.xhr.abort();
 		this.xhr.removeEventListener('readystatechange', this.bound('onReadyStateChange'), false);
+		this.xhr.abort();
 		this.fireEvent('cancel', 1);
+		return this;
 	},
 
 	timeoutTimer: function() {
