@@ -3,31 +3,31 @@ JS="../JavaScript/Library"
 DIR=$(cd `dirname $0` && pwd)
 
 # DynamicMatcher
-packager build DynamicMatcher/* +use-only DynamicMatcher > "$DIR/$JS/PowerTools/DynamicMatcher.js"
+packager build DynamicMatcher/* +use-only DynamicMatcher > "$DIR/$JS/DynamicMatcher.js"
 
 # Class-Extras
-packager build Class-Extras/* +use-only Class-Extras > "$DIR/$JS/PowerTools/Class-Extras.js"
+packager build Class-Extras/* +use-only Class-Extras > "$DIR/$JS/Class-Extras.js"
 
 # History
-packager build History/History +use-only History > "$DIR/$JS/PowerTools/History.js"
+packager build History/History +use-only History > "$DIR/$JS/History.js"
 
 # Router
-packager build Router/Router +use-only Router > "$DIR/$JS/PowerTools/Router.js"
+packager build Router/Router +use-only Router > "$DIR/$JS/Router.js"
 
 # Custom-Event
-packager build Custom-Event/* +use-only Custom-Event > "$DIR/$JS/PowerTools/Custom-Event.js"
+packager build Custom-Event/* +use-only Custom-Event > "$DIR/$JS/Custom-Event.js"
 
 # Mootilities
-packager build Mootilities/Queue +use-only Mootilities > "$DIR/$JS/PowerTools/Queue.js"
+packager build Mootilities/Queue +use-only Mootilities > "$DIR/$JS/Queue.js"
 
 # Mobile
-packager build Mobile/Browser.Mobile Mobile/Click Mobile/Swipe Mobile/Touchhold +use-only Mobile > "$DIR/$JS/PowerTools/Mobile.js"
+packager build Mobile/Browser.Mobile Mobile/Click Mobile/Swipe Mobile/Touchhold +use-only Mobile > "$DIR/$JS/Mobile.js"
 
 # EventStack
-packager build EventStack/* +use-only EventStack EventStack.OuterClick > "$DIR/$JS/PowerTools/EventStack.js"
+packager build EventStack/* +use-only EventStack EventStack.OuterClick > "$DIR/$JS/EventStack.js"
 
 # Form AutoGrow
-packager build Form-AutoGrow/* +use-only Form-AutoGrow > "$DIR/$JS/PowerTools/AutoGrow.js"
+packager build Form-AutoGrow/* +use-only Form-AutoGrow > "$DIR/$JS/AutoGrow.js"
 
 ## MooTools Core
 packager build Element Element.Event Class.Extras More/Element.Event.Pseudos +use-only Core More -blocks 1.2compat 1.3compat ltIE9 ltIE8 !ES5 ltFF4 IE > "$DIR/$JS/Core.js"

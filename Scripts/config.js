@@ -28,9 +28,7 @@ exports.ServerJSOptions = {
   environment: 'dev',
   paths: [
     exports.JS,
-    path.resolve(exports.JS, 'Library'),
-    path.resolve(exports.JS, 'Library/ThirdParty'),
-    path.resolve(exports.JS, 'Library/PowerTools')
+    path.resolve(exports.JS, 'Library')
   ]
 };
 exports.ServerJSProductionOptions = JSON.parse(JSON.stringify(exports.ServerJSOptions)); // Cheap man's clone
