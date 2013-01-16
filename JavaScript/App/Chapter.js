@@ -123,7 +123,7 @@ exports.createView = function(store, editId) {
   var mainObject = View.getMain().getCurrentObject();
   var object = new View.Object({
     title: id ? 'Edit Chapter' : 'Add Chapter',
-    content: UI.render('form-new-chapter'),
+    content: UI.render('form-chapter'),
     back: {
       title: 'Cancel'
     },

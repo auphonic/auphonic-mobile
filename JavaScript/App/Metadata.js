@@ -23,7 +23,7 @@ exports.createView = function(store, data) {
 
   object = new View.Object({
     title: 'Metadata',
-    content: UI.render('form-new-metadata', {
+    content: UI.render('form-metadata', {
       thumbnail: store.get('thumbnail'),
     }),
     action: {

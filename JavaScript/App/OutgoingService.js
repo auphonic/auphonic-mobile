@@ -104,7 +104,7 @@ exports.createView = function(store) {
 
     var object = new View.Object({
       title: 'Transfers',
-      content: UI.render('form-new-service', {
+      content: UI.render('form-service', {
         service: hasServices && services,
         url: Auphonic.ExternalServicesURL
       }),

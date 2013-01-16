@@ -161,7 +161,7 @@ module.exports = new Class({
 
     var object = this.object = new View.Object({
       title: this.getObjectName(data) ||  'New ' + this.getDisplayName(),
-      content: UI.render('form-new-main', uiData),
+      content: UI.render('form-main', uiData),
       back: (isEditMode ? {title: 'Cancel'} : null),
       backTitle: this.getPluralDisplayName(),
       backOptions: isProduction ? {className: 'small'} : null,

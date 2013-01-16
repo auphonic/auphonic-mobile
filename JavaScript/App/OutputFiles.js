@@ -186,7 +186,7 @@ exports.createView = function(store, editId) {
   var mainObject = View.getMain().getCurrentObject();
   var object = new View.Object({
     title: id ? 'Edit Format' : 'Add Format',
-    content: UI.render('form-new-output-file', {
+    content: UI.render('form-output-file', {
       formats: Object.values(formats)
     }),
     back: {
@@ -216,7 +216,7 @@ exports.createView = function(store, editId) {
       parent.getElements('> :not(li:first-child)').dispose();
       if (item) parent.adopt(item.cloneNode(true));
 
-      Elements.from(UI.render('form-new-output-file-detail', {
+      Elements.from(UI.render('form-output-file-detail', {
         has_options: files[value].has_options,
         mono_mixdown: data.mono_mixdown,
         split_on_chapters: data.split_on_chapters
