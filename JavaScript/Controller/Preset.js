@@ -131,7 +131,7 @@ var showOne = function(req, options) {
       content: renderTemplate('detail', preset),
       action: {
         title: 'Edit',
-        url: '/preset/edit/' + preset.uuid
+        url: '/preset/edit/{uuid}'.substitute(preset)
       },
 
       onRefresh: function(data) {
@@ -170,7 +170,7 @@ Controller.define('/preset/new', {priority: 1, isGreedy: true}, function() {
 
 Controller.define('/preset/edit/{uuid}', {priority: 1, isGreedy: true}, function(req) {
   var preset = presets[req.uuid];
-  form = createForm(preset ? {saveURL: 'preset/' + preset.uuid} : null);
+  form = createForm(preset ? {saveURL: 'preset/{uuid}'.substitute(preset)} : null);
   form.show('main', preset);
 });
 

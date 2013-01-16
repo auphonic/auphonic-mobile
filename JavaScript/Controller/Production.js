@@ -182,7 +182,7 @@ var showOne = function(req, options) {
       content: renderTemplate('detail', production),
       action: {
         title: 'Edit',
-        url: '/production/edit/' + production.uuid
+        url: '/production/edit/{uuid}'.substitute(production)
       },
 
       onShow: function() {
@@ -316,7 +316,7 @@ var edit = function(production) {
     var data = Object.clone(production);
     // Update data from previous editing
     if (reuse) Object.append(data, serializedData);
-    else form = createForm(data ? {saveURL: 'production/' + data.uuid} : null);
+    else form = createForm(data ? {saveURL: 'production/{uuid}'.substitute(data)} : null);
     serializedData = null;
 
     if (data.service) Source.setData(form, data.service);
@@ -381,7 +381,7 @@ Controller.define('/production/source', {priority: 1, isGreedy: true}, function(
     delete serializedData.input_file;
   }
 
-  form = createForm(form && currentEditUUID ? {saveURL: 'production/' + currentEditUUID} : null);
+  form = createForm(form && currentEditUUID ? {saveURL: 'production/{uuid}'.substitute({uuid: currentEditUUID})} : null);
   form.show('service');
 });
 
