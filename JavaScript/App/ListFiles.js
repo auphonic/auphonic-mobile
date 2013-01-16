@@ -45,7 +45,9 @@ exports.createView = function(store) {
   View.getMain().showIndicator();
   API.on('service/' + service + '/ls', {
     lifetime: 60
-  }).call().on({
+  }).call('get', null, {
+    timeout: 20000
+  }).on({
 
     success: function(response) {
       files = response.data;

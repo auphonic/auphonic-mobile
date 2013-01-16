@@ -7,7 +7,7 @@ var resolve = function(p) {
 };
 
 exports.JS = resolve('JavaScript');
-exports.STYL = resolve('STYL'),
+exports.STYL = resolve('STYL');
 exports.STYL_Server = path.resolve(exports.STYL, 'App.styl');
 exports.STYL_Client = path.resolve(exports.STYL, 'App/App.styl');
 exports.App = resolve('App');

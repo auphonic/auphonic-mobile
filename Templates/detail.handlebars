@@ -158,10 +158,14 @@
     <ul>
       {{#each outgoing_services}}
         <li>
-          {{#if result_urls}}
-            <a href="{{result_urls.0.}}" class="share"><span></span><span class="light">{{display_type}}</span> <small>{{display_name}}</small></a>
+          {{#if result_page}}
+            <a href="{{result_page}}" class="share"><span></span><span class="light">{{display_type}}</span> <small>{{display_name}}</small></a>
           {{else}}
-            <label><span class="light">{{display_type}}</span> <small>{{display_name}}</small></label>
+            {{#if result_urls}}
+              <a href="{{result_urls.0.}}" class="share"><span></span><span class="light">{{display_type}}</span> <small>{{display_name}}</small></a>
+            {{else}}
+              <label><span class="light">{{display_type}}</span> <small>{{display_name}}</small></label>
+            {{/if}}
           {{/if}}
         </li>
       {{/each}}

@@ -54,7 +54,7 @@ var API = module.exports = {
 
 };
 
-var listenersFor = function(url) {
+var createListeners = function() {
   var listeners = new Events;
   listeners.on = listeners.addEvents;
   return listeners;
@@ -85,8 +85,10 @@ var createEvent = function() {
   };
 };
 
-API.call = function(url, method, requestData) {
-  var listeners = listenersFor(url);
+API.call = function(url, method, requestData, requestOptions) {
+  var timeout = requestOptions && requestOptions.timeout;
+
+  var listeners = createListeners();
   if (typeof requestData != 'string') requestData = Object.toQueryString(requestData);
 
   method = (method || 'get').toLowerCase();
@@ -105,7 +107,7 @@ API.call = function(url, method, requestData) {
 
     url: getURL(url),
     method: method,
-    timeout: (method == 'get' ? 10000 : 0),
+    timeout: timeout != null ? timeout : (method == 'get' ? 10000 : 0),
     headers: {
       'Authorization': getAuthorization(),
       'Content-Type': 'application/json'
@@ -170,7 +172,7 @@ API.upload = function(url, file, field) {
   var transfer;
   var canceled = false;
   var progress = 0;
-  var listeners = listenersFor(url);
+  var listeners = createListeners();
   var success = function(response) {
     IdleTimer.enable();
 
@@ -223,7 +225,7 @@ API.upload = function(url, file, field) {
 API.authenticate = function(requestData) {
   var url = 'oauth2/token/';
   var authentication = 'Basic ' + Base64.encode(requestData.client_id + ':' + requestData.client_secret);
-  var listeners = listenersFor(url);
+  var listeners = createListeners();
 
   new Request.JSON({
 
