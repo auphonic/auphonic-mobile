@@ -174,7 +174,7 @@
           resources = ['App-' + __APP_VERSION + '.css', 'App-' + __APP_VERSION + '.js'];
 
           resources.forEach(function(resource) {
-            __loadResource(__SERVER_URL + resource + (__LOCALHOST__ ? '?' + Date.now() : ''), success, error);
+            __loadResource(__SERVER_URL + resource + (window.__LOCALHOST__ ? '?' + Date.now() : ''), success, error);
           });
         }, error);
       };

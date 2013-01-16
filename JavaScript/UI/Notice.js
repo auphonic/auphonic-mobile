@@ -34,7 +34,10 @@ module.exports = new Class({
 
     if (type == 'error') duration = 0;
 
-    element.getElement('.text').set('html', message);
+    var text = element.getElement('.text');
+    if (typeof message == 'string') text.set('text', message);
+    else text.adopt(message);
+
     UI.update(element);
     this.duration = duration;
     this.push();

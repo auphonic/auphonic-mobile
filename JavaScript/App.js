@@ -361,25 +361,31 @@ window.__BOOTAPP = function() {
   Notice.setTemplate(new Element('div.notice').adopt(new Element('div.close'), new Element('div.notice-inner.text')));
 
   var notice;
-  var noticeText;
+  var previousMessage;
   var errorHandler = function(event, data) {
     View.getMain().hideIndicator();
     UI.unhighlight(UI.getHighlightedElement());
-
     if (event.isPrevented()) return;
 
-    var text = '';
-    if (data && data.status_code) text = '<h1>An error occurred</h1> Please try again or <a href="{IssuesURL}">report a bug</a> so we can fix this as soon as possible.'.substitute(Auphonic);
-    else text = '<h1>A network error ocurred</h1> Please put your device in some elevated position to regain Internet access. If the problem lies on our end we\'ll make sure to fix the problem quickly :)';
+    var message = new Element('div');
+    if (data && data.status_code) message.adopt([
+      new Element('h1', {text: 'An error occurred'}),
+      new Element('span', {text: 'Please try again or '}),
+      new Element('a', {href: Auphonic.IssuesURL, text: 'report a bug'}),
+      new Element('span', {text: 'so we can fix this as soon as possible.'})
+    ]); else message.adopt([
+      new Element('h1', {text: 'A network error occurred'}),
+      new Element('span', {text: 'Please put your device in an elevated position to regain Internet access. If the problem lies on our end we\'ll make sure to fix the problem quickly :)'})
+    ]);
 
     // If the last notice with the same text is still visible we'll not show another one.
-    if (notice && notice.isOpen() && noticeText == text) {
+    if (notice && notice.isOpen() && previousMessage == message.get('text')) {
       notice.push();
       return;
     }
 
-    noticeText = text;
-    notice = new Notice(text, {type: 'error'});
+    previousMessage = message.get('text');
+    notice = new Notice(message, {type: 'error'});
   };
 
   API.setTimeoutHandler(errorHandler);
