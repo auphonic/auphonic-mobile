@@ -1,4 +1,5 @@
 var API = require('API');
+var renderTemplate = require('UI/renderTemplate');
 var UI = require('UI');
 var View = require('View');
 
@@ -104,7 +105,7 @@ exports.createView = function(store) {
 
     var object = new View.Object({
       title: 'Transfers',
-      content: UI.render('form-service', {
+      content: renderTemplate('form-service', {
         service: hasServices && services,
         url: Auphonic.ExternalServicesURL
       }),

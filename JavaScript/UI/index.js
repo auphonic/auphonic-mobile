@@ -10,8 +10,6 @@ UI.BackButton = require('./Elements/BackButton');
 UI.ActionButton = require('./Elements/ActionButton');
 UI.Title = require('./Elements/Title');
 
-var Handlebars = require('Handlebars');
-
 var isVisible = false;
 var transitionDelay = 1;
 
@@ -20,11 +18,6 @@ var preventDefault = function(event) {
 };
 
 Object.append(UI, {
-
-  render: function(name, data) {
-    if (!data) data = '';
-    return Handlebars.templates[name](typeof data == 'string' ? {content: data} : data);
-  },
 
   transition: function(container, previous, current, options) {
     var isImmediate = options && options.immediate;

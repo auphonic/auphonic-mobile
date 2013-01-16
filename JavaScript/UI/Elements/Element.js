@@ -3,6 +3,7 @@ var Class = Core.Class;
 var Options = Core.Options;
 var Element = Core.Element;
 
+var renderTemplate = require('../renderTemplate');
 var UI = require('../');
 
 module.exports = new Class({
@@ -49,7 +50,7 @@ module.exports = new Class({
   },
 
   create: function(data) {
-    var element = Element.from(UI.render(this.options.template, data));
+    var element = Element.from(renderTemplate(this.options.template, data));
     // Click event from the View.Object
     if (data.onClick) element.addEvent('click', data.onClick);
     // This can be modified because the current element gets removed anyway

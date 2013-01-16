@@ -4,7 +4,7 @@ var Class = Core.Class;
 var Events = Core.Events;
 var Element = Core.Element;
 
-var UI = require('UI');
+var renderTemplate = require('UI/renderTemplate');
 
 var getTypePlugin = function(type) {
   return function(element) {
@@ -90,7 +90,7 @@ module.exports = new Class({
     var view = this.getView();
     if (!view) return;
 
-    var element = this.element || Element.from(UI.render(view.getOption('template')));
+    var element = this.element || Element.from(renderTemplate(view.getOption('template')));
     var selector = view.getOption('contentSelector');
 
     this.setElement(element);

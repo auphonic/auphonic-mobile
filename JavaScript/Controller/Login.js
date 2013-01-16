@@ -3,6 +3,7 @@ var Spinner = require('Spinner');
 
 var API = require('API');
 var Controller = require('./');
+var renderTemplate = require('UI/renderTemplate');
 var UI = require('UI');
 var Notice = require('UI/Notice');
 
@@ -23,7 +24,7 @@ Controller.define('/login', function() {
   UI.hideChrome();
 
   var login = document.id('login');
-  login.set('html', UI.render('login', {
+  login.set('html', renderTemplate('login', {
     client_id: APIKeys.ID,
     client_secret: APIKeys.secret,
     registerURL: Auphonic.RegisterURL,

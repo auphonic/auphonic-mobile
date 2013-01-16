@@ -6,6 +6,7 @@ var Spinner = require('Spinner');
 var ScrollLoader = require('Utility/ScrollLoader');
 
 var UI = require('UI');
+var renderTemplate = require('UI/renderTemplate');
 var ViewObject = require('./Object');
 
 module.exports = new Class({
@@ -86,7 +87,7 @@ module.exports = new Class({
 
     element.adopt(
       response.data.map(function(item) {
-        return Element.from(UI.render(this.getTemplateId(), item));
+        return Element.from(renderTemplate(this.getTemplateId(), item));
       }, this)
     );
 

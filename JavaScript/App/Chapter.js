@@ -1,6 +1,7 @@
 var Core = require('Core');
 var Element = Core.Element;
 
+var renderTemplate = require('UI/renderTemplate');
 var UI = require('UI');
 var View = require('View');
 
@@ -9,7 +10,7 @@ var SwipeAble = require('UI/Actions/SwipeAble');
 var createUIElement = function(baseURL, store, content, id) {
   if (!id) id = String.uniqueID();
 
-  var element = Element.from(UI.render('ui-removable-chapter-list-item',
+  var element = Element.from(renderTemplate('ui-removable-chapter-list-item',
     Object.append({
       label: 'Remove',
       href: baseURL.substitute({id: id})
@@ -122,7 +123,7 @@ exports.createView = function(store, editId) {
   var mainObject = View.getMain().getCurrentObject();
   var object = new View.Object({
     title: id ? 'Edit Chapter' : 'Add Chapter',
-    content: UI.render('form-chapter'),
+    content: renderTemplate('form-chapter'),
     back: {
       title: 'Cancel'
     },

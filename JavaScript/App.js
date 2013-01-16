@@ -41,6 +41,7 @@ var ActiveState = require('Browser/ActiveState');
 var PreventClickOnScroll = require('Browser/PreventClickOnScroll');
 
 var API = require('API');
+var renderTemplate = require('UI/renderTemplate');
 var UI = require('UI');
 var View = require('View');
 var Controller = require('Controller');
@@ -218,7 +219,7 @@ window.__BOOTAPP = function() {
 
   Element.defineDefaultTransitionDelay(UI.getTransitionDelay());
 
-  document.body.adopt(Element.from(UI.render('ui')));
+  document.body.adopt(Element.from(renderTemplate('ui')));
 
   UI.register({
 
@@ -436,7 +437,7 @@ window.__BOOTAPP = function() {
 
     View.getMain().push('home', new View.Object({
       backTitle: 'Home',
-      content: UI.render('home', {
+      content: renderTemplate('home', {
         feedback: Auphonic.FeedbackURL
       })
     }));
@@ -445,7 +446,7 @@ window.__BOOTAPP = function() {
   Controller.define('/about', function() {
     View.getMain().push(new View.Object({
       title: 'About',
-      content: UI.render('about', {
+      content: renderTemplate('about', {
         user: User.get(),
         version: Auphonic.Version,
         repository: Auphonic.RepositoryURL
@@ -456,7 +457,7 @@ window.__BOOTAPP = function() {
   Controller.define('/team', function() {
     View.getMain().push(new View.Object({
       title: 'Team',
-      content: UI.render('team', {
+      content: renderTemplate('team', {
         image: Auphonic.TeamImage,
         twitter: Auphonic.TwitterURL,
         facebook: Auphonic.FacebookURL
@@ -471,7 +472,7 @@ window.__BOOTAPP = function() {
       success: function(response) {
         View.getMain().push(new View.Object({
           title: 'External Services',
-          content: UI.render('external-services', {
+          content: renderTemplate('external-services', {
             url: Auphonic.ExternalServicesURL,
             services: response.data
           })

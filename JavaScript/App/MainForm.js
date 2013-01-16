@@ -3,7 +3,7 @@ var Class = Core.Class;
 var Options = Core.Options;
 
 var API = require('API');
-var UI = require('UI');
+var renderTemplate = require('UI/renderTemplate');
 var View = require('View');
 
 var Notice = require('UI/Notice');
@@ -165,7 +165,7 @@ module.exports = new Class({
 
     var object = this.object = new View.Object({
       title: this.getObjectName(data) ||  'New ' + this.getDisplayName(),
-      content: UI.render('form-main', uiData),
+      content: renderTemplate('form-main', uiData),
       back: (isEditMode ? {title: 'Cancel'} : null),
       backTitle: this.getPluralDisplayName(),
       backOptions: isProduction ? {className: 'small'} : null,

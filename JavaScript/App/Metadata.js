@@ -1,4 +1,4 @@
-var UI = require('UI');
+var renderTemplate = require('UI/renderTemplate');
 var View = require('View');
 
 var CoverPhoto = require('./CoverPhoto');
@@ -18,7 +18,7 @@ exports.setData = function(store, metadata) {
 exports.createView = function(store) {
   var object = new View.Object({
     title: 'Metadata',
-    content: UI.render('form-metadata', {
+    content: renderTemplate('form-metadata', {
       thumbnail: store.get('thumbnail'),
     }),
     action: {

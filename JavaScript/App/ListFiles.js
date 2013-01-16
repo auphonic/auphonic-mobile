@@ -1,5 +1,5 @@
 var API = require('API');
-var UI = require('UI');
+var renderTemplate = require('UI/renderTemplate');
 var View = require('View');
 
 var Source = require('./Source');
@@ -63,7 +63,7 @@ exports.createView = function(store) {
       var object = new View.Object({
         title: serviceObject.display_type + ' ' + serviceObject.display_name,
         backTitle: serviceObject.display_type,
-        content: UI.render('service-list', {
+        content: renderTemplate('service-list', {
           files: list
         }),
         onHide: function() {

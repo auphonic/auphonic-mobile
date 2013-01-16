@@ -3,7 +3,7 @@ var History = require('History');
 var API = require('API');
 var Controller = require('./');
 var View = require('View');
-var UI = require('UI');
+var renderTemplate = require('UI/renderTemplate');
 
 var CoverPhoto = require('App/CoverPhoto');
 var Data = require('App/Data');
@@ -79,7 +79,7 @@ var showAll = function() {
     add(response.data);
     var object = new View.Object.LoadMore({
       title: 'Presets',
-      content: UI.render('presets', {preset: response.data}),
+      content: renderTemplate('presets', {preset: response.data}),
       action: {
         title: 'New',
         url: '/preset/new'
@@ -128,7 +128,7 @@ var showOne = function(req, options) {
 
     var object = new View.Object({
       title: preset.preset_name,
-      content: UI.render('detail', preset),
+      content: renderTemplate('detail', preset),
       action: {
         title: 'Edit',
         url: '/preset/edit/' + preset.uuid
@@ -158,7 +158,7 @@ Controller.define('/preset/{uuid}/summary', function(req) {
   var preset = presets[req.uuid];
   View.getMain().push('preset', new View.Object({
     title: preset.preset_name,
-    content: UI.render('detail-summary', preset)
+    content: renderTemplate('detail-summary', preset)
   }));
 });
 

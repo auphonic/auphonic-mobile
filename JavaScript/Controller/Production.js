@@ -3,6 +3,7 @@ var History = require('History');
 var API = require('API');
 var Controller = require('./');
 var View = require('View');
+var renderTemplate = require('UI/renderTemplate');
 var UI = require('UI');
 var Notice = require('UI/Notice');
 
@@ -114,7 +115,7 @@ var showAll = function() {
 
     var object = new View.Object.LoadMore({
       title: 'Productions',
-      content: UI.render('productions', {production: response.data}),
+      content: renderTemplate('productions', {production: response.data}),
       action: {
         title: 'New',
         url: '/production/source'
@@ -178,7 +179,7 @@ var showOne = function(req, options) {
 
     var object = new View.Object({
       title: production.metadata.title || 'Untitled',
-      content: UI.render('detail', production),
+      content: renderTemplate('detail', production),
       action: {
         title: 'Edit',
         url: '/production/edit/' + production.uuid
@@ -286,7 +287,7 @@ Controller.define('/production/{uuid}/summary', function(req) {
 
   View.getMain().push('production', new View.Object({
     title: production.metadata.title,
-    content: UI.render('detail-summary', production),
+    content: renderTemplate('detail-summary', production),
     onShow: function() {
       currentEditUUID = production.uuid;
     }
@@ -558,7 +559,7 @@ Controller.define('/production/recording/new-audio', function() {
   var object = new View.Object({
     title: 'Audio Recording',
     backTitle: 'Recorder',
-    content: UI.render('audio-recorder')
+    content: renderTemplate('audio-recorder')
   });
 
   View.getMain().push(object);

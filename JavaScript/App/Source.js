@@ -1,5 +1,5 @@
 var API = require('API');
-var UI = require('UI');
+var renderTemplate = require('UI/renderTemplate');
 var View = require('View');
 
 var services = {};
@@ -57,7 +57,7 @@ exports.createView = function() {
     View.getMain().push(new View.Object({
       title: 'Input Source',
       backTitle: 'Source',
-      content: UI.render('service-choose', {
+      content: renderTemplate('service-choose', {
         source: list
       })
     }));

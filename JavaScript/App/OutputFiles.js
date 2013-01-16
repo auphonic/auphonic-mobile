@@ -3,6 +3,7 @@ var Element = Core.Element;
 var Elements = Core.Elements;
 
 var API = require('API');
+var renderTemplate = require('UI/renderTemplate');
 var UI = require('UI');
 var View = require('View');
 
@@ -11,7 +12,7 @@ var SwipeAble = require('UI/Actions/SwipeAble');
 var createUIElement = function(href, store, content, id) {
   if (!id) id = String.uniqueID();
 
-  var element = Element.from(UI.render('ui-removable-list-item',
+  var element = Element.from(renderTemplate('ui-removable-list-item',
     Object.append(createUIData(content), {
       label: 'Remove',
       href: href.substitute({id: id})
@@ -186,7 +187,7 @@ exports.createView = function(store, editId) {
   var mainObject = View.getMain().getCurrentObject();
   var object = new View.Object({
     title: id ? 'Edit Format' : 'Add Format',
-    content: UI.render('form-output-file', {
+    content: renderTemplate('form-output-file', {
       formats: Object.values(formats)
     }),
     back: {
@@ -216,7 +217,7 @@ exports.createView = function(store, editId) {
       parent.getElements('> :not(li:first-child)').dispose();
       if (item) parent.adopt(item.cloneNode(true));
 
-      Elements.from(UI.render('form-output-file-detail', {
+      Elements.from(renderTemplate('form-output-file-detail', {
         has_options: files[value].has_options,
         mono_mixdown: data.mono_mixdown,
         split_on_chapters: data.split_on_chapters

@@ -1,6 +1,6 @@
 var API = require('API');
 var Controller = require('./');
-var UI = require('UI');
+var renderTemplate = require('UI/renderTemplate');
 var View = require('View');
 
 var Chapter = require('App/Chapter');
@@ -33,7 +33,7 @@ var showAll = function() {
 
   var object = new View.Object({
     title: 'Recordings',
-    content: UI.render('recordings', {
+    content: renderTemplate('recordings', {
       recordings: recordings.length && recordings
     }),
     action: {
@@ -83,7 +83,7 @@ var show = function(recording) {
   recording.uploadURL = '/production/recording/upload/{id}'.substitute(recording);
   object = new View.Object({
     title: recording.display_name,
-    content: UI.render('recording', recording),
+    content: renderTemplate('recording', recording),
     action: {
       title: 'Upload',
       url: recording.uploadURL,
