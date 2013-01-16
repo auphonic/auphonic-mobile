@@ -1,10 +1,7 @@
-var API = require('API');
 var UI = require('UI');
 var View = require('View');
 
 var CoverPhoto = require('./CoverPhoto');
-
-var Auphonic = require('Auphonic');
 
 exports.getType = function() {
   return 'metadata';
@@ -18,10 +15,8 @@ exports.setData = function(store, metadata) {
   store.set('metadata', Object.flatten({metadata: metadata}));
 };
 
-exports.createView = function(store, data) {
-  var object;
-
-  object = new View.Object({
+exports.createView = function(store) {
+  var object = new View.Object({
     title: 'Metadata',
     content: UI.render('form-metadata', {
       thumbnail: store.get('thumbnail'),

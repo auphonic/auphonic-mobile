@@ -71,7 +71,7 @@ var show = function(recording) {
     var updated = Recording.findById(recording.id);
     updated.display_name = value;
     Recording.update(updated);
-    View.getMain().getTitle().toElement().set('text', value);
+    View.getMain().getTitle().setTitle(value);
   };
 
   var invalidateView = function() {

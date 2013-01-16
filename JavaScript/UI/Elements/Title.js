@@ -17,6 +17,10 @@ module.exports = new Class({
       });
 
     return this.parent(previous, options);
+  },
+
+  setTitle: function(title) {
+    this.toElement().set('text', title);
   }
 
 });
