@@ -2,7 +2,7 @@ var Core = require('Core');
 var Class = Core.Class;
 var Events = Core.Events;
 
-var Form = module.exports = new Class({
+module.exports = new Class({
 
   Implements: [Events],
 

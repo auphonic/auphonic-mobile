@@ -2,7 +2,6 @@ var Core = require('Core');
 var Class = Core.Class;
 var Options = Core.Options;
 var Browser = Core.Browser;
-var Element = Core.Element;
 
 var OuterClickStack = require('OuterClickStack');
 
@@ -95,7 +94,7 @@ module.exports = new Class({
     }
   },
 
-  open: function(content) {
+  open: function() {
     if (this.isOpen()) return this;
     this._isOpen = true;
 

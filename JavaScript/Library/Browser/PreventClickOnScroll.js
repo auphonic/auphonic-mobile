@@ -1,6 +1,5 @@
 var Core = require('Core');
 var Class = Core.Class;
-var Element = Core.Element;
 
 module.exports = new Class({
 
@@ -34,7 +33,7 @@ module.exports = new Class({
     node.addEventListener('touchend', this.bound('touchend'), false);
   },
 
-  touchend: function(event) {
+  touchend: function() {
     this.down = false;
     this.touchendTime = Date.now();
     if (this.touchendTime - this.scrollTime > 100) this.enable();

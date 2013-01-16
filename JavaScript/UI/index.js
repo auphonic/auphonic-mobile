@@ -1,5 +1,4 @@
 var Core = require('Core');
-var Element = Core.Element;
 var Elements = Core.Elements;
 
 var DynamicMatcher = require('DynamicMatcher');
@@ -13,9 +12,7 @@ UI.Title = require('./Elements/Title');
 
 var Handlebars = require('Handlebars');
 
-var locked = false;
 var isVisible = false;
-
 var transitionDelay = 1;
 
 var preventDefault = function(event) {

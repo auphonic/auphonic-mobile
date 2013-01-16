@@ -2,14 +2,11 @@ var Core = require('Core');
 var Class = Core.Class;
 var Options = Core.Options;
 
-var History = require('History');
-
 var API = require('API');
 var UI = require('UI');
 var View = require('View');
 
 var Notice = require('UI/Notice');
-var SwipeAble = require('UI/Actions/SwipeAble');
 var Popover = require('UI/Actions/Popover');
 
 var Chapter = require('./Chapter');

@@ -120,7 +120,7 @@ module.exports = new Class({
     this.stop();
   },
 
-  onLoadError: function(error) {
+  onLoadError: function() {
     this.stop();
     this.player = null;
     this.mediaFile = this.pickMediaFile();

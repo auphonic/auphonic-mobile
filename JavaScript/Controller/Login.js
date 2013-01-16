@@ -1,5 +1,4 @@
 var History = require('History');
-var Form = require('Form');
 var Spinner = require('Spinner');
 
 var API = require('API');

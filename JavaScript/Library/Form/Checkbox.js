@@ -1,7 +1,6 @@
 var Core = require('Core');
 var Class = Core.Class;
 var Options = Core.Options;
-var Browser = Core.Browser;
 var Element = Core.Element;
 
 module.exports = new Class({

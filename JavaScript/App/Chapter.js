@@ -1,7 +1,6 @@
 var Core = require('Core');
 var Element = Core.Element;
 
-var API = require('API');
 var UI = require('UI');
 var View = require('View');
 

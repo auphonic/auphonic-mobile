@@ -99,7 +99,7 @@ module.exports = new Class({
     }).delay(10, this);
   },
 
-  end: function(event) {
+  end: function() {
     UI.enable(this.getScrollable(), this.element);
     this.fireEvent('complete');
   },

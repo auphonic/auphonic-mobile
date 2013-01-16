@@ -1,7 +1,3 @@
-var Core = require('Core');
-var Element = Core.Element;
-var Elements = Core.Elements;
-
 var History = require('History');
 
 var API = require('API');
@@ -166,7 +162,7 @@ Controller.define('/preset/{uuid}/summary', function(req) {
   }));
 });
 
-Controller.define('/preset/new', {priority: 1, isGreedy: true}, function(req) {
+Controller.define('/preset/new', {priority: 1, isGreedy: true}, function() {
   addPlaceholder();
   form = createForm();
   form.show('main');
