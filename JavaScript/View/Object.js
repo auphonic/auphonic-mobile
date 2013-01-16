@@ -74,6 +74,15 @@ module.exports = new Class({
     return this;
   },
 
+  setTitle: function(title) {
+    this.title = title;
+    var view = this.getView();
+    if (view && view.getCurrentObject() == this)
+      view.getTitle().setTitle(title);
+
+    return this;
+  },
+
   render: function() {
     if (this._isRendered) return this.element;
 

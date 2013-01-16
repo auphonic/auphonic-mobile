@@ -105,7 +105,16 @@ module.exports = new Class({
       if (view.setData) view.setData(store, data && data[type], this.getBaseURL(), object, this.isRendered);
     }, this);
 
-    if (this.isRendered) this.updateAlgorithms(data);
+    if (this.isRendered) {
+      this.updateTitle();
+      this.updateAlgorithms(data);
+    }
+  },
+
+  updateTitle: function() {
+    if (!this.isProduction) return;
+    var title = Metadata.getData(this.store)['metadata.title'] ||  'New ' + this.getDisplayName();
+    this.object.setTitle(title);
   },
 
   updateAlgorithms: function(data) {
@@ -165,14 +174,14 @@ module.exports = new Class({
         onClick: this.bound('onActionClick')
       },
 
+      onShow: this.bound('onShow'),
       onHide: this.bound('onHide'),
       onUploadProgress: this.bound('onUploadProgress'),
       onRefresh: this.bound('onRefresh')
     });
 
-    store.eachView(function(view, type) {
-      if (view.setup)
-        view.setup(store, this.getBaseURL(), object);
+    store.eachView(function(view) {
+      if (view.setup) view.setup(store, this.getBaseURL(), object);
     }, this);
 
     store.addEvent('upload', this.bound('onUpload'));
@@ -190,6 +199,11 @@ module.exports = new Class({
         var select = object.toElement().getElement(this.options.presetChooserSelector);
         if (select) select.addEvent('change', this.bound('onPresetSelect'));
       }
+
+      var presetElement = object.toElement().getElement('.preset_name');
+      if (presetElement) presetElement.addEvent('input', (function() {
+        object.setTitle(presetElement.get('value') || (isEditMode ? 'Untitled' : 'New ' + this.getDisplayName()));
+      }).bind(this));
 
       this.updateAlgorithms(data);
     }).bind(this));
@@ -211,6 +225,10 @@ module.exports = new Class({
     return API.upload(this.getSaveURL() + '/upload', file, 'image').on({
       success: this.bound('onUploadSuccess')
     });
+  },
+
+  onShow: function(direction) {
+    if (direction == 'left') this.updateTitle();
   },
 
   onHide: function(direction) {
@@ -246,7 +264,7 @@ module.exports = new Class({
     if (this.getDisplayType() == 'preset' && !data.preset_name)
       data.preset_name = 'Untitled';
 
-    store.eachView(function(view, type) {
+    store.eachView(function(view) {
       if (view.getData) Object.append(data, view.getData(store, element));
     });
 

@@ -63,6 +63,7 @@ var showAll = function() {
 };
 
 var show = function(recording) {
+  var object;
   var updateRecordingName = function() {
     var value = this.get('value');
     if (!value) value = 'Untitled';
@@ -71,7 +72,7 @@ var show = function(recording) {
     var updated = Recording.findById(recording.id);
     updated.display_name = value;
     Recording.update(updated);
-    View.getMain().getTitle().setTitle(value);
+    object.setTitle(value);
   };
 
   var invalidateView = function() {
@@ -80,7 +81,7 @@ var show = function(recording) {
   };
 
   recording.uploadURL = '/production/recording/upload/{id}'.substitute(recording);
-  var object = new View.Object({
+  object = new View.Object({
     title: recording.display_name,
     content: UI.render('recording', recording),
     action: {
