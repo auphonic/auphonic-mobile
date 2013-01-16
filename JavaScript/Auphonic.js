@@ -22,27 +22,27 @@ exports.DefaultVideoOutputFile = {
 };
 
 exports.SpinnerOptions = {
-  lines: 12,
-  length: 10,
-  width: 7,
-  radius: 13,
+  lines: 25,
+  length: 1,
+  width: 4,
+  radius: 30,
   trail: 30,
   color: '#fff'
 };
 
 exports.ViewSpinnerOptions = {
-  lines: 12,
-  length: 10,
-  width: 7,
-  radius: 13,
+  lines: 25,
+  length: 1,
+  width: 4,
+  radius: 30,
   trail: 30,
   color: '#000'
 };
 
 exports.ViewSpinnerOptionsSmall = {
   lines: 9,
-  length: 4,
-  width: 3,
+  length: 1,
+  width: 2,
   radius: 4,
   trail: 30,
   color: '#000',
