@@ -57,6 +57,7 @@ var API = module.exports = {
 var createListeners = function() {
   var listeners = new Events;
   listeners.on = listeners.addEvents;
+  listeners.failure = function() {};
   return listeners;
 };
 
@@ -103,6 +104,23 @@ API.call = function(url, method, requestData, requestOptions) {
     }
   }
 
+  listeners.failure = function(data) {
+    var options = API.on(url).options;
+    if (options && options.silent) return;
+
+    var event = createEvent();
+    listeners.fireEvent('error', [event, data]);
+    if (errorFn) errorFn(event, data);
+
+    // app/log is a silent call so it doesn't get stuck here and loops the error logging.
+    API.log({
+      type: 'xhr-error',
+      url: url + '.json',
+      method: method,
+      message: data
+    });
+  }
+
   new Request.JSON({
 
     url: getURL(url),
@@ -117,22 +135,7 @@ API.call = function(url, method, requestData, requestOptions) {
       if (timeoutFn) timeoutFn(createEvent());
     },
 
-    onFailure: function(data) {
-      var options = API.on(url).options;
-      if (options && options.silent) return;
-
-      var event = createEvent();
-      listeners.fireEvent('error', [event, data]);
-      if (errorFn) errorFn(event, data);
-
-      // app/log is a silent call so it doesn't get stuck here and loops the error logging.
-      API.log({
-        type: 'xhr-error',
-        url: url + '.json',
-        method: method,
-        message: data
-      });
-    },
+    onFailure: listeners.failure.bind(listeners),
 
     onSuccess: function(data) {
       if (data && data.status_code != 200) {

@@ -37,8 +37,8 @@ exports.setData = function(store, index) {
   return setFile(store, files[index]);
 };
 
+var notice;
 exports.createView = function(store) {
-
   var service = Source.getData(store).service;
   if (!service) return;
 
@@ -48,10 +48,13 @@ exports.createView = function(store) {
   }).call('get', null, {
     timeout: 20000
   }).on({
-
     success: function(response) {
-      files = response.data;
+      if (!response || !response.data) {
+        this.failure(response);
+        return;
+      }
 
+      files = response.data;
       var list = files.map(function(file, index) {
         return {
           index: index,
@@ -76,8 +79,8 @@ exports.createView = function(store) {
     error: function(event) {
       event.preventDefault();
 
-      new Notice('There are no files on this external service. Please try another service or make a recording.');
+      if (notice && notice.isOpen()) return notice.push();
+      notice = new Notice('There are no files on this external service. Please try another service or make a recording.');
     }
-
   });
 };
