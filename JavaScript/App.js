@@ -373,7 +373,7 @@ window.__BOOTAPP = function() {
       new Element('h1', {text: 'An error occurred'}),
       new Element('span', {text: 'Please try again or '}),
       new Element('a', {href: Auphonic.IssuesURL, text: 'report a bug'}),
-      new Element('span', {text: 'so we can fix this as soon as possible.'})
+      new Element('span', {text: ' so we can fix this as soon as possible.'})
     ]); else message.adopt([
       new Element('h1', {text: 'A network error occurred'}),
       new Element('span', {text: 'Please put your device in an elevated position to regain Internet access. If the problem lies on our end we\'ll make sure to fix the problem quickly :)'})
