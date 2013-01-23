@@ -4,6 +4,7 @@ var Options = Core.Options;
 var Events = Core.Events;
 
 var UI = require('UI');
+var View = require('View');
 
 module.exports = new Class({
 
@@ -23,6 +24,7 @@ module.exports = new Class({
   },
 
   hasClick: false,
+  isVisible: false,
 
   initialize: function(container, options) {
     this.setOptions(options);
@@ -37,6 +39,7 @@ module.exports = new Class({
     var element = this.element = container.getElement(this.options.selector);
     container.store('swipe:cancelVertical', true);
     this.anchor = element.getElement(this.options.anchorSelector);
+    this.scrollable = container.getParent(this.options.scrollableSelector);
 
     this.attach();
   },
@@ -59,10 +62,12 @@ module.exports = new Class({
   },
 
   _swipe: function() {
+    this.isVisible = true;
     this.element.addClass('visible');
 
     UI.disable(this.getScrollable(), this.element);
     window.addEvent('touchstart:once', this.bound('touchstart'));
+    View.getMain().getCurrentObject().addEvent('hide:once', this.bound('end'));
 
     this.fireEvent('swipe');
   },
@@ -77,6 +82,7 @@ module.exports = new Class({
   },
 
   touchstart: function(event) {
+    if (!this.isVisible) return;
     // This is only for cases where the touch is started on the element but no click is registered
     window.addEvent('touchend:once', this.bound('touchend'));
 
@@ -85,23 +91,26 @@ module.exports = new Class({
 
     event.preventDefault();
     this.element.removeClass('visible').transition(this.bound('hideElement'));
+    this.isVisible = false;
   },
 
   touchend: function() {
     // Delay to see if a click got registered
     (function() {
-      var hasClick = this.hasClick;
+      var ignore = this.hasClick;
       this.hasClick = false;
-      if (hasClick) return;
+      if (ignore) return;
 
-      this.element.removeClass('visible').transition(this.bound('hideElement'));
+      if (this.isVisible) this.element.removeClass('visible').transition(this.bound('hideElement'));
       this.end();
     }).delay(10, this);
   },
 
   end: function() {
     UI.enable(this.getScrollable(), this.element);
+    View.getMain().getCurrentObject().addEvent('hide:once', this.bound('end'));
     this.fireEvent('complete');
+    this.isVisible = false;
   },
 
   hideElement: function() {
@@ -119,7 +128,7 @@ module.exports = new Class({
   },
 
   getScrollable: function() {
-    return this.container.getParent(this.options.scrollableSelector);
+    return this.scrollable;
   }
 
 });
