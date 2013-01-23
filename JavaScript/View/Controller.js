@@ -137,8 +137,8 @@ module.exports = new Class({
   },
 
   pop: function() {
-    var current = this._current;
-    if (current) History.push(current.getPrevious().getURL());
+    var previous = this._current && this._current.getPrevious();
+    if (previous) History.push(previous.getURL());
 
     return this;
   },

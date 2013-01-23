@@ -56,7 +56,14 @@ module.exports = new Class({
       return;
     }
 
-    var production = this.production = response.data;
+    // Check for an inconsistent state and stop if no production was received ever.
+    if (response && response.data) this.production = response.data;
+    if (!this.production) {
+      this.stop();
+      return;
+    }
+
+    var production = this.production;
     // change_allowed means processing has finished
     if (production.change_allowed) {
       this.fireEvent('finish', [production]);

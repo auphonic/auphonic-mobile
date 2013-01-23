@@ -89,7 +89,8 @@ module.exports = new Class({
     if (!this._isPlaying) this.play();
     else this.startTimer();
 
-    this.player.seekTo(position);
+    // sanity check
+    if (this.player) this.player.seekTo(position);
   },
 
   pickMediaFile: function() {
