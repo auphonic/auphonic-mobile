@@ -23,7 +23,7 @@ exports.DefaultVideoOutputFile = {
 
 exports.SpinnerOptions = {
   lines: 25,
-  length: 1,
+  length: 0,
   width: 4,
   radius: 30,
   trail: 30,
@@ -32,7 +32,7 @@ exports.SpinnerOptions = {
 
 exports.ViewSpinnerOptions = {
   lines: 25,
-  length: 1,
+  length: 0,
   width: 4,
   radius: 30,
   trail: 30,
@@ -41,9 +41,9 @@ exports.ViewSpinnerOptions = {
 
 exports.ViewSpinnerOptionsSmall = {
   lines: 9,
-  length: 1,
-  width: 2,
-  radius: 4,
+  length: 0,
+  width: 3,
+  radius: 6,
   trail: 30,
   color: '#000',
   className: 'spinner-inline-bottom'
@@ -51,9 +51,9 @@ exports.ViewSpinnerOptionsSmall = {
 
 exports.PlayerSpinnerOptions = {
   lines: 9,
-  length: 4,
+  length: 0,
   width: 3,
-  radius: 4,
+  radius: 6,
   trail: 30,
   color: '#000'
 };
