@@ -8,13 +8,13 @@ module.exports = new Class({
     view: null
   },
 
-  initialize: function(view, name){
+  initialize: function(view, name) {
     this.setView(view).setName(name);
 
     this.wipe();
   },
 
-  push: function(object){
+  push: function(object) {
     var stack = this.stack;
     // Check if the URL is already part of the stack and rewind if necessary
     for (var index = 0; index < stack.length; index++) {
@@ -31,7 +31,7 @@ module.exports = new Class({
     return this;
   },
 
-  pop: function(){
+  pop: function() {
     var stack = this.stack;
     stack.pop();
     this.current = stack[stack.length - 1];
@@ -39,7 +39,7 @@ module.exports = new Class({
     return this;
   },
 
-  wipe: function(){
+  wipe: function() {
     this.current = null;
     this.stack = [];
 
@@ -76,15 +76,15 @@ module.exports = new Class({
     return !!this.getByURL(needle.getURL());
   },
 
-  getLength: function(){
+  getLength: function() {
     return this.stack.length;
   },
 
-  getPrevious: function(){
+  getPrevious: function() {
     return this.stack[this.stack.length - 2] || null;
   },
 
-  getCurrent: function(){
+  getCurrent: function() {
     return this.current;
   },
 

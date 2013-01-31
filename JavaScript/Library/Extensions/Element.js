@@ -10,20 +10,20 @@ Element.implement({
     return this;
   },
 
-  getStyle: function(property){
+  getStyle: function(property) {
     var defaultView = Element.getDocument(this).defaultView,
       computed = defaultView ? defaultView.getComputedStyle(this, null) : null;
     return (computed) ? computed.getPropertyValue(property.hyphenate()) : null;
   },
 
-  setStyles: function(styles){
+  setStyles: function(styles) {
     for (var style in styles) this.setStyle(style, styles[style]);
     return this;
   },
 
-  getStyles: function(){
+  getStyles: function() {
     var result = {};
-    Array.map(arguments, function(key){
+    Array.map(arguments, function(key) {
       result[key] = this.getStyle(key);
     }, this);
     return result;
@@ -70,7 +70,7 @@ Element.implement({
       var type = el.type;
       if (!el.name || el.disabled || type == 'submit' || type == 'reset' || type == 'file' || type == 'image') return;
 
-      var value = (el.get('tag') == 'select') ? el.getSelected().map(function(opt){
+      var value = (el.get('tag') == 'select') ? el.getSelected().map(function(opt) {
         // IE
         return document.id(opt).get('value');
       }) : ((type == 'radio' || type == 'checkbox') && !el.checked) ? (type == 'checkbox' ? false : null) : el.get('value');

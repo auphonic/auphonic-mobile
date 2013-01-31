@@ -5,7 +5,7 @@ var Element = Core.Element;
 var prefix = '-webkit-',
 	key = prefix.replace(/-/g, ''),
 	transition = key ? key + 'Transition' : 'transition',
-	setStyleProperty = function(event){
+	setStyleProperty = function(event) {
 		event.styleProperty = event.event.propertyName.replace(prefix, '');
 		return true;
 	};
@@ -23,7 +23,7 @@ Element.defineCustomEvent('transitionStart', {
 
 	base: transition + 'End',
 
-	condition: function(event){
+	condition: function(event) {
 		setStyleProperty(event);
 		return (event.styleProperty == 'transform');
 	}

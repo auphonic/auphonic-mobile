@@ -76,7 +76,7 @@ exports.formatInfos = function(response) {
   return response;
 };
 
-exports.formatDuration = function(from, separator, pad, durations, names){
+exports.formatDuration = function(from, separator, pad, durations, names) {
   if (!durations) durations = [60, 60, 24, 365, 0];
   if (!names) names = ['s', 'm', 'h', 'd', 'y'];
 
@@ -86,10 +86,10 @@ exports.formatDuration = function(from, separator, pad, durations, names){
   var value;
   var duration;
 
-  for (var item = 0; item < durations.length; item++){
+  for (var item = 0; item < durations.length; item++) {
     if (item && !delta) break;
     value = delta;
-    if ((duration = durations[item])){
+    if ((duration = durations[item])) {
       value = (delta % duration);
       delta = Math.floor(delta / duration);
     }

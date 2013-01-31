@@ -46,7 +46,7 @@ module.exports = new Class({
   activePlugins: [],
 
   initialize: function(options) {
-    if (options) for (var option in options){
+    if (options) for (var option in options) {
       if (typeOf(options[option]) != 'function' || !(/^on[A-Z]/).test(option)) continue;
       this.addEvent(option, options[option]);
     }

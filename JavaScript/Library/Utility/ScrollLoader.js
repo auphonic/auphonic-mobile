@@ -14,22 +14,22 @@ module.exports = new Class({
     /*onScroll: fn*/
   },
 
-  initialize: function(element, options){
+  initialize: function(element, options) {
     this.setOptions(options);
 
     this.element = document.id(element) || window;
     this.attach();
   },
 
-  attach: function(){
+  attach: function() {
     this.element.addEvent('scroll:pause(250)', this.bound('scroll'));
   },
 
-  detach: function(){
+  detach: function() {
     this.element.removeEvent('scroll:pause(250)', this.bound('scroll'));
   },
 
-  scroll: function(){
+  scroll: function() {
     var element = this.element;
     var size = element.offsetHeight;
     var scroll = element.scrollTop;
