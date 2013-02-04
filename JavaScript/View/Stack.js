@@ -88,10 +88,6 @@ module.exports = new Class({
     return this.current;
   },
 
-  getName: function() {
-    return this.name;
-  },
-
   notifyAll: function(event, args) {
     this.stack.invoke('fireEvent', event, args);
   },

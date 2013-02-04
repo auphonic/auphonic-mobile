@@ -50,7 +50,7 @@ module.exports = new Class({
   },
 
   create: function(data) {
-    var element = Element.from(renderTemplate(this.options.template, data));
+    var element = Element.from(renderTemplate(this.template, data));
     // Click event from the View.Object
     if (data.onClick) element.addEvent('click', data.onClick);
     // This can be modified because the current element gets removed anyway

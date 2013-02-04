@@ -173,13 +173,13 @@ module.exports = new Class({
   },
 
   invalidate: function() {
-    this.isInvalidated = true;
+    this._isInvalidated = true;
     this.fireEvent('invalidate');
     return this;
   },
 
   isInvalid: function() {
-    return !!this.isInvalidated;
+    return !!this._isInvalidated;
   },
 
   isRendered: function() {

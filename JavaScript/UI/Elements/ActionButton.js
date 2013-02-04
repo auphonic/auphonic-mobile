@@ -11,7 +11,7 @@ module.exports = new Class({
   template: 'ui-action',
 
   options: {
-    className: 'show',
+    className: 'show'
   },
 
   update: function(options, data) {
