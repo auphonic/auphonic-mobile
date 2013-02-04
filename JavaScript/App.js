@@ -206,7 +206,7 @@ window.__BOOTAPP = function() {
   }));
   activeState.attach();
 
-  if (Browser.Platform.ios) {
+  if (Platform.isIOS()) {
     (new PreventClickOnScroll({
       selector: 'div.scrollable',
       contentSelector: 'div.scroll-content',
@@ -218,6 +218,16 @@ window.__BOOTAPP = function() {
 
     var iPhone5 = (window.screen.height == 568);
     if (!iPhone5) UI.setTransitionDelay(50);
+  }
+
+  if (Platform.isAndroid()) {
+    document.addEventListener('backbutton', function() {
+      var main = View.getMain();
+      var stack = main.getStack();
+      var stackLength = stack && stack.getLength();
+      if (stackLength <= 1) navigator.app.exitApp();
+      else main.pop();
+    }, false);
   }
 
   Element.defineDefaultTransitionDelay(UI.getTransitionDelay());

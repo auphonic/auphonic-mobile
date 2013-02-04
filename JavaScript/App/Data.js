@@ -10,6 +10,7 @@ var CurrentUpload = require('Store/CurrentUpload');
 var User = require('Store/User');
 
 var Auphonic = require('Auphonic');
+var Platform = require('Platform');
 
 var length = function(object) {
   return object && object.length;
@@ -108,7 +109,7 @@ var preferredFormats = {
   dflt: 4
 };
 
-if (!Browser.Platform.ios) {
+if (!Platform.isIOS()) {
   preferredFormats.vorbis = 2;
   preferredFormats.flac = 3;
 }

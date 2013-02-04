@@ -3,6 +3,8 @@ var Class = Core.Class;
 var Options = Core.Options;
 var Browser = Core.Browser;
 
+var Platform = require('Platform');
+
 module.exports = new Class({
 
   Implements: [Class.Singleton, Class.Binds, Options],
@@ -86,7 +88,7 @@ module.exports = new Class({
   },
 
   focus: function() {
-    if (!Browser.Platform.ios) return;
+    if (!Platform.isIOS()) return;
 
     // Update the forms when the selection changes
     // On iOS the change event is not fired until after
