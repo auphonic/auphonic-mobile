@@ -89,32 +89,32 @@ var click = function(event) {
   var currentPath = History.getPath();
   var isFooter = !!this.getParent('footer');
 
-  if (isFooter && formURLs.test(currentPath)) {
-    // This is unbelieveably hacky but mobile safari alerts show parts of the URL
-    // which isn't very pretty. This way the title of the alert says "Please Confirm".
-    History.detach();
-    window.history.pushState(null, null, '/Hey, wait a second.');
-    var confirmed = window.confirm(cancelText);
-    window.history.pushState(null, null, currentPath);
-    History.attach();
-    if (!confirmed) return;
-  }
+  var fn = function() {
+    if (UI.isHighlighted(this)) {
+      if (!isFooter) return;
 
-  if (UI.isHighlighted(this)) {
-    if (!isFooter) return;
-
-    // Tap on footer icon
-    if (currentPath == href) {
-      // Invalidate and rename stack to force re-evaluation
-      View.getMain().getCurrentObject().invalidate();
-      View.getMain().getStack().setName('invalid');
+      // Tap on footer icon
+      if (currentPath == href) {
+        // Invalidate and rename stack to force re-evaluation
+        View.getMain().getCurrentObject().invalidate();
+        View.getMain().getStack().setName('invalid');
+      }
     }
+
+    if (!this.getParent(popoverSelector))
+      UI.highlight(this);
+
+    History.push(href);
+  };
+
+  if (isFooter && formURLs.test(currentPath) && navigator.notification) {
+    navigator.notification.confirm(cancelText, (function(button) {
+      if (button == 1) fn.call(this);
+    }).bind(this), 'Hey, wait a second!', 'Navigate,Cancel');
+    return;
   }
 
-  if (!this.getParent(popoverSelector))
-    UI.highlight(this);
-
-  History.push(href);
+  fn.call(this);
 };
 
 var clickExternal = function(event) {
