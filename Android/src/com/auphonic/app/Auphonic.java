@@ -17,19 +17,15 @@
        under the License.
  */
 
-package com.auphonic.www;
+package com.auphonic.app;
 
-import android.app.Activity;
 import android.os.Bundle;
 import org.apache.cordova.*;
 
-public class Auphonic extends DroidGap
-{
+public class Auphonic extends DroidGap {
     @Override
-    public void onCreate(Bundle savedInstanceState)
-    {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        super.loadUrl("file:///android_asset/App/index.html");
+        super.loadUrl(Config.getStartUrl());
     }
 }
-

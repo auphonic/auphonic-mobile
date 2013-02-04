@@ -104,11 +104,12 @@ footer
 
         .android &
           padding 0
-          height $footer-height-android
+          height $footer-height-android - 2px
+          border-bottom 2px solid #cd5c5c
 
           &.selected
-            height $footer-height-android - 2px
-            border-bottom 2px solid #cd5c5c
+            height $footer-height-android - 5px
+            border-bottom 5px solid #cd5c5c
             background-color #222
 
           > span:first-child
@@ -119,5 +120,5 @@ footer
             text-align center
             color #eee
             font-size 11px
-            font-weight bold
+            font-weight 500
             line-height $footer-height-android
