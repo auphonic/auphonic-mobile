@@ -552,12 +552,3 @@ window.onerror = function(msg, url, line) {
 
   return false;
 };
-
-// TODO(cpojer): remove this after the next deploy to the App Store.
-var css = new Element('style');
-css.type = 'text/css';
-css.innerHTML = 'div.detail div.dark-background { background-image: url(./Splash.jpg); }';
-css.inject(document.head);
-
-// REMOVE after pushing an update to Cordova 2.2.0/1.0.1 on iOS
-if (!window.__PLATFORM) window.__PLATFORM = 'ios';
