@@ -39,20 +39,29 @@ textarea.autogrow
 
 // Checkbox, losely based on http://vxjs.org/switch.html
 .checkbox
+  width 77px
   margin-top -6px
+  overflow hidden
   border 1px solid rgba(151, 151, 151, 0.5)
-  border-radius 20px
+
+  .ios &
+    border-radius 20px
 
   > div
     position relative
     height 28px
     width 79px
 
-    border-radius 20px
-    -webkit-mask-size 79px 28px
-    box-shadow inset 0 1px 3px #bababa, inset 0 12px 3px 2px rgba(232, 232, 232, 0.5)
     cursor pointer
     overflow hidden
+
+    .ios &
+      border-radius 20px
+      box-shadow inset 0 1px 3px #bababa, inset 0 12px 3px 2px rgba(232, 232, 232, 0.5)
+      -webkit-mask-size 79px 28px
+
+    .android &
+      box-shadow inset 0 1px 3px #bababa
 
     input[type=checkbox]
       display none
@@ -71,8 +80,10 @@ textarea.autogrow
       border-top-right-radius 0
       border-bottom-right-radius 0
 
-      box-shadow inset 0 1px 2px #333, inset 0 12px 3px 2px rgba(104, 104, 104, 0.50)
       background-color #333
+
+      .ios &
+        box-shadow inset 0 1px 2px #333, inset 0 12px 3px 2px rgba(104, 104, 104, 0.50)
 
     & > .thumb
       z-index 3
@@ -90,11 +101,12 @@ textarea.autogrow
       transform translate3d(0, 0, 0)
 
       border solid 1px rgba(151, 151, 151, 0.5)
-      border-radius 50%
-
-      box-shadow inset 0 2px 1px rgba(255, 255, 255, 0.5), inset 0 -2px 1px rgba(255, 255, 255, 0.5)
       background-color #cecece
       background-image linear-gradient(top, #cecece, #fbfbfb)
+
+      .ios &
+        border-radius 50%
+        box-shadow inset 0 2px 1px rgba(255, 255, 255, 0.5), inset 0 -2px 1px rgba(255, 255, 255, 0.5)
 
       &:before
         content attr(data-on)
@@ -107,6 +119,9 @@ textarea.autogrow
         text-align center
         text-shadow rgba(0, 0, 0, 0.5) 0 -1px 0
 
+        .android &
+          left -77px
+
       &::after
         content attr(data-off)
         position absolute
@@ -116,6 +131,9 @@ textarea.autogrow
         color #888
         text-align center
         font-weight bold
+
+        .android &
+          left 40px
 
     &:hover > .thumb
       background-image none
