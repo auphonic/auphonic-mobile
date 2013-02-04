@@ -2,7 +2,7 @@ Auphonic Mobile App [![App Store](https://auphonic.com/static/images/app-store.p
 ===================
 
 This is the source for the Auphonic Mobile Web Application targeted at iOS and Android. It is built using web technologies combined with Cordova (Phonegap).
-This application is being developed by [@cpojer](http://cpojer.net) as bachelor's thesis at the [Graz University of Technology](http://tugraz.at/) for Auphonic.
+This application was initially developed by [@cpojer](http://cpojer.net) as bachelor thesis at the [Graz University of Technology](http://tugraz.at/) for Auphonic.
 
 [![Flattr Button](http://api.flattr.com/button/button-static-50x60.png "Flattr This!")](https://flattr.com/thing/1035105/Auphonic-Mobile-App "Auphonic-Mobile-App")
 
