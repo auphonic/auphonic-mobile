@@ -429,7 +429,7 @@ window.__BOOTAPP = function() {
     smallIndicatorOptions: Auphonic.ViewSpinnerOptionsSmall,
     indicatorDelay: 500,
 
-    iOSScrollFlashFix: Auphonic.EnableIOSScrollFlashFix,
+    iOSScrollFlashFix: Platform.isIOS() && Auphonic.EnableIOSScrollFlashFix,
 
     onChange: function() {
       var stackName = this.getStack().getName();
