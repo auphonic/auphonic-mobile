@@ -7,13 +7,18 @@ body
   font-weight normal
   font-size $font-size
   color $color
-  text-rendering optimizeLegibility
   -webkit-tap-highlight-color transparent
   -webkit-touch-callout none
   -webkit-user-drag none
   -webkit-user-select none
   background #efefef
   overflow hidden
+
+  // Android has issues with rendering fonts correctly
+  // when using these properties.
+  &.ios
+    text-rendering optimizeLegibility
+    -webkit-font-smoothing antialiased
 
   &.android
     font-family $font-android
