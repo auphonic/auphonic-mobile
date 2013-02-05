@@ -86,7 +86,7 @@ var compileSTYL = function() {
     });
   });
   run('node_modules/.bin/stylus --use "' + path.resolve(projectPath, 'node_modules/nib/lib/nib.js') + '" --out "' + config.App + '" --use url --with "' + JSON.stringify(config.StylusOptions).replace(/"/g, '\\\"') + '" "' + config.STYL_Client + '"');
-  shell.cp(path.resolve(config.App, 'App.css'), config.AndroidClient);
+  shell.cp('-f', path.resolve(config.App, 'App.css'), config.AndroidClient);
 };
 
 var compileJS = function() {
