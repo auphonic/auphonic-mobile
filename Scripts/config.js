@@ -1,5 +1,4 @@
 var path = require('path');
-
 var projectPath = path.resolve(__dirname, '../');
 
 var resolve = function(p) {
@@ -10,6 +9,7 @@ exports.JS = resolve('JavaScript');
 exports.STYL = resolve('STYL');
 exports.STYL_Server = path.resolve(exports.STYL, 'App.styl');
 exports.STYL_Client = path.resolve(exports.STYL, 'App/App.styl');
+exports.AndroidClient = resolve('Android/assets/App');
 exports.App = resolve('App');
 exports.Templates = resolve('Templates');
 exports.TemplatesFile = path.resolve(exports.JS, 'Templates.js');
