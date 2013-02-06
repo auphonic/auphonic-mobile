@@ -1,3 +1,5 @@
+@import 'Font'
+
 .popover
   z-index 50
   position absolute
@@ -17,6 +19,16 @@
 
   .ios &
     box-shadow 0 0 2px rgba(0, 0, 0, 0.4)
+
+  &.white
+    background #fff
+    color $color
+
+    &:before
+      border-bottom-color rgba(255, 255, 255, 0.1)
+
+    &:after
+      border-bottom-color #fff
 
   h1
     margin 10px 0 10px 0
@@ -41,6 +53,7 @@
     opacity 0
 
   &:before, &:after
+    left 50%
     bottom 100%
     border solid transparent
     content ""
@@ -50,13 +63,11 @@
     pointer-events none
 
   &:before
-    left 50%
     margin-left -13px
     border-bottom-color rgba(0, 0, 0, 0.1)
     border-width 13px
 
   &:after
-    left 50%
     margin-left -12px
     border-bottom-color #444
     border-width 12px
@@ -72,6 +83,16 @@
   &.top:after
     border-bottom-color transparent
     border-top-color #444
+
+  &.right
+    left 30%
+    right 1px
+
+  &.right:before
+    left 90.5%
+
+  &.right:after
+    left 90.5%
 
   // Necessary because of CSS specificity
   div.main & ul

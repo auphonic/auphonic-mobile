@@ -233,11 +233,11 @@ window.__BOOTAPP = function() {
 
   UI.register({
 
-    '#main a:external, a.register, div.notice-inner a': function(elements) {
+    '#main a:external, a.register, div.notice-inner a:external': function(elements) {
       elements.addEvent('click', clickExternal);
     },
 
-    '#main a:internal': function(elements) {
+    '#main a:internal, div.popover a:internal': function(elements) {
       elements.addEvent('click', click);
     },
 
@@ -467,17 +467,27 @@ window.__BOOTAPP = function() {
   }));
 
   Controller.define('/', {isGreedy: true}, function() {
-     // Call this so in case of a login with a failed attempt to load the infos we attempt to load them again.
+     // Call this so in case of a login with a failed attempt to load the infos we try to load them again.
      // It'll also take care of showing the UI.
     load();
 
-    View.getMain().push('home', new View.Object({
+    var main = View.getMain();
+    main.push('home', new View.Object({
       title: Platform.isIOS() ? '' : 'Home',
       backTitle: 'Home',
+      action: Platform.isAndroid() ? {
+        className: 'overflow'
+      } : null,
       content: renderTemplate('home', {
         feedback: Auphonic.FeedbackURL
       })
     }));
+
+    if (Platform.isAndroid()) {
+      var element = main.getAction().toElement();
+      element.addClass('show-popover').adopt(Element.from(renderTemplate('logout-popover')));
+      UI.update(element);
+    }
   });
 
   Controller.define('/about', function() {

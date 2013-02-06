@@ -1364,12 +1364,21 @@ function program20(depth0,data) {
 templates['home'] = template(function (Handlebars,depth0,helpers,partials,data) {
   this.compiledVersion = '1.0.rc.2';
 helpers = helpers || Handlebars.helpers; data = data || {};
-  var buffer = "", stack1, functionType="function", escapeExpression=this.escapeExpression;
+  var buffer = "", stack1, stack2, options, functionType="function", escapeExpression=this.escapeExpression, self=this, helperMissing=helpers.helperMissing;
 
+function program1(depth0,data) {
+  
+  
+  return "\n  <a href=\"/logout\" class=\"button red expand\">Logout</a>\n";
+  }
 
   buffer += "<div class=\"logo\"></div>\n<ul>\n  <li><a href=\"/production/recording/new-audio\" class=\"arrow\"><span></span>Start a new Audio Recording</a></li>\n  <li><a href=\"/production/source\" class=\"arrow\"><span></span>Create a new Production</a></li>\n  <li><a href=\"/preset/new\" class=\"arrow\"><span></span>Define a Preset</a></li>\n  <li><a href=\"/external-services\" class=\"arrow\"><span></span>External Services</a></li>\n  <li><a href=\"/about\" class=\"arrow\"><span></span>About</a></li>\n  <li><a href=\"/team\" class=\"arrow\"><span></span>Team</a></li>\n  <li><a href=\""
     + escapeExpression(((stack1 = depth0.feedback),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "\" class=\"share\"><span></span>Feedback</a></li>\n</ul>\n\n<a href=\"/logout\" class=\"button red expand\">Logout</a>\n";
+    + "\" class=\"share\"><span></span>Feedback</a></li>\n</ul>\n\n";
+  options = {hash:{},inverse:self.noop,fn:self.program(1, program1, data),data:data};
+  stack2 = ((stack1 = helpers.platform),stack1 ? stack1.call(depth0, "ios", options) : helperMissing.call(depth0, "platform", "ios", options));
+  if(stack2 || stack2 === 0) { buffer += stack2; }
+  buffer += "\n";
   return buffer;
   });
 templates['login'] = template(function (Handlebars,depth0,helpers,partials,data) {
@@ -1388,6 +1397,14 @@ helpers = helpers || Handlebars.helpers; data = data || {};
     + escapeExpression(((stack1 = depth0.registerURL),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
     + "\" value=\"Register\" class=\"register button\">Register</a>\n  </div>\n</form>\n";
   return buffer;
+  });
+templates['logout-popover'] = template(function (Handlebars,depth0,helpers,partials,data) {
+  this.compiledVersion = '1.0.rc.2';
+helpers = helpers || Handlebars.helpers; data = data || {};
+  
+
+
+  return "<div class=\"hidden popover right white justify\">\n  <a href=\"/logout\" class=\"button red expand\">Logout</a>\n</div>\n";
   });
 templates['player'] = template(function (Handlebars,depth0,helpers,partials,data) {
   this.compiledVersion = '1.0.rc.2';
@@ -1789,9 +1806,9 @@ function program1(depth0,data) {
     + "\" class=\"button-right hidden\" data-hit-target=\"1\"><span class=\"button";
   stack2 = helpers['if'].call(depth0, depth0.className, {hash:{},inverse:self.noop,fn:self.program(1, program1, data),data:data});
   if(stack2 || stack2 === 0) { buffer += stack2; }
-  buffer += "\"><span></span><span>"
+  buffer += "\">\n  <span></span><span>"
     + escapeExpression(((stack1 = depth0.title),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "</span></span></a>\n";
+    + "</span></span>\n</a>\n";
   return buffer;
   });
 templates['ui-back'] = template(function (Handlebars,depth0,helpers,partials,data) {

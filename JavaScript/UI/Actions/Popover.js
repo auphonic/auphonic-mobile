@@ -29,9 +29,7 @@ module.exports = new Class({
 
   initialize: function(element, options) {
     this.setOptions(options);
-
     element = this.element = document.id(element);
-
     return this.check(element) || this.setup();
   },
 
@@ -179,7 +177,7 @@ module.exports = new Class({
   },
 
   getScrollElement: function() {
-    return this.element.getParent(this.options.scrollSelector);
+    return this.element.getParent(this.options.scrollSelector) || document.body;
   },
 
   enableElement: function() {
