@@ -10,14 +10,15 @@ div.splash
   transition-duration 350ms
   transform translate3d(0, 0, 0)
 
-  background-size 80% auto
   background-repeat no-repeat
 
   .ios &
+    background-size 100% 100%
     background-position center
     background-image url(./Splash.jpg)
 
   .android &
+    background-size 80% auto
     background-color #efefef
     background-position center 10%
     background-image url(./Splash.png)
