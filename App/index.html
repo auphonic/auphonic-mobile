@@ -145,10 +145,12 @@
       });
 
       var loaded, resources;
+      var hasError = false;
       var retryElement = document.querySelector('#retry');
       var noticeElement = document.querySelector('#native-notice');
 
       var cleanup = function() {
+        hasError = false;
         noticeElement.style.display = '';
         retry.className = 'retry hidden';
         retryElement.querySelector('a.button').removeEventListener('click', retryClick, false);
@@ -171,6 +173,7 @@
       };
 
       var error = function() {
+        hasError = true;
         clearTimeout(timer);
         spinner.stop();
 
@@ -201,6 +204,9 @@
 
       document.addEventListener('deviceready', onLoad, false);
       document.addEventListener('DOMContentLoaded', onLoad, false);
+      document.addEventListener('resume', function() {
+        if (hasError) load();
+      }, false);
     })();
   </script>
 </body>
