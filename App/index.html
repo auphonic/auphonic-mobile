@@ -131,6 +131,9 @@
     (function() {
       document.body.className += ' ' + this.__PLATFORM;
 
+      var timeout = 15000;
+      var timer;
+
       // We are reusing this instance in App.js once all code has loaded
       var spinner = this.__NATIVE_SPINNER = new Spinner({
         lines: 25,
@@ -145,23 +148,30 @@
       var retryElement = document.querySelector('#retry');
       var noticeElement = document.querySelector('#native-notice');
 
-      var retryClick = function(event) {
-        if (event) event.preventDefault();
-
+      var cleanup = function() {
         noticeElement.style.display = '';
         retry.className = 'retry hidden';
         retryElement.querySelector('a.button').removeEventListener('click', retryClick, false);
+      }
+
+      var retryClick = function(event) {
+        if (event) event.preventDefault();
+
+        cleanup();
         __SERVER_URL = __FALLBACK_SERVER_URL;
         load();
       };
 
       var success = function() {
+        cleanup();
+        clearTimeout(timer);
         // We are not stopping the spinner because it is being reused
         if (++loaded >= resources.length && window.__BOOTAPP)
           window.__BOOTAPP();
       };
 
       var error = function() {
+        clearTimeout(timer);
         spinner.stop();
 
         noticeElement.style.display = 'block';
@@ -170,6 +180,7 @@
       };
 
       var load = function() {
+        timer = setTimeout(error, timeout);
         spinner.spin(document.querySelector('#splash'));
         __loadResource(__SERVER_URL + 'Version.js?' + Date.now(), function() {
           // __APP_VERSION is now available
