@@ -119,8 +119,7 @@ var click = function(event) {
 
 var clickExternal = function(event) {
   event.preventDefault();
-  var href = this.get('href');
-  window.location.href = href + (~href.indexOf('#') ? '' : '#') + '!external';
+  window.open(this.get('href'), '_blank', 'location=yes');
 };
 
 var onLabelClick = function(event) {
