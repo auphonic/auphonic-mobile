@@ -76,6 +76,16 @@ var preventDefault = function(event) {
 var cancelText = 'Navigating away will discard all your changes. Press "Cancel" to stay.';
 // This should catch all important editing URLs
 var formURLs = /^\/?(production|preset)\/(edit|new)/i;
+var navigate = function(fn) {
+  if (formURLs.test(History.getPath()) && navigator.notification) {
+    navigator.notification.confirm(cancelText, function(button) {
+      if (button == 1) fn();
+    }, 'Hey, wait a second!', 'Navigate,Cancel');
+  } else {
+    fn();
+  }
+};
+
 var popoverSelector = 'div.popover';
 var click = function(event) {
   event.preventDefault();
@@ -107,14 +117,8 @@ var click = function(event) {
     History.push(href);
   };
 
-  if (isFooter && formURLs.test(currentPath) && navigator.notification) {
-    navigator.notification.confirm(cancelText, (function(button) {
-      if (button == 1) fn.call(this);
-    }).bind(this), 'Hey, wait a second!', 'Navigate,Cancel');
-    return;
-  }
-
-  fn.call(this);
+  if (isFooter) navigate(fn.bind(this));
+  else fn.call(this);
 };
 
 var clickExternal = function(event) {
@@ -224,8 +228,10 @@ window.__BOOTAPP = function() {
       var main = View.getMain();
       var stack = main.getStack();
       var stackLength = stack && stack.getLength();
-      if (stackLength <= 1) navigator.app.exitApp();
-      else main.pop();
+      navigate(function() {
+        if (stackLength <= 1) navigator.app.exitApp();
+        else main.pop();
+      });
     }, false);
   }
 
@@ -450,8 +456,13 @@ window.__BOOTAPP = function() {
             currentElement.addClass('big');
             footer.addClass('left');
 
-            back.setStyle('visibility', 'visible').addEvent('click', title.bound('back'));
-            element.getElement('span.icon').addEvent('click', title.bound('back'));
+            var fn = function(event) {
+              navigate(function() {
+                title.back(event);
+              });
+            };
+            back.setStyle('visibility', 'visible').addEvent('click', fn);
+            element.getElement('span.icon').addEvent('click', fn);
           }
         }).delay(1, this);
       }
@@ -481,14 +492,19 @@ window.__BOOTAPP = function() {
       } : null,
       content: renderTemplate('home', {
         feedback: Auphonic.FeedbackURL
-      })
+      }),
+      onShow: function() {
+        // On Android, Add a Popover for Logging-Out
+        if (Platform.isAndroid()) {
+          var element = main.getAction().toElement();
+          var popover = element.getInstanceOf(Popover);
+          if (!popover) {
+            element.addClass('show-popover').adopt(Element.from(renderTemplate('logout-popover')));
+            UI.update(element);
+          }
+        }
+      }
     }));
-
-    if (Platform.isAndroid()) {
-      var element = main.getAction().toElement();
-      element.addClass('show-popover').adopt(Element.from(renderTemplate('logout-popover')));
-      UI.update(element);
-    }
   });
 
   Controller.define('/about', function() {
