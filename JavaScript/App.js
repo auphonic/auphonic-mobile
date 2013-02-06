@@ -277,26 +277,6 @@ window.__BOOTAPP = function() {
       placeholder: '.placeholder',
     }),
 
-    '.swipeable': Class.Instantiate(SwipeAble, {
-
-      selector: '.removable > span',
-      scrollableSelector: 'div.scrollable',
-      removedClass: 'item-removed',
-
-      onClick: function() {
-        removeItem(this.container);
-      },
-
-      onSwipe: function() {
-        this.container.getElement('> a').addClass('swiped');
-      },
-
-      onComplete: function() {
-        this.container.getElement('> a').removeClass('swiped');
-      }
-
-    }),
-
     'label': function(elements) {
       // Show the keyboard immediately without a 300ms delay (iOS 6 feature)
       elements.addEvent('click', onLabelClick);
@@ -369,7 +349,24 @@ window.__BOOTAPP = function() {
       });
     }
 
-  }).update();
+  });
+
+  if (Platform.isIOS()) UI.register('.swipeable', Class.Instantiate(SwipeAble, {
+    selector: '.removable > span',
+    scrollableSelector: 'div.scrollable',
+    removedClass: 'item-removed',
+    onClick: function() {
+      removeItem(this.container);
+    },
+    onSwipe: function() {
+      this.container.getElement('> a').addClass('swiped');
+    },
+    onComplete: function() {
+      this.container.getElement('> a').removeClass('swiped');
+    }
+  }));
+
+  UI.update();
 
   Notice.setContainer(document.body);
   Notice.setTemplate(new Element('div.notice').adopt(new Element('div.close'), new Element('div.notice-inner.text')));
