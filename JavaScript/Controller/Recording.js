@@ -88,7 +88,7 @@ var show = function(recording) {
     action: {
       title: 'Upload',
       url: recording.uploadURL,
-      className: 'big'
+      className: 'upload'
     },
     onShow: function() {
       this.toElement().getElement('input[name="display_name"]').addEvents({

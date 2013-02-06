@@ -171,6 +171,7 @@ module.exports = new Class({
       backOptions: isProduction ? {className: 'small'} : null,
       action: {
         title: 'Save',
+        className: 'done',
         onClick: this.bound('onActionClick')
       },
 
