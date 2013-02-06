@@ -7,10 +7,15 @@ div.login
 
   > form
     position absolute
-    top 50%
     width 100%
     height 140px
-    margin-top -70px
+
+    .ios &
+      top 50%
+      margin-top -70px
+
+    .android &
+      bottom 25%
 
   > form > div
     width 90%
@@ -18,7 +23,12 @@ div.login
 
   > form > div.formcontent
     margin 0 auto
-    box-shadow 0 1px 3px rgba(0, 0, 0, 1)
+
+    .ios &
+      box-shadow 0 1px 3px rgba(0, 0, 0, 1)
+
+    .android &
+      box-shadow 0 0 3px rgba(0, 0, 0, 0.1)
 
     > label
       display block

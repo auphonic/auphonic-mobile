@@ -1,3 +1,5 @@
+var Platform = require('Platform');
+
 exports.Version = '1.1.0';
 exports.APIURL = 'https://auphonic.com/';
 exports.FeedbackURL = 'mailto:mobile@auphonic.com?subject=Auphonic%20Mobile%20App%20Feedback';
@@ -27,7 +29,7 @@ exports.SpinnerOptions = {
   width: 4,
   radius: 30,
   trail: 30,
-  color: '#fff'
+  color: Platform.isIOS() ? '#fff' : '#000'
 };
 
 exports.ViewSpinnerOptions = {

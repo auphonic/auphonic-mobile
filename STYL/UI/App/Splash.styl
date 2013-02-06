@@ -10,17 +10,27 @@ div.splash
   transition-duration 350ms
   transform translate3d(0, 0, 0)
 
-  background-image url(./Splash.jpg)
+  background-size 80% auto
   background-repeat no-repeat
-  background-position center
-  background-size 100% 100%
+
+  .ios &
+    background-position center
+    background-image url(./Splash.jpg)
+
+  .android &
+    background-color #efefef
+    background-position center 10%
+    background-image url(./Splash.png)
+
+  .android &.hide
+    background-image none
 
   &.fade
     transform translate3d(0, -100%, 0)
 
 /* Target iPhone 4(S) and properly center the Splash */
 @media only screen and (max-device-height: 960px) and (-webkit-min-device-pixel-ratio: 2) {
-  div.splash {
+  .ios div.splash {
     -webkit-background-size: 100% 568px;
     -moz-background-size: 100% 568px;
     background-size: 100% 568px;
