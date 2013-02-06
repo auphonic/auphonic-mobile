@@ -334,12 +334,13 @@ window.__BOOTAPP = function() {
         var owner = document.getElement('input[name=' + element.get('data-belongs-to') + ']');
         if (!owner) return;
 
-        // HACKY: Prevent ghost clicks on the underlying <select> element on iOS
-        owner.getParent('div.checkbox').addEventListener('click', function(event) {
-          event.stopPropagation();
-        }, false);
-
         owner.addEvent('change', function() {
+          // Prevent ghost clicks on select elements by disabling them for a short time
+          var selects = element.getParent('ul').getElements('select').set('disabled', true);
+          (function() {
+            selects.set('disabled', false);
+          }).delay(500);
+
           if (this.get('checked')) element.removeClass('fade');
           else element.addClass('fade');
         });
