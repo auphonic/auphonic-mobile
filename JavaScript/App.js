@@ -425,10 +425,27 @@ window.__BOOTAPP = function() {
 
     iOSScrollFlashFix: Platform.isIOS() && Auphonic.EnableIOSScrollFlashFix,
 
-    onChange: function() {
-      var stackName = this.getStack().getName();
-      UI.highlight(document.getElement('footer .' + stackName));
+    onChange: function(options) {
+      var stack = this.getStack();
+      var stackName = stack.getName();
+      var footer = document.getElement('footer');
+      var currentElement = this.getCurrentObject().getScrollableElement();
+
+      UI.highlight(footer.getElement('.' + stackName));
       this.getTitle().toElement().addClass(stackName);
+
+      if (Platform.isAndroid()) {
+        footer.transition(options);
+        (function() {
+          if (stack.getLength() == 1) {
+            currentElement.removeClass('big');
+            footer.removeClass('left');
+          } else {
+            currentElement.addClass('big');
+            footer.addClass('left');
+          }
+        }).delay(1, this);
+      }
     },
 
     onTransitionEnd: function() {
