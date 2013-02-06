@@ -99,11 +99,11 @@ module.exports = new Class({
       direction: direction
     };
 
-    this.fireEvent('change', options, 1);
     this.updateElement('back', options, object.getBackTemplate())
       .updateElement('title', options, object.getTitleTemplate())
       .updateElement('action', options, object.getActionTemplate());
 
+    this.fireEvent('change', options);
     UI.disable();
 
     // This is an unpleasant and unhappy block of code.

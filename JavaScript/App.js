@@ -428,32 +428,29 @@ window.__BOOTAPP = function() {
     onChange: function(options) {
       var stack = this.getStack();
       var stackName = stack.getName();
-      var stackLength = stack.getLength();
       var footer = document.getElement('footer');
-      var currentElement = this.getCurrentObject().getScrollableElement();
       var title = this.getTitle();
       var element = title.toElement();
-      var back = element.getElement('span.back');
 
       UI.highlight(footer.getElement('.' + stackName));
       element.addClass(stackName);
 
       if (Platform.isAndroid()) {
-        if (stackLength == 1) {
-          back.setStyle('visibility', 'hidden');
-        } else {
-          back.setStyle('visibility', 'visible').addEvent('click', title.bound('back'));
-          element.getElement('span.icon').addEvent('click', title.bound('back'));
-        }
-
         footer.transition(options);
         (function() {
-          if (stackLength == 1) {
+          var currentElement = this.getCurrentObject().getScrollableElement();
+          var back = element.getElement('span.back');
+          if (stack.getLength() == 1) {
             currentElement.removeClass('big');
             footer.removeClass('left');
+
+            back.setStyle('visibility', 'hidden');
           } else {
             currentElement.addClass('big');
             footer.addClass('left');
+
+            back.setStyle('visibility', 'visible').addEvent('click', title.bound('back'));
+            element.getElement('span.icon').addEvent('click', title.bound('back'));
           }
         }).delay(1, this);
       }
