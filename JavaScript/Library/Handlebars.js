@@ -1,7 +1,6 @@
-// lib/handlebars/base.js
 var Handlebars = module.exports = {};
 
-Handlebars.VERSION = "1.0.rc.1";
+Handlebars.VERSION = "1.0.rc.2";
 
 Handlebars.helpers  = {};
 Handlebars.partials = {};
@@ -27,9 +26,6 @@ var toString = Object.prototype.toString, functionType = "[object Function]";
 
 Handlebars.registerHelper('blockHelperMissing', function(context, options) {
   var inverse = options.inverse || function() {}, fn = options.fn;
-
-
-  var ret = "";
   var type = toString.call(context);
 
   if(type === functionType) { context = context.call(this); }
@@ -113,15 +109,11 @@ Handlebars.registerHelper('with', function(context, options) {
   return options.fn(context);
 });
 
-Handlebars.registerHelper('log', function(context) {
-  Handlebars.log(context);
-});
-
 // lib/handlebars/utils.js
 
 var errorProps = ['description', 'fileName', 'lineNumber', 'message', 'name', 'number', 'stack'];
 
-Handlebars.Exception = function(message) {
+Handlebars.Exception = function() {
   var tmp = Error.prototype.constructor.apply(this, arguments);
 
   // Unfortunately errors are not enumerable in Chrome (at least), so `for prop in tmp` doesn't work.
@@ -170,11 +162,7 @@ Handlebars.SafeString.prototype.toString = function() {
     },
 
     isEmpty: function(value) {
-      if (typeof value === "undefined") {
-        return true;
-      } else if (value === null) {
-        return true;
-      } else if (value === false) {
+      if (!value && value !== 0) {
         return true;
       } else if(Object.prototype.toString.call(value) === "[object Array]" && value.length === 0) {
         return true;
@@ -213,7 +201,7 @@ Handlebars.VM = {
     };
   },
 
-  programWithDepth: function(fn, data, $depth) {
+  programWithDepth: function(fn, data) {
     var args = Array.prototype.slice.call(arguments, 2);
 
     return function(context, options) {
@@ -247,4 +235,3 @@ Handlebars.VM = {
 };
 
 Handlebars.template = Handlebars.VM.template;
-
