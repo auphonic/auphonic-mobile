@@ -1929,10 +1929,10 @@ function program1(depth0,data) {
   stack1 = depth0.className;
   stack1 = helpers['if'].call(depth0, stack1, {hash:{},inverse:self.noop,fn:self.program(1, program1, data)});
   if(stack1 || stack1 === 0) { buffer += stack1; }
-  buffer += "\">";
+  buffer += "\"><span></span><span>";
   stack1 = depth0.title;
   stack1 = typeof stack1 === functionType ? stack1.apply(depth0) : stack1;
-  buffer += escapeExpression(stack1) + "</span></a>\n";
+  buffer += escapeExpression(stack1) + "</span></span></a>\n";
   return buffer;});
 templates['ui-back'] = template(function (Handlebars,depth0,helpers,partials,data) {
   helpers = helpers || Handlebars.helpers;

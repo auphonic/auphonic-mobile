@@ -38,6 +38,7 @@ var showAll = function() {
     }),
     action: {
       title: 'New',
+      className: 'new',
       url: '/production/source'
     }
   });

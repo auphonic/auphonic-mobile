@@ -23,6 +23,7 @@ exports.createView = function(store) {
     }),
     action: {
       title: 'Done',
+      className: 'done',
       back: true,
       onClick: function() {
         store.set('metadata', View.getMain().getCurrentObject().serialize());

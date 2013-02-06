@@ -118,6 +118,7 @@ var showAll = function() {
       content: renderTemplate('productions', {production: response.data}),
       action: {
         title: 'New',
+        className: 'new',
         url: '/production/source'
       },
       backOptions: {
@@ -182,6 +183,7 @@ var showOne = function(req, options) {
       content: renderTemplate('detail', production),
       action: {
         title: 'Edit',
+        className: 'edit',
         url: '/production/edit/{uuid}'.substitute(production)
       },
 
@@ -571,6 +573,7 @@ Controller.define('/production/recording/new-audio', function() {
       View.getMain().updateElement('back', {fade: true}, object.getBackTemplate());
       View.getMain().updateElement('action', {}, {
         title: 'Done',
+        className: 'done',
         onClick: recorder.bound('stop')
       });
     },

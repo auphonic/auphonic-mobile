@@ -82,6 +82,7 @@ var showAll = function() {
       content: renderTemplate('presets', {preset: response.data}),
       action: {
         title: 'New',
+        className: 'new',
         url: '/preset/new'
       },
       type: response.data.length && 'white',
@@ -131,6 +132,7 @@ var showOne = function(req, options) {
       content: renderTemplate('detail', preset),
       action: {
         title: 'Edit',
+        className: 'edit',
         url: '/preset/edit/{uuid}'.substitute(preset)
       },
 

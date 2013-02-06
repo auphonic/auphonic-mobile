@@ -128,6 +128,7 @@ exports.setup = function(store, baseURL, object) {
   object.addEvent('output_files-createAction', function(id) {
     View.getMain().updateElement('action', {}, {
       title: id ? 'Done' : 'Add',
+      className: 'done',
       back: true,
       onClick: function() {
         add(baseURL, store, getContainer(object), View.getMain().getCurrentObject().serialize(), id);

@@ -105,6 +105,7 @@ exports.setup = function(store, baseURL, object) {
   object.addEvent('chapters-createAction', function(id) {
     View.getMain().updateElement('action', null, {
       title: id ? 'Done' : 'Add',
+      className: 'done',
       back: true,
       onClick: function() {
         // Fire blur to apply changes
