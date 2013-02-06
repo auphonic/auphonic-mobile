@@ -79,19 +79,23 @@ footer ul > li > a
     background-image url(../Images/Tabbar/Home.png)
 
 .android header h1
-  & > span:first-child
+  & > span:nth-child(1)
+    background-size 16px
+    background-image url(../Images/Android/Back.png)
+
+  & > span:nth-child(2)
     background-size 32px
 
-  &.production > span:first-child
+  &.production > span:nth-child(2)
     background-image url(../Images/Title/Production.png)
 
-  &.preset > span:first-child
+  &.preset > span:nth-child(2)
     background-image url(../Images/Title/Preset.png)
 
-  &.record > span:first-child
+  &.record > span:nth-child(2)
     background-image url(../Images/Title/Microphone.png)
 
-  &.home > span:first-child
+  &.home > span:nth-child(2)
     background-size 36px 32px
     background-image url(../Images/Title/Home.png)
 
