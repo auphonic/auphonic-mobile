@@ -1,6 +1,7 @@
 var User = require('Store/User');
 
 var Handlebars = require('Handlebars');
+var Platform = require('Platform');
 
 Handlebars.registerHelper('format-url', function(url) {
   return new Handlebars.SafeString(url.replace(/https?\:\/\//, '').replace(/\/$/, ''));
@@ -15,4 +16,8 @@ Handlebars.registerHelper('image', function(url) {
   if (now - 60000 > time) time = now;
 
   return new Handlebars.SafeString(url + (~url.indexOf('?') ? '&' : '?') + time + User.getToken('&bearer_token='));
+});
+
+Handlebars.registerHelper('platform', function(platform, options) {
+  return Platform.get() == platform ? options.fn(this) : options.inverse(this);
 });
