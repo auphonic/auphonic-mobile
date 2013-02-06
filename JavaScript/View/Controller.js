@@ -89,7 +89,6 @@ module.exports = new Class({
       isImmediate = true;
 
     current.push(object);
-    this.fireEvent('change', null, 1);
     if (previous) previous.fireEvent('hide', [direction], 1);
 
     // Pushing an invalid item on the stack, don't start a transition
@@ -100,6 +99,7 @@ module.exports = new Class({
       direction: direction
     };
 
+    this.fireEvent('change', options, 1);
     this.updateElement('back', options, object.getBackTemplate())
       .updateElement('title', options, object.getTitleTemplate())
       .updateElement('action', options, object.getActionTemplate());

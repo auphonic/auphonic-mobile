@@ -30,11 +30,8 @@ Element.defineCustomEvent('transitionStart', {
 
 });
 
-var transitionDelay = 1;
-
 Element.implement('transition', function(options, fn) {
 	var isImmediate = options && options.immediate;
-
 	if (!fn && typeOf(options) == 'function') fn = options;
 	if (isImmediate) this.addClass('immediate');
 
@@ -46,11 +43,7 @@ Element.implement('transition', function(options, fn) {
 		}
 
 		if (fn) this.addEvent('transitionComplete:once', fn);
-	}).delay(transitionDelay, this);
+	}).delay(30, this); // Remove the immediate class after a certain delay after which the transformation must have happened
 
 	return this;
 });
-
-Element.defineDefaultTransitionDelay = function(delay) {
-	transitionDelay = delay;
-};

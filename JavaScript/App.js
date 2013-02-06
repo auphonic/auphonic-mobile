@@ -229,8 +229,6 @@ window.__BOOTAPP = function() {
     }, false);
   }
 
-  Element.defineDefaultTransitionDelay(UI.getTransitionDelay());
-
   document.body.adopt(Element.from(renderTemplate('ui')));
 
   UI.register({

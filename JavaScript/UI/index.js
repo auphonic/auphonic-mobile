@@ -28,7 +28,6 @@ Object.append(UI, {
     if (current) {
       if (!isImmediate) current.addClass(direction);
       container.adopt(current);
-
       current.transition({immediate: isImmediate}, function() {
         if (onTransitionEnd) onTransitionEnd();
       });
