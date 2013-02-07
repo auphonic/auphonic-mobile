@@ -8,7 +8,10 @@ div.retry
   a.expand
     position absolute
     top 50%
-    margin -19px auto 0
     width 90%
     height 39px
     line-height 39px
+
+    // Specificity
+    .ios &, .android &
+      margin -19px auto 0
