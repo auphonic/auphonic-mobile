@@ -5,6 +5,7 @@ var Events = Core.Events;
 var Element = Core.Element;
 
 var renderTemplate = require('UI/renderTemplate');
+var Platform = require('Platform');
 
 var getTypePlugin = function(type) {
   return function(element) {
@@ -130,6 +131,18 @@ module.exports = new Class({
     if (scrollable) scrollable.scrollTop = this.getScrollTop();
 
     return this;
+  },
+
+  resetScroll: function() {
+    // Some Android versions have a bug where they don't update the height
+    // of the inner elements. Reinitializing overflow to auto fixes the issue.
+    if (!Platform.isAndroid()) return;
+
+    var element = this.getScrollableElement();
+    element.setStyle('overflow', 'hidden');
+    (function() {
+      element.setStyle('overflow', 'auto');
+    }).delay(1);
   },
 
   getView: function() {

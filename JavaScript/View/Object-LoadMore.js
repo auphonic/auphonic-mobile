@@ -9,8 +9,6 @@ var UI = require('UI');
 var renderTemplate = require('UI/renderTemplate');
 var ViewObject = require('./Object');
 
-var Platform = require('Platform');
-
 module.exports = new Class({
 
   Extends: ViewObject,
@@ -93,16 +91,7 @@ module.exports = new Class({
       }, this)
     );
 
-    // Some Android versions have a bug where they don't update the height
-    // of the inner elements. Reinitializing overflow to auto fixes the issue.
-    if (Platform.isAndroid()) {
-      var scrollable = this.getScrollableElement();
-      scrollable.setStyle('overflow', 'hidden');
-      (function() {
-        scrollable.setStyle('overflow', 'auto');
-      }).delay(1);
-    }
-
+    this.resetScroll();
     UI.update();
   },
 

@@ -345,6 +345,7 @@ window.__BOOTAPP = function() {
           var selects = element.getParent('ul').getElements('select').set('disabled', true);
           (function() {
             selects.set('disabled', false);
+            View.getMain().getCurrentObject().resetScroll();
           }).delay(500);
 
           if (this.get('checked')) element.removeClass('fade');
@@ -369,6 +370,20 @@ window.__BOOTAPP = function() {
       this.container.getElement('> a').removeClass('swiped');
     }
   }));
+
+  if (Platform.isAndroid()) {
+    // Videos break the scroll container. Continuously resetting the scroll container works.
+    // Don't update when the user touches the screen.
+    var hasTouch = false;
+    window.addEventListener('touchstart', function() { hasTouch = true; }, false);
+    window.addEventListener('touchend', function() { hasTouch = false; }, false);
+
+    (function() {
+      if (hasTouch) return;
+      var object = View.getMain().getCurrentObject();
+      if (object.toElement().getElement('video')) object.resetScroll();
+    }).periodical(1500);
+  }
 
   UI.update();
 
