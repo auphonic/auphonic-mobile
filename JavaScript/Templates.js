@@ -1725,9 +1725,15 @@ function program4(depth0,data) {
 templates['service-choose'] = template(function (Handlebars,depth0,helpers,partials,data) {
   this.compiledVersion = '1.0.rc.2';
 helpers = helpers || Handlebars.helpers; data = data || {};
-  var buffer = "", stack1, functionType="function", escapeExpression=this.escapeExpression, self=this;
+  var buffer = "", stack1, stack2, options, functionType="function", escapeExpression=this.escapeExpression, self=this, helperMissing=helpers.helperMissing;
 
 function program1(depth0,data) {
+  
+  
+  return "\n    <li><a href=\"/production/recording/file-upload\" class=\"arrow\"><span></span>Upload a File from this Device</a></li>\n  ";
+  }
+
+function program3(depth0,data) {
   
   var buffer = "", stack1;
   buffer += "\n    <li><a href=\"/production/source/"
@@ -1741,8 +1747,12 @@ function program1(depth0,data) {
   }
 
   buffer += "<ul>\n  <li><a href=\"/production/recording/new-audio\" class=\"arrow\"><span></span>New Audio Recording</a></li>\n  <li><a href=\"/production/recording/new-video\" class=\"arrow\"><span></span>New Video Recording</a></li>\n  ";
-  stack1 = helpers.each.call(depth0, depth0.source, {hash:{},inverse:self.noop,fn:self.program(1, program1, data),data:data});
-  if(stack1 || stack1 === 0) { buffer += stack1; }
+  options = {hash:{},inverse:self.noop,fn:self.program(1, program1, data),data:data};
+  stack2 = ((stack1 = helpers.platform),stack1 ? stack1.call(depth0, "android", options) : helperMissing.call(depth0, "platform", "android", options));
+  if(stack2 || stack2 === 0) { buffer += stack2; }
+  buffer += "\n  ";
+  stack2 = helpers.each.call(depth0, depth0.source, {hash:{},inverse:self.noop,fn:self.program(3, program3, data),data:data});
+  if(stack2 || stack2 === 0) { buffer += stack2; }
   buffer += "\n</ul>\n";
   return buffer;
   });

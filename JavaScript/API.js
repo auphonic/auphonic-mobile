@@ -3,14 +3,12 @@ var Events = Core.Events;
 var Request = Core.Request;
 
 var Request = require('Request');
-
+var Queue = require('Queue').Queue;
 var Base64 = require('Utility/Base64');
 
 var IdleTimer = require('Cordova/IdleTimer');
-
 var User = require('Store/User');
-
-var Queue = require('Queue').Queue;
+var Platform = require('Platform');
 
 var APIURL = '';
 var urls = {};
@@ -119,7 +117,7 @@ API.call = function(url, method, requestData, requestOptions) {
       method: method,
       message: data
     });
-  }
+  };
 
   new Request.JSON({
 
@@ -196,6 +194,8 @@ API.upload = function(url, file, field) {
   options.fileKey = field;
   options.fileName = file.name;
   options.mimeType = file.type;
+  // nginx and Android are no so good friends.
+  if (Platform.isAndroid()) options.chunkedMode = false;
   options.headers = {
     Authorization: getAuthorization()
   };

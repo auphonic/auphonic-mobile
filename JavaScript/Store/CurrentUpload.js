@@ -4,7 +4,7 @@ exports.add = function(uuid, data) {
   uploads[uuid] = data;
 };
 
-exports.retrieve = function(uuid) {
+exports.get = function(uuid) {
   return uploads[uuid];
 };
 

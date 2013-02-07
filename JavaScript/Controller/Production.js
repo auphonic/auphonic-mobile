@@ -324,7 +324,7 @@ var edit = function(production) {
     if (data.service) Source.setData(form, data.service);
 
     // Check if we are currently uploading
-    var currentUpload = CurrentUpload.retrieve(data.uuid);
+    var currentUpload = CurrentUpload.get(data.uuid);
     var isNew = currentUpload && !reuse;
     if (currentUpload) {
       data.input_file = currentUpload.file.name;
@@ -433,14 +433,16 @@ Controller.define('/production/new/outgoing_services', function() {
 });
 
 // Recording
-var upload = function(recording) {
+var upload = function(recording, isRecording) {
+  if (arguments.length == 1) isRecording = true;
   API.invalidate('productions');
 
   View.getMain().showIndicator();
 
   var onCreateSuccess = function(response) {
     var uuid = response.data.uuid;
-    Recording.addProduction(recording.id, uuid);
+    if (isRecording) Recording.addProduction(recording.id, uuid);
+
     var transfer = API.upload('production/{uuid}/upload'.substitute(response.data), recording, 'input_file').on({
 
       success: function(uploadResponse) {
@@ -453,10 +455,14 @@ var upload = function(recording) {
       },
 
       error: function() {
+        var element;
+        if (isRecording) element = new Element('span', {text: '. You can find your recording in the "Recordings" tab and you can try uploading it again later.'});
+        else element = new Element('span', {text: '. Please try again later.'});
+
         new Notice([
           new Element('span', {text: 'There was an error uploading '}),
           new Element('span.bold', {text: recording.display_name}),
-          new Element('span', {text: '. You can find your recording in the "Recordings" tab and you can try uploading it again later.'})
+          element
         ]);
 
         CurrentUpload.remove(uuid);
@@ -540,6 +546,27 @@ Controller.define('/production/recording/upload/{id}', function(req) {
 
   var recording = Recording.findById(req.id);
   if (recording) upload(recording);
+});
+
+// Android only
+Controller.define('/production/recording/file-upload', function() {
+  addPlaceholder();
+  var camera = navigator.camera;
+  camera.getPicture(function(file) {
+    var name = file.substr(file.lastIndexOf('/') + 1);
+    upload({
+      name: name,
+      display_name: name.substr(0, name.lastIndexOf('.')),
+      fullPath: file
+    }, false);
+  }, function() {
+    UI.unhighlight(UI.getHighlightedElement());
+  }, {
+    quality: 100,
+    destinationType: camera.DestinationType.FILE_URI,
+    sourceType: camera.PictureSourceType.PHOTOLIBRARY,
+    mediaType: camera.MediaType.ALLMEDIA
+  });
 });
 
 Controller.define('/production/recording/new-video', function() {
