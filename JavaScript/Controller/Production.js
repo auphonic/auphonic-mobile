@@ -549,6 +549,7 @@ Controller.define('/production/recording/upload/{id}', function(req) {
 });
 
 // Android only
+var noticeShownOnce = false;
 Controller.define('/production/recording/file-upload', function() {
   addPlaceholder();
   var camera = navigator.camera;
@@ -560,6 +561,8 @@ Controller.define('/production/recording/file-upload', function() {
       fullPath: file
     }, false);
   }, function() {
+    if (!noticeShownOnce) new Notice('If you haven\'t found what you were looking for, please consider installing a file manager from the Google Play Store.', {type: 'error'});
+    noticeShownOnce = true;
     UI.unhighlight(UI.getHighlightedElement());
   }, {
     quality: 100,

@@ -1048,7 +1048,7 @@ function program46(depth0,data) {
   if(stack2 || stack2 === 0) { buffer += stack2; }
   buffer += "\" data-clearable=\"1\" placeholder=\"without extension\" class=\"right\" />\n      Filename\n    </label>\n  </li>\n  <li><a href=\""
     + escapeExpression(((stack1 = depth0.baseURL),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "new/output_file\" class=\"plus\"><span></span>Add Audio Format</a></li>\n</ul>\n\n";
+    + "new/output_file\" class=\"plus\"><span></span>Add Output Format</a></li>\n</ul>\n\n";
   stack2 = helpers['if'].call(depth0, depth0.production, {hash:{},inverse:self.noop,fn:self.program(34, program34, data),data:data});
   if(stack2 || stack2 === 0) { buffer += stack2; }
   buffer += "\n\n<h1>Algorithms</h1>\n<ul class=\"formcontent\">\n  ";

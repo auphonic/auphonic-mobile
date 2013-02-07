@@ -303,7 +303,7 @@ window.__BOOTAPP = function() {
 
       getAudioService: function() {
         // Use CordovaAudioService for local files because it is faster/better/prettier
-        return (this.isLocal && window.Media) ? CordovaAudioService : WebAudioService;
+        return (this.isLocal && window.Media || Platform.isAndroid()) ? CordovaAudioService : WebAudioService;
       },
 
       onSetup: function() {
