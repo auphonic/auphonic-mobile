@@ -53,9 +53,15 @@ module.exports = new Class({
   _play: function() {
     this.player.play();
     this._isPlaying = true;
+    // This is dirty.
+    // Android tells you that it is already playing back even
+    // though it takes about a second to initialize the media file.
+    var delay = (Platform.isAndroid() && !this.isAvailable) ? 1000: 0;
     this.isAvailable = true;
-    this.startTimer();
-    this.fireEvent('start');
+    (function() {
+      this.startTimer();
+      this.fireEvent('start');
+    }).delay(delay, this);
   },
 
   pause: function() {
