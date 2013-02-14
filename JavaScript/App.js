@@ -200,7 +200,7 @@ var load = function(event) {
 
 // This is a lot of glue code !
 window.__BOOTAPP = function() {
-  document.body.addClass(window.__PLATFORM);
+  document.body.addClass(Platform.get());
 
   load();
 
@@ -591,7 +591,7 @@ API.setLogHandler(function(data) {
   // or in the worst case end in an infinite loop because of window.onerror
   try {
     var device = window.device;
-    data.platform = ((device && device.platform) || (Browser.name + '; ' + (Browser.Device.name != 'other' ? Browser.Device.name : Browser.Platform.name))).toLowerCase();
+    data.platform = Platform.get();
     data.os_version = (device && device.version) || Browser.version;
     data.device = ((device && device.name) || '').toLowerCase();
     data.hardware = (device && device.model);
