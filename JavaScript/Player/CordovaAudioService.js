@@ -2,6 +2,8 @@ var Core = require('Core');
 var Class = Core.Class;
 var Events = Core.Events;
 
+var Platform = require('Platform');
+
 module.exports = new Class({
 
   Implements: [Class.Binds, Events],
@@ -63,10 +65,10 @@ module.exports = new Class({
     this.onPause();
   },
 
-  stop: function() {
+  stop: function(options) {
     if (!this._isPlaying) return;
     this._isPlaying = false;
-    this.player.stop();
+    if (!options || options.stop) this.player.stop();
     this.position = 0;
     this.onPause();
     this.fireEvent('stop');
@@ -118,7 +120,8 @@ module.exports = new Class({
 
   onSuccess: function() {
     // In Cordova, onSuccess means the file has finished playing
-    this.stop();
+    // On Android, calling player.stop() will now fail, so don't stop the party.
+    this.stop({stop: !Platform.isAndroid()});
   },
 
   onLoadError: function() {
