@@ -14,7 +14,7 @@ var sizes = ['b', 'KB', 'MB', 'GB', 'TB'];
 var form = null;
 
 var formatFileSize = function(bytes) {
-  if (!bytes) bytes = 0;
+  if (!bytes) return '0 ' + sizes[0];
   var base = Math.log(bytes) / Math.log(1024);
   return Math.round(Math.pow(1024, base - Math.floor(base)), 0) + ' ' + sizes[Math.floor(base)];
 };
