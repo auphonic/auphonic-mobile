@@ -211,7 +211,7 @@ window.__BOOTAPP = function() {
   }));
   activeState.attach();
 
-  if (Platform.isIOS()) {
+  if (Browser.Features.Touch) {
     (new PreventClickOnScroll({
       selector: 'div.scrollable',
       contentSelector: 'div.scroll-content',
@@ -220,7 +220,9 @@ window.__BOOTAPP = function() {
 
     // Prevent all clicks from working normally
     window.addEventListener('click', preventDefault, false);
+  }
 
+  if (Platform.isIOS()) {
     var iPhone5 = (window.screen.height == 568);
     if (!iPhone5) UI.setTransitionDelay(50);
   }
