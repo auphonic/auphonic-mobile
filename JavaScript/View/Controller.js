@@ -14,7 +14,7 @@ module.exports = new Class({
 
   Implements: [Options, Class.Binds, Events],
 
-  _current: null,
+  _stack: null,
 
   options: {
     template: null,
@@ -68,7 +68,7 @@ module.exports = new Class({
     var rotated = false;
     var container;
     if (!this.isCurrentStack(stack)) {
-      if (this._current) {
+      if (this._stack) {
         container = this.getCurrentObject().toElement();
         this.getCurrentObject().fireEvent('hide', ['left'], 1);
       }
@@ -78,14 +78,14 @@ module.exports = new Class({
 
     if (!object.getURL()) object.setURL(History.getPath());
 
-    var current = this._current;
+    var current = this._stack;
     var isImmediate = (_options && _options.immediate) || rotated;
     var direction = current.hasObject(object) ? 'left' : 'right';
     var previous;
     if (!isImmediate) previous = this.getCurrentObject().rememberScroll();
 
     // If the only item on the stack is invalid don't do a transition
-    if (previous && previous.isInvalid() && this._current.getLength() == 1)
+    if (previous && previous.isInvalid() && this._stack.getLength() == 1)
       isImmediate = true;
 
     current.push(object);
@@ -137,7 +137,7 @@ module.exports = new Class({
   },
 
   pop: function() {
-    var previous = this._current && this._current.getPrevious();
+    var previous = this._stack && this._stack.getPrevious();
     if (previous) History.push(previous.getURL());
 
     return this;
@@ -145,35 +145,33 @@ module.exports = new Class({
 
   replace: function(object) {
     this.getCurrentObject().toElement().dispose();
-    this._current.pop();
-    return this.push(this._current.getName(), object, {
-      immediate: true
-    });
+    this._stack.pop();
+    return this.push(object, {immediate: true});
   },
 
   rotate: function(stack) {
     var object = this.getCurrentObject();
     if (object) object.detachPlugins();
-    this._current = new Stack(this, stack);
+    this._stack = new Stack(this, stack);
 
     return this;
   },
 
   resetStack: function() {
-    this._current = null;
+    this._stack = null;
     return this;
   },
 
   isCurrentStack: function(stack) {
-    return (this._current && stack == this._current.getName());
+    return (this._stack && stack == this._stack.getName());
   },
 
   getStack: function() {
-    return this._current;
+    return this._stack;
   },
 
   getCurrentObject: function() {
-    return this._current && this._current.getCurrent();
+    return this._stack && this._stack.getCurrent();
   },
 
   onTransitionEnd: function() {
