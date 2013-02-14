@@ -25,8 +25,10 @@ var Source = require('App/Source');
 
 var CurrentUpload = require('Store/CurrentUpload');
 var Recording = require('Store/Recording');
+var WebIntent = require('Cordova/WebIntent');
 
 var Auphonic = require('Auphonic');
+var Platform = require('Platform');
 
 var form;
 var productions = {};
@@ -549,28 +551,41 @@ Controller.define('/production/recording/upload/{id}', function(req) {
 });
 
 // Android only
-var noticeShownOnce = false;
-Controller.define('/production/recording/file-upload', function() {
-  addPlaceholder();
-  var camera = navigator.camera;
-  camera.getPicture(function(file) {
-    var name = file.substr(file.lastIndexOf('/') + 1);
-    upload({
-      name: name,
-      display_name: name.substr(0, name.lastIndexOf('.')),
-      fullPath: file
-    }, false);
-  }, function() {
-    if (!noticeShownOnce) new Notice('If you haven\'t found what you were looking for, please consider installing a file manager from the Google Play Store.', {type: 'error'});
-    noticeShownOnce = true;
-    UI.unhighlight(UI.getHighlightedElement());
-  }, {
-    quality: 100,
-    destinationType: camera.DestinationType.FILE_URI,
-    sourceType: camera.PictureSourceType.PHOTOLIBRARY,
-    mediaType: camera.MediaType.ALLMEDIA
+if (Platform.isAndroid()) {
+  var onReceiveFile = function(file) {
+    if (!file) return;
+
+    addPlaceholder();
+    (function() {
+      var name = file.substr(file.lastIndexOf('/') + 1);
+      upload({
+        name: name,
+        display_name: name.substr(0, name.lastIndexOf('.')),
+        fullPath: file
+      }, false);
+    }).delay(1);
+  };
+
+  // Check if there is an intent and upload the file.
+  if (window.cordova && window.cordova.exec) window.addEvent('appStart', function() {
+    WebIntent.getURI(onReceiveFile);
   });
-});
+
+  var noticeShownOnce = false;
+  Controller.define('/production/recording/file-upload', function() {
+    var camera = navigator.camera;
+    camera.getPicture(onReceiveFile, function() {
+      if (!noticeShownOnce) new Notice('If you haven\'t found what you were looking for, please consider installing a file manager from the Google Play Store.', {type: 'error'});
+      noticeShownOnce = true;
+      UI.unhighlight(UI.getHighlightedElement());
+    }, {
+      quality: 100,
+      destinationType: camera.DestinationType.FILE_URI,
+      sourceType: camera.PictureSourceType.PHOTOLIBRARY,
+      mediaType: camera.MediaType.ALLMEDIA
+    });
+  });
+}
 
 Controller.define('/production/recording/new-video', function() {
   new CordovaVideoRecorder({

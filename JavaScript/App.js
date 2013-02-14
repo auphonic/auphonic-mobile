@@ -522,6 +522,9 @@ window.__BOOTAPP = function() {
       }
     });
 
+    object.addEvent('show:once', function() {
+      window.fireEvent('appStart', null, 1);
+    });
     main.pushOn('home', object);
   });
 
