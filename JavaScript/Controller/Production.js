@@ -71,7 +71,7 @@ var resetEditUUID = function() {
 
 var addPlaceholder = function() {
   var stack = View.getMain().getStack();
-  if (stack.getName() == 'production' && (stack.getLength() > 1 || stack.getByURL('/production')))
+  if (stack && stack.getName() == 'production' && (stack.getLength() > 1 || stack.getByURL('/production')))
     return;
 
   var object = new View.Object({
@@ -82,7 +82,7 @@ var addPlaceholder = function() {
     }
   }).invalidate();
 
-  View.getMain().push('production', object);
+  View.getMain().pushOn('production', object);
 
   // Subsequent invalidations should invalidate the cache
   object.addEvent('invalidate', function() {
@@ -140,7 +140,7 @@ var showAll = function() {
       }
     });
 
-    View.getMain().push('production', object);
+    View.getMain().pushOn('production', object);
 
     var getElements = function() {
       return object.toElement().getElements('ul.main-list >');
@@ -223,7 +223,7 @@ var showOne = function(req, options) {
     });
 
     if (options && options.refresh) View.getMain().replace(object);
-    else View.getMain().push('production', object);
+    else View.getMain().pushOn('production', object);
   });
 };
 
@@ -287,7 +287,7 @@ Controller.define('/production/{uuid}', function(req) {
 Controller.define('/production/{uuid}/summary', function(req) {
   var production = productions[req.uuid];
 
-  View.getMain().push('production', new View.Object({
+  View.getMain().pushOn('production', new View.Object({
     title: production.metadata.title,
     content: renderTemplate('detail-summary', production),
     onShow: function() {
@@ -517,7 +517,7 @@ var upload = function(recording, isRecording) {
 var showRecording = function(file, isSilent) {
   var recording = Recording.add(file);
 
-  // Invalidate recordings view we are in the recordings tab.
+  // Invalidate recordings view if we are in the recordings tab.
   var object = View.getMain().getStack().getByURL('/recording');
   if (object) object.invalidate();
 

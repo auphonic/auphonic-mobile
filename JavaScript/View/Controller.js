@@ -56,11 +56,11 @@ module.exports = new Class({
     this.indicator = new Spinner(this.options.indicatorOptions);
   },
 
-  push: function(stack, object, _options) {
-    if (arguments.length == 1) {
-      object = stack;
-      stack = this.getStack().getName();
-    }
+  push: function(object) {
+    return this.pushOn(this.getStack().getName(), object);
+  },
+
+  pushOn: function(stack, object, _options) {
     if (!object) return this;
 
     this.hideIndicator();

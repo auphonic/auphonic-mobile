@@ -43,7 +43,7 @@ var showAll = function() {
     }
   });
 
-  View.getMain().push('record', object);
+  View.getMain().pushOn('record', object);
   var getElements = function() {
     return object.toElement().getElements('ul.main-list >');
   };

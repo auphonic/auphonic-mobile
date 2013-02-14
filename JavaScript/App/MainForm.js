@@ -209,7 +209,7 @@ module.exports = new Class({
       this.updateAlgorithms(data);
     }).bind(this));
 
-    View.getMain().push(this.getDisplayType(), object);
+    View.getMain().pushOn(this.getDisplayType(), object);
     this.isRendered = true;
   },
 

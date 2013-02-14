@@ -24,7 +24,7 @@ module.exports = {
         // We don't want to push the same element again if it is the one that is currently shown
         // This is mostly a fix for a browser issue where pushState is being called twice on domready
         if (stack.getLength() == 1) return;
-        main.push(stack.getName(), object);
+        main.pushOn(stack.getName(), object);
       } else {
         fn.apply(null, arguments);
       }

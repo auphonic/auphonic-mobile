@@ -381,7 +381,8 @@ window.__BOOTAPP = function() {
     (function() {
       if (hasTouch) return;
       var object = View.getMain().getCurrentObject();
-      if (object.toElement().getElement('video')) object.resetScroll();
+      var element = object.toElement();
+      if (element && element.getElement('video')) object.resetScroll();
     }).periodical(1500);
   }
 
@@ -499,7 +500,7 @@ window.__BOOTAPP = function() {
     load();
 
     var main = View.getMain();
-    main.push('home', new View.Object({
+    var object = new View.Object({
       title: Platform.isIOS() ? '' : 'Home',
       backTitle: 'Home',
       action: Platform.isAndroid() ? {
@@ -519,7 +520,9 @@ window.__BOOTAPP = function() {
           }
         }
       }
-    }));
+    });
+
+    main.pushOn('home', object);
   });
 
   Controller.define('/about', function() {

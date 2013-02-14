@@ -49,7 +49,7 @@ var addPlaceholder = function() {
   var stack = View.getMain().getStack();
   if (stack.getLength() > 1 || stack.getByURL('/preset')) return;
 
-  View.getMain().push('preset', new View.Object({
+  View.getMain().pushOn('preset', new View.Object({
     url: '/preset',
     title: 'Presets'
   }).invalidate());
@@ -100,7 +100,7 @@ var showAll = function() {
       }
     });
 
-    View.getMain().push('preset', object);
+    View.getMain().pushOn('preset', object);
     var getElements = function() {
       return object.toElement().getElements('ul.main-list >');
     };
@@ -146,7 +146,7 @@ var showOne = function(req, options) {
     });
 
     if (options && options.refresh) View.getMain().replace(object);
-    else View.getMain().push('preset', object);
+    else View.getMain().pushOn('preset', object);
   });
 };
 
@@ -158,7 +158,7 @@ Controller.define('/preset/{uuid}', function(req) {
 
 Controller.define('/preset/{uuid}/summary', function(req) {
   var preset = presets[req.uuid];
-  View.getMain().push('preset', new View.Object({
+  View.getMain().pushOn('preset', new View.Object({
     title: preset.preset_name,
     content: renderTemplate('detail-summary', preset)
   }));
