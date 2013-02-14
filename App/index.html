@@ -168,7 +168,7 @@
         cleanup();
         clearTimeout(timer);
         // We are not stopping the spinner because it is being reused
-        if (++loaded >= resources.length && window.__BOOTAPP)
+        if (++loaded >= resources.length && window.__BOOTAPP && !window.__APP_AVAILABLE)
           window.__BOOTAPP();
       };
 
@@ -189,7 +189,6 @@
           // __APP_VERSION is now available
           loaded = 0;
           resources = ['App-' + __APP_VERSION + '.css', 'App-' + __APP_VERSION + '.js'];
-
           resources.forEach(function(resource) {
             __loadResource(__SERVER_URL + resource + (window.__LOCALHOST__ ? '?' + Date.now() : ''), success, error);
           });

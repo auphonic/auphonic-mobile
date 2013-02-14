@@ -1,3 +1,5 @@
+if (!window.__APP_AVAILABLE) {
+
 var Core = require('Core');
 var Class = Core.Class;
 var Element = Core.Element;
@@ -576,6 +578,7 @@ window.__BOOTAPP = function() {
   if (!isLoggedIn) History.push('/login');
 
   delete window.__BOOTAPP; // bye!
+  window.__APP_AVAILABLE = true;
 };
 
 API.setAPIURL(Auphonic.APIURL);
@@ -629,3 +632,5 @@ window.onerror = function(msg, url, line) {
 
   return false;
 };
+
+}
