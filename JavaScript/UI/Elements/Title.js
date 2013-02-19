@@ -20,7 +20,7 @@ module.exports = new Class({
   },
 
   setTitle: function(title) {
-    this.toElement().set('text', title);
+    this.toElement().getElement('.text').set('text', title);
   }
 
 });
