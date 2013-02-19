@@ -19,12 +19,14 @@
 
 package com.auphonic.app;
 
+import android.view.WindowManager.LayoutParams;
 import android.os.Bundle;
 import org.apache.cordova.*;
 
 public class Auphonic extends DroidGap {
   @Override
   public void onCreate(Bundle savedInstanceState) {
+    getWindow().addFlags(LayoutParams.FLAG_KEEP_SCREEN_ON);
     super.onCreate(savedInstanceState);
     super.loadUrl(Config.getStartUrl());
   }
