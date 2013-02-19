@@ -4,12 +4,14 @@ var Events = Core.Events;
 var Options = Core.Options;
 
 var IdleTimer = require('Cordova/IdleTimer');
+var Platform = require('Platform');
+var Auphonic = require('Auphonic');
 
 module.exports = new Class({
 
   Implements: [Class.Binds, Options, Events],
 
-  extension: 'm4a',
+  extension: Platform.isIOS() ? 'm4a' : '3gp',
   statusEventIsDisabled: false,
   errorIsDisabled: false,
   hasPlaybackError: false,
@@ -26,9 +28,9 @@ module.exports = new Class({
     else window.requestFileSystem(window.LocalFileSystem.PERSISTENT, 0, this.bound('onFileSystemReady'), this.bound('onError'));
   },
 
-  createMediaObject: function() {
+  createMediaObject: function(options) {
     if (this.media) this.media.release();
-    this.media = new window.Media(this.file.fullPath, this.bound('onCaptureSuccess'), this.bound('onError'), this.bound('onStatus'), this.bound('onLevelUpdate'));
+    this.media = new window.Media(this.file.fullPath, (options && options.ignoreSuccessEvent) ? function() {} : this.bound('onCaptureSuccess'), this.bound('onError'), this.bound('onStatus'), this.bound('onLevelUpdate'));
   },
 
   _start: function() {
@@ -86,20 +88,27 @@ module.exports = new Class({
     };
 
     recreateMedia = function() {
-      this.createMediaObject();
+      hasRetried = true;
+      this.createMediaObject({ignoreSuccessEvent: true});
       this.media.play();
-      this.media.pause();
-      complete.delay(0, this);
+      (function() {
+        this.media.pause();
+        complete.delay(50, this);
+      }).delay(50, this);
     };
 
-    try {
-      this.media.play();
-      this.media.pause();
-      // Duration can only be accessed asynchronously
-      complete.delay(0, this);
-    } catch(e) {
-      // This hopefully does not ever happen.
+    // Android cannot record and playback using the same media object.
+    if (Platform.isAndroid()) {
       recreateMedia.call(this);
+    } else {
+      try {
+        this.media.play();
+        this.media.pause();
+        // Duration can only be accessed asynchronously
+        complete.delay(0, this);
+      } catch(e) {
+        recreateMedia.call(this);
+      }
     }
   },
 
@@ -108,8 +117,35 @@ module.exports = new Class({
       create: true,
       exclusive: false
     };
+    // On Android we want to ensure there is an Auphonic directory on the SD-Card
+    // On iPhone we need to create an empty file before we can start recording.
+    if (Platform.isAndroid()) fileSystem.root.getDirectory(Auphonic.FolderName, options, this.bound('onDirectoryCreateSuccess'), this.bound('onError'));
+    else fileSystem.root.getFile(this.getFileName(), options, this.bound('onFileLoadSuccess'), this.bound('onError'));
+  },
 
-    fileSystem.root.getFile(this.getFileName(), options, this.bound('onFileLoadSuccess'), this.bound('onError'));
+  onDirectoryCreateSuccess: function(directory) {
+    var options = {
+      create: false,
+      exclusive: false
+    };
+    var name = this.getFileName();
+    this.file = {
+      name: name,
+      fullPath: Auphonic.FolderName + '/' + name,
+      isFile: true,
+      filesystem: this.fileSystem,
+      remove: function(callback) {
+        directory.getFile(name, options, function(file) {
+          file.remove(callback);
+        }, function() {});
+      },
+      file: function(callback) {
+        directory.getFile(name, options, function(file) {
+          file.file(callback);
+        }, function() {});
+      }
+    };
+    this._start();
   },
 
   onFileLoadSuccess: function(file) {

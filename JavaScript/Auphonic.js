@@ -13,6 +13,7 @@ exports.FacebookURL = 'https://www.facebook.com/pages/auphonic/217115551651035';
 exports.DefaultFileName = 'mobile-recording-{uuid}';
 exports.DefaultVideoFileName = 'mobile-video-{uuid}';
 exports.DefaultFileNameFilter = /mobile-(?:video|recording)-(\d+)/i;
+exports.FolderName = 'Auphonic';
 
 exports.DefaultOutputFile = {
   format: 'mp3',
