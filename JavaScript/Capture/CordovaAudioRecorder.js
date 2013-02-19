@@ -131,6 +131,7 @@ module.exports = new Class({
     var name = this.getFileName();
     this.file = {
       name: name,
+      // This is temporary placeholder, it will be overwritten in the file() call.
       fullPath: Auphonic.FolderName + '/' + name,
       isFile: true,
       filesystem: this.fileSystem,
@@ -139,11 +140,12 @@ module.exports = new Class({
           file.remove(callback);
         }, function() {});
       },
-      file: function(callback) {
-        directory.getFile(name, options, function(file) {
+      file: (function(callback) {
+        directory.getFile(name, options, (function(file) {
+          this.file.fullPath = file.fullPath;
           file.file(callback);
-        }, function() {});
-      }
+        }).bind(this), function() {});
+      }).bind(this)
     };
     this._start();
   },
