@@ -11,7 +11,7 @@ module.exports = new Class({
 
   Implements: [Class.Binds, Options, Events],
 
-  extension: Platform.isIOS() ? 'm4a' : '3gp',
+  extension: Platform.isIOS() ? 'm4a' : 'flac',
   statusEventIsDisabled: false,
   errorIsDisabled: false,
   hasPlaybackError: false,
