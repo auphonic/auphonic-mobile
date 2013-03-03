@@ -85,6 +85,13 @@
     .ios &
       border-radius 10px
 
+    .android &:not(.red)
+      background-color #222
+
+    &.active, &.selected, .active &, .selected &
+      .android &:not(.red)
+        background-color #111
+
     &:first-child
       margin-top 0
 
