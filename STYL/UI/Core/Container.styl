@@ -12,7 +12,7 @@ div.container
     bottom $footer-height-ios
 
   .android &
-    top $header-height + $footer-height-android - 2px // Account for missing header top border
+    top $header-height + $footer-height-android - 1px // Account for missing header top border
     bottom 0
 
     &.big
@@ -27,13 +27,22 @@ div.container
   transition-property -webkit-transform, opacity
   transition-timing-function ease-in-out
   transition-duration 400ms
-  transform translate3d(0, 0, 0)
+  .ios &
+    transform translate3d(0, 0, 0)
+  .android &
+    transform translate(0, 0)
 
   &.white
     background #fff
 
   &.right
-    transform translate3d(100%, 0, 0)
+    .ios &
+      transform translate3d(100%, 0, 0)
+    .android &
+      transform translate(100%, 0)
 
   &.left
-    transform translate3d(-100%, 0, 0)
+    .ios &
+      transform translate3d(-100%, 0, 0)
+    .android &
+      transform translate(-100%, 0)

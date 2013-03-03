@@ -78,7 +78,11 @@ textarea.autogrow
       right 0
 
       transition -webkit-transform 200ms ease-in-out
-      transform translate3d(-100%, 0, 0)
+
+      .ios &
+        transform translate3d(-100%, 0, 0)
+      .android &
+        transform translate(-100%, 0)
 
       border-top-right-radius 0
       border-bottom-right-radius 0
@@ -101,7 +105,10 @@ textarea.autogrow
       font-size 0.9em
 
       transition -webkit-transform 200ms ease-in-out
-      transform translate3d(0, 0, 0)
+      .ios &
+        transform translate3d(0, 0, 0)
+      .android &
+        transform translate(0, 0)
 
       border solid 1px rgba(151, 151, 151, 0.5)
       background-color #cecece

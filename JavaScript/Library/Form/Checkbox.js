@@ -3,6 +3,8 @@ var Class = Core.Class;
 var Options = Core.Options;
 var Element = Core.Element;
 
+var Platform = require('Platform');
+
 module.exports = new Class({
 
   Implements: [Class.Singleton, Class.Binds, Options],
@@ -81,12 +83,15 @@ module.exports = new Class({
   updateStyle: function(delta) {
     delta = Math.max(0, Math.min(delta || 0, this.options.max));
     var style = this.thumb.style;
-    style.webkitTransform = style.transform = 'translate3d(' + delta + 'px, 0, 0)';
+    var transform = 'translate3d({delta}px, 0, 0)';
+    if (Platform.isAndroid()) transform = 'translate({delta}px, 0)';
+
+    style.webkitTransform = style.transform = transform.substitute({delta: delta});
 
     delta = -(this.options.max - delta);
     var half = this.thumb.offsetWidth / 2;
     style = this.left.style;
-    style.webkitTransform = style.transform = 'translate3d(' + (delta - half) + 'px, 0, 0)';
+    style.webkitTransform = style.transform = transform.substitute({delta: delta - half});
   },
 
   preventDefault: function(event) {

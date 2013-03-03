@@ -49,11 +49,17 @@ div.fade, ul.fade
   transition-timing-function ease-in-out
   transition-duration 350ms
 
-  transform translate3d(0, 0, 0)
+  .ios &
+    transform translate3d(0, 0, 0)
+  .android &
+    transform translate(0, 0)
   opacity 1
 
   &.out
-    transform translate3d(0, -20px, 0)
+    .ios &
+      transform translate3d(0, -20px, 0)
+    .android &
+      transform translate(0, -20px)
     opacity 0
 
   .android & ul:last-child

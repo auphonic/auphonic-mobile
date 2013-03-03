@@ -93,9 +93,13 @@ div.main ul
             width 75%
 
     label.left
-       // This used to be 30 %. On Android, form elements are sometimes not focusable
-       // if they are positioned outside of their container.
-      width 100%
+      .ios &
+        width 30%
+
+      .android &
+        // This used to be 30 %. On Android, form elements are sometimes not focusable
+        // if they are positioned outside of their container.
+        width 100%
 
     .right
       position absolute
@@ -130,9 +134,11 @@ div.main ul
       transition-timing-function ease-in-out
       transition-duration 350ms
 
-      transform translate3d(0, 0, 0)
       height 41px
       opacity 1
+
+      .ios &
+        transform translate3d(0, 0, 0)
 
       &.fade
         height 0

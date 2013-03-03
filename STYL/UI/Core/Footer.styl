@@ -16,23 +16,28 @@ div.footerBackground, footer
 
   .android &
     position fixed
-    top $header-height - 1px // Account for missing header border-top style
+    top $header-height - 2px // Account for missing header border-top style
     height $footer-height-android
 
   transition-property -webkit-transform, opacity, height
   transition-timing-function ease-in-out
   transition-duration 400ms
 
-  transform translate3d(0, 0, 0)
+  .ios &
+    transform translate3d(0, 0, 0)
+  .android &
+    transform translate(0, 0)
   opacity 1
 
   &.out
-    transform translate3d(0, 100%, 0)
+    .ios &
+      transform translate3d(0, 100%, 0)
     opacity 0
     height 0
 
   &.left
-    transform translate3d(-100%, 0, 0)
+    .android &
+      transform translate(-100%, 0)
 
 div.footerBackground
   z-index 9
