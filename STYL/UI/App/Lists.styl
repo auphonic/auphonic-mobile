@@ -93,7 +93,9 @@ div.main ul
             width 75%
 
     label.left
-      width 30%
+       // This used to be 30 %. On Android, form elements are sometimes not focusable
+       // if they are positioned outside of their container.
+      width 100%
 
     .right
       position absolute
