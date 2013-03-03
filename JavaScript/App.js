@@ -385,7 +385,7 @@ window.__BOOTAPP = function() {
     (function() {
       if (hasTouch) return;
       var object = View.getMain().getCurrentObject();
-      var element = object.toElement();
+      var element = object && object.toElement();
       if (element && element.getElement('video')) object.resetScroll();
     }).periodical(1500);
   }
