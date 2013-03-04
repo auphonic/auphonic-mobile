@@ -126,8 +126,9 @@
       Please put your device in some elevated position to regain Internet access. If the problem lies on our end we'll make sure to fix the problem quickly :)
     </div>
   </div>
-  <script type="text/javascript" src="./cordova.js"></script>
   <script type="text/javascript">
+    document.write('\x3Cscript type="text/javascript" src="cordova.' + this.__PLATFORM + '.js">\x3C/script>');
+
     (function() {
       document.body.className += ' ' + this.__PLATFORM;
 

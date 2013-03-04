@@ -20,6 +20,7 @@ Install
 * Run `Scripts/watch --once` to compile all resources. Run the script without the `--once` flag to watch for changes during development.
 * In Cordova, run `lib/ios/bin/update_cordova_subproject` to update Cordova references in the iOS project.
 * Android: Download and Install the Android SDK
+ * Set a symlink from App/ to Android/assets: `ln -s App Android/assets/`
 * (optional) Download and install [Roboto](http://developer.android.com/design/style/typography.html)
 
 Run
