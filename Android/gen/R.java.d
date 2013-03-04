@@ -1,10 +1,10 @@
-/Users/cpojer/Projects/Auphonic/Android/gen/com/auphonic/app/R.java \
- : /Users/cpojer/Projects/Auphonic/Android/res/drawable/icon.png \
-/Users/cpojer/Projects/Auphonic/Android/res/drawable-hdpi/icon.png \
-/Users/cpojer/Projects/Auphonic/Android/res/drawable-ldpi/icon.png \
-/Users/cpojer/Projects/Auphonic/Android/res/drawable-mdpi/icon.png \
-/Users/cpojer/Projects/Auphonic/Android/res/drawable-xhdpi/icon.png \
-/Users/cpojer/Projects/Auphonic/Android/res/layout/main.xml \
-/Users/cpojer/Projects/Auphonic/Android/res/values/strings.xml \
-/Users/cpojer/Projects/Auphonic/Android/res/xml/config.xml \
-/Users/cpojer/Projects/Auphonic/Android/bin/AndroidManifest.xml \
+/home/grh/auphonic/auphonic-mobile/Android/gen/com/auphonic/app/R.java \
+ : /home/grh/auphonic/auphonic-mobile/Android/res/xml/config.xml \
+/home/grh/auphonic/auphonic-mobile/Android/res/drawable-mdpi/icon.png \
+/home/grh/auphonic/auphonic-mobile/Android/res/drawable/icon.png \
+/home/grh/auphonic/auphonic-mobile/Android/res/values/strings.xml \
+/home/grh/auphonic/auphonic-mobile/Android/res/drawable-xhdpi/icon.png \
+/home/grh/auphonic/auphonic-mobile/Android/res/drawable-ldpi/icon.png \
+/home/grh/auphonic/auphonic-mobile/Android/res/layout/main.xml \
+/home/grh/auphonic/auphonic-mobile/Android/res/drawable-hdpi/icon.png \
+/home/grh/auphonic/auphonic-mobile/Android/bin/AndroidManifest.xml \
