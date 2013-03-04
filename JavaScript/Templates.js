@@ -1,85 +1,85 @@
 var Handlebars = require("Handlebars");  var template = Handlebars.template, templates = Handlebars.templates = Handlebars.templates || {};
-templates['about'] = template(function (Handlebars,depth0,helpers,partials,data) {
-  this.compiledVersion = '1.0.rc.2';
+templates['home'] = template(function (Handlebars,depth0,helpers,partials,data) {
+  this.compilerInfo = [2,'>= 1.0.0-rc.3'];
 helpers = helpers || Handlebars.helpers; data = data || {};
-  var buffer = "", stack1, stack2, options, functionType="function", escapeExpression=this.escapeExpression, helperMissing=helpers.helperMissing;
+  var buffer = "", stack1, stack2, options, self=this, helperMissing=helpers.helperMissing, functionType="function", escapeExpression=this.escapeExpression;
 
+function program1(depth0,data) {
+  
+  
+  return "\n  <div class=\"logo\"></div>\n";
+  }
 
-  buffer += "<ul>\n  <li><span class=\"right\">"
-    + escapeExpression(((stack1 = depth0.version),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "</span><label class=\"left\">Version</label></li>\n  <li><span class=\"right\">"
-    + escapeExpression(((stack1 = ((stack1 = depth0.user),stack1 == null || stack1 === false ? stack1 : stack1.name)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "</span><label class=\"left\">User</label></li>\n  <li><a href=\""
-    + escapeExpression(((stack1 = depth0.repository),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "\" class=\"share\"><span></span>Repository <span class=\"light\">";
-  options = {hash:{},data:data};
-  stack2 = ((stack1 = helpers['format-url']),stack1 ? stack1.call(depth0, depth0.repository, options) : helperMissing.call(depth0, "format-url", depth0.repository, options));
+function program3(depth0,data) {
+  
+  
+  return "\n  <a href=\"/logout\" class=\"button red expand\">Logout</a>\n";
+  }
+
+  options = {hash:{},inverse:self.noop,fn:self.program(1, program1, data),data:data};
+  stack2 = ((stack1 = helpers.platform),stack1 ? stack1.call(depth0, "ios", options) : helperMissing.call(depth0, "platform", "ios", options));
   if(stack2 || stack2 === 0) { buffer += stack2; }
-  buffer += "</span></a></li>\n</ul>\n";
+  buffer += "\n\n<ul>\n  <li><a href=\"/production/recording/new-audio\" class=\"arrow\"><span></span>Start a new Audio Recording</a></li>\n  <li><a href=\"/production/source\" class=\"arrow\"><span></span>Create a new Production</a></li>\n  <li><a href=\"/preset/new\" class=\"arrow\"><span></span>Define a Preset</a></li>\n  <li><a href=\"/external-services\" class=\"arrow\"><span></span>External Services</a></li>\n  <li><a href=\"/about\" class=\"arrow\"><span></span>About</a></li>\n  <li><a href=\"/team\" class=\"arrow\"><span></span>Team</a></li>\n  <li><a href=\""
+    + escapeExpression(((stack1 = depth0.feedback),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
+    + "\" class=\"share\"><span></span>Feedback</a></li>\n</ul>\n\n";
+  options = {hash:{},inverse:self.noop,fn:self.program(3, program3, data),data:data};
+  stack2 = ((stack1 = helpers.platform),stack1 ? stack1.call(depth0, "ios", options) : helperMissing.call(depth0, "platform", "ios", options));
+  if(stack2 || stack2 === 0) { buffer += stack2; }
+  buffer += "\n";
   return buffer;
   });
-templates['algorithm-popover'] = template(function (Handlebars,depth0,helpers,partials,data) {
-  this.compiledVersion = '1.0.rc.2';
+templates['team'] = template(function (Handlebars,depth0,helpers,partials,data) {
+  this.compilerInfo = [2,'>= 1.0.0-rc.3'];
 helpers = helpers || Handlebars.helpers; data = data || {};
-  var buffer = "", stack1, stack2, functionType="function", escapeExpression=this.escapeExpression, self=this;
+  var buffer = "", stack1, functionType="function", escapeExpression=this.escapeExpression;
+
+
+  buffer += "<div class=\"detailView\">\n  <div class=\"detail expand with-image\">\n    <div class=\"dark-background\"></div>\n    <div class=\"cover-photo team\" style=\"background-image: url("
+    + escapeExpression(((stack1 = depth0.image),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
+    + ");\"></div>\n    <div class=\"gradient\"></div>\n    <div class=\"detail-inner\">\n      <span class=\"year\">2012</span>\n      <span class=\"genre\">Graz</span>\n      <h1>Auphonic Team</h1>\n      <span class=\"artist small wrap\">\n        André Rattinger, Ferdinand Fuhrmann, Christoph Pojer, Georg Holzmann and Florian Hollerweger\n      </span>\n    </div>\n    <div class=\"clear\"></div>\n  </div>\n  <div class=\"clear\"></div>\n\n  <div class=\"content\">\n    Our service is being developed in the lovely City of Graz, Austria.\n    <br/><br/>\n    We develop new algorithms in the area of music information retrieval and audio signal processing to create an automatic audio post production web service for broadcasters, podcasts, radio shows, audio books, lecture recordings, screencasts and more.\n  </div>\n</div>\n\n<ul>\n  <li><a href=\""
+    + escapeExpression(((stack1 = depth0.twitter),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
+    + "\" class=\"share\"><span></span>Auphonic on Twitter</a></li>\n  <li><a href=\""
+    + escapeExpression(((stack1 = depth0.facebook),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
+    + "\" class=\"share\"><span></span>Auphonic on Facebook</a></li>\n</ul>\n";
+  return buffer;
+  });
+templates['presets'] = template(function (Handlebars,depth0,helpers,partials,data) {
+  this.compilerInfo = [2,'>= 1.0.0-rc.3'];
+helpers = helpers || Handlebars.helpers; partials = partials || Handlebars.partials; data = data || {};
+  var buffer = "", stack1, self=this;
 
 function program1(depth0,data) {
   
   var buffer = "", stack1;
-  buffer += "\n    <h1 class=\"small\">Available Options</h1>\n    <ul>\n    ";
-  stack1 = helpers.each.call(depth0, depth0.options, {hash:{},inverse:self.noop,fn:self.program(2, program2, data),data:data});
+  buffer += "\n  <ul class=\"preset_container expand load-more main-list\">\n    ";
+  stack1 = helpers.each.call(depth0, depth0.preset, {hash:{},inverse:self.noop,fn:self.program(2, program2, data),data:data});
   if(stack1 || stack1 === 0) { buffer += stack1; }
-  buffer += "\n    </ul>\n  ";
+  buffer += "\n  </ul>\n";
   return buffer;
   }
 function program2(depth0,data) {
   
   var buffer = "", stack1;
-  buffer += "\n      <li>"
-    + escapeExpression(((stack1 = depth0.display_name),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "</li>\n    ";
+  buffer += "\n      ";
+  stack1 = self.invokePartial(partials.preset, 'preset', depth0, helpers, partials, data);
+  if(stack1 || stack1 === 0) { buffer += stack1; }
+  buffer += "\n    ";
   return buffer;
   }
 
-  buffer += "<div class=\"hidden popover top justify\" data-position=\"top\">\n  <h1>"
-    + escapeExpression(((stack1 = depth0.display_name),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "</h1>\n  "
-    + escapeExpression(((stack1 = depth0.description),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "\n  ";
-  stack2 = helpers['if'].call(depth0, depth0.options, {hash:{},inverse:self.noop,fn:self.program(1, program1, data),data:data});
-  if(stack2 || stack2 === 0) { buffer += stack2; }
-  buffer += "\n</div>\n";
-  return buffer;
-  });
-templates['audio-recorder'] = template(function (Handlebars,depth0,helpers,partials,data) {
-  this.compiledVersion = '1.0.rc.2';
-helpers = helpers || Handlebars.helpers; data = data || {};
+function program4(depth0,data) {
   
-
-
-  return "<div class=\"audio-recorder\">\n  <div class=\"meter\">\n    <div class=\"audio-level\">\n      <div class=\"peak-meter\"></div>\n      <div class=\"average-meter\"></div>\n      <div class=\"stripes\"></div>\n    </div>\n    <div class=\"scale\">\n      <div class=\"scale-48\">-48</div>\n      <div class=\"scale-42\">-42</div>\n      <div class=\"scale-36\">-36</div>\n      <div class=\"scale-30\">-30</div>\n      <div class=\"scale-24\">-24</div>\n      <div class=\"scale-18\">-18</div>\n      <div class=\"scale-12\">-12</div>\n      <div class=\"scale-6\">-6</div>\n      <div class=\"scale-0\">0</div>\n    </div>\n  </div>\n\n  <a class=\"button red recorder\">Start</a>\n\n  <ul class=\"status expand hidden fade out\">\n    <li>\n      <span class=\"recording-length right light\"></span>\n      <label>Length</label>\n    </li>\n    <li class=\"wide\">\n      <a class=\"add-chapter-mark\" class=\"left\">\n        <span class=\"right light out\"></span>\n        Add Chapter Mark\n      </a>\n    </li>\n    <li class=\"chapter-text transition-able fade\">\n      <input type=\"text\" data-clearable=\"1\">\n    </li>\n  </ul>\n</div>\n";
-  });
-templates['container'] = template(function (Handlebars,depth0,helpers,partials,data) {
-  this.compiledVersion = '1.0.rc.2';
-helpers = helpers || Handlebars.helpers; data = data || {};
   
+  return "\n  <h1 class=\"null\">You have no presets yet.</h1>\n  <p class=\"null\">A preset helps you predefine settings like metadata or output files and speeds up creating new productions.</p>\n  <ul>\n    <li><a href=\"/preset/new\" class=\"arrow\"><span></span>Define a new Preset</a></li>\n  </ul>\n";
+  }
 
-
-  return "<div class=\"container scrolling scrollable\">\n  <div class=\"scroll-content\"></div>\n</div>\n";
-  });
-templates['detail-summary'] = template(function (Handlebars,depth0,helpers,partials,data) {
-  this.compiledVersion = '1.0.rc.2';
-helpers = helpers || Handlebars.helpers; data = data || {};
-  var buffer = "", stack1, functionType="function", escapeExpression=this.escapeExpression;
-
-
-  buffer += "<div class=\"content\">\n  "
-    + escapeExpression(((stack1 = ((stack1 = depth0.metadata),stack1 == null || stack1 === false ? stack1 : stack1.summary)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "\n</div>\n";
+  stack1 = helpers['if'].call(depth0, depth0.preset, {hash:{},inverse:self.program(4, program4, data),fn:self.program(1, program1, data),data:data});
+  if(stack1 || stack1 === 0) { buffer += stack1; }
+  buffer += "\n";
   return buffer;
   });
 templates['detail'] = template(function (Handlebars,depth0,helpers,partials,data) {
-  this.compiledVersion = '1.0.rc.2';
+  this.compilerInfo = [2,'>= 1.0.0-rc.3'];
 helpers = helpers || Handlebars.helpers; partials = partials || Handlebars.partials; data = data || {};
   var buffer = "", stack1, stack2, helperMissing=helpers.helperMissing, functionType="function", escapeExpression=this.escapeExpression, self=this, blockHelperMissing=helpers.blockHelperMissing;
 
@@ -716,41 +716,363 @@ function program102(depth0,data) {
   buffer += "\n</div>\n";
   return buffer;
   });
-templates['external-services'] = template(function (Handlebars,depth0,helpers,partials,data) {
-  this.compiledVersion = '1.0.rc.2';
+templates['ui-removable-list-item'] = template(function (Handlebars,depth0,helpers,partials,data) {
+  this.compilerInfo = [2,'>= 1.0.0-rc.3'];
 helpers = helpers || Handlebars.helpers; data = data || {};
   var buffer = "", stack1, stack2, functionType="function", escapeExpression=this.escapeExpression, self=this;
 
 function program1(depth0,data) {
   
   var buffer = "", stack1;
-  buffer += "\n  <h1>External Services</h1>\n  <ul>\n    ";
-  stack1 = helpers.each.call(depth0, depth0.services, {hash:{},inverse:self.noop,fn:self.program(2, program2, data),data:data});
+  buffer += " <small class=\"light\">"
+    + escapeExpression(((stack1 = depth0.detail),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
+    + "</small>";
+  return buffer;
+  }
+
+  buffer += "<li class=\"swipeable show-popover\" data-popover-open-event=\"touchhold\">\n  <span class=\"right removable\">\n    <span><a class=\"button red small\">"
+    + escapeExpression(((stack1 = depth0.label),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
+    + "</a></span>\n  </span>\n  <div class=\"hidden popover top justify\" data-position=\"top\">\n    <a class=\"button expand red deleteable\">"
+    + escapeExpression(((stack1 = depth0.label),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
+    + "</a>\n  </div>\n  <a href=\""
+    + escapeExpression(((stack1 = depth0.href),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
+    + "\" class=\"arrow\"><span></span>"
+    + escapeExpression(((stack1 = depth0.title),typeof stack1 === functionType ? stack1.apply(depth0) : stack1));
+  stack2 = helpers['if'].call(depth0, depth0.detail, {hash:{},inverse:self.noop,fn:self.program(1, program1, data),data:data});
+  if(stack2 || stack2 === 0) { buffer += stack2; }
+  buffer += "</a>\n</li>\n";
+  return buffer;
+  });
+templates['ui-removable-chapter-list-item'] = template(function (Handlebars,depth0,helpers,partials,data) {
+  this.compilerInfo = [2,'>= 1.0.0-rc.3'];
+helpers = helpers || Handlebars.helpers; data = data || {};
+  var buffer = "", stack1, functionType="function", escapeExpression=this.escapeExpression;
+
+
+  buffer += "<li class=\"swipeable show-popover\" data-popover-open-event=\"touchhold\">\n  <span class=\"right removable\">\n    <span><a class=\"button red small\">"
+    + escapeExpression(((stack1 = depth0.label),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
+    + "</a></span>\n  </span>\n  <div class=\"hidden popover top justify\" data-position=\"top\">\n    <a class=\"button expand red deleteable\">"
+    + escapeExpression(((stack1 = depth0.label),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
+    + "</a>\n  </div>\n  <a href=\""
+    + escapeExpression(((stack1 = depth0.href),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
+    + "\" class=\"arrow\"><span></span><small class=\"light\">"
+    + escapeExpression(((stack1 = depth0.start),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
+    + "</small> "
+    + escapeExpression(((stack1 = depth0.title),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
+    + "</a>\n</li>\n";
+  return buffer;
+  });
+templates['ui-back'] = template(function (Handlebars,depth0,helpers,partials,data) {
+  this.compilerInfo = [2,'>= 1.0.0-rc.3'];
+helpers = helpers || Handlebars.helpers; data = data || {};
+  var buffer = "", stack1, functionType="function", escapeExpression=this.escapeExpression, self=this;
+
+function program1(depth0,data) {
+  
+  var buffer = "", stack1;
+  buffer += " "
+    + escapeExpression(((stack1 = depth0.className),typeof stack1 === functionType ? stack1.apply(depth0) : stack1));
+  return buffer;
+  }
+
+  buffer += "<a href=\"#\" class=\"button-left\" data-hit-target=\"1\"><span class=\"button";
+  stack1 = helpers['if'].call(depth0, depth0.className, {hash:{},inverse:self.noop,fn:self.program(1, program1, data),data:data});
   if(stack1 || stack1 === 0) { buffer += stack1; }
-  buffer += "\n  </ul>\n";
+  buffer += "\">"
+    + escapeExpression(((stack1 = depth0.title),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
+    + "</span></a>\n";
+  return buffer;
+  });
+templates['form-service'] = template(function (Handlebars,depth0,helpers,partials,data) {
+  this.compilerInfo = [2,'>= 1.0.0-rc.3'];
+helpers = helpers || Handlebars.helpers; data = data || {};
+  var buffer = "", stack1, functionType="function", escapeExpression=this.escapeExpression, self=this;
+
+function program1(depth0,data) {
+  
+  var buffer = "", stack1;
+  buffer += "\n  <ul class=\"formcontent\">\n    ";
+  stack1 = helpers.each.call(depth0, depth0.service, {hash:{},inverse:self.noop,fn:self.program(2, program2, data),data:data});
+  if(stack1 || stack1 === 0) { buffer += stack1; }
+  buffer += "\n  </ul>\n\n  ";
+  stack1 = helpers.each.call(depth0, depth0.service, {hash:{},inverse:self.noop,fn:self.program(4, program4, data),data:data});
+  if(stack1 || stack1 === 0) { buffer += stack1; }
+  buffer += "\n";
   return buffer;
   }
 function program2(depth0,data) {
   
   var buffer = "", stack1;
-  buffer += "\n      <li><label><span class=\"light\">"
+  buffer += "\n      <li class=\"wide\">\n        <input type=\"hidden\" name=\"outgoing_services."
+    + escapeExpression(((stack1 = depth0.uuid),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
+    + ".uuid\" value=\""
+    + escapeExpression(((stack1 = depth0.uuid),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
+    + "\" />\n        <label class=\"left\">\n          <div class=\"right\">\n            <div class=\"checkbox\">\n              <div>\n                <span class=\"left\"></span><span class=\"thumb\" data-on=\"ON\" data-off=\"OFF\"></span>\n                <input type=\"checkbox\" name=\"outgoing_services."
+    + escapeExpression(((stack1 = depth0.uuid),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
+    + ".checked\" data-uuid=\""
+    + escapeExpression(((stack1 = depth0.uuid),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
+    + "\" value=\"1\" />\n              </div>\n            </div>\n          </div>\n          <small><span class=\"light\">"
     + escapeExpression(((stack1 = depth0.display_type),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "</span> <small>"
+    + "</span> "
     + escapeExpression(((stack1 = depth0.display_name),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "</small></label></li>\n    ";
+    + "</small>\n        </label>\n      </li>\n    ";
   return buffer;
   }
 
-  buffer += "<ul>\n  <li><a href=\""
-    + escapeExpression(((stack1 = depth0.url),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "\" class=\"share\"><span></span>Add an external service</a></li>\n</ul>\n\n";
-  stack2 = helpers['if'].call(depth0, depth0.services, {hash:{},inverse:self.noop,fn:self.program(1, program1, data),data:data});
+function program4(depth0,data) {
+  
+  var buffer = "", stack1;
+  buffer += "\n    ";
+  stack1 = helpers['if'].call(depth0, depth0.parameters, {hash:{},inverse:self.noop,fn:self.program(5, program5, data),data:data});
+  if(stack1 || stack1 === 0) { buffer += stack1; }
+  buffer += "\n  ";
+  return buffer;
+  }
+function program5(depth0,data) {
+  
+  var buffer = "", stack1, stack2;
+  buffer += "\n      <div class=\"fade\" data-service-uuid=\""
+    + escapeExpression(((stack1 = depth0.uuid),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
+    + "\">\n        <h1>"
+    + escapeExpression(((stack1 = depth0.display_type),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
+    + " - "
+    + escapeExpression(((stack1 = depth0.display_name),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
+    + "</h1>\n        <ul>\n          ";
+  stack2 = helpers.each.call(depth0, depth0.parameters, {hash:{},inverse:self.noop,fn:self.program(6, program6, data),data:data});
   if(stack2 || stack2 === 0) { buffer += stack2; }
+  buffer += "\n        </ul>\n      </div>\n    ";
+  return buffer;
+  }
+function program6(depth0,data) {
+  
+  var buffer = "", stack1;
+  buffer += "\n            ";
+  stack1 = helpers['if'].call(depth0, depth0.checkbox, {hash:{},inverse:self.noop,fn:self.program(7, program7, data),data:data});
+  if(stack1 || stack1 === 0) { buffer += stack1; }
+  buffer += "\n            ";
+  stack1 = helpers['if'].call(depth0, depth0.select, {hash:{},inverse:self.noop,fn:self.program(10, program10, data),data:data});
+  if(stack1 || stack1 === 0) { buffer += stack1; }
+  buffer += "\n          ";
+  return buffer;
+  }
+function program7(depth0,data) {
+  
+  var buffer = "", stack1, stack2;
+  buffer += "\n              <li class=\"wide\">\n                <label class=\"left\">\n                  <div class=\"right\">\n                    <div class=\"checkbox\">\n                      <div>\n                        <span class=\"left\"></span><span class=\"thumb\" data-on=\"YES\" data-off=\"NO\"></span>\n                        <input type=\"checkbox\" name=\"outgoing_services."
+    + escapeExpression(((stack1 = depth0.uuid),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
+    + "."
+    + escapeExpression(((stack1 = depth0.key),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
+    + "\" value=\"1\" ";
+  stack2 = helpers['if'].call(depth0, depth0.default_value, {hash:{},inverse:self.noop,fn:self.program(8, program8, data),data:data});
+  if(stack2 || stack2 === 0) { buffer += stack2; }
+  buffer += "/>\n                      </div>\n                    </div>\n                  </div>\n                  "
+    + escapeExpression(((stack1 = depth0.display_name),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
+    + "\n                </label>\n              </li>\n            ";
+  return buffer;
+  }
+function program8(depth0,data) {
+  
+  
+  return "checked=\"checked\"";
+  }
+
+function program10(depth0,data) {
+  
+  var buffer = "", stack1, stack2;
+  buffer += "\n              <li>\n                <label class=\"left\">\n                  <select name=\"outgoing_services."
+    + escapeExpression(((stack1 = depth0.uuid),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
+    + "."
+    + escapeExpression(((stack1 = depth0.key),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
+    + "\" class=\"right";
+  stack2 = helpers.unless.call(depth0, depth0.default_value, {hash:{},inverse:self.noop,fn:self.program(11, program11, data),data:data});
+  if(stack2 || stack2 === 0) { buffer += stack2; }
+  buffer += "\"";
+  stack2 = helpers['if'].call(depth0, depth0.hasEmptyOption, {hash:{},inverse:self.noop,fn:self.program(13, program13, data),data:data});
+  if(stack2 || stack2 === 0) { buffer += stack2; }
+  buffer += ">\n                    ";
+  stack2 = helpers.each.call(depth0, depth0.options, {hash:{},inverse:self.noop,fn:self.program(15, program15, data),data:data});
+  if(stack2 || stack2 === 0) { buffer += stack2; }
+  buffer += "\n                  </select>\n                  ";
+  stack2 = helpers.unless.call(depth0, depth0.default_value, {hash:{},inverse:self.noop,fn:self.program(18, program18, data),data:data});
+  if(stack2 || stack2 === 0) { buffer += stack2; }
+  buffer += "\n                  "
+    + escapeExpression(((stack1 = depth0.display_name),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
+    + "\n                </label>\n              </li>\n            ";
+  return buffer;
+  }
+function program11(depth0,data) {
+  
+  
+  return " empty";
+  }
+
+function program13(depth0,data) {
+  
+  
+  return " data-select-type=\"preserve-null-state\"";
+  }
+
+function program15(depth0,data) {
+  
+  var buffer = "", stack1, stack2;
+  buffer += "\n                      <option value=\""
+    + escapeExpression(((stack1 = depth0.value),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
+    + "\"";
+  stack2 = helpers['if'].call(depth0, depth0.selected, {hash:{},inverse:self.noop,fn:self.program(16, program16, data),data:data});
+  if(stack2 || stack2 === 0) { buffer += stack2; }
+  buffer += ">"
+    + escapeExpression(((stack1 = depth0.display_name),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
+    + "</option>\n                    ";
+  return buffer;
+  }
+function program16(depth0,data) {
+  
+  
+  return "selected=\"selected\"";
+  }
+
+function program18(depth0,data) {
+  
+  
+  return "\n                    <span class=\"right placeholder\">select a value</span>\n                  ";
+  }
+
+function program20(depth0,data) {
+  
+  var buffer = "", stack1;
+  buffer += "\n  <h1 class=\"null\">You have no outgoing services.</h1>\n  <p class=\"null\">Please go to the Auphonic website and add external services so you can automatically export your recordings.</p>\n  <ul>\n    <li><a href=\""
+    + escapeExpression(((stack1 = depth0.url),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
+    + "\" class=\"share\"><span></span>Add an external service</a></li>\n  </ul>\n";
+  return buffer;
+  }
+
+  stack1 = helpers['if'].call(depth0, depth0.service, {hash:{},inverse:self.program(20, program20, data),fn:self.program(1, program1, data),data:data});
+  if(stack1 || stack1 === 0) { buffer += stack1; }
   buffer += "\n";
   return buffer;
   });
+templates['detail-summary'] = template(function (Handlebars,depth0,helpers,partials,data) {
+  this.compilerInfo = [2,'>= 1.0.0-rc.3'];
+helpers = helpers || Handlebars.helpers; data = data || {};
+  var buffer = "", stack1, functionType="function", escapeExpression=this.escapeExpression;
+
+
+  buffer += "<div class=\"content\">\n  "
+    + escapeExpression(((stack1 = ((stack1 = depth0.metadata),stack1 == null || stack1 === false ? stack1 : stack1.summary)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
+    + "\n</div>\n";
+  return buffer;
+  });
+templates['preset'] = template(function (Handlebars,depth0,helpers,partials,data) {
+  this.compilerInfo = [2,'>= 1.0.0-rc.3'];
+helpers = helpers || Handlebars.helpers; data = data || {};
+  var buffer = "", stack1, stack2, options, functionType="function", escapeExpression=this.escapeExpression, helperMissing=helpers.helperMissing, self=this;
+
+function program1(depth0,data) {
+  
+  var buffer = "", stack1;
+  buffer += "\n      <br />\n      <span class=\"light small bold info-left\">\n        "
+    + escapeExpression(((stack1 = depth0.short_info),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
+    + "\n      </span>\n    ";
+  return buffer;
+  }
+
+  buffer += "<li class=\"swipeable show-popover\" data-popover-open-event=\"touchhold\" data-api-url=\"preset/"
+    + escapeExpression(((stack1 = depth0.uuid),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
+    + "\" data-method=\"delete\" data-id=\""
+    + escapeExpression(((stack1 = depth0.uuid),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
+    + "\" data-fire-event=\"remove\">\n  <span class=\"right removable expanded hidden\">\n    <span><a class=\"button red small\">Delete</a></span>\n  </span>\n  <div class=\"hidden popover top justify\" data-position=\"top\">\n    <a href=\"/preset/edit/"
+    + escapeExpression(((stack1 = depth0.uuid),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
+    + "\" class=\"button expand\">Edit</a>\n    <a class=\"button expand red deleteable\">Delete</a>\n  </div>\n  <a href=\"/preset/"
+    + escapeExpression(((stack1 = depth0.uuid),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
+    + "\" class=\"arrow expanded\">\n    <span></span>\n    <img src=\"";
+  options = {hash:{},data:data};
+  stack2 = ((stack1 = helpers.image),stack1 ? stack1.call(depth0, depth0.thumbnail, options) : helperMissing.call(depth0, "image", depth0.thumbnail, options));
+  if(stack2 || stack2 === 0) { buffer += stack2; }
+  buffer += "\" class=\"small-logo list-thumbnail\" />\n    "
+    + escapeExpression(((stack1 = depth0.preset_name),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
+    + "\n    ";
+  stack2 = helpers['if'].call(depth0, depth0.short_info, {hash:{},inverse:self.noop,fn:self.program(1, program1, data),data:data});
+  if(stack2 || stack2 === 0) { buffer += stack2; }
+  buffer += "\n  </a>\n</li>\n";
+  return buffer;
+  });
+templates['production'] = template(function (Handlebars,depth0,helpers,partials,data) {
+  this.compilerInfo = [2,'>= 1.0.0-rc.3'];
+helpers = helpers || Handlebars.helpers; data = data || {};
+  var buffer = "", stack1, stack2, options, functionType="function", escapeExpression=this.escapeExpression, helperMissing=helpers.helperMissing, self=this;
+
+function program1(depth0,data) {
+  
+  var buffer = "", stack1;
+  buffer += "\n      "
+    + escapeExpression(((stack1 = ((stack1 = depth0.metadata),stack1 == null || stack1 === false ? stack1 : stack1.title)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
+    + "\n    ";
+  return buffer;
+  }
+
+function program3(depth0,data) {
+  
+  
+  return "\n      Untitled\n    ";
+  }
+
+  buffer += "<li class=\"swipeable show-popover\" data-popover-open-event=\"touchhold\" data-api-url=\"production/"
+    + escapeExpression(((stack1 = depth0.uuid),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
+    + "\" data-method=\"delete\" data-id=\""
+    + escapeExpression(((stack1 = depth0.uuid),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
+    + "\" data-fire-event=\"remove\">\n  <span class=\"right removable expanded hidden\">\n    <span><a class=\"button red small\">Delete</a></span>\n  </span>\n  <div class=\"hidden popover top justify\" data-position=\"top\">\n    <a href=\"/production/edit/"
+    + escapeExpression(((stack1 = depth0.uuid),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
+    + "\" class=\"button expand\">Edit</a>\n    <a class=\"button expand red deleteable\">Delete</a>\n  </div>\n  <a href=\"/production/"
+    + escapeExpression(((stack1 = depth0.uuid),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
+    + "\" class=\"arrow expanded\">\n    <span></span>\n    <img src=\"";
+  options = {hash:{},data:data};
+  stack2 = ((stack1 = helpers.image),stack1 ? stack1.call(depth0, depth0.thumbnail, options) : helperMissing.call(depth0, "image", depth0.thumbnail, options));
+  if(stack2 || stack2 === 0) { buffer += stack2; }
+  buffer += "\" class=\"small-logo list-thumbnail\" />\n    ";
+  stack2 = helpers['if'].call(depth0, ((stack1 = depth0.metadata),stack1 == null || stack1 === false ? stack1 : stack1.title), {hash:{},inverse:self.program(3, program3, data),fn:self.program(1, program1, data),data:data});
+  if(stack2 || stack2 === 0) { buffer += stack2; }
+  buffer += "\n    <br />\n    <span class=\"small bold info-left\">\n      "
+    + escapeExpression(((stack1 = depth0.short_status_string),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
+    + " <span class=\"light\">"
+    + escapeExpression(((stack1 = depth0.short_info),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
+    + "</span>\n    </span>\n  </a>\n</li>\n";
+  return buffer;
+  });
+templates['algorithm-popover'] = template(function (Handlebars,depth0,helpers,partials,data) {
+  this.compilerInfo = [2,'>= 1.0.0-rc.3'];
+helpers = helpers || Handlebars.helpers; data = data || {};
+  var buffer = "", stack1, stack2, functionType="function", escapeExpression=this.escapeExpression, self=this;
+
+function program1(depth0,data) {
+  
+  var buffer = "", stack1;
+  buffer += "\n    <h1 class=\"small\">Available Options</h1>\n    <ul>\n    ";
+  stack1 = helpers.each.call(depth0, depth0.options, {hash:{},inverse:self.noop,fn:self.program(2, program2, data),data:data});
+  if(stack1 || stack1 === 0) { buffer += stack1; }
+  buffer += "\n    </ul>\n  ";
+  return buffer;
+  }
+function program2(depth0,data) {
+  
+  var buffer = "", stack1;
+  buffer += "\n      <li>"
+    + escapeExpression(((stack1 = depth0.display_name),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
+    + "</li>\n    ";
+  return buffer;
+  }
+
+  buffer += "<div class=\"hidden popover top justify\" data-position=\"top\">\n  <h1>"
+    + escapeExpression(((stack1 = depth0.display_name),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
+    + "</h1>\n  "
+    + escapeExpression(((stack1 = depth0.description),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
+    + "\n  ";
+  stack2 = helpers['if'].call(depth0, depth0.options, {hash:{},inverse:self.noop,fn:self.program(1, program1, data),data:data});
+  if(stack2 || stack2 === 0) { buffer += stack2; }
+  buffer += "\n</div>\n";
+  return buffer;
+  });
 templates['form-chapter'] = template(function (Handlebars,depth0,helpers,partials,data) {
-  this.compiledVersion = '1.0.rc.2';
+  this.compilerInfo = [2,'>= 1.0.0-rc.3'];
 helpers = helpers || Handlebars.helpers; data = data || {};
   
 
@@ -758,7 +1080,7 @@ helpers = helpers || Handlebars.helpers; data = data || {};
   return "<ul class=\"formcontent\">\n  <li>\n    <label class=\"left\">\n      <input type=\"text\" name=\"start\" placeholder=\"00:00:00\" class=\"right\" data-required=\"1\" data-format-time=\"1\" data-matches=\"^(\\d?\\d)?:([0-5]\\d?)(:([0-5]\\d?(\\.(\\d{1,6})?)?)?)?$\" />\n      Start\n    </label>\n  </li>\n  <li>\n    <label class=\"left\">\n      <input type=\"text\" name=\"title\" class=\"right\" data-required=\"1\" data-clearable=\"1\" />\n      Title\n    </label>\n  </li>\n</ul>\n";
   });
 templates['form-main'] = template(function (Handlebars,depth0,helpers,partials,data) {
-  this.compiledVersion = '1.0.rc.2';
+  this.compilerInfo = [2,'>= 1.0.0-rc.3'];
 helpers = helpers || Handlebars.helpers; partials = partials || Handlebars.partials; data = data || {};
   var buffer = "", stack1, stack2, functionType="function", escapeExpression=this.escapeExpression, self=this;
 
@@ -1057,8 +1379,109 @@ function program46(depth0,data) {
   buffer += "\n</ul>\n";
   return buffer;
   });
+templates['service-choose'] = template(function (Handlebars,depth0,helpers,partials,data) {
+  this.compilerInfo = [2,'>= 1.0.0-rc.3'];
+helpers = helpers || Handlebars.helpers; data = data || {};
+  var buffer = "", stack1, stack2, options, functionType="function", escapeExpression=this.escapeExpression, self=this, helperMissing=helpers.helperMissing;
+
+function program1(depth0,data) {
+  
+  
+  return "\n    <li><a href=\"/production/recording/file-upload\" class=\"arrow\"><span></span>Upload a File from this Device</a></li>\n  ";
+  }
+
+function program3(depth0,data) {
+  
+  var buffer = "", stack1;
+  buffer += "\n    <li><a href=\"/production/source/"
+    + escapeExpression(((stack1 = depth0.uuid),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
+    + "\" class=\"arrow\"><span></span><span class=\"light\">"
+    + escapeExpression(((stack1 = depth0.display_type),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
+    + "</span> <small>"
+    + escapeExpression(((stack1 = depth0.display_name),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
+    + "</small></a></li>\n  ";
+  return buffer;
+  }
+
+  buffer += "<ul>\n  <li><a href=\"/production/recording/new-audio\" class=\"arrow\"><span></span>New Audio Recording</a></li>\n  <li><a href=\"/production/recording/new-video\" class=\"arrow\"><span></span>New Video Recording</a></li>\n  ";
+  options = {hash:{},inverse:self.noop,fn:self.program(1, program1, data),data:data};
+  stack2 = ((stack1 = helpers.platform),stack1 ? stack1.call(depth0, "android", options) : helperMissing.call(depth0, "platform", "android", options));
+  if(stack2 || stack2 === 0) { buffer += stack2; }
+  buffer += "\n  ";
+  stack2 = helpers.each.call(depth0, depth0.source, {hash:{},inverse:self.noop,fn:self.program(3, program3, data),data:data});
+  if(stack2 || stack2 === 0) { buffer += stack2; }
+  buffer += "\n</ul>\n";
+  return buffer;
+  });
+templates['about'] = template(function (Handlebars,depth0,helpers,partials,data) {
+  this.compilerInfo = [2,'>= 1.0.0-rc.3'];
+helpers = helpers || Handlebars.helpers; data = data || {};
+  var buffer = "", stack1, stack2, options, functionType="function", escapeExpression=this.escapeExpression, helperMissing=helpers.helperMissing;
+
+
+  buffer += "<ul>\n  <li><span class=\"right\">"
+    + escapeExpression(((stack1 = depth0.version),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
+    + "</span><label class=\"left\">Version</label></li>\n  <li><span class=\"right\">"
+    + escapeExpression(((stack1 = ((stack1 = depth0.user),stack1 == null || stack1 === false ? stack1 : stack1.name)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
+    + "</span><label class=\"left\">User</label></li>\n  <li><a href=\""
+    + escapeExpression(((stack1 = depth0.repository),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
+    + "\" class=\"share\"><span></span>Repository <span class=\"light\">";
+  options = {hash:{},data:data};
+  stack2 = ((stack1 = helpers['format-url']),stack1 ? stack1.call(depth0, depth0.repository, options) : helperMissing.call(depth0, "format-url", depth0.repository, options));
+  if(stack2 || stack2 === 0) { buffer += stack2; }
+  buffer += "</span></a></li>\n</ul>\n";
+  return buffer;
+  });
+templates['recordings'] = template(function (Handlebars,depth0,helpers,partials,data) {
+  this.compilerInfo = [2,'>= 1.0.0-rc.3'];
+helpers = helpers || Handlebars.helpers; data = data || {};
+  var buffer = "", stack1, functionType="function", escapeExpression=this.escapeExpression, self=this;
+
+function program1(depth0,data) {
+  
+  var buffer = "", stack1;
+  buffer += "\n  <ul class=\"main-list\">\n  ";
+  stack1 = helpers.each.call(depth0, depth0.recordings, {hash:{},inverse:self.noop,fn:self.program(2, program2, data),data:data});
+  if(stack1 || stack1 === 0) { buffer += stack1; }
+  buffer += "\n  </ul>\n";
+  return buffer;
+  }
+function program2(depth0,data) {
+  
+  var buffer = "", stack1;
+  buffer += "\n    <li class=\"swipeable show-popover\" data-popover-open-event=\"touchhold\" data-id=\""
+    + escapeExpression(((stack1 = depth0.id),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
+    + "\" data-fire-event=\"remove\">\n      <span class=\"right removable hidden\">\n        <span><a class=\"button red small\">Delete</a></span>\n      </span>\n      <div class=\"hidden popover top justify\" data-position=\"top\">\n        <a class=\"button expand red deleteable\">Delete</a>\n      </div>\n      <a href=\"/recording/"
+    + escapeExpression(((stack1 = depth0.id),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
+    + "\" class=\"arrow\">\n        <span></span>\n        "
+    + escapeExpression(((stack1 = depth0.display_name),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
+    + "\n        <small class=\"light\">"
+    + escapeExpression(((stack1 = depth0.display_date),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
+    + "</small>\n      </a>\n    </li>\n  ";
+  return buffer;
+  }
+
+function program4(depth0,data) {
+  
+  
+  return "\n  <h1 class=\"null\">You have no recent recordings.</h1>\n  <ul>\n    <li><a href=\"/production/recording/new-audio\" class=\"arrow\"><span></span>Start a new Audio Recording</a></li>\n  </ul>\n";
+  }
+
+  stack1 = helpers['if'].call(depth0, depth0.recordings, {hash:{},inverse:self.program(4, program4, data),fn:self.program(1, program1, data),data:data});
+  if(stack1 || stack1 === 0) { buffer += stack1; }
+  buffer += "\n";
+  return buffer;
+  });
+templates['audio-recorder'] = template(function (Handlebars,depth0,helpers,partials,data) {
+  this.compilerInfo = [2,'>= 1.0.0-rc.3'];
+helpers = helpers || Handlebars.helpers; data = data || {};
+  
+
+
+  return "<div class=\"audio-recorder\">\n  <div class=\"meter\">\n    <div class=\"audio-level\">\n      <div class=\"peak-meter\"></div>\n      <div class=\"average-meter\"></div>\n      <div class=\"stripes\"></div>\n    </div>\n    <div class=\"scale\">\n      <div class=\"scale-48\">-48</div>\n      <div class=\"scale-42\">-42</div>\n      <div class=\"scale-36\">-36</div>\n      <div class=\"scale-30\">-30</div>\n      <div class=\"scale-24\">-24</div>\n      <div class=\"scale-18\">-18</div>\n      <div class=\"scale-12\">-12</div>\n      <div class=\"scale-6\">-6</div>\n      <div class=\"scale-0\">0</div>\n    </div>\n  </div>\n\n  <div class=\"clipwarning\">Too loud - please lower volume!</div>\n\n  <a class=\"button red recorder\">Start</a>\n\n  <ul class=\"status expand hidden fade out\">\n    <li>\n      <span class=\"recording-length right light\"></span>\n      <label>Length</label>\n    </li>\n    <li class=\"wide\">\n      <a class=\"add-chapter-mark\" class=\"left\">\n        <span class=\"right light out\"></span>\n        Add Chapter Mark\n      </a>\n    </li>\n    <li class=\"chapter-text transition-able fade\">\n      <input type=\"text\" data-clearable=\"1\">\n    </li>\n  </ul>\n</div>\n";
+  });
 templates['form-metadata'] = template(function (Handlebars,depth0,helpers,partials,data) {
-  this.compiledVersion = '1.0.rc.2';
+  this.compilerInfo = [2,'>= 1.0.0-rc.3'];
 helpers = helpers || Handlebars.helpers; data = data || {};
   var buffer = "", stack1, stack2, options, helperMissing=helpers.helperMissing, self=this;
 
@@ -1081,8 +1504,19 @@ function program1(depth0,data) {
   buffer += "\">\n    <a href=\"#\">Remove</a>\n  </li>\n</ul>\n\n<h1 class=\"clear\">Details</h1>\n<ul class=\"formcontent\">\n  <li>\n    <label class=\"left\"><input type=\"text\" name=\"metadata.genre\" class=\"right\" />Genre</label>\n  </li>\n  <li>\n    <label class=\"left\"><input type=\"tel\" name=\"metadata.year\" class=\"right\" data-clearable=\"1\" />Year</label>\n  </li>\n  <li>\n    <label class=\"left\"><input type=\"text\" name=\"metadata.publisher\" class=\"right\" />Publisher</label>\n  </li>\n  <li>\n    <label class=\"left\"><input type=\"url\" name=\"metadata.url\" class=\"right\" autocapitalize=\"off\" />URL</label>\n  </li>\n  <li>\n    <label class=\"left\"><input type=\"text\" name=\"metadata.license\" placeholder=\"License etc.\" class=\"right\" />Copyright</label>\n  </li>\n  <li>\n    <label class=\"left\"><input type=\"url\" name=\"metadata.license_url\" placeholder=\"URL\" autocapitalize=\"off\" class=\"right\" />License</label>\n  </li>\n  <li>\n    <label class=\"left\"><input type=\"text\" name=\"metadata.tags\" placeholder=\"comma separated\" class=\"right\" />Tags</label>\n  </li>\n  <li class=\"wide\">\n    <label class=\"left\">\n      <div class=\"right\">\n        <div class=\"checkbox\">\n          <div>\n            <span class=\"left\"></span><span class=\"thumb\" data-on=\"YES\" data-off=\"NO\"></span>\n            <input type=\"checkbox\" name=\"metadata.append_chapters\" value=\"1\" />\n          </div>\n        </div>\n      </div>\n      Append Chapters\n    </label>\n  </li>\n</ul>\n\n<h1>Subtitle <small>(max 255 characters)</small></h1>\n<ul class=\"formcontent\">\n  <li><label><textarea class=\"autogrow\" name=\"metadata.subtitle\" maxlength=\"255\"></textarea></label></li>\n</ul>\n<h1>Summary</h1>\n<ul class=\"formcontent\">\n  <li><label><textarea class=\"autogrow\" name=\"metadata.summary\"></textarea></label></li>\n</ul>\n";
   return buffer;
   });
+templates['ui-title'] = template(function (Handlebars,depth0,helpers,partials,data) {
+  this.compilerInfo = [2,'>= 1.0.0-rc.3'];
+helpers = helpers || Handlebars.helpers; data = data || {};
+  var buffer = "", stack1, functionType="function", escapeExpression=this.escapeExpression;
+
+
+  buffer += "<h1>\n  <a href=\"#\">\n    <span class=\"back\"></span><span class=\"icon\"></span>\n  </a>\n  <span class=\"text\">"
+    + escapeExpression(((stack1 = depth0.title),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
+    + "</span>\n</h1>\n";
+  return buffer;
+  });
 templates['form-output-file-detail'] = template(function (Handlebars,depth0,helpers,partials,data) {
-  this.compiledVersion = '1.0.rc.2';
+  this.compilerInfo = [2,'>= 1.0.0-rc.3'];
 helpers = helpers || Handlebars.helpers; data = data || {};
   var buffer = "", stack1, self=this;
 
@@ -1109,8 +1543,43 @@ function program2(depth0,data) {
   buffer += "\n<li>\n  <label class=\"left\">\n    <input type=\"text\" name=\"suffix\" placeholder=\"optional\" class=\"right\" />\n    Suffix\n  </label>\n</li>\n";
   return buffer;
   });
+templates['productions'] = template(function (Handlebars,depth0,helpers,partials,data) {
+  this.compilerInfo = [2,'>= 1.0.0-rc.3'];
+helpers = helpers || Handlebars.helpers; partials = partials || Handlebars.partials; data = data || {};
+  var buffer = "", stack1, self=this;
+
+function program1(depth0,data) {
+  
+  var buffer = "", stack1;
+  buffer += "\n  <ul class=\"production_container expand load-more main-list\">\n    ";
+  stack1 = helpers.each.call(depth0, depth0.production, {hash:{},inverse:self.noop,fn:self.program(2, program2, data),data:data});
+  if(stack1 || stack1 === 0) { buffer += stack1; }
+  buffer += "\n  </ul>\n";
+  return buffer;
+  }
+function program2(depth0,data) {
+  
+  var buffer = "", stack1;
+  buffer += "\n      ";
+  stack1 = self.invokePartial(partials.production, 'production', depth0, helpers, partials, data);
+  if(stack1 || stack1 === 0) { buffer += stack1; }
+  buffer += "\n    ";
+  return buffer;
+  }
+
+function program4(depth0,data) {
+  
+  
+  return "\n  <h1 class=\"null\">You have not created any productions yet</h1>\n  <ul>\n    <li><a href=\"/production/recording/new-audio\" class=\"arrow\"><span></span>Start a new Audio Recording</a></li>\n    <li><a href=\"/production/source\" class=\"arrow\"><span></span>Create a new Production</a></li>\n  </ul>\n";
+  }
+
+  stack1 = helpers['if'].call(depth0, depth0.production, {hash:{},inverse:self.program(4, program4, data),fn:self.program(1, program1, data),data:data});
+  if(stack1 || stack1 === 0) { buffer += stack1; }
+  buffer += "\n";
+  return buffer;
+  });
 templates['form-output-file'] = template(function (Handlebars,depth0,helpers,partials,data) {
-  this.compiledVersion = '1.0.rc.2';
+  this.compilerInfo = [2,'>= 1.0.0-rc.3'];
 helpers = helpers || Handlebars.helpers; data = data || {};
   var buffer = "", stack1, functionType="function", escapeExpression=this.escapeExpression, self=this;
 
@@ -1193,421 +1662,31 @@ function program8(depth0,data) {
   buffer += "\n</ul>\n";
   return buffer;
   });
-templates['form-service'] = template(function (Handlebars,depth0,helpers,partials,data) {
-  this.compiledVersion = '1.0.rc.2';
+templates['ui-action'] = template(function (Handlebars,depth0,helpers,partials,data) {
+  this.compilerInfo = [2,'>= 1.0.0-rc.3'];
 helpers = helpers || Handlebars.helpers; data = data || {};
-  var buffer = "", stack1, functionType="function", escapeExpression=this.escapeExpression, self=this;
+  var buffer = "", stack1, stack2, functionType="function", escapeExpression=this.escapeExpression, self=this;
 
 function program1(depth0,data) {
   
   var buffer = "", stack1;
-  buffer += "\n  <ul class=\"formcontent\">\n    ";
-  stack1 = helpers.each.call(depth0, depth0.service, {hash:{},inverse:self.noop,fn:self.program(2, program2, data),data:data});
-  if(stack1 || stack1 === 0) { buffer += stack1; }
-  buffer += "\n  </ul>\n\n  ";
-  stack1 = helpers.each.call(depth0, depth0.service, {hash:{},inverse:self.noop,fn:self.program(4, program4, data),data:data});
-  if(stack1 || stack1 === 0) { buffer += stack1; }
-  buffer += "\n";
-  return buffer;
-  }
-function program2(depth0,data) {
-  
-  var buffer = "", stack1;
-  buffer += "\n      <li class=\"wide\">\n        <input type=\"hidden\" name=\"outgoing_services."
-    + escapeExpression(((stack1 = depth0.uuid),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + ".uuid\" value=\""
-    + escapeExpression(((stack1 = depth0.uuid),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "\" />\n        <label class=\"left\">\n          <div class=\"right\">\n            <div class=\"checkbox\">\n              <div>\n                <span class=\"left\"></span><span class=\"thumb\" data-on=\"ON\" data-off=\"OFF\"></span>\n                <input type=\"checkbox\" name=\"outgoing_services."
-    + escapeExpression(((stack1 = depth0.uuid),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + ".checked\" data-uuid=\""
-    + escapeExpression(((stack1 = depth0.uuid),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "\" value=\"1\" />\n              </div>\n            </div>\n          </div>\n          <small><span class=\"light\">"
-    + escapeExpression(((stack1 = depth0.display_type),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "</span> "
-    + escapeExpression(((stack1 = depth0.display_name),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "</small>\n        </label>\n      </li>\n    ";
+  buffer += " "
+    + escapeExpression(((stack1 = depth0.className),typeof stack1 === functionType ? stack1.apply(depth0) : stack1));
   return buffer;
   }
 
-function program4(depth0,data) {
-  
-  var buffer = "", stack1;
-  buffer += "\n    ";
-  stack1 = helpers['if'].call(depth0, depth0.parameters, {hash:{},inverse:self.noop,fn:self.program(5, program5, data),data:data});
-  if(stack1 || stack1 === 0) { buffer += stack1; }
-  buffer += "\n  ";
-  return buffer;
-  }
-function program5(depth0,data) {
-  
-  var buffer = "", stack1, stack2;
-  buffer += "\n      <div class=\"fade\" data-service-uuid=\""
-    + escapeExpression(((stack1 = depth0.uuid),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "\">\n        <h1>"
-    + escapeExpression(((stack1 = depth0.display_type),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + " - "
-    + escapeExpression(((stack1 = depth0.display_name),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "</h1>\n        <ul>\n          ";
-  stack2 = helpers.each.call(depth0, depth0.parameters, {hash:{},inverse:self.noop,fn:self.program(6, program6, data),data:data});
-  if(stack2 || stack2 === 0) { buffer += stack2; }
-  buffer += "\n        </ul>\n      </div>\n    ";
-  return buffer;
-  }
-function program6(depth0,data) {
-  
-  var buffer = "", stack1;
-  buffer += "\n            ";
-  stack1 = helpers['if'].call(depth0, depth0.checkbox, {hash:{},inverse:self.noop,fn:self.program(7, program7, data),data:data});
-  if(stack1 || stack1 === 0) { buffer += stack1; }
-  buffer += "\n            ";
-  stack1 = helpers['if'].call(depth0, depth0.select, {hash:{},inverse:self.noop,fn:self.program(10, program10, data),data:data});
-  if(stack1 || stack1 === 0) { buffer += stack1; }
-  buffer += "\n          ";
-  return buffer;
-  }
-function program7(depth0,data) {
-  
-  var buffer = "", stack1, stack2;
-  buffer += "\n              <li class=\"wide\">\n                <label class=\"left\">\n                  <div class=\"right\">\n                    <div class=\"checkbox\">\n                      <div>\n                        <span class=\"left\"></span><span class=\"thumb\" data-on=\"YES\" data-off=\"NO\"></span>\n                        <input type=\"checkbox\" name=\"outgoing_services."
-    + escapeExpression(((stack1 = depth0.uuid),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "."
-    + escapeExpression(((stack1 = depth0.key),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "\" value=\"1\" ";
-  stack2 = helpers['if'].call(depth0, depth0.default_value, {hash:{},inverse:self.noop,fn:self.program(8, program8, data),data:data});
-  if(stack2 || stack2 === 0) { buffer += stack2; }
-  buffer += "/>\n                      </div>\n                    </div>\n                  </div>\n                  "
-    + escapeExpression(((stack1 = depth0.display_name),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "\n                </label>\n              </li>\n            ";
-  return buffer;
-  }
-function program8(depth0,data) {
-  
-  
-  return "checked=\"checked\"";
-  }
-
-function program10(depth0,data) {
-  
-  var buffer = "", stack1, stack2;
-  buffer += "\n              <li>\n                <label class=\"left\">\n                  <select name=\"outgoing_services."
-    + escapeExpression(((stack1 = depth0.uuid),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "."
-    + escapeExpression(((stack1 = depth0.key),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "\" class=\"right";
-  stack2 = helpers.unless.call(depth0, depth0.default_value, {hash:{},inverse:self.noop,fn:self.program(11, program11, data),data:data});
-  if(stack2 || stack2 === 0) { buffer += stack2; }
-  buffer += "\"";
-  stack2 = helpers['if'].call(depth0, depth0.hasEmptyOption, {hash:{},inverse:self.noop,fn:self.program(13, program13, data),data:data});
-  if(stack2 || stack2 === 0) { buffer += stack2; }
-  buffer += ">\n                    ";
-  stack2 = helpers.each.call(depth0, depth0.options, {hash:{},inverse:self.noop,fn:self.program(15, program15, data),data:data});
-  if(stack2 || stack2 === 0) { buffer += stack2; }
-  buffer += "\n                  </select>\n                  ";
-  stack2 = helpers.unless.call(depth0, depth0.default_value, {hash:{},inverse:self.noop,fn:self.program(18, program18, data),data:data});
-  if(stack2 || stack2 === 0) { buffer += stack2; }
-  buffer += "\n                  "
-    + escapeExpression(((stack1 = depth0.display_name),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "\n                </label>\n              </li>\n            ";
-  return buffer;
-  }
-function program11(depth0,data) {
-  
-  
-  return " empty";
-  }
-
-function program13(depth0,data) {
-  
-  
-  return " data-select-type=\"preserve-null-state\"";
-  }
-
-function program15(depth0,data) {
-  
-  var buffer = "", stack1, stack2;
-  buffer += "\n                      <option value=\""
-    + escapeExpression(((stack1 = depth0.value),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "\"";
-  stack2 = helpers['if'].call(depth0, depth0.selected, {hash:{},inverse:self.noop,fn:self.program(16, program16, data),data:data});
-  if(stack2 || stack2 === 0) { buffer += stack2; }
-  buffer += ">"
-    + escapeExpression(((stack1 = depth0.display_name),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "</option>\n                    ";
-  return buffer;
-  }
-function program16(depth0,data) {
-  
-  
-  return "selected=\"selected\"";
-  }
-
-function program18(depth0,data) {
-  
-  
-  return "\n                    <span class=\"right placeholder\">select a value</span>\n                  ";
-  }
-
-function program20(depth0,data) {
-  
-  var buffer = "", stack1;
-  buffer += "\n  <h1 class=\"null\">You have no outgoing services.</h1>\n  <p class=\"null\">Please go to the Auphonic website and add external services so you can automatically export your recordings.</p>\n  <ul>\n    <li><a href=\""
+  buffer += "<a href=\""
     + escapeExpression(((stack1 = depth0.url),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "\" class=\"share\"><span></span>Add an external service</a></li>\n  </ul>\n";
-  return buffer;
-  }
-
-  stack1 = helpers['if'].call(depth0, depth0.service, {hash:{},inverse:self.program(20, program20, data),fn:self.program(1, program1, data),data:data});
-  if(stack1 || stack1 === 0) { buffer += stack1; }
-  buffer += "\n";
-  return buffer;
-  });
-templates['home'] = template(function (Handlebars,depth0,helpers,partials,data) {
-  this.compiledVersion = '1.0.rc.2';
-helpers = helpers || Handlebars.helpers; data = data || {};
-  var buffer = "", stack1, stack2, options, self=this, helperMissing=helpers.helperMissing, functionType="function", escapeExpression=this.escapeExpression;
-
-function program1(depth0,data) {
-  
-  
-  return "\n  <div class=\"logo\"></div>\n";
-  }
-
-function program3(depth0,data) {
-  
-  
-  return "\n  <a href=\"/logout\" class=\"button red expand\">Logout</a>\n";
-  }
-
-  options = {hash:{},inverse:self.noop,fn:self.program(1, program1, data),data:data};
-  stack2 = ((stack1 = helpers.platform),stack1 ? stack1.call(depth0, "ios", options) : helperMissing.call(depth0, "platform", "ios", options));
+    + "\" class=\"button-right hidden\" data-hit-target=\"1\"><span class=\"button";
+  stack2 = helpers['if'].call(depth0, depth0.className, {hash:{},inverse:self.noop,fn:self.program(1, program1, data),data:data});
   if(stack2 || stack2 === 0) { buffer += stack2; }
-  buffer += "\n\n<ul>\n  <li><a href=\"/production/recording/new-audio\" class=\"arrow\"><span></span>Start a new Audio Recording</a></li>\n  <li><a href=\"/production/source\" class=\"arrow\"><span></span>Create a new Production</a></li>\n  <li><a href=\"/preset/new\" class=\"arrow\"><span></span>Define a Preset</a></li>\n  <li><a href=\"/external-services\" class=\"arrow\"><span></span>External Services</a></li>\n  <li><a href=\"/about\" class=\"arrow\"><span></span>About</a></li>\n  <li><a href=\"/team\" class=\"arrow\"><span></span>Team</a></li>\n  <li><a href=\""
-    + escapeExpression(((stack1 = depth0.feedback),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "\" class=\"share\"><span></span>Feedback</a></li>\n</ul>\n\n";
-  options = {hash:{},inverse:self.noop,fn:self.program(3, program3, data),data:data};
-  stack2 = ((stack1 = helpers.platform),stack1 ? stack1.call(depth0, "ios", options) : helperMissing.call(depth0, "platform", "ios", options));
-  if(stack2 || stack2 === 0) { buffer += stack2; }
-  buffer += "\n";
-  return buffer;
-  });
-templates['login'] = template(function (Handlebars,depth0,helpers,partials,data) {
-  this.compiledVersion = '1.0.rc.2';
-helpers = helpers || Handlebars.helpers; data = data || {};
-  var buffer = "", stack1, functionType="function", escapeExpression=this.escapeExpression;
-
-
-  buffer += "<form action=\"/\" method=\"post\">\n  <input type=\"hidden\" name=\"client_id\" value=\""
-    + escapeExpression(((stack1 = depth0.client_id),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "\" />\n  <input type=\"hidden\" name=\"client_secret\" value=\""
-    + escapeExpression(((stack1 = depth0.client_secret),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "\" />\n  <input type=\"hidden\" name=\"grant_type\" value=\"password\" />\n  <div class=\"formcontent\">\n    <label>\n      <input type=\"text\" name=\"username\" value=\""
-    + escapeExpression(((stack1 = depth0.username),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "\" placeholder=\"email or username\" autocapitalize=\"off\" autocorrect=\"off\" data-clearable=\"1\" />\n    </label>\n    <label>\n      <input type=\"password\" name=\"password\" placeholder=\"password\" />\n    </label>\n  </div>\n  <div>\n    <input type=\"submit\" name=\"submit\" value=\"Login\" />\n    <a href=\""
-    + escapeExpression(((stack1 = depth0.registerURL),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "\" value=\"Register\" class=\"register button\">Register</a>\n  </div>\n</form>\n";
-  return buffer;
-  });
-templates['logout-popover'] = template(function (Handlebars,depth0,helpers,partials,data) {
-  this.compiledVersion = '1.0.rc.2';
-helpers = helpers || Handlebars.helpers; data = data || {};
-  
-
-
-  return "<div class=\"hidden popover right white justify\">\n  <a href=\"/logout\" class=\"button red expand\">Logout</a>\n</div>\n";
-  });
-templates['player'] = template(function (Handlebars,depth0,helpers,partials,data) {
-  this.compiledVersion = '1.0.rc.2';
-helpers = helpers || Handlebars.helpers; data = data || {};
-  var buffer = "", stack1, stack2, helperMissing=helpers.helperMissing, functionType="function", escapeExpression=this.escapeExpression, self=this;
-
-function program1(depth0,data) {
-  
-  
-  return "<span class=\"hidden\" data-local=\"1\" />";
-  }
-
-function program3(depth0,data) {
-  
-  var buffer = "", stack1, stack2, options;
-  buffer += "\n      <img src=\"";
-  options = {hash:{},data:data};
-  stack2 = ((stack1 = helpers.image),stack1 ? stack1.call(depth0, depth0.waveform_image, options) : helperMissing.call(depth0, "image", depth0.waveform_image, options));
-  if(stack2 || stack2 === 0) { buffer += stack2; }
-  buffer += "\" />\n    ";
-  return buffer;
-  }
-
-function program5(depth0,data) {
-  
-  
-  return "\n      <div class=\"line\"></div>\n    ";
-  }
-
-  buffer += "<div class=\"player content expand with-shadow clear\">\n  <div class=\"play-button content full\">\n    <a class=\"play\">\n      <span class=\"hidden\" data-media=\"1\">"
-    + escapeExpression(((stack1 = depth0.media_files),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "</span>\n      <span class=\"hidden\" data-chapters=\"1\">"
-    + escapeExpression(((stack1 = depth0.player_chapters),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "</span>\n      <span class=\"hidden\" data-duration=\"1\">"
-    + escapeExpression(((stack1 = depth0.duration),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "</span>\n      ";
-  stack2 = helpers['if'].call(depth0, depth0.isLocal, {hash:{},inverse:self.noop,fn:self.program(1, program1, data),data:data});
-  if(stack2 || stack2 === 0) { buffer += stack2; }
-  buffer += "\n    </a>\n  </div>\n  <div class=\"waveform content full show-popover\" data-popover-open-event=\"touchstart\" data-popover-open-delay=\"300\" data-popover-close-event=\"touchend\">\n    ";
-  stack2 = helpers['if'].call(depth0, depth0.waveform_image, {hash:{},inverse:self.program(5, program5, data),fn:self.program(3, program3, data),data:data});
-  if(stack2 || stack2 === 0) { buffer += stack2; }
-  buffer += "\n    <div class=\"position\"></div>\n      <div class=\"hidden popover top center auto-width\" data-position=\"top\"></div>\n  </div>\n\n  <div class=\"player-details\">\n    <div class=\"duration light\">"
-    + escapeExpression(((stack1 = depth0.duration_string),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "</div>\n    <div class=\"current-time light\"></div>\n    <div class=\"chapter-mark bold\"></div>\n  </div>\n</div>\n";
-  return buffer;
-  });
-templates['preset'] = template(function (Handlebars,depth0,helpers,partials,data) {
-  this.compiledVersion = '1.0.rc.2';
-helpers = helpers || Handlebars.helpers; data = data || {};
-  var buffer = "", stack1, stack2, options, functionType="function", escapeExpression=this.escapeExpression, helperMissing=helpers.helperMissing, self=this;
-
-function program1(depth0,data) {
-  
-  var buffer = "", stack1;
-  buffer += "\n      <br />\n      <span class=\"light small bold info-left\">\n        "
-    + escapeExpression(((stack1 = depth0.short_info),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "\n      </span>\n    ";
-  return buffer;
-  }
-
-  buffer += "<li class=\"swipeable show-popover\" data-popover-open-event=\"touchhold\" data-api-url=\"preset/"
-    + escapeExpression(((stack1 = depth0.uuid),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "\" data-method=\"delete\" data-id=\""
-    + escapeExpression(((stack1 = depth0.uuid),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "\" data-fire-event=\"remove\">\n  <span class=\"right removable expanded hidden\">\n    <span><a class=\"button red small\">Delete</a></span>\n  </span>\n  <div class=\"hidden popover top justify\" data-position=\"top\">\n    <a href=\"/preset/edit/"
-    + escapeExpression(((stack1 = depth0.uuid),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "\" class=\"button expand\">Edit</a>\n    <a class=\"button expand red deleteable\">Delete</a>\n  </div>\n  <a href=\"/preset/"
-    + escapeExpression(((stack1 = depth0.uuid),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "\" class=\"arrow expanded\">\n    <span></span>\n    <img src=\"";
-  options = {hash:{},data:data};
-  stack2 = ((stack1 = helpers.image),stack1 ? stack1.call(depth0, depth0.thumbnail, options) : helperMissing.call(depth0, "image", depth0.thumbnail, options));
-  if(stack2 || stack2 === 0) { buffer += stack2; }
-  buffer += "\" class=\"small-logo list-thumbnail\" />\n    "
-    + escapeExpression(((stack1 = depth0.preset_name),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "\n    ";
-  stack2 = helpers['if'].call(depth0, depth0.short_info, {hash:{},inverse:self.noop,fn:self.program(1, program1, data),data:data});
-  if(stack2 || stack2 === 0) { buffer += stack2; }
-  buffer += "\n  </a>\n</li>\n";
-  return buffer;
-  });
-templates['presets'] = template(function (Handlebars,depth0,helpers,partials,data) {
-  this.compiledVersion = '1.0.rc.2';
-helpers = helpers || Handlebars.helpers; partials = partials || Handlebars.partials; data = data || {};
-  var buffer = "", stack1, self=this;
-
-function program1(depth0,data) {
-  
-  var buffer = "", stack1;
-  buffer += "\n  <ul class=\"preset_container expand load-more main-list\">\n    ";
-  stack1 = helpers.each.call(depth0, depth0.preset, {hash:{},inverse:self.noop,fn:self.program(2, program2, data),data:data});
-  if(stack1 || stack1 === 0) { buffer += stack1; }
-  buffer += "\n  </ul>\n";
-  return buffer;
-  }
-function program2(depth0,data) {
-  
-  var buffer = "", stack1;
-  buffer += "\n      ";
-  stack1 = self.invokePartial(partials.preset, 'preset', depth0, helpers, partials, data);
-  if(stack1 || stack1 === 0) { buffer += stack1; }
-  buffer += "\n    ";
-  return buffer;
-  }
-
-function program4(depth0,data) {
-  
-  
-  return "\n  <h1 class=\"null\">You have no presets yet.</h1>\n  <p class=\"null\">A preset helps you predefine settings like metadata or output files and speeds up creating new productions.</p>\n  <ul>\n    <li><a href=\"/preset/new\" class=\"arrow\"><span></span>Define a new Preset</a></li>\n  </ul>\n";
-  }
-
-  stack1 = helpers['if'].call(depth0, depth0.preset, {hash:{},inverse:self.program(4, program4, data),fn:self.program(1, program1, data),data:data});
-  if(stack1 || stack1 === 0) { buffer += stack1; }
-  buffer += "\n";
-  return buffer;
-  });
-templates['production'] = template(function (Handlebars,depth0,helpers,partials,data) {
-  this.compiledVersion = '1.0.rc.2';
-helpers = helpers || Handlebars.helpers; data = data || {};
-  var buffer = "", stack1, stack2, options, functionType="function", escapeExpression=this.escapeExpression, helperMissing=helpers.helperMissing, self=this;
-
-function program1(depth0,data) {
-  
-  var buffer = "", stack1;
-  buffer += "\n      "
-    + escapeExpression(((stack1 = ((stack1 = depth0.metadata),stack1 == null || stack1 === false ? stack1 : stack1.title)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "\n    ";
-  return buffer;
-  }
-
-function program3(depth0,data) {
-  
-  
-  return "\n      Untitled\n    ";
-  }
-
-  buffer += "<li class=\"swipeable show-popover\" data-popover-open-event=\"touchhold\" data-api-url=\"production/"
-    + escapeExpression(((stack1 = depth0.uuid),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "\" data-method=\"delete\" data-id=\""
-    + escapeExpression(((stack1 = depth0.uuid),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "\" data-fire-event=\"remove\">\n  <span class=\"right removable expanded hidden\">\n    <span><a class=\"button red small\">Delete</a></span>\n  </span>\n  <div class=\"hidden popover top justify\" data-position=\"top\">\n    <a href=\"/production/edit/"
-    + escapeExpression(((stack1 = depth0.uuid),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "\" class=\"button expand\">Edit</a>\n    <a class=\"button expand red deleteable\">Delete</a>\n  </div>\n  <a href=\"/production/"
-    + escapeExpression(((stack1 = depth0.uuid),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "\" class=\"arrow expanded\">\n    <span></span>\n    <img src=\"";
-  options = {hash:{},data:data};
-  stack2 = ((stack1 = helpers.image),stack1 ? stack1.call(depth0, depth0.thumbnail, options) : helperMissing.call(depth0, "image", depth0.thumbnail, options));
-  if(stack2 || stack2 === 0) { buffer += stack2; }
-  buffer += "\" class=\"small-logo list-thumbnail\" />\n    ";
-  stack2 = helpers['if'].call(depth0, ((stack1 = depth0.metadata),stack1 == null || stack1 === false ? stack1 : stack1.title), {hash:{},inverse:self.program(3, program3, data),fn:self.program(1, program1, data),data:data});
-  if(stack2 || stack2 === 0) { buffer += stack2; }
-  buffer += "\n    <br />\n    <span class=\"small bold info-left\">\n      "
-    + escapeExpression(((stack1 = depth0.short_status_string),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + " <span class=\"light\">"
-    + escapeExpression(((stack1 = depth0.short_info),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "</span>\n    </span>\n  </a>\n</li>\n";
-  return buffer;
-  });
-templates['productions'] = template(function (Handlebars,depth0,helpers,partials,data) {
-  this.compiledVersion = '1.0.rc.2';
-helpers = helpers || Handlebars.helpers; partials = partials || Handlebars.partials; data = data || {};
-  var buffer = "", stack1, self=this;
-
-function program1(depth0,data) {
-  
-  var buffer = "", stack1;
-  buffer += "\n  <ul class=\"production_container expand load-more main-list\">\n    ";
-  stack1 = helpers.each.call(depth0, depth0.production, {hash:{},inverse:self.noop,fn:self.program(2, program2, data),data:data});
-  if(stack1 || stack1 === 0) { buffer += stack1; }
-  buffer += "\n  </ul>\n";
-  return buffer;
-  }
-function program2(depth0,data) {
-  
-  var buffer = "", stack1;
-  buffer += "\n      ";
-  stack1 = self.invokePartial(partials.production, 'production', depth0, helpers, partials, data);
-  if(stack1 || stack1 === 0) { buffer += stack1; }
-  buffer += "\n    ";
-  return buffer;
-  }
-
-function program4(depth0,data) {
-  
-  
-  return "\n  <h1 class=\"null\">You have not created any productions yet</h1>\n  <ul>\n    <li><a href=\"/production/recording/new-audio\" class=\"arrow\"><span></span>Start a new Audio Recording</a></li>\n    <li><a href=\"/production/source\" class=\"arrow\"><span></span>Create a new Production</a></li>\n  </ul>\n";
-  }
-
-  stack1 = helpers['if'].call(depth0, depth0.production, {hash:{},inverse:self.program(4, program4, data),fn:self.program(1, program1, data),data:data});
-  if(stack1 || stack1 === 0) { buffer += stack1; }
-  buffer += "\n";
+  buffer += "\">\n  <span></span><span>"
+    + escapeExpression(((stack1 = depth0.title),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
+    + "</span></span>\n</a>\n";
   return buffer;
   });
 templates['recording'] = template(function (Handlebars,depth0,helpers,partials,data) {
-  this.compiledVersion = '1.0.rc.2';
+  this.compilerInfo = [2,'>= 1.0.0-rc.3'];
 helpers = helpers || Handlebars.helpers; partials = partials || Handlebars.partials; data = data || {};
   var buffer = "", stack1, stack2, self=this, functionType="function", escapeExpression=this.escapeExpression;
 
@@ -1682,82 +1761,94 @@ function program9(depth0,data) {
   buffer += "\n";
   return buffer;
   });
-templates['recordings'] = template(function (Handlebars,depth0,helpers,partials,data) {
-  this.compiledVersion = '1.0.rc.2';
+templates['player'] = template(function (Handlebars,depth0,helpers,partials,data) {
+  this.compilerInfo = [2,'>= 1.0.0-rc.3'];
 helpers = helpers || Handlebars.helpers; data = data || {};
-  var buffer = "", stack1, functionType="function", escapeExpression=this.escapeExpression, self=this;
-
-function program1(depth0,data) {
-  
-  var buffer = "", stack1;
-  buffer += "\n  <ul class=\"main-list\">\n  ";
-  stack1 = helpers.each.call(depth0, depth0.recordings, {hash:{},inverse:self.noop,fn:self.program(2, program2, data),data:data});
-  if(stack1 || stack1 === 0) { buffer += stack1; }
-  buffer += "\n  </ul>\n";
-  return buffer;
-  }
-function program2(depth0,data) {
-  
-  var buffer = "", stack1;
-  buffer += "\n    <li class=\"swipeable show-popover\" data-popover-open-event=\"touchhold\" data-id=\""
-    + escapeExpression(((stack1 = depth0.id),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "\" data-fire-event=\"remove\">\n      <span class=\"right removable hidden\">\n        <span><a class=\"button red small\">Delete</a></span>\n      </span>\n      <div class=\"hidden popover top justify\" data-position=\"top\">\n        <a class=\"button expand red deleteable\">Delete</a>\n      </div>\n      <a href=\"/recording/"
-    + escapeExpression(((stack1 = depth0.id),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "\" class=\"arrow\">\n        <span></span>\n        "
-    + escapeExpression(((stack1 = depth0.display_name),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "\n        <small class=\"light\">"
-    + escapeExpression(((stack1 = depth0.display_date),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "</small>\n      </a>\n    </li>\n  ";
-  return buffer;
-  }
-
-function program4(depth0,data) {
-  
-  
-  return "\n  <h1 class=\"null\">You have no recent recordings.</h1>\n  <ul>\n    <li><a href=\"/production/recording/new-audio\" class=\"arrow\"><span></span>Start a new Audio Recording</a></li>\n  </ul>\n";
-  }
-
-  stack1 = helpers['if'].call(depth0, depth0.recordings, {hash:{},inverse:self.program(4, program4, data),fn:self.program(1, program1, data),data:data});
-  if(stack1 || stack1 === 0) { buffer += stack1; }
-  buffer += "\n";
-  return buffer;
-  });
-templates['service-choose'] = template(function (Handlebars,depth0,helpers,partials,data) {
-  this.compiledVersion = '1.0.rc.2';
-helpers = helpers || Handlebars.helpers; data = data || {};
-  var buffer = "", stack1, stack2, options, functionType="function", escapeExpression=this.escapeExpression, self=this, helperMissing=helpers.helperMissing;
+  var buffer = "", stack1, stack2, helperMissing=helpers.helperMissing, functionType="function", escapeExpression=this.escapeExpression, self=this;
 
 function program1(depth0,data) {
   
   
-  return "\n    <li><a href=\"/production/recording/file-upload\" class=\"arrow\"><span></span>Upload a File from this Device</a></li>\n  ";
+  return "<span class=\"hidden\" data-local=\"1\" />";
   }
 
 function program3(depth0,data) {
   
-  var buffer = "", stack1;
-  buffer += "\n    <li><a href=\"/production/source/"
-    + escapeExpression(((stack1 = depth0.uuid),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "\" class=\"arrow\"><span></span><span class=\"light\">"
-    + escapeExpression(((stack1 = depth0.display_type),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "</span> <small>"
-    + escapeExpression(((stack1 = depth0.display_name),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "</small></a></li>\n  ";
+  var buffer = "", stack1, stack2, options;
+  buffer += "\n      <img src=\"";
+  options = {hash:{},data:data};
+  stack2 = ((stack1 = helpers.image),stack1 ? stack1.call(depth0, depth0.waveform_image, options) : helperMissing.call(depth0, "image", depth0.waveform_image, options));
+  if(stack2 || stack2 === 0) { buffer += stack2; }
+  buffer += "\" />\n    ";
   return buffer;
   }
 
-  buffer += "<ul>\n  <li><a href=\"/production/recording/new-audio\" class=\"arrow\"><span></span>New Audio Recording</a></li>\n  <li><a href=\"/production/recording/new-video\" class=\"arrow\"><span></span>New Video Recording</a></li>\n  ";
-  options = {hash:{},inverse:self.noop,fn:self.program(1, program1, data),data:data};
-  stack2 = ((stack1 = helpers.platform),stack1 ? stack1.call(depth0, "android", options) : helperMissing.call(depth0, "platform", "android", options));
+function program5(depth0,data) {
+  
+  
+  return "\n      <div class=\"line\"></div>\n    ";
+  }
+
+  buffer += "<div class=\"player content expand with-shadow clear\">\n  <div class=\"play-button content full\">\n    <a class=\"play\">\n      <span class=\"hidden\" data-media=\"1\">"
+    + escapeExpression(((stack1 = depth0.media_files),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
+    + "</span>\n      <span class=\"hidden\" data-chapters=\"1\">"
+    + escapeExpression(((stack1 = depth0.player_chapters),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
+    + "</span>\n      <span class=\"hidden\" data-duration=\"1\">"
+    + escapeExpression(((stack1 = depth0.duration),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
+    + "</span>\n      ";
+  stack2 = helpers['if'].call(depth0, depth0.isLocal, {hash:{},inverse:self.noop,fn:self.program(1, program1, data),data:data});
   if(stack2 || stack2 === 0) { buffer += stack2; }
-  buffer += "\n  ";
-  stack2 = helpers.each.call(depth0, depth0.source, {hash:{},inverse:self.noop,fn:self.program(3, program3, data),data:data});
+  buffer += "\n    </a>\n  </div>\n  <div class=\"waveform content full show-popover\" data-popover-open-event=\"touchstart\" data-popover-open-delay=\"300\" data-popover-close-event=\"touchend\">\n    ";
+  stack2 = helpers['if'].call(depth0, depth0.waveform_image, {hash:{},inverse:self.program(5, program5, data),fn:self.program(3, program3, data),data:data});
   if(stack2 || stack2 === 0) { buffer += stack2; }
-  buffer += "\n</ul>\n";
+  buffer += "\n    <div class=\"position\"></div>\n      <div class=\"hidden popover top center auto-width\" data-position=\"top\"></div>\n  </div>\n\n  <div class=\"player-details\">\n    <div class=\"duration light\">"
+    + escapeExpression(((stack1 = depth0.duration_string),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
+    + "</div>\n    <div class=\"current-time light\"></div>\n    <div class=\"chapter-mark bold\"></div>\n  </div>\n</div>\n";
+  return buffer;
+  });
+templates['container'] = template(function (Handlebars,depth0,helpers,partials,data) {
+  this.compilerInfo = [2,'>= 1.0.0-rc.3'];
+helpers = helpers || Handlebars.helpers; data = data || {};
+  
+
+
+  return "<div class=\"container scrolling scrollable\">\n  <div class=\"scroll-content\"></div>\n</div>\n";
+  });
+templates['ui'] = template(function (Handlebars,depth0,helpers,partials,data) {
+  this.compilerInfo = [2,'>= 1.0.0-rc.3'];
+helpers = helpers || Handlebars.helpers; data = data || {};
+  
+
+
+  return "<div id=\"ui\" class=\"hidden\">\n  <header></header>\n  <footer>\n    <ul>\n      <li><a href=\"/\" class=\"home\"><span></span><span>Home</span></a></li>\n      <li><a href=\"/production\" class=\"production\"><span></span><span>Productions</span></a></li>\n      <li><a href=\"/recording\" class=\"record\"><span></span><span>Recordings</span></a></li>\n      <li><a href=\"/preset\" class=\"preset\"><span></span><span>Presets</span></a></li>\n    </ul>\n  </footer>\n  <div class=\"headerBackground\"></div>\n  <div class=\"footerBackground\"></div>\n  <div id=\"main\" class=\"main\"></div>\n</div>\n";
+  });
+templates['logout-popover'] = template(function (Handlebars,depth0,helpers,partials,data) {
+  this.compilerInfo = [2,'>= 1.0.0-rc.3'];
+helpers = helpers || Handlebars.helpers; data = data || {};
+  
+
+
+  return "<div class=\"hidden popover right white justify\">\n  <a href=\"/logout\" class=\"button red expand\">Logout</a>\n</div>\n";
+  });
+templates['login'] = template(function (Handlebars,depth0,helpers,partials,data) {
+  this.compilerInfo = [2,'>= 1.0.0-rc.3'];
+helpers = helpers || Handlebars.helpers; data = data || {};
+  var buffer = "", stack1, functionType="function", escapeExpression=this.escapeExpression;
+
+
+  buffer += "<form action=\"/\" method=\"post\">\n  <input type=\"hidden\" name=\"client_id\" value=\""
+    + escapeExpression(((stack1 = depth0.client_id),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
+    + "\" />\n  <input type=\"hidden\" name=\"client_secret\" value=\""
+    + escapeExpression(((stack1 = depth0.client_secret),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
+    + "\" />\n  <input type=\"hidden\" name=\"grant_type\" value=\"password\" />\n  <div class=\"formcontent\">\n    <label>\n      <input type=\"text\" name=\"username\" value=\""
+    + escapeExpression(((stack1 = depth0.username),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
+    + "\" placeholder=\"email or username\" autocapitalize=\"off\" autocorrect=\"off\" data-clearable=\"1\" />\n    </label>\n    <label>\n      <input type=\"password\" name=\"password\" placeholder=\"password\" />\n    </label>\n  </div>\n  <div>\n    <input type=\"submit\" name=\"submit\" value=\"Login\" />\n    <a href=\""
+    + escapeExpression(((stack1 = depth0.registerURL),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
+    + "\" value=\"Register\" class=\"register button\">Register</a>\n  </div>\n</form>\n";
   return buffer;
   });
 templates['service-list'] = template(function (Handlebars,depth0,helpers,partials,data) {
-  this.compiledVersion = '1.0.rc.2';
+  this.compilerInfo = [2,'>= 1.0.0-rc.3'];
 helpers = helpers || Handlebars.helpers; data = data || {};
   var buffer = "", stack1, functionType="function", escapeExpression=this.escapeExpression, self=this;
 
@@ -1792,127 +1883,36 @@ function program4(depth0,data) {
   buffer += "\n";
   return buffer;
   });
-templates['team'] = template(function (Handlebars,depth0,helpers,partials,data) {
-  this.compiledVersion = '1.0.rc.2';
-helpers = helpers || Handlebars.helpers; data = data || {};
-  var buffer = "", stack1, functionType="function", escapeExpression=this.escapeExpression;
-
-
-  buffer += "<div class=\"detailView\">\n  <div class=\"detail expand with-image\">\n    <div class=\"dark-background\"></div>\n    <div class=\"cover-photo team\" style=\"background-image: url("
-    + escapeExpression(((stack1 = depth0.image),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + ");\"></div>\n    <div class=\"gradient\"></div>\n    <div class=\"detail-inner\">\n      <span class=\"year\">2012</span>\n      <span class=\"genre\">Graz</span>\n      <h1>Auphonic Team</h1>\n      <span class=\"artist small wrap\">\n        André Rattinger, Ferdinand Fuhrmann, Christoph Pojer, Georg Holzmann and Florian Hollerweger\n      </span>\n    </div>\n    <div class=\"clear\"></div>\n  </div>\n  <div class=\"clear\"></div>\n\n  <div class=\"content\">\n    Our service is being developed in the lovely City of Graz, Austria.\n    <br/><br/>\n    We develop new algorithms in the area of music information retrieval and audio signal processing to create an automatic audio post production web service for broadcasters, podcasts, radio shows, audio books, lecture recordings, screencasts and more.\n  </div>\n</div>\n\n<ul>\n  <li><a href=\""
-    + escapeExpression(((stack1 = depth0.twitter),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "\" class=\"share\"><span></span>Auphonic on Twitter</a></li>\n  <li><a href=\""
-    + escapeExpression(((stack1 = depth0.facebook),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "\" class=\"share\"><span></span>Auphonic on Facebook</a></li>\n</ul>\n";
-  return buffer;
-  });
-templates['ui-action'] = template(function (Handlebars,depth0,helpers,partials,data) {
-  this.compiledVersion = '1.0.rc.2';
+templates['external-services'] = template(function (Handlebars,depth0,helpers,partials,data) {
+  this.compilerInfo = [2,'>= 1.0.0-rc.3'];
 helpers = helpers || Handlebars.helpers; data = data || {};
   var buffer = "", stack1, stack2, functionType="function", escapeExpression=this.escapeExpression, self=this;
 
 function program1(depth0,data) {
   
   var buffer = "", stack1;
-  buffer += " "
-    + escapeExpression(((stack1 = depth0.className),typeof stack1 === functionType ? stack1.apply(depth0) : stack1));
-  return buffer;
-  }
-
-  buffer += "<a href=\""
-    + escapeExpression(((stack1 = depth0.url),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "\" class=\"button-right hidden\" data-hit-target=\"1\"><span class=\"button";
-  stack2 = helpers['if'].call(depth0, depth0.className, {hash:{},inverse:self.noop,fn:self.program(1, program1, data),data:data});
-  if(stack2 || stack2 === 0) { buffer += stack2; }
-  buffer += "\">\n  <span></span><span>"
-    + escapeExpression(((stack1 = depth0.title),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "</span></span>\n</a>\n";
-  return buffer;
-  });
-templates['ui-back'] = template(function (Handlebars,depth0,helpers,partials,data) {
-  this.compiledVersion = '1.0.rc.2';
-helpers = helpers || Handlebars.helpers; data = data || {};
-  var buffer = "", stack1, functionType="function", escapeExpression=this.escapeExpression, self=this;
-
-function program1(depth0,data) {
-  
-  var buffer = "", stack1;
-  buffer += " "
-    + escapeExpression(((stack1 = depth0.className),typeof stack1 === functionType ? stack1.apply(depth0) : stack1));
-  return buffer;
-  }
-
-  buffer += "<a href=\"#\" class=\"button-left\" data-hit-target=\"1\"><span class=\"button";
-  stack1 = helpers['if'].call(depth0, depth0.className, {hash:{},inverse:self.noop,fn:self.program(1, program1, data),data:data});
+  buffer += "\n  <h1>External Services</h1>\n  <ul>\n    ";
+  stack1 = helpers.each.call(depth0, depth0.services, {hash:{},inverse:self.noop,fn:self.program(2, program2, data),data:data});
   if(stack1 || stack1 === 0) { buffer += stack1; }
-  buffer += "\">"
-    + escapeExpression(((stack1 = depth0.title),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "</span></a>\n";
+  buffer += "\n  </ul>\n";
   return buffer;
-  });
-templates['ui-removable-chapter-list-item'] = template(function (Handlebars,depth0,helpers,partials,data) {
-  this.compiledVersion = '1.0.rc.2';
-helpers = helpers || Handlebars.helpers; data = data || {};
-  var buffer = "", stack1, functionType="function", escapeExpression=this.escapeExpression;
-
-
-  buffer += "<li class=\"swipeable show-popover\" data-popover-open-event=\"touchhold\">\n  <span class=\"right removable\">\n    <span><a class=\"button red small\">"
-    + escapeExpression(((stack1 = depth0.label),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "</a></span>\n  </span>\n  <div class=\"hidden popover top justify\" data-position=\"top\">\n    <a class=\"button expand red deleteable\">"
-    + escapeExpression(((stack1 = depth0.label),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "</a>\n  </div>\n  <a href=\""
-    + escapeExpression(((stack1 = depth0.href),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "\" class=\"arrow\"><span></span><small class=\"light\">"
-    + escapeExpression(((stack1 = depth0.start),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "</small> "
-    + escapeExpression(((stack1 = depth0.title),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "</a>\n</li>\n";
-  return buffer;
-  });
-templates['ui-removable-list-item'] = template(function (Handlebars,depth0,helpers,partials,data) {
-  this.compiledVersion = '1.0.rc.2';
-helpers = helpers || Handlebars.helpers; data = data || {};
-  var buffer = "", stack1, stack2, functionType="function", escapeExpression=this.escapeExpression, self=this;
-
-function program1(depth0,data) {
+  }
+function program2(depth0,data) {
   
   var buffer = "", stack1;
-  buffer += " <small class=\"light\">"
-    + escapeExpression(((stack1 = depth0.detail),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "</small>";
+  buffer += "\n      <li><label><span class=\"light\">"
+    + escapeExpression(((stack1 = depth0.display_type),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
+    + "</span> <small>"
+    + escapeExpression(((stack1 = depth0.display_name),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
+    + "</small></label></li>\n    ";
   return buffer;
   }
 
-  buffer += "<li class=\"swipeable show-popover\" data-popover-open-event=\"touchhold\">\n  <span class=\"right removable\">\n    <span><a class=\"button red small\">"
-    + escapeExpression(((stack1 = depth0.label),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "</a></span>\n  </span>\n  <div class=\"hidden popover top justify\" data-position=\"top\">\n    <a class=\"button expand red deleteable\">"
-    + escapeExpression(((stack1 = depth0.label),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "</a>\n  </div>\n  <a href=\""
-    + escapeExpression(((stack1 = depth0.href),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "\" class=\"arrow\"><span></span>"
-    + escapeExpression(((stack1 = depth0.title),typeof stack1 === functionType ? stack1.apply(depth0) : stack1));
-  stack2 = helpers['if'].call(depth0, depth0.detail, {hash:{},inverse:self.noop,fn:self.program(1, program1, data),data:data});
+  buffer += "<ul>\n  <li><a href=\""
+    + escapeExpression(((stack1 = depth0.url),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
+    + "\" class=\"share\"><span></span>Add an external service</a></li>\n</ul>\n\n";
+  stack2 = helpers['if'].call(depth0, depth0.services, {hash:{},inverse:self.noop,fn:self.program(1, program1, data),data:data});
   if(stack2 || stack2 === 0) { buffer += stack2; }
-  buffer += "</a>\n</li>\n";
+  buffer += "\n";
   return buffer;
-  });
-templates['ui-title'] = template(function (Handlebars,depth0,helpers,partials,data) {
-  this.compiledVersion = '1.0.rc.2';
-helpers = helpers || Handlebars.helpers; data = data || {};
-  var buffer = "", stack1, functionType="function", escapeExpression=this.escapeExpression;
-
-
-  buffer += "<h1>\n  <a href=\"#\">\n    <span class=\"back\"></span><span class=\"icon\"></span>\n  </a>\n  <span class=\"text\">"
-    + escapeExpression(((stack1 = depth0.title),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "</span>\n</h1>\n";
-  return buffer;
-  });
-templates['ui'] = template(function (Handlebars,depth0,helpers,partials,data) {
-  this.compiledVersion = '1.0.rc.2';
-helpers = helpers || Handlebars.helpers; data = data || {};
-  
-
-
-  return "<div id=\"ui\" class=\"hidden\">\n  <header></header>\n  <footer>\n    <ul>\n      <li><a href=\"/\" class=\"home\"><span></span><span>Home</span></a></li>\n      <li><a href=\"/production\" class=\"production\"><span></span><span>Productions</span></a></li>\n      <li><a href=\"/recording\" class=\"record\"><span></span><span>Recordings</span></a></li>\n      <li><a href=\"/preset\" class=\"preset\"><span></span><span>Presets</span></a></li>\n    </ul>\n  </footer>\n  <div class=\"headerBackground\"></div>\n  <div class=\"footerBackground\"></div>\n  <div id=\"main\" class=\"main\"></div>\n</div>\n";
   });

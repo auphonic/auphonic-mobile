@@ -23,6 +23,7 @@ module.exports = new Class({
   isRecording: false,
   isInterrupted: false,
   isSilent: false,
+  freezeLevel: false,
 
   initialize: function(recorderClass, object, options) {
     this.setOptions(options);
@@ -32,6 +33,7 @@ module.exports = new Class({
     var element = object.toElement().getElement('.audio-recorder');
 
     this.button = element.getElement('.recorder');
+    this.clipwarning = element.getElement('.clipwarning');
     this.status = element.getElement('.status');
     this.recordingLengthElement = this.status.getElement('.recording-length');
     this.chapterMarkElement = this.status.getElement('.add-chapter-mark');
@@ -239,10 +241,35 @@ module.exports = new Class({
   },
 
   onLevelUpdate: function(average, peak) {
-    var peakWidth = (-Math.max(-50, peak)) / 0.5;
-    this.levelElement.setStyle('width', peakWidth + '%');
+    var peakWidth;
+    var averageWidth;
 
-    var averageWidth = 100 - (-Math.max(-50, average)) / 0.5;
+    // show warning and freeze levels if we are too hot to prevent clipping
+    // NOTE: we use individial timers for warning and level freeze (= shorter)
+    if (peak > -0.1) {
+      clearTimeout(this.clipwarn_timer);
+      this.clipwarning.addClass("clipping");
+      this.clipwarn_timer = (function() {
+        this.clipwarning.removeClass("clipping");
+      }).delay(1100, this);
+
+      clearTimeout(this.clipwarn_timer_level);
+      this.freezeLevel = true;
+      this.clipwarn_timer_level = (function() {
+        this.freezeLevel = false;
+      }).delay(100, this);
+    }
+
+    // in freezeLevel mode set all levels to maximum
+    if (this.freezeLevel) {
+      peakWidth = 0;
+      averageWidth = 100;
+    }
+    else {
+      peakWidth = (-Math.max(-50, peak)) / 0.5;
+      averageWidth = 100 - (-Math.max(-50, average)) / 0.5;
+    }
+    this.levelElement.setStyle('width', peakWidth + '%');
     this.averageLevelElement.setStyle('width', averageWidth + '%');
   },
 
