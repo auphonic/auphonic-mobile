@@ -15,6 +15,7 @@ exports.DefaultVideoFileName = 'mobile-video-{uuid}';
 exports.DefaultFileNameFilter = /mobile-(?:video|recording)-(\d+)/i;
 exports.FolderName = 'Auphonic';
 
+exports.DefaultAudioFormat = Platform.isIOS() ? 'm4a' : 'ogg';
 exports.DefaultOutputFile = {
   format: 'mp3',
   bitrate: '112'

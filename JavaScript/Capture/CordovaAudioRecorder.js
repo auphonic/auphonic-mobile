@@ -11,7 +11,7 @@ module.exports = new Class({
 
   Implements: [Class.Binds, Options, Events],
 
-  extension: Platform.isIOS() ? 'm4a' : 'flac',
+  extension: Auphonic.DefaultAudioFormat,
   statusEventIsDisabled: false,
   errorIsDisabled: false,
   hasPlaybackError: false,
