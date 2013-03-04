@@ -11,6 +11,7 @@ UI.ActionButton = require('./Elements/ActionButton');
 UI.Title = require('./Elements/Title');
 
 var isVisible = false;
+var isDisabled = false;
 var transitionDelay = 1;
 
 var preventDefault = function(event) {
@@ -82,24 +83,26 @@ Object.append(UI, {
 
   disable: function(container, exception) {
     if (!container) container = document.body;
+    if (container == document.body) isDisabled = true;
 
     container.addEvent('touchmove', preventDefault)
       .addClass('disable-events');
 
     if (exception) exception.addClass('enable-events');
-
-    this.fireEvent('disable');
   },
 
   enable: function(container, exception) {
     if (!container) container = document.body;
+    if (container == document.body) isDisabled = false;
 
     container.removeEvent('touchmove', preventDefault)
       .removeClass('disable-events');
 
     if (exception) exception.removeClass('enable-events');
+  },
 
-    this.fireEvent('enable');
+  isDisabled: function() {
+    return isDisabled;
   },
 
   showChrome: function(options) {

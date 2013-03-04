@@ -229,6 +229,7 @@ window.__BOOTAPP = function() {
 
   if (Platform.isAndroid()) {
     document.addEventListener('backbutton', function() {
+      if (UI.isDisabled()) return;
       var main = View.getMain();
       var stack = main.getStack();
       var stackLength = stack && stack.getLength();
