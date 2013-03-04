@@ -9,6 +9,10 @@ Slick.definePseudo('external', function() {
   return this.hostname && this.hostname != location.hostname;
 });
 
+Slick.definePseudo('email', function() {
+  return (/^mailto:/).test(this.href);
+});
+
 Slick.definePseudo('input', function() {
   var tag = this.tagName.toLowerCase();
   return tag == 'input' || tag == 'textarea' || tag == 'select';

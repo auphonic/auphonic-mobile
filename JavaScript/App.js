@@ -55,6 +55,7 @@ var Spinner = require('Spinner');
 var AudioPlayer = require('Player/AudioPlayer');
 var WebAudioService = require('Player/WebAudioService');
 var CordovaAudioService = require('Player/CordovaAudioService');
+var WebIntent = require('Cordova/WebIntent');
 
 var Auphonic = require('Auphonic');
 var Platform = require('Platform');
@@ -127,6 +128,20 @@ var clickExternal = function(event) {
   event.preventDefault();
   window.open(this.get('href'), '_blank', 'location=yes');
 };
+
+var clickEmail = function(event) {
+  event.preventDefault();
+  var extras = {};
+  // This is not a URL parser :)
+  var email = this.href.substr(7).split('?subject=');
+  extras[WebIntent.EXTRA_EMAIL] = email[0];
+  extras[WebIntent.EXTRA_SUBJECT] = decodeURIComponent(email[1]);
+  WebIntent.startActivity({
+    action: WebIntent.ACTION_SEND,
+    type: 'message/rfc822',
+    extras: extras
+  });
+}
 
 var onLabelClick = function(event) {
   event.preventDefault();
@@ -250,6 +265,10 @@ window.__BOOTAPP = function() {
 
     '#main a:internal, div.popover a:internal': function(elements) {
       elements.addEvent('click', click);
+    },
+
+    'a:email': function(elements) {
+      elements.addEvent('click', Platform.isAndroid() ? clickEmail : clickExternal);
     },
 
     'footer a:internal': function(elements) {
