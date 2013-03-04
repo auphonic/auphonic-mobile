@@ -30,6 +30,7 @@
   <log level="DEBUG"/>
   <preference name="useBrowserHistory" value="false" />
   <preference name="exit-on-suspend" value="false" />
+  <preference name="backgroundColor" value="0x00EFEFEF" />
 
   <plugins>
     <plugin name="App" value="org.apache.cordova.App"/>
