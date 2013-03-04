@@ -75,15 +75,20 @@ header
         cursor pointer
         background-repeat no-repeat
 
-      span:nth-child(1)
-        visibility hidden
-        width 14px
-        background-position center left
+      a
+        &.selectable
+          &.active, &.selected
+            background-color #df5d5d
 
-      span:nth-child(2)
-        width 36px
-        margin-right 5px
-        background-position center 7px
+        span:nth-child(1)
+          visibility hidden
+          width 14px
+          background-position center left
+
+        span:nth-child(2)
+          width 36px
+          margin-right 5px
+          background-position center 7px
 
       span.text
         position absolute
@@ -113,7 +118,7 @@ header
     &.fade
       opacity 0
 
-  a
+  > a
     position absolute
     top 0
     bottom 0
@@ -122,6 +127,9 @@ header
 
     .android &
       width 48px
+
+      &.active, &.selected
+        background-color #df5d5d
 
     text-decoration none
 

@@ -141,7 +141,7 @@ var clickEmail = function(event) {
     type: 'message/rfc822',
     extras: extras
   });
-}
+};
 
 var onLabelClick = function(event) {
   event.preventDefault();
@@ -495,14 +495,12 @@ window.__BOOTAPP = function() {
           } else {
             currentElement.addClass('big');
             footer.addClass('left');
-
-            var fn = function(event) {
+            back.setStyle('visibility', 'visible');
+            back.getParent('a').addClass('selectable').addEvent('click', function(event) {
               navigate(function() {
                 title.back(event);
               });
-            };
-            back.setStyle('visibility', 'visible').addEvent('click', fn);
-            element.getElement('span.icon').addEvent('click', fn);
+            });
           }
         }).delay(1, this);
       }
