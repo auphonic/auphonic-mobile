@@ -246,7 +246,7 @@ module.exports = new Class({
 
     // show warning and freeze levels if we are too hot to prevent clipping
     // NOTE: we use individial timers for warning and level freeze (= shorter)
-    if (peak > -0.1) {
+    if (peak > -0.5) {
       clearTimeout(this.clipwarn_timer);
       this.clipwarning.addClass("clipping");
       this.clipwarn_timer = (function() {
