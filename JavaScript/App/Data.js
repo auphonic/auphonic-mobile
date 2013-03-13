@@ -57,8 +57,15 @@ exports.formatInfos = function(response) {
     object.key = algorithm;
     object[object.type] = true;
     object[algorithm] = true;
-    // Sort alphabetically, belonging algorithms last
-    object.order = ((algorithms[object.belongs_to] || object).display_name) + (object.belongs_to ? 2 : 1);
+
+    // Sort according to Auphonic.AlgorithmOrder or otherwise alphabetically
+    // at the end (belonging algorithms last)
+    if (Auphonic.AlgorithmOrder[object.key]) {
+      object.order = Auphonic.AlgorithmOrder[object.key];
+    }
+    else {
+      object.order = ((algorithms[object.belongs_to] || object).display_name) + (object.belongs_to ? 2 : 1);
+    }
 
     object.short_display_name = Auphonic.getAlgorithmShortString(object);
 
