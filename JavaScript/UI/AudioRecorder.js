@@ -115,9 +115,10 @@ module.exports = new Class({
   onChapterMarkClick: function(event) {
     event.stopPropagation(); // Prevent iOS Ghost Clicks
 
-    if (!this.isRecording) return;
+    if (!this.hasStarted) return;
 
     var time = Data.formatDuration(this.time, ':', true, [60, 60, 0], ['', '', '']);
+
     // The API expects hh:mm[:ss]
     if (time.length == 2) time = '00:00:' + time;
     else if (time.length == 5) time = '00:' + time;
