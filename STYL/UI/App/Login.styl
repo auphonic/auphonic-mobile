@@ -36,7 +36,8 @@ div.login
 
   input[type=text], input[type=password]
     font-size 1.3em
-    box-sizing border-box
+    .ios &
+      box-sizing border-box
 
   input[type=text]
     border-bottom-left-radius 0
@@ -54,9 +55,13 @@ div.login
   // submit buttons and anchors have a few weird style differences
   a.register
     width 46%
-    height 37px
-    line-height 37px
     padding 0
+    .ios &
+      height 37px
+      line-height 37px
+    .android &
+      height 39px
+      line-height 39px
 
   .ios &
     transition-property -webkit-transform
