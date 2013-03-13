@@ -45,7 +45,7 @@
 
   {{#if production}}
     {{#if start_allowed}}
-      <a data-api-url="/production/{{uuid}}/start" data-method="post" class="clear button green expand startProduction">Start Production</a>
+      <a data-api-url="/production/{{uuid}}/start" data-method="post" class="clear button red expand startProduction">Start Production</a>
       <div class="content processing hidden"></div>
     {{else}}
       {{#unless change_allowed}}

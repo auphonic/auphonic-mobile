@@ -245,7 +245,7 @@ function program30(depth0,data) {
   var buffer = "", stack1;
   buffer += "\n      <a data-api-url=\"/production/"
     + escapeExpression(((stack1 = depth0.uuid),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "/start\" data-method=\"post\" class=\"clear button green expand startProduction\">Start Production</a>\n      <div class=\"content processing hidden\"></div>\n    ";
+    + "/start\" data-method=\"post\" class=\"clear button red expand startProduction\">Start Production</a>\n      <div class=\"content processing hidden\"></div>\n    ";
   return buffer;
   }
 
@@ -1755,7 +1755,7 @@ function program9(depth0,data) {
   if(stack2 || stack2 === 0) { buffer += stack2; }
   buffer += "\n\n<a href=\""
     + escapeExpression(((stack1 = depth0.uploadURL),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "\" class=\"clear button green expand startProduction\">Upload and create a Production</a>\n\n<h1>Chapter Marks</h1>\n<ul class=\"chapter_marks\">\n  <li><a href=\"/recording/new/chapter\" class=\"plus\"><span></span>Add Chapter Mark</a></li>\n</ul>\n\n";
+    + "\" class=\"clear button red expand startProduction\">Upload and create a Production</a>\n\n<h1>Chapter Marks</h1>\n<ul class=\"chapter_marks\">\n  <li><a href=\"/recording/new/chapter\" class=\"plus\"><span></span>Add Chapter Mark</a></li>\n</ul>\n\n";
   stack2 = helpers['if'].call(depth0, depth0.hasProductions, {hash:{},inverse:self.noop,fn:self.program(5, program5, data),data:data});
   if(stack2 || stack2 === 0) { buffer += stack2; }
   buffer += "\n";
