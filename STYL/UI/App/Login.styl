@@ -58,9 +58,10 @@ div.login
     line-height 37px
     padding 0
 
-  transition-property -webkit-transform
-  transition-duration 500ms
-  transform translate3d(0, 0, 0)
+  .ios &
+    transition-property -webkit-transform
+    transition-duration 500ms
+    transform translate3d(0, 0, 0)
 
-  &.fade
+  .ios &.fade
     transform translate3d(0, -100%, 0)
