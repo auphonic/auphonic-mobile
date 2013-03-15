@@ -50,6 +50,10 @@
   <li><a href="{{baseURL}}new/outgoing_services" class="arrow"><span></span>Outgoing Transfers <small class="servicesCount light"></small></a></li>
 </ul>
 
+{{#if production}}
+<a class="clear button red expand saveButton">Save Production</a>
+{{/if}}
+
 <h1>Output Files {{#if production}}<small class="output_files_required">(one is required)</small>{{/if}}</h1>
 <ul class="output_files">
   <li>
