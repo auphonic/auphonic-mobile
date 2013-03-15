@@ -179,6 +179,7 @@ module.exports = new Class({
     this.status.show();
     this.status.removeClass('paused');
     this.saveButton.removeClass('paused');
+    this.button.addClass('recorder');
     this.footer.addClass('out');
     this.statusTimer = (function() {
       this.status.removeClass('out');
@@ -192,6 +193,7 @@ module.exports = new Class({
     this.button.removeClass('pulse').set('text', 'Start');
     this.status.removeClass('paused').removeClass('hasChapters');
     this.saveButton.removeClass('paused');
+    this.button.addClass('recorder');
     this.status.addClass('out').addEvent('transitionComplete:once', this.bound('hideStatus'));
     this.footer.removeClass('out');
     document.removeEventListener('pause', this.bound('pause'), false);
@@ -200,9 +202,10 @@ module.exports = new Class({
   onPause: function() {
     this.onLevelUpdate(-50, -50);
     this.isRecording = false;
-    this.button.removeClass('pulse').set('text', 'Resume');
+    this.button.removeClass('pulse').set('text', 'Resume Recording');
     this.status.addClass('paused');
     this.saveButton.addClass('paused');
+    this.button.removeClass('recorder');
     this.fireEvent('pause');
     document.removeEventListener('pause', this.bound('pause'), false);
   },

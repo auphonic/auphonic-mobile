@@ -93,23 +93,27 @@
     &.clipping
       color black
 
-  a.button.red.recorder
-    display block
-    width 150px
-    height 150px
-    padding 0
-    margin 10px auto 30px auto
+  a.button.red
+    margin-top 20px
+    margin-bottom 40px
 
-    font-size 32px
-    line-height 147px
+    &.recorder
+      display block
+      width 150px
+      height 150px
+      padding 0
+      margin 10px auto 30px auto
 
-    border-radius 50%
-    box-shadow 0 0 5px rgba(0, 0, 0, 0.3)
+      font-size 32px
+      line-height 147px
 
-    transition-property opacity
-    transition-timing-function ease-in-out
-    transition-duration 400ms
-    opacity 1
+      border-radius 50%
+      box-shadow 0 0 5px rgba(0, 0, 0, 0.3)
+
+      transition-property opacity
+      transition-timing-function ease-in-out
+      transition-duration 400ms
+      opacity 1
 
     &.fade
       opacity 0
@@ -123,8 +127,6 @@
 
   a.button.save-recording
     display none
-    width 200px
-    margin 0 auto
 
     &.paused
       display block
