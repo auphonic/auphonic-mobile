@@ -34,6 +34,7 @@ module.exports = new Class({
 
     this.button = element.getElement('.recorder');
     this.clipwarning = element.getElement('.clipwarning');
+    this.saveButton = element.getElement('.save-recording');
     this.status = element.getElement('.status');
     this.recordingLengthElement = this.status.getElement('.recording-length');
     this.chapterMarkElement = this.status.getElement('.add-chapter-mark');
@@ -47,6 +48,7 @@ module.exports = new Class({
     this.footer = document.getElements('footer, div.footerBackground');
 
     this.button.addEvent('click', this.bound('onClick'));
+    this.saveButton.addEvent('click', this.bound('onSaveButtonClick'));
     this.chapterInput.addEvent('swipe', this.bound('removeLastChapter'));
     this.chapterInput.addEvent('input', this.bound('onChapterChange'));
     this.object.addEvent('show', this.bound('onShow'));
@@ -112,6 +114,11 @@ module.exports = new Class({
     this.toggle();
   },
 
+  onSaveButtonClick: function(event) {
+    event.preventDefault();
+    this.stop();
+  },
+
   onChapterMarkClick: function(event) {
     event.stopPropagation(); // Prevent iOS Ghost Clicks
 
@@ -171,6 +178,7 @@ module.exports = new Class({
     this.hasStarted = true;
     this.status.show();
     this.status.removeClass('paused');
+    this.saveButton.removeClass('paused');
     this.footer.addClass('out');
     this.statusTimer = (function() {
       this.status.removeClass('out');
@@ -183,6 +191,7 @@ module.exports = new Class({
     this.isRecording = false;
     this.button.removeClass('pulse').set('text', 'Start');
     this.status.removeClass('paused').removeClass('hasChapters');
+    this.saveButton.removeClass('paused');
     this.status.addClass('out').addEvent('transitionComplete:once', this.bound('hideStatus'));
     this.footer.removeClass('out');
     document.removeEventListener('pause', this.bound('pause'), false);
@@ -193,6 +202,7 @@ module.exports = new Class({
     this.isRecording = false;
     this.button.removeClass('pulse').set('text', 'Resume');
     this.status.addClass('paused');
+    this.saveButton.addClass('paused');
     this.fireEvent('pause');
     document.removeEventListener('pause', this.bound('pause'), false);
   },
