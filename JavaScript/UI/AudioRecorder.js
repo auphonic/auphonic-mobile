@@ -200,7 +200,7 @@ module.exports = new Class({
   },
 
   onPause: function() {
-    this.freezeLevel = false
+    this.freezeLevel = false;
     this.clipwarning.removeClass("clipping");
     this.onLevelUpdate(-50, -50);
 

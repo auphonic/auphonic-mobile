@@ -49,7 +49,7 @@
       <div class="content processing hidden"></div>
     {{else}}
       {{#if change_allowed}}
-        {{unless is_uploading}}
+        {{#unless is_uploading}}
           <a href="/production/edit/{{uuid}}" class="clear button red expand editProduction">Edit Production</a>
         {{/unless}}
       {{else}}
