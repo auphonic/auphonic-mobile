@@ -48,9 +48,11 @@
       <a data-api-url="/production/{{uuid}}/start" data-method="post" class="clear button red expand startProduction">Start Production</a>
       <div class="content processing hidden"></div>
     {{else}}
-      {{#unless change_allowed}}
+      {{#if change_allowed}}
+        <a href="/production/edit/{{uuid}}" class="clear button red expand editProduction">Edit Production</a>
+      {{else}}
         <div class="content processing">Processing</div>
-      {{/unless}}
+      {{/if}}
     {{/if}}
   {{/if}}
 
