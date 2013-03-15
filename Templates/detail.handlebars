@@ -56,6 +56,25 @@
     {{/if}}
   {{/if}}
 
+  {{#if hasAlgorithms}}
+    <h1>Algorithms</h1>
+    <ul>
+    {{#each algorithms}}
+      <li class="wide">
+        <label class="show-popover {{#if select}}left{{else}}info{{/if}}">
+          {{#if select}}
+            <span class="right light bold">{{value_string}}</span>
+          {{else}}
+            <span></span>
+          {{/if}}
+          {{short_display_name}}
+          {{> algorithm-popover}}
+        </label>
+      </li>
+    {{/each}}
+    </ul>
+  {{/if}}
+
   {{#if hasDetails}}
     <h1>Details</h1>
     <ul>
@@ -90,6 +109,13 @@
         {{/if}}
       {{/metadata}}
     </ul>
+  {{/if}}
+
+  {{#if metadata.subtitle}}
+    <h1>Subtitle</h1>
+    <div class="content">
+      {{metadata.subtitle}}
+    </div>
   {{/if}}
 
   <h1>Output Files</h1>
@@ -174,29 +200,4 @@
     </ul>
   {{/if}}
 
-  {{#if metadata.subtitle}}
-    <h1>Subtitle</h1>
-    <div class="content">
-      {{metadata.subtitle}}
-    </div>
-  {{/if}}
-
-  {{#if hasAlgorithms}}
-    <h1>Algorithms</h1>
-    <ul>
-    {{#each algorithms}}
-      <li class="wide">
-        <label class="show-popover {{#if select}}left{{else}}info{{/if}}">
-          {{#if select}}
-            <span class="right light bold">{{value_string}}</span>
-          {{else}}
-            <span></span>
-          {{/if}}
-          {{short_display_name}}
-          {{> algorithm-popover}}
-        </label>
-      </li>
-    {{/each}}
-    </ul>
-  {{/if}}
 </div>
