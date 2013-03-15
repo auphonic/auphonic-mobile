@@ -552,7 +552,7 @@ window.__BOOTAPP = function() {
 
   Controller.define('/about', function() {
     View.getMain().push(new View.Object({
-      title: 'About',
+      title: 'App Info',
       content: renderTemplate('about', {
         user: User.get(),
         version: Auphonic.Version,
@@ -563,7 +563,7 @@ window.__BOOTAPP = function() {
 
   Controller.define('/team', function() {
     View.getMain().push(new View.Object({
-      title: 'Team',
+      title: 'About Auphonic',
       content: renderTemplate('team', {
         image: Auphonic.TeamImage,
         twitter: Auphonic.TwitterURL,

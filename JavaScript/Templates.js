@@ -10,9 +10,9 @@ function program1(depth0,data) {
   return "\n  <a href=\"/logout\" class=\"button red expand\">Logout</a>\n";
   }
 
-  buffer += "<div class=\"logo\"></div>\n\n<ul>\n  <li><a href=\"/production/recording/new-audio\" class=\"arrow\"><span></span>Start a new Audio Recording</a></li>\n  <li><a href=\"/production/source\" class=\"arrow\"><span></span>Create a new Production</a></li>\n  <li><a href=\"/external-services\" class=\"arrow\"><span></span>External Services</a></li>\n  <li><a href=\"/team\" class=\"arrow\"><span></span>Team</a></li>\n  <li><a href=\""
+  buffer += "<div class=\"logo\"></div>\n\n<ul>\n  <li><a href=\"/production/recording/new-audio\" class=\"arrow\"><span></span>Start a new Audio Recording</a></li>\n  <li><a href=\"/production/source\" class=\"arrow\"><span></span>Create a new Production</a></li>\n  <li><a href=\"/external-services\" class=\"arrow\"><span></span>External Services</a></li>\n  <li><a href=\"/team\" class=\"arrow\"><span></span>About Auphonic</a></li>\n  <li><a href=\"/about\" class=\"arrow\"><span></span>App Info</a></li>\n  <li><a href=\""
     + escapeExpression(((stack1 = depth0.feedback),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "\" class=\"share\"><span></span>Feedback</a></li>\n  <li><a href=\"/about\" class=\"arrow\"><span></span>About</a></li>\n</ul>\n\n";
+    + "\" class=\"share\"><span></span>Feedback</a></li>\n</ul>\n\n";
   options = {hash:{},inverse:self.noop,fn:self.program(1, program1, data),data:data};
   stack2 = ((stack1 = helpers.platform),stack1 ? stack1.call(depth0, "ios", options) : helperMissing.call(depth0, "platform", "ios", options));
   if(stack2 || stack2 === 0) { buffer += stack2; }
