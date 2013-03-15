@@ -1821,7 +1821,7 @@ helpers = helpers || Handlebars.helpers; data = data || {};
   
 
 
-  return "<div id=\"ui\" class=\"hidden\">\n  <header></header>\n  <footer>\n    <ul>\n      <li><a href=\"/\" class=\"home\"><span></span><span>Home</span></a></li>\n      <li><a href=\"/production\" class=\"production\"><span></span><span>Productions</span></a></li>\n      <li><a href=\"/recording\" class=\"record\"><span></span><span>Recordings</span></a></li>\n      <li><a href=\"/preset\" class=\"preset\"><span></span><span>Presets</span></a></li>\n    </ul>\n  </footer>\n  <div class=\"headerBackground\"></div>\n  <div class=\"footerBackground\"></div>\n  <div id=\"main\" class=\"main\"></div>\n</div>\n";
+  return "<div id=\"ui\" class=\"hidden\">\n  <header></header>\n  <footer>\n    <ul>\n      <li><a href=\"/\" class=\"home\"><span></span><span>Home</span></a></li>\n      <li><a href=\"/recording\" class=\"record\"><span></span><span>Recordings</span></a></li>\n      <li><a href=\"/production\" class=\"production\"><span></span><span>Productions</span></a></li>\n      <li><a href=\"/preset\" class=\"preset\"><span></span><span>Presets</span></a></li>\n    </ul>\n  </footer>\n  <div class=\"headerBackground\"></div>\n  <div class=\"footerBackground\"></div>\n  <div id=\"main\" class=\"main\"></div>\n</div>\n";
   });
 templates['logout-popover'] = template(function (Handlebars,depth0,helpers,partials,data) {
   this.compilerInfo = [2,'>= 1.0.0-rc.3'];
