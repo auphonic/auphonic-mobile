@@ -19,15 +19,15 @@
       this.__SERVER_URL = this.__FALLBACK_SERVER_URL = 'https://auphonic.com/mobile/' + this.__CORDOVA_VERSION + '/';
 
       // REMOVE WHEN DEPLOYING
-      // Update this if you are testing the application locally.
-      var DEVbaseURL = '/App/';
-      // Local test URL for the Server scripts. Remove this when deploying.
-      this.__SERVER_URL = 'http://192.168.0.2' + DEVbaseURL + '../Server/' + this.__CORDOVA_VERSION + '/';
-      if (new RegExp('^' + DEVbaseURL).test(location.pathname)) {
-        this.__LOCALHOST__ = true;
-        this.__baseURL = DEVbaseURL;
-        document.write('<base href="' + DEVbaseURL + '" />');
-      }
+      // // Update this if you are testing the application locally.
+      // var DEVbaseURL = '/App/';
+      // // Local test URL for the Server scripts. Remove this when deploying.
+      // this.__SERVER_URL = 'http://192.168.0.2' + DEVbaseURL + '../Server/' + this.__CORDOVA_VERSION + '/';
+      // if (new RegExp('^' + DEVbaseURL).test(location.pathname)) {
+      //   this.__LOCALHOST__ = true;
+      //   this.__baseURL = DEVbaseURL;
+      //   document.write('<base href="' + DEVbaseURL + '" />');
+      // }
       // END REMOVE WHEN DEPLOYING
     })();
 
