@@ -1,9 +1,18 @@
+<div class="content">
+  External Services allow you to copy files from and to a server
+  automatically.
+  We support HTTP, FTP, SFTP, Dropbox, YouTube, SoundCloud, Amazon S3,
+  Archive.org and Libsyn.
+  <br> <br>
+  Please register additional services in our web interface using the link below!
+</div>
+
 <ul>
   <li><a href="{{url}}" class="share"><span></span>Add an external service</a></li>
 </ul>
 
 {{#if services}}
-  <h1>External Services</h1>
+  <h1>Your External Services</h1>
   <ul>
     {{#each services}}
       <li><label><span class="light">{{display_type}}</span> <small>{{display_name}}</small></label></li>

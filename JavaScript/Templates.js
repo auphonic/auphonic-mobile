@@ -1882,7 +1882,7 @@ helpers = helpers || Handlebars.helpers; data = data || {};
 function program1(depth0,data) {
   
   var buffer = "", stack1;
-  buffer += "\n  <h1>External Services</h1>\n  <ul>\n    ";
+  buffer += "\n  <h1>Your External Services</h1>\n  <ul>\n    ";
   stack1 = helpers.each.call(depth0, depth0.services, {hash:{},inverse:self.noop,fn:self.program(2, program2, data),data:data});
   if(stack1 || stack1 === 0) { buffer += stack1; }
   buffer += "\n  </ul>\n";
@@ -1899,7 +1899,7 @@ function program2(depth0,data) {
   return buffer;
   }
 
-  buffer += "<ul>\n  <li><a href=\""
+  buffer += "<div class=\"content\">\n  External Services allow you to copy files from and to a server\n  automatically.\n  We support HTTP, FTP, SFTP, Dropbox, YouTube, SoundCloud, Amazon S3,\n  Archive.org and Libsyn.\n  <br> <br>\n  Please register additional services in our web interface using the link below!\n</div>\n\n<ul>\n  <li><a href=\""
     + escapeExpression(((stack1 = depth0.url),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
     + "\" class=\"share\"><span></span>Add an external service</a></li>\n</ul>\n\n";
   stack2 = helpers['if'].call(depth0, depth0.services, {hash:{},inverse:self.noop,fn:self.program(1, program1, data),data:data});
