@@ -556,7 +556,9 @@ window.__BOOTAPP = function() {
       content: renderTemplate('about', {
         user: User.get(),
         version: Auphonic.Version,
-        repository: Auphonic.RepositoryURL
+        repository: Auphonic.RepositoryURL,
+        flattr: Auphonic.FlattrURL,
+        donate: Auphonic.DonateURL
       })
     }));
   });

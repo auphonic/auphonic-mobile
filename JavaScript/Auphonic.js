@@ -13,6 +13,7 @@ exports.AudioExamplesURL = 'https://auphonic.com/audio_examples';
 exports.TwitterURL = 'https://twitter.com/auphonic';
 exports.FacebookURL = 'https://www.facebook.com/pages/auphonic/217115551651035';
 exports.FlattrURL = 'https://flattr.com/thing/1035105/Auphonic-Mobile-App';
+exports.DonateURL = 'https://auphonic.com/donate';
 exports.DefaultFileName = 'mobile-recording-{uuid}';
 exports.DefaultVideoFileName = 'mobile-video-{uuid}';
 exports.DefaultFileNameFilter = /mobile-(?:video|recording)-(\d+)/i;

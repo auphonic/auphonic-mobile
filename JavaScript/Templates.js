@@ -27,7 +27,7 @@ helpers = helpers || Handlebars.helpers; data = data || {};
 
   buffer += "<div class=\"detailView\">\n  <div class=\"detail expand with-image\">\n    <div class=\"dark-background\"></div>\n    <div class=\"cover-photo team\" style=\"background-image: url("
     + escapeExpression(((stack1 = depth0.image),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + ");\"></div>\n    <div class=\"gradient\"></div>\n    <div class=\"detail-inner\">\n      <span class=\"year\">2012</span>\n      <span class=\"genre\">Graz</span>\n      <h1>Auphonic Team</h1>\n      <span class=\"artist small wrap\">\n        André Rattinger, Ferdinand Fuhrmann, Christoph Pojer, Georg Holzmann and Florian Hollerweger\n      </span>\n    </div>\n    <div class=\"clear\"></div>\n  </div>\n  <div class=\"clear\"></div>\n</div>\n\n<div class=\"content\">\n  We develop new algorithms in the area of music information retrieval and audio signal processing to create an automatic audio post production web service for broadcasters, podcasts, radio shows, audio books, lecture recordings, screencasts and more.\n  <br> <br>\n  For further details please visit\n  <a href=\"https://auphonic.com\">auphonic.com</a>\n  or follow the links below!\n</div>\n\n<ul>\n  <li><a href=\""
+    + ");\"></div>\n    <div class=\"gradient\"></div>\n    <div class=\"detail-inner\">\n      <span class=\"year\">2012</span>\n      <span class=\"genre\">Graz</span>\n      <h1>Auphonic Team</h1>\n      <span class=\"artist small wrap\">\n        André Rattinger, Ferdinand Fuhrmann, Christoph Pojer, Georg Holzmann and Florian Hollerweger\n      </span>\n    </div>\n    <div class=\"clear\"></div>\n  </div>\n  <div class=\"clear\"></div>\n</div>\n\n<div class=\"content\">\n  We develop new algorithms in the area of music information retrieval and audio signal processing to create an automatic audio post production web service for broadcasters, podcasts, radio shows, audio books, lecture recordings, screencasts and more.\n  <br> <br>\n  For further details please visit\n  <a href=\"https://auphonic.com\">auphonic.com</a>\n  and follow the links below!\n</div>\n\n<ul>\n  <li><a href=\""
     + escapeExpression(((stack1 = depth0.video),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
     + "\" class=\"share\"><span></span>Auphonic Introduction Video</a></li>\n  <li><a href=\""
     + escapeExpression(((stack1 = depth0.examples),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
@@ -1416,7 +1416,7 @@ helpers = helpers || Handlebars.helpers; data = data || {};
   var buffer = "", stack1, stack2, options, functionType="function", escapeExpression=this.escapeExpression, helperMissing=helpers.helperMissing;
 
 
-  buffer += "<ul>\n  <li><span class=\"right\">"
+  buffer += "<h1 class=\"null\">Auphonic Mobile App</h1>\n\n<ul>\n  <li><span class=\"right\">"
     + escapeExpression(((stack1 = depth0.version),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
     + "</span><label class=\"left\">Version</label></li>\n  <li><span class=\"right\">"
     + escapeExpression(((stack1 = ((stack1 = depth0.user),stack1 == null || stack1 === false ? stack1 : stack1.name)),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
@@ -1426,7 +1426,11 @@ helpers = helpers || Handlebars.helpers; data = data || {};
   options = {hash:{},data:data};
   stack2 = ((stack1 = helpers['format-url']),stack1 ? stack1.call(depth0, depth0.repository, options) : helperMissing.call(depth0, "format-url", depth0.repository, options));
   if(stack2 || stack2 === 0) { buffer += stack2; }
-  buffer += "</span></a></li>\n</ul>\n";
+  buffer += "</span></a></li>\n</ul>\n\n<div class=\"content\">\n  If you like the open source Auphonic Mobile App, please consider to donate\n  to support the future development of Auphonic.\n</div>\n\n<ul>\n  <li><a href=\""
+    + escapeExpression(((stack1 = depth0.donate),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
+    + "\" class=\"share\"><span></span>Auphonic Donations</a></li>\n  <li><a href=\""
+    + escapeExpression(((stack1 = depth0.flattr),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
+    + "\" class=\"share\"><span></span>Donate with Flattr</a></li>\n</ul>\n";
   return buffer;
   });
 templates['recordings'] = template(function (Handlebars,depth0,helpers,partials,data) {
