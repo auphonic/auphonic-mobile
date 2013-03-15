@@ -39,7 +39,7 @@ var showAll = function() {
     action: {
       title: 'New',
       className: 'new',
-      url: '/production/source'
+      url: '/production/recording/new-audio'
     }
   });
 
