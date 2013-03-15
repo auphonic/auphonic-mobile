@@ -200,7 +200,10 @@ module.exports = new Class({
   },
 
   onPause: function() {
+    this.freezeLevel = false
+    this.clipwarning.removeClass("clipping");
     this.onLevelUpdate(-50, -50);
+
     this.isRecording = false;
     this.button.removeClass('pulse').set('text', 'Resume Recording');
     this.status.addClass('paused');
