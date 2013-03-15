@@ -54,24 +54,6 @@
 <a class="clear button red expand saveButton">Save Production</a>
 {{/if}}
 
-<h1>Output Files {{#if production}}<small class="output_files_required">(one is required)</small>{{/if}}</h1>
-<ul class="output_files">
-  <li>
-    <label class="left">
-      <input type="text" name="output_basename" value="{{#if output_basename}}{{output_basename}}{{else}}{{input_file_basename}}{{/if}}" data-clearable="1" placeholder="without extension" class="right" />
-      Filename
-    </label>
-  </li>
-  <li><a href="{{baseURL}}new/output_file" class="plus"><span></span>Add Output Format</a></li>
-</ul>
-
-{{#if production}}
-<h1>Chapter Marks</h1>
-<ul class="chapter_marks">
-  <li><a href="{{baseURL}}new/chapter" class="plus"><span></span>Add Chapter Mark</a></li>
-</ul>
-{{/if}}
-
 <h1>Algorithms</h1>
 <ul class="formcontent">
   {{#each algorithm}}
@@ -106,4 +88,22 @@
       {{/if}}
     </li>
   {{/each}}
+</ul>
+
+{{#if production}}
+<h1>Chapter Marks</h1>
+<ul class="chapter_marks">
+  <li><a href="{{baseURL}}new/chapter" class="plus"><span></span>Add Chapter Mark</a></li>
+</ul>
+{{/if}}
+
+<h1>Output Files {{#if production}}<small class="output_files_required">(one is required)</small>{{/if}}</h1>
+<ul class="output_files">
+  <li>
+    <label class="left">
+      <input type="text" name="output_basename" value="{{#if output_basename}}{{output_basename}}{{else}}{{input_file_basename}}{{/if}}" data-clearable="1" placeholder="without extension" class="right" />
+      Filename
+    </label>
+  </li>
+  <li><a href="{{baseURL}}new/output_file" class="plus"><span></span>Add Output Format</a></li>
 </ul>

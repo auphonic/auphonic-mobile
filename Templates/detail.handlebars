@@ -56,6 +56,19 @@
     {{/if}}
   {{/if}}
 
+  {{#if hasChapters}}
+    <h1>Chapter Marks</h1>
+    <ul>
+      {{#each chapters}}
+        <li>
+          <label>
+            <small class="light">{{start}}</small> {{title}}
+          </label>
+        </li>
+      {{/each}}
+    </ul>
+  {{/if}}
+
   {{#if hasAlgorithms}}
     <h1>Algorithms</h1>
     <ul>
@@ -151,19 +164,6 @@
         </li>
     {{/if}}
   </ul>
-
-  {{#if hasChapters}}
-    <h1>Chapter Marks</h1>
-    <ul>
-      {{#each chapters}}
-        <li>
-          <label>
-            <small class="light">{{start}}</small> {{title}}
-          </label>
-        </li>
-      {{/each}}
-    </ul>
-  {{/if}}
 
   {{#if input_file}}
     <h1>Input Source{{#if service_display_type}} - {{service_display_type}}{{/if}}</h1>
