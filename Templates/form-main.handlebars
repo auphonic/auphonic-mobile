@@ -90,13 +90,6 @@
   {{/each}}
 </ul>
 
-{{#if production}}
-<h1>Chapter Marks</h1>
-<ul class="chapter_marks">
-  <li><a href="{{baseURL}}new/chapter" class="plus"><span></span>Add Chapter Mark</a></li>
-</ul>
-{{/if}}
-
 <h1>Output Files {{#if production}}<small class="output_files_required">(one is required)</small>{{/if}}</h1>
 <ul class="output_files">
   <li>
@@ -107,3 +100,10 @@
   </li>
   <li><a href="{{baseURL}}new/output_file" class="plus"><span></span>Add Output Format</a></li>
 </ul>
+
+{{#if production}}
+<h1>Chapter Marks</h1>
+<ul class="chapter_marks">
+  <li><a href="{{baseURL}}new/chapter" class="plus"><span></span>Add Chapter Mark</a></li>
+</ul>
+{{/if}}

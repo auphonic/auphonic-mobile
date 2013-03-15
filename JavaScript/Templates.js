@@ -1336,29 +1336,29 @@ function program40(depth0,data) {
 
 function program42(depth0,data) {
   
-  var buffer = "", stack1;
-  buffer += "\n<h1>Chapter Marks</h1>\n<ul class=\"chapter_marks\">\n  <li><a href=\""
-    + escapeExpression(((stack1 = depth0.baseURL),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "new/chapter\" class=\"plus\"><span></span>Add Chapter Mark</a></li>\n</ul>\n";
-  return buffer;
-  }
-
-function program44(depth0,data) {
-  
   
   return "<small class=\"output_files_required\">(one is required)</small>";
   }
 
-function program46(depth0,data) {
+function program44(depth0,data) {
   
   var stack1;
   return escapeExpression(((stack1 = depth0.output_basename),typeof stack1 === functionType ? stack1.apply(depth0) : stack1));
   }
 
-function program48(depth0,data) {
+function program46(depth0,data) {
   
   var stack1;
   return escapeExpression(((stack1 = depth0.input_file_basename),typeof stack1 === functionType ? stack1.apply(depth0) : stack1));
+  }
+
+function program48(depth0,data) {
+  
+  var buffer = "", stack1;
+  buffer += "\n<h1>Chapter Marks</h1>\n<ul class=\"chapter_marks\">\n  <li><a href=\""
+    + escapeExpression(((stack1 = depth0.baseURL),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
+    + "new/chapter\" class=\"plus\"><span></span>Add Chapter Mark</a></li>\n</ul>\n";
+  return buffer;
   }
 
   buffer += "<ul class=\"formcontent\">\n  ";
@@ -1380,18 +1380,18 @@ function program48(depth0,data) {
   buffer += "\n\n<h1>Algorithms</h1>\n<ul class=\"formcontent\">\n  ";
   stack2 = helpers.each.call(depth0, depth0.algorithm, {hash:{},inverse:self.noop,fn:self.program(30, program30, data),data:data});
   if(stack2 || stack2 === 0) { buffer += stack2; }
-  buffer += "\n</ul>\n\n";
+  buffer += "\n</ul>\n\n<h1>Output Files ";
   stack2 = helpers['if'].call(depth0, depth0.production, {hash:{},inverse:self.noop,fn:self.program(42, program42, data),data:data});
   if(stack2 || stack2 === 0) { buffer += stack2; }
-  buffer += "\n\n<h1>Output Files ";
-  stack2 = helpers['if'].call(depth0, depth0.production, {hash:{},inverse:self.noop,fn:self.program(44, program44, data),data:data});
-  if(stack2 || stack2 === 0) { buffer += stack2; }
   buffer += "</h1>\n<ul class=\"output_files\">\n  <li>\n    <label class=\"left\">\n      <input type=\"text\" name=\"output_basename\" value=\"";
-  stack2 = helpers['if'].call(depth0, depth0.output_basename, {hash:{},inverse:self.program(48, program48, data),fn:self.program(46, program46, data),data:data});
+  stack2 = helpers['if'].call(depth0, depth0.output_basename, {hash:{},inverse:self.program(46, program46, data),fn:self.program(44, program44, data),data:data});
   if(stack2 || stack2 === 0) { buffer += stack2; }
   buffer += "\" data-clearable=\"1\" placeholder=\"without extension\" class=\"right\" />\n      Filename\n    </label>\n  </li>\n  <li><a href=\""
     + escapeExpression(((stack1 = depth0.baseURL),typeof stack1 === functionType ? stack1.apply(depth0) : stack1))
-    + "new/output_file\" class=\"plus\"><span></span>Add Output Format</a></li>\n</ul>\n";
+    + "new/output_file\" class=\"plus\"><span></span>Add Output Format</a></li>\n</ul>\n\n";
+  stack2 = helpers['if'].call(depth0, depth0.production, {hash:{},inverse:self.noop,fn:self.program(48, program48, data),data:data});
+  if(stack2 || stack2 === 0) { buffer += stack2; }
+  buffer += "\n";
   return buffer;
   });
 templates['service-choose'] = template(function (Handlebars,depth0,helpers,partials,data) {
