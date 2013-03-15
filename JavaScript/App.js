@@ -567,7 +567,10 @@ window.__BOOTAPP = function() {
       content: renderTemplate('team', {
         image: Auphonic.TeamImage,
         twitter: Auphonic.TwitterURL,
-        facebook: Auphonic.FacebookURL
+        facebook: Auphonic.FacebookURL,
+        flattr: Auphonic.FlattrURL,
+        video: Auphonic.AuphonicVideoURL,
+        examples: Auphonic.AudioExamplesURL
       })
     }));
   });
