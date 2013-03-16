@@ -76,14 +76,14 @@ var preventDefault = function(event) {
   event.preventDefault();
 };
 
-var cancelText = 'Navigating away will discard all your changes. Press "Cancel" to stay.';
+var cancelText = 'Navigating away will discard all your changes. Press "Stay" to stay.';
 // This should catch all important editing URLs
 var formURLs = /^\/?(production|preset)\/(edit|new)/i;
 var navigate = function(fn) {
   if (formURLs.test(History.getPath()) && navigator.notification) {
     navigator.notification.confirm(cancelText, function(button) {
       if (button == 1) fn();
-    }, 'Hey, wait a second!', 'Navigate,Cancel');
+    }, 'Hey, wait a second!', 'Navigate,Stay');
   } else {
     fn();
   }
