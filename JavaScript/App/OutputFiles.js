@@ -35,8 +35,8 @@ var createUIElement = function(href, store, content, id) {
 var createUIElements = function(baseURL, store, list) {
   if (!list) return null;
 
-  return list.map(function(chapter) {
-    return createUIElement(baseURL + 'new/output_file/{id}', store, chapter);
+  return list.map(function(file) {
+    return createUIElement(baseURL + 'new/output_file/{id}', store, file);
   });
 };
 
@@ -131,7 +131,12 @@ exports.setup = function(store, baseURL, object) {
       className: 'done',
       back: true,
       onClick: function() {
-        add(baseURL, store, getContainer(object), View.getMain().getCurrentObject().serialize(), id);
+        var container = getContainer(object);
+        var content = View.getMain().getCurrentObject().serialize();
+        var previous = id ? container.getElement('[data-output-file-id=' + id + ']') : null;
+        // Preserve outgoing_services which is not settable through the App yet.
+        if (previous) content.outgoing_services = previous.retrieve('value').outgoing_services;
+        add(baseURL, store, container, content, id);
       }
     });
   });
