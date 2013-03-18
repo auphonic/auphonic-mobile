@@ -2,22 +2,20 @@
 @import 'Font'
 @import 'Header'
 
-$footer-height-ios = 44px
-$footer-height-android = 38px
+$footer-height = 44px
 
 div.footerBackground, footer
   position absolute
   left 0
   right 0
+  height $footer-height
 
   .ios &
     bottom 0
-    height $footer-height-ios
 
   .android &
     position fixed
     top $header-height - 2px // Account for missing header border-top style
-    height $footer-height-android
 
   transition-property -webkit-transform, opacity, height
   transition-timing-function ease-in-out
@@ -78,7 +76,7 @@ footer
         text-decoration none
 
         .ios &
-          height $footer-height-ios
+          height $footer-height
 
           &.selected
             border-top 2px solid #cd5c5c
@@ -87,7 +85,7 @@ footer
 
           > span:first-child
             display block
-            height $footer-height-ios
+            height $footer-height
             background-position center 4px
             background-repeat no-repeat
             .ios &
@@ -115,11 +113,11 @@ footer
 
         .android &
           padding 0
-          height $footer-height-android - 2px
+          height $footer-height - 2px
           border-bottom 2px solid #df5d5d
 
           &.selected
-            height $footer-height-android - 5px
+            height $footer-height - 5px
             border-bottom 5px solid #df5d5d
             background-color #222
 
@@ -133,4 +131,4 @@ footer
             font-size 11px
             font-weight 500
 
-            line-height $footer-height-android
+            line-height $footer-height
