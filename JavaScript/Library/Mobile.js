@@ -1,23 +1,8 @@
-/*
----
-
-name: Browser.Mobile
-
-description: Provides useful information about the browser environment
-
-authors: Christoph Pojer (@cpojer)
-
-license: MIT-style license.
-
-requires: [Core/Browser]
-
-provides: Browser.Mobile
-
-...
-*/
-
 var Core = require('Core');
 var Browser = Core.Browser;
+var Element = Core.Element;
+
+var Platform = require('Platform');
 
 Browser.Device = {
 	name: 'other'
@@ -30,33 +15,6 @@ if (Browser.Platform.ios){
 	Browser.Device.name = device;
 }
 
-if (this.devicePixelRatio == 2)
-	Browser.hasHighResolution = true;
-
-Browser.isMobile = !['mac', 'linux', 'win'].contains(Browser.Platform.name);
-
-
-/*
----
-
-name: Browser.Features.Touch
-
-description: Checks whether the used Browser has touch events
-
-authors: Christoph Pojer (@cpojer)
-
-license: MIT-style license.
-
-requires: [Core/Browser]
-
-provides: Browser.Features.Touch
-
-...
-*/
-
-var Core = require('Core');
-var Browser = Core.Browser;
-
 Browser.Features.Touch = (function(){
 	try {
 		document.createEvent('TouchEvent').initTouchEvent('touchstart');
@@ -66,29 +24,38 @@ Browser.Features.Touch = (function(){
 	return false;
 })();
 
+if (Platform.isIOS()) (function(){
 
-/*
----
+var disabled;
 
-name: Touch
+Element.defineCustomEvent('touch', {
 
-description: Provides a custom touch event on mobile devices
+	base: 'touchend',
 
-authors: Christoph Pojer (@cpojer)
+	condition: function(event){
+		if (disabled || event.targetTouches.length !== 0) return false;
 
-license: MIT-style license.
+		var touch = event.changedTouches[0],
+			target = document.elementFromPoint(touch.clientX, touch.clientY);
 
-requires: [Core/Element.Event, Custom-Event/Element.defineCustomEvent, Browser.Features.Touch]
+		do {
+			if (target == this) return true;
+		} while (target && (target = target.parentNode));
 
-provides: Touch
+		return false;
+	},
 
-...
-*/
+	onEnable: function(){
+		disabled = false;
+	},
 
-var Core = require('Core');
-var Element = Core.Element;
+	onDisable: function(){
+		disabled = true;
+	}
 
-(function(){
+});
+
+})(); else (function(){
 
 var disabled;
 var moved = false;
@@ -113,8 +80,7 @@ Element.defineCustomEvent('touch', {
 	base: 'touchend',
 
 	condition: function(event){
-		if (disabled || moved || event.targetTouches.length !== 0) return false;
-		return true;
+		return !(disabled || moved || event.targetTouches.length !== 0);
 	},
 
 	onSetup: function(){
@@ -137,29 +103,6 @@ Element.defineCustomEvent('touch', {
 
 })();
 
-
-/*
----
-
-name: Click
-
-description: Provides a replacement for click events on mobile devices
-
-authors: Christoph Pojer (@cpojer)
-
-license: MIT-style license.
-
-requires: [Touch]
-
-provides: Click
-
-...
-*/
-
-var Core = require('Core');
-var Browser = Core.Browser;
-var Element = Core.Element;
-
 if (Browser.Features.Touch) (function(){
 
 var name = 'click';
@@ -172,28 +115,6 @@ Element.defineCustomEvent(name, {
 });
 
 })();
-
-
-/*
----
-
-name: Swipe
-
-description: Provides a custom swipe event for touch devices
-
-authors: Christopher Beloch (@C_BHole), Christoph Pojer (@cpojer), Ian Collins (@3n)
-
-license: MIT-style license.
-
-requires: [Core/Element.Event, Custom-Event/Element.defineCustomEvent, Browser.Features.Touch]
-
-provides: Swipe
-
-...
-*/
-
-var Core = require('Core');
-var Element = Core.Element;
 
 (function(){
 
@@ -273,28 +194,6 @@ Element.defineCustomEvent(name, {
 
 })();
 
-
-/*
----
-
-name: Touchhold
-
-description: Provides a custom touchhold event for touch devices
-
-authors: Christoph Pojer (@cpojer)
-
-license: MIT-style license.
-
-requires: [Core/Element.Event, Custom-Event/Element.defineCustomEvent, Browser.Features.Touch]
-
-provides: Touchhold
-
-...
-*/
-
-var Core = require('Core');
-var Element = Core.Element;
-
 (function(){
 
 var name = 'touchhold',
@@ -353,4 +252,3 @@ Element.defineCustomEvent(name, {
 });
 
 })();
-

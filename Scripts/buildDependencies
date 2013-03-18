@@ -20,9 +20,6 @@ packager build Custom-Event/* +use-only Custom-Event > "$DIR/$JS/Custom-Event.js
 # Mootilities
 packager build Mootilities/Queue +use-only Mootilities > "$DIR/$JS/Queue.js"
 
-# Mobile
-packager build Mobile/Browser.Mobile Mobile/Click Mobile/Swipe Mobile/Touchhold +use-only Mobile > "$DIR/$JS/Mobile.js"
-
 # EventStack
 packager build EventStack/* +use-only EventStack EventStack.OuterClick > "$DIR/$JS/EventStack.js"
 
