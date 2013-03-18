@@ -201,7 +201,7 @@ module.exports = new Class({
 
   onPause: function() {
     this.freezeLevel = false;
-    this.clipwarning.removeClass("clipping");
+    this.clipwarning.removeClass('clipping');
     this.onLevelUpdate(-50, -50);
 
     this.isRecording = false;
@@ -260,32 +260,30 @@ module.exports = new Class({
   onLevelUpdate: function(average, peak) {
     var peakWidth;
     var averageWidth;
-
-    // show warning and freeze levels if we are too hot to prevent clipping
-    // NOTE: we use individial timers for warning and level freeze (= shorter)
+    // Show warning and freeze levels if we are too hot to prevent clipping
     if (peak > -0.5) {
-      clearTimeout(this.clipwarn_timer);
-      this.clipwarning.addClass("clipping");
-      this.clipwarn_timer = (function() {
-        this.clipwarning.removeClass("clipping");
-      }).delay(1100, this);
+      clearTimeout(this.clipwarnTimer);
+      clearTimeout(this.clipwarnTimerLevel);
 
-      clearTimeout(this.clipwarn_timer_level);
       this.freezeLevel = true;
-      this.clipwarn_timer_level = (function() {
+      this.clipwarning.addClass('clipping');
+      this.clipwarnTimer = (function() {
+        this.clipwarning.removeClass('clipping');
+      }).delay(1100, this);
+      this.clipwarnTimerLevel = (function() {
         this.freezeLevel = false;
       }).delay(100, this);
     }
 
-    // in freezeLevel mode set all levels to maximum
+    // In freezeLevel mode set all levels to maximum
     if (this.freezeLevel) {
       peakWidth = 0;
       averageWidth = 100;
-    }
-    else {
+    } else {
       peakWidth = (-Math.max(-50, peak)) / 0.5;
       averageWidth = 100 - (-Math.max(-50, average)) / 0.5;
     }
+
     this.levelElement.setStyle('width', peakWidth + '%');
     this.averageLevelElement.setStyle('width', averageWidth + '%');
   },

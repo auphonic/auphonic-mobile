@@ -89,12 +89,12 @@ exports.getAlgorithmShortString = function(algorithm) {
   return (algorithm.key == 'denoiseamount') ? 'Reduction Amount' : algorithm.display_name;
 };
 exports.AlgorithmOrder = {
-  "denoise": "01",
-  "denoiseamount": "02",
-  "leveler": "03",
-  "normloudness": "04",
-  "loudnesstarget": "05",
-  "hipfilter": "06"
+  'denoise': '01',
+  'denoiseamount': '02',
+  'leveler': '03',
+  'normloudness': '04',
+  'loudnesstarget': '05',
+  'hipfilter': '06'
 };
 
 exports.ErrorStatus = 2;

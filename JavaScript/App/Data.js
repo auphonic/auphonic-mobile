@@ -1,8 +1,6 @@
-var Core = require('Core');
-var Browser = Core.Browser;
+require('Core');
 
 var API = require('API');
-
 var OutputFiles = require('./OutputFiles');
 var Source = require('./Source');
 
@@ -60,12 +58,10 @@ exports.formatInfos = function(response) {
 
     // Sort according to Auphonic.AlgorithmOrder or otherwise alphabetically
     // at the end (belonging algorithms last)
-    if (Auphonic.AlgorithmOrder[object.key]) {
+    if (Auphonic.AlgorithmOrder[object.key])
       object.order = Auphonic.AlgorithmOrder[object.key];
-    }
-    else {
-      object.order = ((algorithms[object.belongs_to] || object).display_name) + (object.belongs_to ? 2 : 1);
-    }
+    else
+      object.order = String(((algorithms[object.belongs_to] || object).display_name) + (object.belongs_to ? 2 : 1));
 
     object.short_display_name = Auphonic.getAlgorithmShortString(object);
 

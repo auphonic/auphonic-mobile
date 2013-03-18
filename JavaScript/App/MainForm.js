@@ -189,7 +189,6 @@ module.exports = new Class({
     this.update(data);
 
     object.addEvent('show:once', (function() {
-      // add a very visible button to save the production
       var saveButton = object.toElement().getElement('.saveButton');
       if (saveButton) saveButton.addEvent('click', this.bound('onActionClick'));
 
