@@ -505,12 +505,8 @@ var upload = function(recording, isRecording) {
   var output_files = [Auphonic.DefaultOutputFile];
   if (recording.media_type == 'video') output_files.push(Auphonic.DefaultVideoOutputFile);
 
-  // try to create a meaningfull file basename:
-  // first remove spaces, then umlauts and everything else ...
-  var basename = recording.display_name;
-  basename = basename.replace(/ /g, '-');
-  basename = basename.replace(/[^A-Za-z0-9\-_]/g, '');
-
+  // Try to create a meaningfull file basename
+  var basename = recording.display_name.replace(/\s+/g, '-').replace(/[^A-Za-z0-9\-_]/g, '');
   var data = {
     metadata: {title: recording.display_name},
     output_basename: basename,
