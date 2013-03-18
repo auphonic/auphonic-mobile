@@ -226,21 +226,19 @@ window.__BOOTAPP = function() {
   }));
   activeState.attach();
 
-  if (Browser.Features.Touch) {
+  if (Platform.isIOS()) {
     (new PreventClickOnScroll({
       selector: 'div.scrollable',
       contentSelector: 'div.scroll-content',
       activeState: activeState
     })).attach();
 
-    // Prevent all clicks from working normally
-    window.addEventListener('click', preventDefault, false);
-  }
-
-  if (Platform.isIOS()) {
     var iPhone5 = (window.screen.height == 568);
     if (!iPhone5) UI.setTransitionDelay(50);
   }
+
+  // Prevent all clicks from working normally
+  if (Browser.Features.Touch) window.addEventListener('click', preventDefault, false);
 
   if (Platform.isAndroid()) {
     document.addEventListener('backbutton', function() {

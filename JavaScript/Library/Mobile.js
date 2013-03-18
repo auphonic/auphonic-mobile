@@ -91,22 +91,38 @@ var Element = Core.Element;
 (function(){
 
 var disabled;
+var moved = false;
+var start = 0;
+var events = {
+
+	touchstart: function(event){
+		if (event.touches.length > 1) return;
+		moved = false;
+		start = event.touches[0].pageY;
+	},
+
+	touchmove: function(event){
+		if (disabled || moved) return;
+		var end = event.changedTouches[0].pageY;
+		if (Math.abs(start - end) > 10) moved = true;
+	}
+};
 
 Element.defineCustomEvent('touch', {
 
 	base: 'touchend',
 
 	condition: function(event){
-		if (disabled || event.targetTouches.length !== 0) return false;
+		if (disabled || moved || event.targetTouches.length !== 0) return false;
+		return true;
+	},
 
-		var touch = event.changedTouches[0],
-			target = document.elementFromPoint(touch.clientX, touch.clientY);
+	onSetup: function(){
+		this.addEvents(events);
+	},
 
-		do {
-			if (target == this) return true;
-		} while (target && (target = target.parentNode));
-
-		return false;
+	onTeardown: function(){
+		this.removeEvents(events);
 	},
 
 	onEnable: function(){
@@ -298,6 +314,13 @@ var events = {
 		}
 
 		timer = (function(){
+			Element.disableCustomEvents();
+			window.addEventListener('touchend', function() {
+				(function() {
+					Element.enableCustomEvents();
+				}).delay(50);
+			}, false);
+
 			this.fireEvent(name, event);
 		}).delay(this.retrieve(delayKey) || 750, this);
 	},
