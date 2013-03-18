@@ -29,7 +29,7 @@ Run
 * Use the Xcode project in `iOS/` to run the App on the iPhone
 * Use Google Chrome and open `App/` on a local server.
  * Be sure to enable touch events in Web Inspector (see: Web Inspector Settings)
- * *Note:* When developing locally in a browser the relative path of the project in `App/index.html` needs to be adjusted and the local server needs to be added to Cordova.plist in XCode.
+ * *Note:* When developing locally in a browser the relative path of the project in `App/index.html` needs to be adjusted and the local server needs to be added to `iOS/Auphonic/config.xml` and `Android/res/xml/config.xml`.
 * Android
  * Ensure that the `Android/` folder links to the correct version of Cordova Android
  * Copy all files from `App/` except `cordova.js` to `Android/assets/App`
@@ -42,8 +42,7 @@ Deployment
 
 * Run `Scripts/compile` to generate a compressed file with all server resources ready for deployment.
 * Remove "REMOVE WHEN DEPLOYING" block from index.html
-* iOS: Update Cordova.plist and remove all but auphonic.com from ExternalHosts
-* Android: Update config.xml and remove all but auphonic.com from access-origin
+* Update both config.xml files (in iOS and Android folders) and remove all but auphonic.com from the `<access origin=…>` blocks
 * Ensure that index.html says `this.__PLATFORM = 'ios'` for iOS and `this.__PLATFORM = 'android'` for Android
 * Build and ship with the appropriate toolset for either iOS or Android
 * Rethink this list and automate all the above steps.

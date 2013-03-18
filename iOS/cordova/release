@@ -1,4 +1,5 @@
-#! /bin/sh 
+#!/bin/bash
+
 #
 # Licensed to the Apache Software Foundation (ASF) under one
 # or more contributor license agreements.  See the NOTICE file
@@ -18,6 +19,33 @@
 # under the License.
 #
 
-CORDOVA_PATH=$( cd "$( dirname "$0" )" && pwd -P)
+#
+# compile and launch a Cordova/iOS project to the simulator
+#
 
-tail -f "$CORDOVA_PATH/console.log"
+set -e
+
+XCODE_VER=$(xcodebuild -version | head -n 1 | sed -e 's/Xcode //')
+XCODE_MIN_VERSION="4.5"
+
+if [[ "$XCODE_VER" < "$XCODE_MIN_VERSION" ]]; then
+	echo "Cordova can only run in Xcode version $XCODE_MIN_VERSION or greater."
+	exit 1
+fi
+
+CORDOVA_PATH=$( cd "$( dirname "$0" )" && pwd -P)
+PROJECT_PATH="$(dirname "$CORDOVA_PATH")"
+XCODEPROJ=$( ls "$PROJECT_PATH" | grep .xcodeproj  )
+PROJECT_NAME=$(basename "$XCODEPROJ" .xcodeproj)
+
+cd "$PROJECT_PATH"
+
+APP=build/$PROJECT_NAME.app
+SDK=`xcodebuild -showsdks | grep Sim | tail -1 | awk '{print $6}'`
+
+xcodebuild -project $PROJECT_NAME.xcodeproj -arch i386 -target $PROJECT_NAME -configuration Release -sdk $SDK clean build VALID_ARCHS="i386" CONFIGURATION_BUILD_DIR="$PROJECT_PATH/build"
+
+
+
+
+
