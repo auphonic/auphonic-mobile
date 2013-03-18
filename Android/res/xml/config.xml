@@ -20,7 +20,7 @@
 <cordova>
   <access origin="http://127.0.0.1*"/> <!-- allow local pages -->
 
-  <access origin="https://192.168.0.3" />
+  <access origin="https://10.0.0.4" />
   <access origin="http://auphonic.com" />
   <access origin="https://auphonic.com" />
   <access origin=".*"/>

@@ -29,7 +29,7 @@
 	<key>ExternalHosts</key>
 	<array>
 		<string>auphonic.com</string>
-		<string>192.168.0.3</string>
+		<string>10.0.0.4</string>
 	</array>
 	<key>Plugins</key>
 	<dict>
