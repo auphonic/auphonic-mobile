@@ -1,5 +1,6 @@
-node_modules/
-xcuserdata
+Android/local.properties
 App/App.css
 JavaScript/APIKeys.js
-Android/local.properties
+JavaScript/Templates.js
+node_modules/
+xcuserdata
