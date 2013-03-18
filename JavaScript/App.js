@@ -550,7 +550,7 @@ window.__BOOTAPP = function() {
 
   Controller.define('/about', function() {
     View.getMain().push(new View.Object({
-      title: 'App Info',
+      title: 'Auphonic Mobile',
       content: renderTemplate('about', {
         user: User.get(),
         version: Auphonic.Version,
