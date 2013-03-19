@@ -93,30 +93,27 @@
     &.clipping
       visibility visible
 
-  a.button.red
-    margin-top 65px
-    margin-bottom 40px
-
-    &.recorder
-      display block
-      width 150px
-      height 150px
-      padding 0
-      margin 15px auto 30px auto
-
-      font-size 32px
-      line-height 147px
-
-      border-radius 50%
-      box-shadow 0 0 5px rgba(0, 0, 0, 0.3)
-
-      transition-property opacity
-      transition-timing-function ease-in-out
-      transition-duration 400ms
-      opacity 1
+  a.button
+    transition-property opacity
+    transition-timing-function ease-in-out
+    transition-duration 400ms
+    opacity 1
 
     &.fade
       opacity 0
+
+  a.button.red
+    display block
+    width 150px
+    height 150px
+    padding 0
+    margin 15px auto 30px auto
+
+    font-size 32px
+    line-height 147px
+
+    border-radius 50%
+    box-shadow 0 0 5px rgba(0, 0, 0, 0.3)
 
     &.pulse
       animation-name pulse
@@ -126,6 +123,8 @@
       animation-duration 1s
 
   a.button.save-recording
+    width 150px
+    margin 15px auto
     display none
 
     &.paused

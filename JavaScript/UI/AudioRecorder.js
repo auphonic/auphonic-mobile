@@ -8,6 +8,8 @@ var Data = require('App/Data');
 var UI = require('UI');
 var Notice = require('UI/Notice');
 
+var Platform = require('Platform');
+
 module.exports = new Class({
 
   Implements: [Class.Binds, Options, Events],
@@ -175,16 +177,16 @@ module.exports = new Class({
     }
 
     this.fireEvent('start');
-    this.hasStarted = true;
     this.status.show();
-    this.status.removeClass('paused');
-    this.saveButton.removeClass('paused');
-    this.button.addClass('recorder');
-    this.footer.addClass('out');
-    this.statusTimer = (function() {
+    if (this.hasStarted) this.saveButton.addClass('fade').transition(function() {
+      this.removeClass('paused');
+    });
+    (function() {
       this.status.removeClass('out');
     }).delay(UI.getTransitionDelay(), this);
+    if (Platform.isIOS()) this.footer.addClass('out');
     document.addEventListener('pause', this.bound('pause'), false);
+    this.hasStarted = true;
   },
 
   onStop: function() {
@@ -192,10 +194,9 @@ module.exports = new Class({
     this.isRecording = false;
     this.button.removeClass('pulse').set('text', 'Start');
     this.status.removeClass('paused').removeClass('hasChapters');
-    this.saveButton.removeClass('paused');
-    this.button.addClass('recorder');
+    this.saveButton.removeClass('paused').addClass('fade');
     this.status.addClass('out').addEvent('transitionComplete:once', this.bound('hideStatus'));
-    this.footer.removeClass('out');
+    if (Platform.isIOS()) this.footer.removeClass('out');
     document.removeEventListener('pause', this.bound('pause'), false);
   },
 
@@ -205,10 +206,12 @@ module.exports = new Class({
     this.onLevelUpdate(-50, -50);
 
     this.isRecording = false;
-    this.button.removeClass('pulse').set('text', 'Resume Recording');
+    this.button.removeClass('pulse').set('text', 'Resume');
     this.status.addClass('paused');
     this.saveButton.addClass('paused');
-    this.button.removeClass('recorder');
+    (function() {
+      this.saveButton.removeClass('fade');
+    }).delay(UI.getTransitionDelay(), this);
     this.fireEvent('pause');
     document.removeEventListener('pause', this.bound('pause'), false);
   },
@@ -236,7 +239,7 @@ module.exports = new Class({
   onHide: function() {
     this.status.dispose();
     this.status.removeEvent('transitionComplete:once', this.bound('hideStatus'));
-    this.footer.removeClass('out');
+    if (Platform.isIOS()) this.footer.transition({immediate: true}).removeClass('out');
     this.chapterElement.addClass('fade');
   },
 
@@ -258,8 +261,8 @@ module.exports = new Class({
   },
 
   onLevelUpdate: function(average, peak) {
-    var peakWidth;
-    var averageWidth;
+    var peakWidth = 0;
+    var averageWidth = 100;
     // Show warning and freeze levels if we are too hot to prevent clipping
     if (peak > -0.5) {
       clearTimeout(this.clipwarnTimer);
@@ -275,11 +278,7 @@ module.exports = new Class({
       }).delay(100, this);
     }
 
-    // In freezeLevel mode set all levels to maximum
-    if (this.freezeLevel) {
-      peakWidth = 0;
-      averageWidth = 100;
-    } else {
+    if (!this.freezeLevel) {
       peakWidth = (-Math.max(-50, peak)) / 0.5;
       averageWidth = 100 - (-Math.max(-50, average)) / 0.5;
     }
