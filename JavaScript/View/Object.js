@@ -105,7 +105,8 @@ module.exports = new Class({
 
     var element = this.element;
     var activePlugins = this.activePlugins = [];
-    Array.each(this.getPlugins(), function(fn) {
+    var plugins = this.getPlugins();
+    if (plugins) Array.each(plugins, function(fn) {
       activePlugins.push(fn(element));
     });
 
