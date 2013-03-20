@@ -362,6 +362,13 @@ window.__BOOTAPP = function() {
         var owner = document.getElement('input[name=' + element.get('data-belongs-to') + ']');
         if (!owner) return;
 
+        // Fixes a very weird display bug
+        (function() {
+          var select = element.getElement('select');
+          var option = select.getElement('option[selected]');
+          if (option) select.set('value', option.value);
+        }).delay(100);
+
         owner.addEvent('change', function() {
           // Prevent ghost clicks on select elements by disabling them for a short time
           var selects = element.getParent('ul').getElements('select').set('disabled', true);
