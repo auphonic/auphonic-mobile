@@ -511,6 +511,7 @@ var upload = function(recording, isRecording) {
     metadata: {title: recording.display_name},
     output_basename: basename,
     output_files: output_files,
+    algorithms: {denoise: true},
     chapters: recording.chapters
   };
 
