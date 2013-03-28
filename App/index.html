@@ -92,7 +92,7 @@
             while (j--) {
               if (owner == links[j].element) {
                 // error
-                if (!link.cssRules.length) links[j].error.call(links[j].element);
+                if (link.cssRules && !link.cssRules.length) links[j].error.call(links[j].element);
                 else links[j].listener.call(links[j].element);
                 links.splice(j, 1);
               }
