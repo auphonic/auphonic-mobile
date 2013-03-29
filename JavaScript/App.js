@@ -59,6 +59,7 @@ var WebIntent = require('Cordova/WebIntent');
 
 var Auphonic = require('Auphonic');
 var Platform = require('Platform');
+var iOS = require('iOS');
 
 // Register Partials for Handlebars
 Handlebars.registerPartial('preset', Handlebars.templates.preset);
@@ -553,6 +554,8 @@ window.__BOOTAPP = function() {
       window.fireEvent('appStart', null, 1);
     });
     main.pushOn('home', object);
+
+    if (Platform.isIOS()) iOS.fixRecordingPaths();
   });
 
   Controller.define('/about', function() {
