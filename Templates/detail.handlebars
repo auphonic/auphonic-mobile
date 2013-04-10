@@ -183,6 +183,38 @@
     </ul>
   {{/if}}
 
+  {{#if intro}}
+    <h1>Intro{{#if intro.service_display_type}} - {{intro.service_display_type}}{{/if}}</h1>
+    <ul>
+      <li>
+        <label>
+          {{#if intro.service_display_name}}
+            <span class="light">{{intro.service_display_name}}</span>
+            <small>{{intro.input_file}}</small>
+          {{else}}
+            {{intro.input_file}}
+          {{/if}}
+        </label>
+      </li>
+    </ul>
+  {{/if}}
+
+  {{#if outro}}
+    <h1>Outro{{#if outro.service_display_type}} - {{outro.service_display_type}}{{/if}}</h1>
+    <ul>
+      <li>
+        <label>
+          {{#if outro.service_display_name}}
+            <span class="light">{{outro.service_display_name}}</span>
+            <small>{{outro.input_file}}</small>
+          {{else}}
+            {{outro.input_file}}
+          {{/if}}
+        </label>
+      </li>
+    </ul>
+  {{/if}}
+
   {{#if outgoing_services}}
     <h1>Outgoing File Transfers</h1>
     <ul>

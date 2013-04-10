@@ -9,6 +9,7 @@ var CoverPhoto = require('App/CoverPhoto');
 var Data = require('App/Data');
 var MainForm = require('App/MainForm');
 var Metadata = require('App/Metadata');
+var MultiInputFiles = require('App/MultiInputFiles');
 var OutgoingService = require('App/OutgoingService');
 var OutputFiles = require('App/OutputFiles');
 
@@ -38,6 +39,7 @@ var createForm = function(options) {
         }
       }, options)),
       Metadata,
+      MultiInputFiles,
       OutgoingService,
       OutputFiles,
       CoverPhoto

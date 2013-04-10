@@ -118,19 +118,27 @@ if (!Platform.isIOS()) {
 }
 
 exports.prepare = function(object, type, fn) {
-  Source.fetch(function(sources) {
-    if (object.service) {
-      var source;
-      for (var i = 0; i < sources.length; i++) {
-        source = sources[i];
-        if (source.uuid == object.service) break;
-      }
+  Source.fetch(function(list) {
+    var sources = {};
+    list.forEach(function(source) {
+      sources[source.uuid] = source;
+    });
 
+    if (object.service) {
+      var source = sources[object.service];
       if (source) {
         object.service_display_type = source.display_type;
         object.service_display_name = source.display_name;
       }
     }
+
+    if (object.multi_input_files) Array.forEach(object.multi_input_files, function(file) {
+      var source = sources[file.service];
+      if (source) {
+        file.service_display_type = source.display_type;
+        file.service_display_name = source.display_name;
+      }
+    });
 
     fn(object);
   });
@@ -216,6 +224,12 @@ exports.prepare = function(object, type, fn) {
 
   media_files = media_files.sortByKey('format').map(function(file) {
     return encodeURI(file.url + token);
+  });
+
+  if (object.multi_input_files) Array.forEach(object.multi_input_files, function(file) {
+    if (file.type == 'intro') object.intro = file;
+    if (file.type == 'outro') object.outro = file;
+    if (file.input_file.charAt(0) == '/') file.input_file = file.input_file.substr(1);
   });
 
   object.media_files = length(media_files) ? JSON.stringify(media_files) : null;

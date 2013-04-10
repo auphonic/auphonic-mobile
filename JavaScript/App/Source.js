@@ -34,7 +34,6 @@ exports.getObject = function(store) {
 
 var fetch = exports.fetch = function(callback) {
   API.call('services').on({
-
     success: function(response) {
       var list = response.data.filter(function(service) {
         return !!service.incoming;

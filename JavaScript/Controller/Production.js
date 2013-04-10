@@ -18,6 +18,7 @@ var Form = require('App/Form');
 var ListFiles = require('App/ListFiles');
 var MainForm = require('App/MainForm');
 var Metadata = require('App/Metadata');
+var MultiInputFiles = require('App/MultiInputFiles');
 var OutgoingService = require('App/OutgoingService');
 var OutputFiles = require('App/OutputFiles');
 var ProductionStatus = require('App/ProductionStatus');
@@ -57,6 +58,7 @@ var createForm = function(options) {
       }, options)),
       Chapter,
       Metadata,
+      MultiInputFiles,
       Source,
       OutgoingService,
       ListFiles,
