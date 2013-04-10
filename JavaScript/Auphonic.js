@@ -1,6 +1,6 @@
 var Platform = require('Platform');
 
-exports.Version = '1.1.5';
+exports.Version = '1.1.6';
 exports.APIURL = 'https://auphonic.com/';
 exports.FeedbackURL = 'mailto:mobile@auphonic.com?subject=Auphonic%20Mobile%20App%20Feedback';
 exports.RepositoryURL = 'https://github.com/auphonic/auphonic-mobile';
