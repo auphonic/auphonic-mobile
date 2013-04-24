@@ -49,7 +49,7 @@ module.exports = new Class({
   stop: function() {
     clearInterval(this.timer);
     this.media.stopRecord();
-
+    IdleTimer.enable();
     this.fireEvent('stop');
   },
 
@@ -171,7 +171,6 @@ module.exports = new Class({
 
   onPause: function() {
     clearInterval(this.timer);
-    IdleTimer.enable();
     this.fireEvent('pause');
   },
 
