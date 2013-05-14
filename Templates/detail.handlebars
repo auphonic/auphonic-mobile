@@ -63,9 +63,15 @@
     <ul>
       {{#each chapters}}
         <li>
-          <label>
-            <small class="light">{{start}}</small> {{title}}
-          </label>
+          {{#if url}}
+            <a href="{{url}}" class="share">
+              <span></span><small class="light">{{start}}</small> {{title}}
+            </a>
+          {{else}}
+            <label>
+              <small class="light">{{start}}</small> {{title}}
+            </label>
+          {{/if}}
         </li>
       {{/each}}
     </ul>
