@@ -513,8 +513,10 @@ var upload = function(recording, isRecording) {
     metadata: {title: recording.display_name},
     output_basename: basename,
     output_files: output_files,
-    algorithms: {denoise: true},
-    chapters: recording.chapters
+    chapters: recording.chapters,
+
+    // Algorithm settings for Personal Soundscapes
+    algorithms: {denoise: false, leveler: false, normloudness: true, loudnesstarget: -23}
   };
 
   API.call('productions', 'post', JSON.stringify(data)).on({
