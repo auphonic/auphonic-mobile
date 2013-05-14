@@ -17,7 +17,7 @@ exports.DonateURL = 'https://auphonic.com/donate';
 exports.DefaultFileName = 'mobile-recording-{uuid}';
 exports.DefaultVideoFileName = 'mobile-video-{uuid}';
 exports.DefaultFileNameFilter = /mobile-(?:video|recording)-(\d+)/i;
-exports.FolderName = 'Auphonic';
+exports.FolderName = 'PersonalSoundscapes';
 
 exports.DefaultAudioFormat = Platform.isIOS() ? 'm4a' : 'ogg';
 exports.DefaultOutputFile = {

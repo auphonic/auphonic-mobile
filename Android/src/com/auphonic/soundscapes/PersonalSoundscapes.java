@@ -17,13 +17,13 @@
  under the License.
  */
 
-package com.auphonic.app;
+package com.auphonic.soundscapes;
 
 import android.view.WindowManager.LayoutParams;
 import android.os.Bundle;
 import org.apache.cordova.*;
 
-public class Auphonic extends DroidGap {
+public class PersonalSoundscapes extends DroidGap {
   @Override
   public void onCreate(Bundle savedInstanceState) {
     getWindow().addFlags(LayoutParams.FLAG_KEEP_SCREEN_ON);

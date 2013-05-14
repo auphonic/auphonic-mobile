@@ -18,7 +18,7 @@
        under the License.
 -->
 <manifest xmlns:android="http://schemas.android.com/apk/res/android" android:windowSoftInputMode="adjustPan"
-      package="com.auphonic.app" android:versionName="1.0.1" android:versionCode="2" android:hardwareAccelerated="true">
+      package="com.auphonic.soundscapes" android:versionName="1" android:versionCode="1" android:hardwareAccelerated="true">
     <supports-screens
         android:largeScreens="true"
         android:normalScreens="true"
@@ -44,7 +44,7 @@
     <application android:icon="@drawable/icon" android:label="@string/app_name"
         android:hardwareAccelerated="true"
         android:debuggable="false">
-        <activity android:name="Auphonic" android:label="@string/app_name"
+        <activity android:name="PersonalSoundscapes" android:label="@string/app_name"
                 android:theme="@android:style/Theme.Black.NoTitleBar"
                 android:screenOrientation="portrait"
                 android:configChanges="orientation|keyboardHidden|keyboard|screenSize|locale">

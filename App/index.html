@@ -2,7 +2,7 @@
 <html>
 <head>
   <meta charset="utf-8" />
-  <title>Auphonic</title>
+  <title>Personal Soundscapes</title>
   <meta name="viewport" content="initial-scale=1.0 maximum-scale=1.0 user-scalable=no" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
@@ -14,15 +14,15 @@
   <script type="text/javascript">
     // Set up globals
     (function() {
-      this.__PLATFORM = 'ios';
+      this.__PLATFORM = 'android';  // android or ios
       this.__CORDOVA_VERSION = '2.5.0';
-      this.__SERVER_URL = this.__FALLBACK_SERVER_URL = 'https://auphonic.com/mobile/' + this.__CORDOVA_VERSION + '/';
+      this.__SERVER_URL = this.__FALLBACK_SERVER_URL = 'https://auphonic.com/mobile/personal-soundscapes/' + this.__CORDOVA_VERSION + '/';
 
       // REMOVE WHEN DEPLOYING
       // Update this if you are testing the application locally.
-      var DEVbaseURL = '/Auphonic/App/';
+      var DEVbaseURL = '/App/';
       // Local test URL for the Server scripts. Remove this when deploying.
-      this.__SERVER_URL = 'http://10.0.0.4' + DEVbaseURL + '../Server/' + this.__CORDOVA_VERSION + '/';
+      this.__SERVER_URL = 'http://10.0.0.3' + DEVbaseURL + '../Server/' + this.__CORDOVA_VERSION + '/';
       if (new RegExp('^' + DEVbaseURL).test(location.pathname)) {
         this.__LOCALHOST__ = true;
         this.__baseURL = DEVbaseURL;

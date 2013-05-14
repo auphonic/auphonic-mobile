@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <widget>
-	<access origin="10.0.0.4"/>
+	<access origin="10.0.0.3"/>
 	<access origin="auphonic.com"/>
 
 	<content src="index.html" />
