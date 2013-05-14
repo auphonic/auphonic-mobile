@@ -233,7 +233,7 @@ var showOne = function(req, options) {
 
 // Start a production and update the status
 var startProduction = function(event) {
-  event.preventDefault();
+  if (event) event.preventDefault();
 
   this.hide();
   var processing = this.getNext('div.processing').show();
@@ -456,6 +456,20 @@ var upload = function(recording, isRecording) {
         ]);
         CurrentUpload.remove(uuid);
         View.getMain().getStack().notifyAll('refresh', [uploadResponse.data]);
+
+        // start production on upload success
+        var start_url = 'production/' + uuid + '/start';
+        API.call(start_url, 'post', JSON.stringify({})).on({
+          success: function() {
+            // on upload success
+          }
+        });
+
+        // Version die den progress am server anzeigt (mit player usw.):
+        // (function(){
+        //   var el = View.getMain().getCurrentObject().toElement().getElement('div.detailView a.startProduction');
+        //   if (el) startProduction.call(el);
+        // }).delay(300);
       },
 
       error: function() {
@@ -494,7 +508,7 @@ var upload = function(recording, isRecording) {
       file: recording
     });
 
-    var url = '/production/edit/{uuid}'.substitute(response.data);
+    var url = '/production/{uuid}'.substitute(response.data);
     var object = View.getMain().getStack().getByURL(url);
     if (object) object.invalidate();
     History.push(url);
