@@ -1,6 +1,5 @@
 var Core = require('Core');
 var Events = Core.Events;
-var Request = Core.Request;
 
 var Request = require('Request');
 var Queue = require('Queue').Queue;

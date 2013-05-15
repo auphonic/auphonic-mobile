@@ -16,6 +16,7 @@ var CoverPhoto = require('App/CoverPhoto');
 var Data = require('App/Data');
 var Form = require('App/Form');
 var ListFiles = require('App/ListFiles');
+var Location = require('App/Location');
 var MainForm = require('App/MainForm');
 var Metadata = require('App/Metadata');
 var MultiInputFiles = require('App/MultiInputFiles');
@@ -63,7 +64,8 @@ var createForm = function(options) {
       OutgoingService,
       ListFiles,
       OutputFiles,
-      CoverPhoto
+      CoverPhoto,
+      Location
     ]
   });
 };
@@ -421,7 +423,9 @@ Controller.define('/production/selectFile/{index}', function(req) {
 });
 
 Controller.define('/production/new/metadata', function() {
-  form.show('metadata');
+  form.show('metadata', {
+    withLocation: true
+  });
 });
 
 Controller.define('/production/new/output_file/:id:', function(req) {

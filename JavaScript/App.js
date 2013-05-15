@@ -12,6 +12,7 @@ require('Templates');
 require('Class-Extras');
 require('Custom-Event');
 require('Mobile');
+var Request = require('Request');
 
 // Load Extensions
 require('Extensions/Array');
@@ -382,6 +383,42 @@ window.__BOOTAPP = function() {
           if (this.get('checked')) element.removeClass('fade');
           else element.addClass('fade');
         });
+      });
+    },
+
+    'span.location-detail': function(elements) {
+      elements.each(function(element) {
+        // If the field has text input, it has been processed already
+        if (element.get('text').trim()) return;
+
+        // Be on the safe side :)
+        var lat = element.get('data-latitude').trim();
+        var lon = element.get('data-longitude').trim();
+        if (!lat || !lon) return;
+
+        var latitude = parseFloat(lat).round(7);
+        var longitude = parseFloat(lon).round(7);
+        if (!latitude || !longitude) return;
+
+        element.empty().adopt(
+          new Element('span').set('text', 'Lat '),
+          new Element('small').addClass('light').set('text', latitude + ' '),
+          new Element('span').set('text', 'Long '),
+          new Element('small').addClass('light').set('text', longitude)
+        );
+
+        // We don't actually care about a failure here. If it doesn't work, it doesn't work
+        // and we fall back to Latitude/Longitude
+        new Request.JSON({
+          url: Auphonic.GeoLookupService.substitute({
+            latitude: latitude,
+            longitude: longitude
+          }),
+          onSuccess: function(data) {
+            if (data && data.status == "OK" && data.results && data.results[0] && data.results[0].formatted_address)
+              element.set('text', data.results[0].formatted_address);
+          }
+        }).send();
       });
     }
 

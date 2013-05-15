@@ -77,6 +77,21 @@
     </ul>
   {{/if}}
 
+  {{#if metadata.location.longitude}}
+    <h1>Location</h1>
+    <ul>
+      <li>
+        <label class="location-detail-popover show-popover info">
+          <span></span>
+          <span class="location-detail" data-latitude="{{metadata.location.latitude}}" data-longitude="{{metadata.location.longitude}}"></span>
+          <div class="hidden popover top justify" data-position="top" data-highlight-text="1">
+            <h1></h1>
+          </div>
+        </label>
+      </li>
+    </ul>
+  {{/if}}
+
   {{#if hasAlgorithms}}
     <h1>Algorithms</h1>
     <ul>
