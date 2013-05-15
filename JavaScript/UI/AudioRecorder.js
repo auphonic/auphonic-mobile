@@ -208,10 +208,14 @@ module.exports = new Class({
     this.isRecording = false;
     this.button.removeClass('pulse').set('text', 'Resume');
     this.status.addClass('paused');
-    this.saveButton.addClass('paused');
-    (function() {
-      this.saveButton.removeClass('fade');
-    }).delay(UI.getTransitionDelay(), this);
+    // The "Save Recording"-Button is not necessary on the iPhone 4(S)
+    // This is a really cheap check.
+    if (!Platform.isIOS() || window.screen.height != 480) {
+      this.saveButton.addClass('paused');
+      (function() {
+        this.saveButton.removeClass('fade');
+      }).delay(UI.getTransitionDelay(), this);
+    }
     this.fireEvent('pause');
     document.removeEventListener('pause', this.bound('pause'), false);
   },
