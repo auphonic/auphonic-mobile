@@ -20,6 +20,7 @@ module.exports = new Class({
     positionProperty: 'data-position',
     openEventProperty: 'data-popover-open-event',
     closeEventProperty: 'data-popover-close-event',
+    highlightTextProperty: 'data-highlight-text',
     openDelay: 'data-popover-open-delay',
     animationClass: 'fade',
     arrowHeight: 14
@@ -34,13 +35,16 @@ module.exports = new Class({
   },
 
   setup: function() {
-    var popover = this.popover = this.element.getElement(this.options.selector);
-    popover.dispose().removeClass('hidden').addClass(this.options.animationClass);
-    popover.store(baseKey, this.element);
-    this.pos = popover.get(this.options.positionProperty);
-    this.openEvent = this.element.get(this.options.openEventProperty) || 'click';
-    this.closeEvent = this.element.get(this.options.closeEventProperty);
-    this.openDelay = parseInt(this.element.get(this.options.openDelay), 10) || '0';
+    var element = this.element;
+    var options = this.options;
+    var popover = this.popover = element.getElement(options.selector);
+    popover.dispose().removeClass('hidden').addClass(options.animationClass);
+    popover.store(baseKey, element);
+    this.pos = popover.get(options.positionProperty);
+    this.openEvent = element.get(options.openEventProperty) || 'click';
+    this.closeEvent = element.get(options.closeEventProperty);
+    this.openDelay = parseInt(element.get(options.openDelay), 10) || '0';
+    this.shouldHighlightText = popover.get(options.highlightTextProperty);
 
     this.attach();
   },
@@ -97,6 +101,10 @@ module.exports = new Class({
     this._isOpen = true;
 
     var popover = this.popover;
+    var headline = popover.getElement('h1');
+    if (headline && this.shouldHighlightText)
+      headline.set('text', this.element.get('text'));
+
     popover.inject(this.getScrollElement());
     this.position();
 

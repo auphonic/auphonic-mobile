@@ -31,15 +31,21 @@
       border-bottom-color #fff
 
   h1
-    margin 10px 0 10px 0
+    margin 7px 0 7px 0
     margin-left 0
     margin-right 0
     color #fff
     text-align center
     text-shadow none
+    overflow visible
+    white-space normal
+    line-height 1.4em
 
     &:first-child
       margin-top 0
+
+    &:last-child
+      margin-bottom 0
 
   .android & a.button.expand
     margin-left 0
@@ -53,8 +59,10 @@
     text-overflow ellipsis
 
   &.fade
-    transform scale(0)
     opacity 0
+    // Specificity fix
+    .ios &
+      transform scale(0)
 
   &:before, &:after
     left 50%
