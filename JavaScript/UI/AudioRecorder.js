@@ -105,7 +105,13 @@ module.exports = new Class({
   },
 
   stop: function() {
-    if (this.hasStarted) this.recorder.stop();
+    if (this.hasStarted) {
+      // After a recording is paused and the app is put into background,
+      // when returning to the app and stopping the recording immediately, it will have broken headers
+      // By calling start right before stop, everything stays shiny.
+      this.recorder.start();
+      this.recorder.stop();
+    }
     return this;
   },
 
