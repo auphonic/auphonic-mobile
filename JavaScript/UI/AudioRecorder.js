@@ -261,6 +261,8 @@ module.exports = new Class({
   },
 
   onLevelUpdate: function(average, peak) {
+    if (!this.isRecording) return;
+
     var peakWidth = 0;
     var averageWidth = 100;
     // Show warning and freeze levels if we are too hot to prevent clipping
