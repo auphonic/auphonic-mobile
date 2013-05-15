@@ -27,6 +27,7 @@ var Source = require('App/Source');
 
 var CurrentUpload = require('Store/CurrentUpload');
 var Recording = require('Store/Recording');
+var User = require('Store/User');
 var WebIntent = require('Cordova/WebIntent');
 
 var Auphonic = require('Auphonic');
@@ -600,7 +601,10 @@ if (Platform.isAndroid()) {
 Controller.define('/production/recording/new-video', function() {
   new CordovaVideoRecorder({
       generateFileName: function() {
-        return Auphonic.DefaultVideoFileName.substitute({uuid: Recording.generateRecordingId()});
+        return Auphonic.DefaultVideoFileName.substitute({
+          user: User.getId(),
+          uuid: Recording.generateRecordingId()
+        });
       }
     }).addEvents({
     success: showRecording,
@@ -622,7 +626,10 @@ Controller.define('/production/recording/new-audio', function() {
   View.getMain().push(object);
   recorder = new AudioRecorder(CordovaAudioRecorder, object, {
     generateFileName: function() {
-      return Auphonic.DefaultFileName.substitute({uuid: Recording.generateRecordingId()});
+      return Auphonic.DefaultFileName.substitute({
+        user: User.getId(),
+        uuid: Recording.generateRecordingId()
+      });
     },
     onPause: function() {
       View.getMain().updateElement('back', {fade: true}, object.getBackTemplate());

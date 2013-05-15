@@ -14,9 +14,9 @@ exports.TwitterURL = 'https://twitter.com/auphonic';
 exports.FacebookURL = 'https://www.facebook.com/pages/auphonic/217115551651035';
 exports.FlattrURL = 'https://flattr.com/thing/1035105/Auphonic-Mobile-App';
 exports.DonateURL = 'https://auphonic.com/donate';
-exports.DefaultFileName = 'mobile-recording-{uuid}';
-exports.DefaultVideoFileName = 'mobile-video-{uuid}';
-exports.DefaultFileNameFilter = /mobile-(?:video|recording)-(\d+)/i;
+exports.DefaultFileName = 'mobile-recording-{user}-{uuid}';
+exports.DefaultVideoFileName = 'mobile-video-{user}-{uuid}';
+exports.DefaultFileNameFilter = /mobile-(?:video|recording)-(?:.*?)-(\d+)/i;
 exports.FolderName = 'Auphonic';
 exports.GeoLookupService = 'http://maps.googleapis.com/maps/api/geocode/json?latlng={latitude},{longitude}&sensor=true';
 
