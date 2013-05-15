@@ -16,6 +16,7 @@ module.exports = new Class({
   options: {
     url: null,
     delay: 1000,
+    /*onUpdate: function() {},*/
     /*onFinish: function() {}*/
   },
 
@@ -64,10 +65,11 @@ module.exports = new Class({
     }
 
     var production = this.production;
+    this.fireEvent('update', [production]);
     // change_allowed means processing has finished
     if (production.change_allowed) {
-      this.fireEvent('finish', [production]);
       this.stop();
+      this.fireEvent('finish', [production]);
       return;
     }
 

@@ -213,6 +213,7 @@ exports.prepare = function(object, type, callback) {
   formatMultiInputFiles(object);
 
   object.is_uploading = CurrentUpload.has(object.uuid);
+  object.is_stopping = (object.status == 13);
 
   object.hasChapters = length(object.chapters);
   if (object.hasChapters) object.chapters.sortByKey('start');

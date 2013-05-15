@@ -146,7 +146,7 @@ module.exports = new Class({
   replace: function(object) {
     this.getCurrentObject().toElement().dispose();
     this._stack.pop();
-    return this.push(object, {immediate: true});
+    return this.pushOn(this.getStack().getName(), object, {immediate: true});
   },
 
   rotate: function(stack) {

@@ -47,6 +47,7 @@
     {{#if start_allowed}}
       <a data-api-url="/production/{{uuid}}/start" data-method="post" class="clear button red expand startProduction">Start Production</a>
       <div class="content processing hidden"></div>
+      <a data-api-url="/production/{{uuid}}/stop" data-method="post" class="clear button red expand stopProduction hidden">Stop Production</a>
     {{else}}
       {{#if change_allowed}}
         {{#unless is_uploading}}
@@ -54,6 +55,9 @@
         {{/unless}}
       {{else}}
         <div class="content processing">Processing</div>
+        {{#unless is_stopping}}
+          <a data-api-url="/production/{{uuid}}/stop" data-method="post" class="clear button red expand stopProduction">Stop Production</a>
+        {{/unless}}
       {{/if}}
     {{/if}}
   {{/if}}
