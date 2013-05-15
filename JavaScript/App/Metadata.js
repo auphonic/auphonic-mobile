@@ -14,7 +14,7 @@ exports.getData = function(store) {
 
 exports.setData = function(store, metadata) {
   store.set('metadata', Object.flatten({metadata: metadata}));
-  store.set('location', metadata['location.latitude'] ? {
+  if (metadata) store.set('location', metadata['location.latitude'] ? {
     latitude: metadata['location.latitude'],
     longitude: metadata['location.longitude']
   } : null);
