@@ -126,6 +126,24 @@ div.detail
       top auto
       bottom 0
 
+span.play-chapter
+  z-index 2
+  position absolute
+  height 42px
+  width 30px
+
+  display block
+  opacity 0.5
+
+  background-repeat no-repeat
+  background-position center center
+
+  .ios &
+    transform translate3d(0, 0, 0)
+
+div.main ul li span.play-chapter + label, div.main ul li span.play-chapter + a
+  padding-left 25px
+
 div.light-background, div.dark-background
   position absolute
   left 0

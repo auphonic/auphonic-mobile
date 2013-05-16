@@ -175,6 +175,12 @@ var removeItem = function(element) {
   if (url && method) API.call(url, method);
 };
 
+var playChapter = function(event) {
+  event.preventDefault();
+
+  View.getMain().getCurrentObject().fireEvent('seekToChapterElement', [this]);
+}
+
 // Make the info API call and show the UI on success, or else provide a reload button
 var spinner;
 var isLoggedIn = User.isLoggedIn();
@@ -332,7 +338,11 @@ window.__BOOTAPP = function() {
       },
 
       onSetup: function() {
-        View.getMain().getCurrentObject().addEvent('hide', this.bound('reset'));
+        View.getMain().getCurrentObject().addEvents({
+          hide: this.bound('reset'),
+          seekToChapterElement: this.bound('seekToChapterElement'),
+          updateChapters: this.bound('prepareChapters')
+        });
       },
 
       onSeek: function(position, pixel) {
@@ -357,6 +367,10 @@ window.__BOOTAPP = function() {
           reposition.delay(popover.getOpenDelay());
       }
     }),
+
+    'span.play-chapter': function(elements) {
+      elements.addEvent('click', playChapter);
+    },
 
     '[data-belongs-to]': function(elements) {
       elements.each(function(element) {

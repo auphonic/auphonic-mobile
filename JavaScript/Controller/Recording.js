@@ -103,12 +103,14 @@ var show = function(recording) {
   });
 
   var baseURL = '/recording/';
+  form.set('chapter-is-playable', true);
   Chapter.setup(form, baseURL, object);
   Chapter.setData(form, recording.chapters, baseURL, object, false);
 
   form.addEvent('update:chapters', function() {
     var updated = Recording.findById(recording.id);
     updated.chapters = Chapter.getData(form, object).chapters;
+    View.getMain().getStack().notifyAll('updateChapters', [updated.chapters]);
     Recording.update(updated);
   });
 

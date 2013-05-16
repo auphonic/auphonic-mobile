@@ -13,7 +13,8 @@ var createUIElement = function(baseURL, store, content, id) {
   var element = Element.from(renderTemplate('ui-removable-chapter-list-item',
     Object.append({
       label: 'Remove',
-      href: baseURL.substitute({id: id})
+      href: baseURL.substitute({id: id}),
+      'chapter-is-playable': store.get('chapter-is-playable')
     }, content)
   )).set('data-chapter-id', id).store('value', content);
 

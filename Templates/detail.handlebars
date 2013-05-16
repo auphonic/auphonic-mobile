@@ -67,6 +67,9 @@
     <ul>
       {{#each chapters}}
         <li>
+          {{#if ../media_files}}
+            <span class="play-chapter play" data-start="{{start}}"></span>
+          {{/if}}
           {{#if url}}
             <a href="{{url}}" class="share">
               <span></span><small class="light">{{start}}</small> {{title}}
