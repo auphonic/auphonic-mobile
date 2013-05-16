@@ -17,6 +17,8 @@ var createUIElement = function(baseURL, store, content, id) {
     }, content)
   )).set('data-chapter-id', id).store('value', content);
 
+  UI.update(element);
+
   // Store for editing
   var chapters = store.get('chapters', {});
   chapters[id] = content;
