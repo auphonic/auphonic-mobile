@@ -467,6 +467,7 @@ Controller.define('/production/new/outgoing_services', function() {
   form.show('outgoing_services');
 });
 
+
 // Recording
 var upload = function(recording, isRecording) {
   if (arguments.length == 1) isRecording = true;
@@ -493,6 +494,8 @@ var upload = function(recording, isRecording) {
         API.call(start_url, 'post', JSON.stringify({})).on({
           success: function() {
             // on upload success
+            // location.href = "/";
+            // TODO: hier dann gleich richtig zum home screen umleiten!
           }
         });
 
@@ -545,27 +548,84 @@ var upload = function(recording, isRecording) {
     History.push(url);
   };
 
-  // Either create a new production or overwrite the chapters
-  var url = 'productions';
-  if (currentEditUUID) url = 'production/{uuid}'.substitute({uuid: currentEditUUID});
+  // Function to create the production with correct metadata etc.
+  var createProduction = function(latitude, longitude) {
+    // Either create a new production or overwrite the chapters
+    var url = 'productions';
+    if (currentEditUUID) url = 'production/{uuid}'.substitute({uuid: currentEditUUID});
 
-  var output_files = [Auphonic.DefaultOutputFile];
-  if (recording.media_type == 'video') output_files.push(Auphonic.DefaultVideoOutputFile);
+    // var output_files = [Auphonic.DefaultOutputFile];
+    // if (recording.media_type == 'video') output_files.push(Auphonic.DefaultVideoOutputFile);
 
-  // Try to create a meaningfull file basename
-  var basename = recording.display_name.replace(/\s+/g, '-').replace(/[^A-Za-z0-9\-_]/g, '');
-  var data = {
-    metadata: {title: recording.display_name},
-    output_basename: basename,
-    output_files: output_files,
-    chapters: recording.chapters,
+    // Output Files for Personal Soundscapes
+    var output_files = Auphonic.SCDefaultOutputFiles;
 
-    // Algorithm settings for Personal Soundscapes
-    algorithms: {denoise: false, leveler: false, normloudness: true, loudnesstarget: -23}
+    // Metadata and Algorithm Settings for Personal Soundscapes
+
+    // Create device information as string
+    var device_info = 'Auphonic Mobile App Recorder\n';
+    try {
+      var device = window.device;
+      device_info += '\nAuphonic Version: ' + Auphonic.Version;
+      device_info += '\nPlatform: ' + Platform.get();
+      device_info += '\nOS Version: ' + ((device && device.version) || Browser.version);
+      device_info += '\nHardware: ' + (device && device.model);
+      device_info += '\nDevice: ' + ((device && device.name) || '').toLowerCase();
+    } catch(e) {}
+
+    // Construct Metadata
+    var user_data = User.get();
+    var recording_nr = Recording.getCurrentRecordingId();
+    var the_title = 'SC_' + user_data["name"] + '_' + recording_nr;
+    var basename = the_title.replace(/\s+/g, '-').replace(/[^A-Za-z0-9\-_]/g, '');
+    var data = {
+      metadata: {
+        title: the_title,
+        artist: user_data["name"],
+        publisher: user_data["email"],
+        album: "Personal Soundscapes",
+        subtitle: "Personal Soundscapes, ORF musikprotokoll im steirischen herbst",
+        summary: device_info,
+        genre: "Ambient",
+        track: recording_nr,
+        url: "http://personal-soundscapes.mur.at/",
+        tags: ["a92in34h66e031fff08748e7d17d5"],
+        location: {
+          latitude: latitude,
+          longitude: longitude
+        }
+      },
+      output_basename: basename,
+      output_files: output_files,
+      chapters: recording.chapters,
+
+      // Algorithm settings for Personal Soundscapes
+      algorithms: {
+        hipfilter: false,
+        denoise: false,
+        leveler: false,
+        normloudness: true,
+        loudnesstarget: -20
+      }
+    };
+
+    API.call('productions', 'post', JSON.stringify(data)).on({
+      success: onCreateSuccess
+    });
   };
 
-  API.call('productions', 'post', JSON.stringify(data)).on({
-    success: onCreateSuccess
+  // First let's try to get the current geolocation,
+  // then create a production with correct geo location
+
+  var onLocationSuccess = function(position) {
+    createProduction(position.coords.latitude, position.coords.longitude);
+  };
+  var onLocationError = function() {
+    createProduction(null, null);
+  };
+  navigator.geolocation.getCurrentPosition(onLocationSuccess, onLocationError, {
+    // enableHighAccuracy: true,  NOTE: there were problems on android!
+    maximumAge: 5000
   });
 };
 

@@ -179,7 +179,7 @@ var playChapter = function(event) {
   event.preventDefault();
 
   View.getMain().getCurrentObject().fireEvent('seekToChapterElement', [this]);
-}
+};
 
 // Make the info API call and show the UI on success, or else provide a reload button
 var spinner;
@@ -308,7 +308,7 @@ window.__BOOTAPP = function() {
 
     'select.empty': Class.Instantiate(Form.EmptySelect, {
       placeholderPosition: '!',
-      placeholder: '.placeholder',
+      placeholder: '.placeholder'
     }),
 
     'label': function(elements) {

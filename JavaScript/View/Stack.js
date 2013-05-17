@@ -10,7 +10,6 @@ module.exports = new Class({
 
   initialize: function(view, name) {
     this.setView(view).setName(name);
-
     this.wipe();
   },
 
@@ -27,7 +26,6 @@ module.exports = new Class({
     object.setStack(this);
     this.current = object;
     stack.push(this.current);
-
     return this;
   },
 

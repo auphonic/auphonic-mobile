@@ -46,6 +46,12 @@ exports.generateRecordingId = function() {
   return id;
 };
 
+// for personal soundscapes
+exports.getCurrentRecordingId = function() {
+  var id = (LocalStorage.get(key('id')) || 0);
+  return id;
+};
+
 var getRecordingName = function(recording) {
   var match = recording.name.match(Auphonic.DefaultFileNameFilter);
   return (match && match[1] ? 'Recording ' + match[1] : recording.name);

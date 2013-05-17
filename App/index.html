@@ -22,7 +22,7 @@
       // Update this if you are testing the application locally.
       var DEVbaseURL = '/App/';
       // Local test URL for the Server scripts. Remove this when deploying.
-      this.__SERVER_URL = 'http://10.0.0.3' + DEVbaseURL + '../Server/' + this.__CORDOVA_VERSION + '/';
+      this.__SERVER_URL = 'http://192.168.0.2' + DEVbaseURL + '../Server/' + this.__CORDOVA_VERSION + '/';
       if (new RegExp('^' + DEVbaseURL).test(location.pathname)) {
         this.__LOCALHOST__ = true;
         this.__baseURL = DEVbaseURL;
