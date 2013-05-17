@@ -471,6 +471,9 @@ Controller.define('/production/new/outgoing_services', function() {
 
 // Recording
 var upload = function(recording, isRecording) {
+  // store upload URL in case we have to retry the upload
+  var current_upload_url = location.href;
+
   if (arguments.length == 1) isRecording = true;
   API.invalidate('productions');
 
@@ -496,27 +499,15 @@ var upload = function(recording, isRecording) {
           success: function() {
             // on upload success: show HOME button (detail.handlebar)
             var button = View.getMain().getCurrentObject().toElement().getElement('a.go-home-button');
+            button.innerHTML = 'Home';
             button.removeClass('hidden');
-
-            // button to restart upload
-            var button2 = View.getMain().getCurrentObject().toElement().getElement('a.retry-upload-button');
-            button2.removeClass('hidden');
-
-            // change URL of the button
-            // console.log("CHANGE BUTTON HREF !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-            // var recording_id = Recording.getCurrentRecordingId();
-            // button2.href = "/recording/" + recording_id;
-            // console.log(button2.href);
-
-            // button2.addEvent('click', function() {
-            // });
           }
         });
       },
 
       error: function() {
         var element;
-        if (isRecording) element = new Element('span', {text: '. You can find your recording in the "Recordings" tab and you can try uploading it again later.'});
+        if (isRecording) element = new Element('span', {text: '. Please check that your network connection is correct and try to upload again!'});
         else element = new Element('span', {text: '. Please try again later.'});
 
         new Notice([
@@ -531,6 +522,17 @@ var upload = function(recording, isRecording) {
           uuid: uuid,
           hasError: true
         }]);
+
+        // show button to restart upload and change its URL to restart upload
+        var button2 = View.getMain().getCurrentObject().toElement().getElement('a.retry-upload-button');
+        button2.removeClass('hidden');
+        var recording_id = Recording.getCurrentRecordingId();
+        button2.href = current_upload_url;
+
+        // show button to come home
+        var button = View.getMain().getCurrentObject().toElement().getElement('a.go-home-button');
+        button.innerHTML = 'Delete Recording';
+        button.removeClass('hidden');
       },
 
       progress: function(event) {
