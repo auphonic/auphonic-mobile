@@ -499,15 +499,16 @@ var upload = function(recording, isRecording) {
             button.removeClass('hidden');
 
             // button to restart upload
-            // var button2 = View.getMain().getCurrentObject().toElement().getElement('a.retry-upload-button');
-            // button2.removeClass('hidden');
+            var button2 = View.getMain().getCurrentObject().toElement().getElement('a.retry-upload-button');
+            button2.removeClass('hidden');
+
+            // change URL of the button
+            // console.log("CHANGE BUTTON HREF !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+            // var recording_id = Recording.getCurrentRecordingId();
+            // button2.href = "/recording/" + recording_id;
+            // console.log(button2.href);
+
             // button2.addEvent('click', function() {
-            //   console.log("CLICK THE BUTTON !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-            //   var recording_id = parseInt(Recording.getCurrentRecordingId(), 10);
-            //   console.log(recording_id);
-            //   var recording = Recording.findById(recording_id);
-            //   console.log(recording);
-            //   // if (recording) upload(recording);
             // });
           }
         });
