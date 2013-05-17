@@ -47,6 +47,7 @@
     {{#if start_allowed}}
       <a data-api-url="/production/{{uuid}}/start" data-method="post" class="clear button red expand startProduction">Start Production</a>
       <div class="content processing hidden"></div>
+      <a data-api-url="/production/{{uuid}}/stop" data-method="post" class="clear button red expand stopProduction hidden">Stop Production</a>
     {{else}}
       {{#if change_allowed}}
         {{#unless is_uploading}}
@@ -54,6 +55,9 @@
         {{/unless}}
       {{else}}
         <div class="content processing">Processing</div>
+        {{#unless is_stopping}}
+          <a data-api-url="/production/{{uuid}}/stop" data-method="post" class="clear button red expand stopProduction">Stop Production</a>
+        {{/unless}}
       {{/if}}
     {{/if}}
   {{/if}}
@@ -63,11 +67,35 @@
     <ul>
       {{#each chapters}}
         <li>
-          <label>
-            <small class="light">{{start}}</small> {{title}}
-          </label>
+          {{#if ../media_files}}
+            <span class="play-chapter play" data-start="{{start}}"></span>
+          {{/if}}
+          {{#if url}}
+            <a href="{{url}}" class="share">
+              <span></span><small class="light">{{start}}</small> {{title}}
+            </a>
+          {{else}}
+            <label>
+              <small class="light">{{start}}</small> {{title}}
+            </label>
+          {{/if}}
         </li>
       {{/each}}
+    </ul>
+  {{/if}}
+
+  {{#if metadata.location.longitude}}
+    <h1>Location</h1>
+    <ul>
+      <li>
+        <label class="location-detail-popover show-popover info">
+          <span></span>
+          <span class="location-detail" data-latitude="{{metadata.location.latitude}}" data-longitude="{{metadata.location.longitude}}"></span>
+          <div class="hidden popover top justify" data-position="top" data-highlight-text="1">
+            <h1></h1>
+          </div>
+        </label>
+      </li>
     </ul>
   {{/if}}
 

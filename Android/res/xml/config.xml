@@ -23,6 +23,7 @@
   <access origin="https://10.0.0.3" />
   <access origin="http://auphonic.com" />
   <access origin="https://auphonic.com" />
+  <access origin="maps.googleapis.com" />
   <access origin=".*"/>
 
   <content src="file:///android_asset/App/index.html" />

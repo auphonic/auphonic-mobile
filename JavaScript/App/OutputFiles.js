@@ -19,6 +19,8 @@ var createUIElement = function(href, store, content, id) {
     })
   )).set('data-output-file-id', id).store('value', content);
 
+  UI.update(element);
+
   // Store for editing
   var outputFiles = store.get('output_files', {});
   outputFiles[id] = content;

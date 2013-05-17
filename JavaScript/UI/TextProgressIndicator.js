@@ -16,6 +16,7 @@ module.exports = new Class({
 
     this.text = this.options.text;
     this.element = document.id(element);
+    this.initialText = this.element.get('text');
   },
 
   start: function() {
@@ -45,6 +46,12 @@ module.exports = new Class({
       string += this.options.indicator;
 
     this.element.set('text', this.text + string);
+  },
+
+  reset: function() {
+    this.stop();
+    this.element.set('text', this.initialText);
+    return this;
   }
 
 });

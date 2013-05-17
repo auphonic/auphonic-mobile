@@ -5,5 +5,6 @@
   <div class="hidden popover top justify" data-position="top">
     <a class="button expand red deleteable">{{label}}</a>
   </div>
+  {{#if chapter-is-playable}}<span class="play-chapter play" data-start="{{start}}"></span>{{/if}}
   <a href="{{href}}" class="arrow"><span></span><small class="light">{{start}}</small> {{title}}</a>
 </li>

@@ -16,6 +16,7 @@ var CoverPhoto = require('App/CoverPhoto');
 var Data = require('App/Data');
 var Form = require('App/Form');
 var ListFiles = require('App/ListFiles');
+var Location = require('App/Location');
 var MainForm = require('App/MainForm');
 var Metadata = require('App/Metadata');
 var MultiInputFiles = require('App/MultiInputFiles');
@@ -26,6 +27,7 @@ var Source = require('App/Source');
 
 var CurrentUpload = require('Store/CurrentUpload');
 var Recording = require('Store/Recording');
+var User = require('Store/User');
 var WebIntent = require('Cordova/WebIntent');
 
 var Auphonic = require('Auphonic');
@@ -63,7 +65,8 @@ var createForm = function(options) {
       OutgoingService,
       ListFiles,
       OutputFiles,
-      CoverPhoto
+      CoverPhoto,
+      Location
     ]
   });
 };
@@ -169,12 +172,15 @@ var showAll = function() {
 
 var statusOptions = {
   url: 'production/{uuid}',
+  onUpdate: function(production) {
+    if (production) productions[production.uuid] = production;
+  },
   onFinish: function(production) {
     if (production.status == Auphonic.ErrorStatus)
       new Notice('There was an error with your production. Please ensure that the file format is supported and correctly encoded.');
 
     productions[production.uuid] = production;
-    showOne(production, {refresh: true});
+    View.getMain().getStack().notifyAll('refresh', [production]);
   }
 };
 
@@ -182,6 +188,7 @@ var showOne = function(req, options) {
   Data.prepare(productions[req.uuid], 'production', function(production) {
     addPlaceholder();
 
+    var productionStatus;
     var object = new View.Object({
       title: production.metadata.title || 'Untitled',
       content: renderTemplate('detail', production),
@@ -198,11 +205,15 @@ var showOne = function(req, options) {
         // Production is being processed
         if (!production.change_allowed) {
           var processing = object.toElement().getElement('.processing');
-          var productionStatus = new ProductionStatus(processing, statusOptions);
-
+          if (productionStatus) productionStatus.stop();
+          productionStatus = new ProductionStatus(processing, statusOptions);
           productionStatus.check(production);
-          object.addEvent('hide', productionStatus.bound('stop'));
         }
+      },
+
+      onHide: function() {
+        if (productionStatus) productionStatus.stop();
+        productionStatus = null;
       },
 
       onRefresh: function(data) {
@@ -211,6 +222,20 @@ var showOne = function(req, options) {
           productions[data.uuid] = data;
           showOne(data, {refresh: true});
         }
+      },
+
+      onStartProduction: function(element) {
+        element.hide();
+        var processing = element.getNext('div.processing').show();
+        processing.getNext('a.stopProduction').show();
+
+        if (productionStatus) productionStatus.stop();
+        productionStatus = new ProductionStatus(processing, statusOptions);
+
+        var url = element.get('data-api-url');
+        if (url) API.call(url, element.get('data-method'), 'null').on({
+          success: productionStatus.bound('update')
+        });
       },
 
       onUploadProgress: function(data) {
@@ -223,7 +248,6 @@ var showOne = function(req, options) {
         var progressBar = element.getElement('.uploading .progress-bar');
         if (progressBar) progressBar.show().setStyle('width', data.percentage + '%');
       }
-
     });
 
     if (options && options.refresh) View.getMain().replace(object);
@@ -234,17 +258,18 @@ var showOne = function(req, options) {
 // Start a production and update the status
 var startProduction = function(event) {
   if (event) event.preventDefault();
+  View.getMain().getCurrentObject().fireEvent('startProduction', [this]);
+};
+
+var stopProduction = function(event) {
+  event.preventDefault();
 
   this.hide();
-  var processing = this.getNext('div.processing').show();
-  var productionStatus = new ProductionStatus(processing, statusOptions);
-
-  View.getMain().getCurrentObject().addEvent('hide', productionStatus.bound('stop'));
-
+  var uuid = this.get('data-id');
   var url = this.get('data-api-url');
-  if (url) API.call(url, this.get('data-method'), 'null').on({
-    success: productionStatus.bound('update')
-  });
+  if (url) API.call(url, this.get('data-method'), 'null');
+  // The view will be automatically refreshed through the ProductionStatus instance once the
+  // production has been stopped.
 };
 
 var cancelUpload = function(event) {
@@ -262,6 +287,10 @@ UI.register({
 
   'div.detailView a.startProduction': function(elements) {
     elements.addEvent('click', startProduction);
+  },
+
+  'div.detailView a.stopProduction': function(elements) {
+    elements.addEvent('click', stopProduction);
   },
 
   'div.detailView a.cancelUpload': function(elements) {
@@ -421,7 +450,9 @@ Controller.define('/production/selectFile/{index}', function(req) {
 });
 
 Controller.define('/production/new/metadata', function() {
-  form.show('metadata');
+  form.show('metadata', {
+    withLocation: true
+  });
 });
 
 Controller.define('/production/new/output_file/:id:', function(req) {
@@ -612,7 +643,10 @@ if (Platform.isAndroid()) {
 Controller.define('/production/recording/new-video', function() {
   new CordovaVideoRecorder({
       generateFileName: function() {
-        return Auphonic.DefaultVideoFileName.substitute({uuid: Recording.generateRecordingId()});
+        return Auphonic.DefaultVideoFileName.substitute({
+          user: User.getId(),
+          uuid: Recording.generateRecordingId()
+        });
       }
     }).addEvents({
     success: showRecording,
@@ -634,7 +668,10 @@ Controller.define('/production/recording/new-audio', function() {
   View.getMain().push(object);
   recorder = new AudioRecorder(CordovaAudioRecorder, object, {
     generateFileName: function() {
-      return Auphonic.DefaultFileName.substitute({uuid: Recording.generateRecordingId()});
+      return Auphonic.DefaultFileName.substitute({
+        user: User.getId(),
+        uuid: Recording.generateRecordingId()
+      });
     },
     onPause: function() {
       View.getMain().updateElement('back', {fade: true}, object.getBackTemplate());

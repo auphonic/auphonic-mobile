@@ -14,6 +14,19 @@ var length = function(object) {
   return object && object.length;
 };
 
+var preferredFormats = {
+  mp3: 1,
+  'mp3-vbr': 3, // Variable Bitrate mp3's sometime cause issues
+  aac: 2,
+  alac: 3,
+  dflt: 4
+};
+
+if (!Platform.isIOS()) {
+  preferredFormats.vorbis = 2;
+  preferredFormats.flac = 3;
+}
+
 var fields = ['output_files', 'outgoing_services', 'chapters'];
 var singular = ['file', 'service', 'chapter'];
 var format = function(production) {
@@ -104,55 +117,9 @@ exports.formatDuration = function(from, separator, pad, durations, names) {
   return vals.join(separator || ':');
 };
 
-var preferredFormats = {
-  mp3: 1,
-  'mp3-vbr': 3, // Variable Bitrate mp3's sometime cause issues
-  aac: 2,
-  alac: 3,
-  dflt: 4
-};
-
-if (!Platform.isIOS()) {
-  preferredFormats.vorbis = 2;
-  preferredFormats.flac = 3;
-}
-
-exports.prepare = function(object, type, fn) {
-  Source.fetch(function(list) {
-    var sources = {};
-    list.forEach(function(source) {
-      sources[source.uuid] = source;
-    });
-
-    if (object.service) {
-      var source = sources[object.service];
-      if (source) {
-        object.service_display_type = source.display_type;
-        object.service_display_name = source.display_name;
-      }
-    }
-
-    if (object.multi_input_files) Array.forEach(object.multi_input_files, function(file) {
-      var source = sources[file.service];
-      if (source) {
-        file.service_display_type = source.display_type;
-        file.service_display_name = source.display_name;
-      }
-    });
-
-    fn(object);
-  });
-
-  // We need to create a new object that can be transformed for viewing
-  object = Object.clone(object);
-
-  object[type] = true;
-  object.baseURL = type;
-
+var formatMetadata = function(object, type) {
   var metadata = object.metadata;
-
   if (type == 'preset' && !metadata.title) metadata.title = object.preset_name;
-
   metadata.hasLicense = !!(metadata.license || metadata.license_url);
   object.hasDetails =
     object.image ||
@@ -163,22 +130,10 @@ exports.prepare = function(object, type, fn) {
     length(metadata.tags && metadata.tags.erase('')); // The API returns an array with one empty string
 
   metadata.hasDescription = !!(metadata.album || metadata.artist);
-  object.hasChapters = length(object.chapters);
+  if (length(metadata.tags)) metadata.tags = metadata.tags.join(', ');
+};
 
-  var duration_string = exports.formatDuration(object.length, ' ');
-  if (duration_string != '0s') object.duration_string = duration_string;
-  object.duration = object.length;
-
-  if (object.hasChapters) object.chapters.sortByKey('start');
-
-  // Remove duplicates. The API currently allows to add the same service more than once
-  var uuids = {};
-  object.outgoing_services = length(object.outgoing_services) ? object.outgoing_services.map(formatService).filter(function(service) {
-    if (uuids[service.uuid]) return false;
-    uuids[service.uuid] = true;
-    return true;
-  }) : null;
-
+var formatAlgorithms = function(object) {
   object.algorithms = Object.values(Object.map(API.getInfo('algorithms_array'), function(algorithm) {
     var value = object.algorithms[algorithm.key];
     if (!value) return null;
@@ -202,7 +157,19 @@ exports.prepare = function(object, type, fn) {
   })).clean();
 
   object.hasAlgorithms = !!length(object.algorithms);
+};
 
+var formatOutgoingServices = function(object) {
+  // Remove duplicates. The API allows to add the same service more than once
+  var uuids = {};
+  object.outgoing_services = length(object.outgoing_services) ? object.outgoing_services.map(formatService).filter(function(service) {
+    if (uuids[service.uuid]) return false;
+    uuids[service.uuid] = true;
+    return true;
+  }) : null;
+};
+
+var getAndFormatMediaFiles = function(object) {
   var token = User.getToken('?bearer_token=');
   var media_files = [];
   if (object.output_files) object.output_files.each(function(file) {
@@ -220,21 +187,64 @@ exports.prepare = function(object, type, fn) {
     });
   });
 
-  if (length(metadata.tags)) metadata.tags = metadata.tags.join(', ');
-
-  media_files = media_files.sortByKey('format').map(function(file) {
+  return media_files.sortByKey('format').map(function(file) {
     return encodeURI(file.url + token);
   });
+};
 
+var formatMultiInputFiles = function(object) {
   if (object.multi_input_files) Array.forEach(object.multi_input_files, function(file) {
     if (file.type == 'intro') object.intro = file;
     if (file.type == 'outro') object.outro = file;
     if (file.input_file.charAt(0) == '/') file.input_file = file.input_file.substr(1);
   });
+};
 
+exports.prepare = function(object, type, callback) {
+  // We need to create a new object that can be transformed for viewing
+  object = Object.clone(object);
+
+  object[type] = true;
+  object.baseURL = type;
+
+  formatMetadata(object, type);
+  formatOutgoingServices(object);
+  formatAlgorithms(object);
+  formatMultiInputFiles(object);
+
+  object.is_uploading = CurrentUpload.has(object.uuid);
+  object.is_stopping = (object.status == 13);
+
+  object.hasChapters = length(object.chapters);
+  if (object.hasChapters) object.chapters.sortByKey('start');
+
+  var duration_string = exports.formatDuration(object.length, ' ');
+  if (duration_string != '0s') object.duration_string = duration_string;
+  object.duration = object.length;
+
+  var media_files = getAndFormatMediaFiles(object);
   object.media_files = length(media_files) ? JSON.stringify(media_files) : null;
   object.player_chapters = length(object.chapters) ? JSON.stringify(object.chapters) : null;
   object.output_files = length(object.output_files) ? object.output_files.map(OutputFiles.createUIData) : null;
 
-  object.is_uploading = CurrentUpload.has(object.uuid);
+  Source.fetch(function(list) {
+    var sources = {};
+    list.forEach(function(source) {
+      sources[source.uuid] = source;
+    });
+
+    var setSourceInfo = function(obj, source) {
+      if (source) {
+        obj.service_display_type = source.display_type;
+        obj.service_display_name = source.display_name;
+      }
+    };
+
+    if (object.service) setSourceInfo(sources[object.service]);
+    if (object.multi_input_files) Array.forEach(object.multi_input_files, function(file) {
+      setSourceInfo(sources[file.service]);
+    });
+
+    callback(object);
+  });
 };

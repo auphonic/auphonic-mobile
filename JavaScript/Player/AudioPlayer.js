@@ -12,6 +12,14 @@ var Notice = require('UI/Notice');
 
 var WebAudioService = require('./WebAudioService');
 
+var parseTime = function(start) {
+  var time = start.split(':');
+  var hours = parseInt(time[0] || 0, 10);
+  var minutes = parseInt(time[1] || 0, 10);
+  var seconds = parseInt(time[2] || 0, 10);
+  return seconds + minutes * 60 + hours * 3600;
+};
+
 module.exports = new Class({
 
   Implements: [Class.Singleton, Class.Binds, Events, Options],
@@ -215,13 +223,19 @@ module.exports = new Class({
     return Math.max(0, Math.min(this.waveform.offsetWidth, position / duration * width / 1000));
   },
 
+  seekToChapterElement: function(element) {
+    var time = parseTime(element.get('data-start'));
+    if (time > 0) {
+      this.position = time * 1000 + 0.1;
+      this.pause();
+      this.seek(time);
+      this.play();
+    }
+  },
+
   prepareChapters: function(chapters) {
     if (chapters) this.chapters = Array.map(chapters, function(chapter) {
-      var time = chapter.start.split(':');
-      var hours = parseInt(time[0] || 0, 10);
-      var minutes = parseInt(time[1] || 0, 10);
-      var seconds = parseInt(time[2] || 0, 10);
-      chapter.time = seconds + minutes * 60 + hours * 3600;
+      chapter.time = parseTime(chapter.start);
       return chapter;
     });
   },
@@ -231,7 +245,7 @@ module.exports = new Class({
     if (!chapters.length) return;
 
     position /= 1000;
-    // When seeking backwards, let's start from the first poosition on the left
+    // When seeking backwards, let's start from the first position on the left
     if (position < this.previousChapterPosition) this.currentChapter = -1;
 
     this.previousChapterPosition = position;

@@ -17,7 +17,8 @@
 <img src="{{{image thumbnail}}}" class="thumbnail{{#unless thumbnail}} hidden{{/unless}}" />
 <ul>
   <li>
-    <label class="upload-cover-photo show-popover">
+    <label class="upload-cover-photo show-popover plus">
+      <span></span>
       Upload
       <div class="hidden popover top justify" data-position="top">
         <a href="#" class="button expand upload_take_photo">Take a Photo</a>
@@ -29,6 +30,30 @@
     <a href="#">Remove</a>
   </li>
 </ul>
+
+{{#if withLocation}}
+  <h1>Location</h1>
+  <ul class="location-add{{#if location.longitude}} hidden{{/if}}">
+    <li>
+      <label class="plus">
+        <span></span>
+        <span class="location-add-text">Add Current Location</span>
+      </label>
+    </li>
+  </ul>
+  <ul class="location-detail{{#unless location.longitude}} hidden{{/unless}}">
+    <li>
+      <label class="location-detail-popover show-popover info">
+        <span></span>
+        <span class="location-detail" data-latitude="{{location.latitude}}" data-longitude="{{location.longitude}}"></span>
+        <div class="hidden popover top justify" data-position="top" data-highlight-text="1">
+          <h1></h1>
+          <a href="#" class="button expand location-remove">Remove location</a>
+        </div>
+      </label>
+    </li>
+  </ul>
+{{/if}}
 
 <h1 class="clear">Details</h1>
 <ul class="formcontent">

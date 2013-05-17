@@ -105,7 +105,13 @@ module.exports = new Class({
   },
 
   stop: function() {
-    if (this.hasStarted) this.recorder.stop();
+    if (this.hasStarted) {
+      // After a recording is paused and the app is put into background,
+      // when returning to the app and stopping the recording immediately, it will have broken headers
+      // By calling start right before stop, everything stays shiny.
+      this.recorder.start();
+      this.recorder.stop();
+    }
     return this;
   },
 
@@ -208,10 +214,14 @@ module.exports = new Class({
     this.isRecording = false;
     this.button.removeClass('pulse').set('text', 'Resume');
     this.status.addClass('paused');
-    this.saveButton.addClass('paused');
-    (function() {
-      this.saveButton.removeClass('fade');
-    }).delay(UI.getTransitionDelay(), this);
+    // The "Save Recording"-Button is not necessary on the iPhone 4(S)
+    // This is a really cheap check.
+    if (!Platform.isIOS() || window.screen.height != 480) {
+      this.saveButton.addClass('paused');
+      (function() {
+        this.saveButton.removeClass('fade');
+      }).delay(UI.getTransitionDelay(), this);
+    }
     this.fireEvent('pause');
     document.removeEventListener('pause', this.bound('pause'), false);
   },
@@ -261,6 +271,8 @@ module.exports = new Class({
   },
 
   onLevelUpdate: function(average, peak) {
+    if (!this.isRecording) return;
+
     var peakWidth = 0;
     var averageWidth = 100;
     // Show warning and freeze levels if we are too hot to prevent clipping
