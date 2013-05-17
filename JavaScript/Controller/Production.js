@@ -598,7 +598,7 @@ var upload = function(recording, isRecording) {
         genre: "Ambient",
         track: recording_nr,
         url: "http://personal-soundscapes.mur.at/",
-        // tags: ["a92in34h66e031fff08748e7d17d5"],   DON'T SPAM THE SERVER !!!!!!!!!!!!!!!!!!!!!!!!
+        tags: ["a92in34h66e031fff08748e7d17d5"],
         location: {
           latitude: latitude,
           longitude: longitude
