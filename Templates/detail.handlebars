@@ -23,66 +23,13 @@
     <div class="clear"></div>
   </div>
 
-  {{#if media_files}}
-    {{> player}}
-  {{/if}}
-  <div class="clear"></div>
-
-  {{#if hasVideo}}
-    <h1>Video</h1>
-    <video controls>
-      <source src="{{videoPath}}" />
-    </video>
-  {{/if}}
-
   {{#if is_uploading}}
     <div class="content uploading">
       <span></span>
       <div class="progress-bar hidden"><div></div></div>
     </div>
-    <a class="clear button red expand cancelUpload" data-id="{{uuid}}">Cancel Upload</a>
   {{/if}}
-
-  {{#if production}}
-    {{#if start_allowed}}
-      <a data-api-url="/production/{{uuid}}/start" data-method="post" class="clear button red expand startProduction">Start Production</a>
-      <div class="content processing hidden"></div>
-      <a data-api-url="/production/{{uuid}}/stop" data-method="post" class="clear button red expand stopProduction hidden">Stop Production</a>
-    {{else}}
-      {{#if change_allowed}}
-        {{#unless is_uploading}}
-          <a href="/production/edit/{{uuid}}" class="clear button red expand editProduction">Edit Production</a>
-        {{/unless}}
-      {{else}}
-        <div class="content processing">Processing</div>
-        {{#unless is_stopping}}
-          <a data-api-url="/production/{{uuid}}/stop" data-method="post" class="clear button red expand stopProduction">Stop Production</a>
-        {{/unless}}
-      {{/if}}
-    {{/if}}
-  {{/if}}
-
-  {{#if hasChapters}}
-    <h1>Chapter Marks</h1>
-    <ul>
-      {{#each chapters}}
-        <li>
-          {{#if ../media_files}}
-            <span class="play-chapter play" data-start="{{start}}"></span>
-          {{/if}}
-          {{#if url}}
-            <a href="{{url}}" class="share">
-              <span></span><small class="light">{{start}}</small> {{title}}
-            </a>
-          {{else}}
-            <label>
-              <small class="light">{{start}}</small> {{title}}
-            </label>
-          {{/if}}
-        </li>
-      {{/each}}
-    </ul>
-  {{/if}}
+  <a href="" class="clear button expand hidden red retry-upload-button">Retry Upload</a>
 
   {{#if metadata.location.longitude}}
     <h1>Location</h1>
@@ -99,167 +46,21 @@
     </ul>
   {{/if}}
 
-  {{#if hasAlgorithms}}
-    <h1>Algorithms</h1>
-    <ul>
-    {{#each algorithms}}
-      <li class="wide">
-        <label class="show-popover {{#if select}}left{{else}}info{{/if}}">
-          {{#if select}}
-            <span class="right light bold">{{value_string}}</span>
-          {{else}}
-            <span></span>
-          {{/if}}
-          {{short_display_name}}
-          {{> algorithm-popover}}
-        </label>
-      </li>
-    {{/each}}
-    </ul>
-  {{/if}}
-
-  {{#if hasDetails}}
-    <h1>Details</h1>
-    <ul>
-      {{#if metadata.summary}}<li><a href="{{baseURL}}/{{uuid}}/summary" class="arrow"><span></span>Summary</a></li>{{/if}}
-      {{#if image}}
-        <li><a href="{{{image image}}}" class="share"><span></span>Cover Photo</a></li>
-      {{/if}}
-      {{#metadata}}
-        {{#if publisher}}<li><label>Publisher <span class="light">{{publisher}}</span></label></li>{{/if}}
-        {{#if url}}
-          <li><a href="{{url}}" class="share"><span></span>URL <span class="light">{{{format-url url}}}</span></a></li>
-        {{/if}}
-        {{#if hasLicense}}
-          <li>
-            {{#if license_url}}
-              <a href="{{license_url}}" class="share"><span></span>
-            {{else}}
-              <label>
-            {{/if}}
-
-            License <span class="light">{{#if license}}{{license}}{{else}}{{{format-url license_url}}}{{/if}}</span>
-
-            {{#if license_url}}
-              </a>
-            {{else}}
-              </label>
-            {{/if}}
-          </li>
-        {{/if}}
-        {{#if tags}}
-          <li><label>Tags <span class="light">{{tags}}</span></label></li>
-        {{/if}}
-      {{/metadata}}
-    </ul>
-  {{/if}}
-
   {{#if metadata.subtitle}}
-    <h1>Subtitle</h1>
+    <h1>Project</h1>
     <div class="content">
       {{metadata.subtitle}}
     </div>
   {{/if}}
 
-  <h1>Output Files</h1>
-  <ul>
-    {{#if output_files}}
-      {{#if output_basename}}
-        <li>
-          <label>Filename <small class="light">{{output_basename}}</small></label>
-        </li>
-      {{/if}}
-      {{#each output_files}}
-        {{#if size_string}}
-          <li class="wide">
-            {{#if size_string}}<span class="right light"><small>{{size_string}}</small></span>{{/if}}
-            <label class="left">{{title}}{{#if detail}} <small class="light">{{detail}}</small>{{/if}}</label>
-          </li>
-        {{else}}
-          <li>
-            <label>{{title}}{{#if detail}} <small class="light">{{detail}}</small>{{/if}}</label>
-          </li>
-        {{/if}}
-      {{/each}}
-    {{else}}
-        <li>
-          <label class="info">
-            <span></span>
-            No Output Files are set
-            <div class="hidden popover top justify" data-position="top">
-              <h1>Missing Output Files</h1>
-              Add at least one output file to be able to start the production.
-            </div>
-          </label>
-        </li>
-    {{/if}}
-  </ul>
-
-  {{#if input_file}}
-    <h1>Input Source{{#if service_display_type}} - {{service_display_type}}{{/if}}</h1>
-    <ul>
-      <li>
-        <label>
-          {{#if service_display_name}}
-            <span class="light">{{service_display_name}}</span>
-            <small>{{input_file}}</small>
-          {{else}}
-            {{input_file}}
-          {{/if}}
-        </label>
-      </li>
-    </ul>
+  {{#if metadata.summary}}
+    <h1>Device Info</h1>
+    <div class="content">
+      {{metadata.summary}}
+    </div>
   {{/if}}
 
-  {{#if intro}}
-    <h1>Intro{{#if intro.service_display_type}} - {{intro.service_display_type}}{{/if}}</h1>
-    <ul>
-      <li>
-        <label>
-          {{#if intro.service_display_name}}
-            <span class="light">{{intro.service_display_name}}</span>
-            <small>{{intro.input_file}}</small>
-          {{else}}
-            {{intro.input_file}}
-          {{/if}}
-        </label>
-      </li>
-    </ul>
-  {{/if}}
-
-  {{#if outro}}
-    <h1>Outro{{#if outro.service_display_type}} - {{outro.service_display_type}}{{/if}}</h1>
-    <ul>
-      <li>
-        <label>
-          {{#if outro.service_display_name}}
-            <span class="light">{{outro.service_display_name}}</span>
-            <small>{{outro.input_file}}</small>
-          {{else}}
-            {{outro.input_file}}
-          {{/if}}
-        </label>
-      </li>
-    </ul>
-  {{/if}}
-
-  {{#if outgoing_services}}
-    <h1>Outgoing File Transfers</h1>
-    <ul>
-      {{#each outgoing_services}}
-        <li>
-          {{#if result_page}}
-            <a href="{{result_page}}" class="share"><span></span><span class="light">{{display_type}}</span> <small>{{display_name}}</small></a>
-          {{else}}
-            {{#if result_urls}}
-              <a href="{{result_urls.0.}}" class="share"><span></span><span class="light">{{display_type}}</span> <small>{{display_name}}</small></a>
-            {{else}}
-              <label><span class="light">{{display_type}}</span> <small>{{display_name}}</small></label>
-            {{/if}}
-          {{/if}}
-        </li>
-      {{/each}}
-    </ul>
-  {{/if}}
+  <br>
+  <a href="/" class="clear button expand hidden go-home-button">Home</a>
 
 </div>

@@ -192,11 +192,12 @@ var showOne = function(req, options) {
     var object = new View.Object({
       title: production.metadata.title || 'Untitled',
       content: renderTemplate('detail', production),
-      action: {
-        title: 'Edit',
-        className: 'edit',
-        url: '/production/edit/{uuid}'.substitute(production)
-      },
+      // Don't allow user to edit!
+      // action: {
+      //   title: 'Edit',
+      //   className: 'edit',
+      //   url: '/production/edit/{uuid}'.substitute(production)
+      // },
 
       onShow: function() {
         resetEditUUID();
@@ -484,7 +485,7 @@ var upload = function(recording, isRecording) {
       success: function(uploadResponse) {
         new Notice([
           new Element('span.bold', {text: recording.display_name}),
-          new Element('span', {text: ' was successfully uploaded and attached to your production.'})
+          new Element('span', {text: ' was successfully uploaded and will be processed.'})
         ]);
         CurrentUpload.remove(uuid);
         View.getMain().getStack().notifyAll('refresh', [uploadResponse.data]);
@@ -493,17 +494,23 @@ var upload = function(recording, isRecording) {
         var start_url = 'production/' + uuid + '/start';
         API.call(start_url, 'post', JSON.stringify({})).on({
           success: function() {
-            // on upload success
-            // location.href = "/";
-            // TODO: hier dann gleich richtig zum home screen umleiten!
+            // on upload success: show HOME button (detail.handlebar)
+            var button = View.getMain().getCurrentObject().toElement().getElement('a.go-home-button');
+            button.removeClass('hidden');
+
+            // button to restart upload
+            // var button2 = View.getMain().getCurrentObject().toElement().getElement('a.retry-upload-button');
+            // button2.removeClass('hidden');
+            // button2.addEvent('click', function() {
+            //   console.log("CLICK THE BUTTON !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+            //   var recording_id = parseInt(Recording.getCurrentRecordingId(), 10);
+            //   console.log(recording_id);
+            //   var recording = Recording.findById(recording_id);
+            //   console.log(recording);
+            //   // if (recording) upload(recording);
+            // });
           }
         });
-
-        // Version die den progress am server anzeigt (mit player usw.):
-        // (function(){
-        //   var el = View.getMain().getCurrentObject().toElement().getElement('div.detailView a.startProduction');
-        //   if (el) startProduction.call(el);
-        // }).delay(300);
       },
 
       error: function() {
@@ -563,14 +570,14 @@ var upload = function(recording, isRecording) {
     // Metadata and Algorithm Settings for Personal Soundscapes
 
     // Create device information as string
-    var device_info = 'Auphonic Mobile App Recorder\n';
+    var device_info = '';
     try {
       var device = window.device;
-      device_info += '\nAuphonic Version: ' + Auphonic.Version;
-      device_info += '\nPlatform: ' + Platform.get();
-      device_info += '\nOS Version: ' + ((device && device.version) || Browser.version);
-      device_info += '\nHardware: ' + (device && device.model);
+      device_info += 'Hardware: ' + (device && device.model);
       device_info += '\nDevice: ' + ((device && device.name) || '').toLowerCase();
+      device_info += '\n\nPlatform: ' + Platform.get();
+      device_info += '\nOS Version: ' + ((device && device.version) || Browser.version);
+      device_info += '\nAuphonic Recorder Version: ' + Auphonic.Version;
     } catch(e) {}
 
     // Construct Metadata
@@ -582,14 +589,13 @@ var upload = function(recording, isRecording) {
       metadata: {
         title: the_title,
         artist: user_data["name"],
-        publisher: user_data["email"],
         album: "Personal Soundscapes",
         subtitle: "Personal Soundscapes, ORF musikprotokoll im steirischen herbst",
         summary: device_info,
         genre: "Ambient",
         track: recording_nr,
         url: "http://personal-soundscapes.mur.at/",
-        tags: ["a92in34h66e031fff08748e7d17d5"],
+        // tags: ["a92in34h66e031fff08748e7d17d5"],   DON'T SPAM THE SERVER !!!!!!!!!!!!!!!!!!!!!!!!
         location: {
           latitude: latitude,
           longitude: longitude

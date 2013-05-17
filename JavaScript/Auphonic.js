@@ -32,7 +32,8 @@ exports.DefaultVideoOutputFile = {
 
 exports.SCDefaultOutputFiles = [
   { format: 'mp3', bitrate: '160' },
-  { format: 'descr', ending: 'xml' }
+  { format: 'descr', ending: 'xml' },
+  { format: 'waveform' }
 ];
 
 exports.SpinnerOptions = {
