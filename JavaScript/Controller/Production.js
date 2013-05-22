@@ -82,11 +82,8 @@ var addPlaceholder = function() {
     return;
 
   var object = new View.Object({
-    url: '/production',
-    title: 'Productions',
-    backOptions: {
-      className: 'small'
-    }
+    url: '/',
+    title: 'Home'
   }).invalidate();
 
   View.getMain().pushOn('production', object);
