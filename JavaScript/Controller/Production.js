@@ -583,7 +583,8 @@ var upload = function(recording, isRecording) {
     // Construct Metadata
     var user_data = User.get();
     var recording_nr = Recording.getCurrentRecordingId();
-    var the_title = 'SC_' + user_data["name"] + '_' + recording_nr;
+    var recording_id = Recording.generateRecordingId();
+    var the_title = 'SC_' + user_data["name"] + '_' + recording_id;
     var basename = the_title.replace(/\s+/g, '-').replace(/[^A-Za-z0-9\-_]/g, '');
     var data = {
       metadata: {
