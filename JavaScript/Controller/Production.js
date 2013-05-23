@@ -583,9 +583,10 @@ var upload = function(recording, isRecording) {
     // Construct Metadata
     var user_data = User.get();
     var recording_nr = Recording.getCurrentRecordingId();
-    var recording_id = Recording.generateRecordingId();
     var the_title = 'SC_' + user_data["name"] + '_' + recording_nr;
-    var basename = 'SC_' + user_data["name"] + '_' + recording_id;
+    // we need unique filenames, therefore add an UUID
+    var recording_uuid  = Math.floor((1 + Math.random()) * 0x1000000).toString(16);
+    var basename = 'SC_' + user_data["name"] + '_' + recording_uuid;
     var data = {
       metadata: {
         title: the_title,
