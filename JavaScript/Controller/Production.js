@@ -591,6 +591,7 @@ var upload = function(recording, isRecording) {
       metadata: {
         title: the_title,
         artist: user_data["name"],
+        publisher: user_data["email"],
         album: "Personal Soundscapes",
         subtitle: "Personal Soundscapes, ORF musikprotokoll im steirischen herbst",
         summary: device_info,
