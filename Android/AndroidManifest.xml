@@ -18,7 +18,7 @@
        under the License.
 -->
 <manifest xmlns:android="http://schemas.android.com/apk/res/android" android:windowSoftInputMode="adjustPan"
-      package="com.auphonic.soundscapes" android:versionName="1" android:versionCode="1" android:hardwareAccelerated="true">
+      package="com.auphonic.soundscapes" android:versionName="1.0.1" android:versionCode="2" android:hardwareAccelerated="true">
     <supports-screens
         android:largeScreens="true"
         android:normalScreens="true"
