@@ -32,6 +32,7 @@
 		30E1352710E2C1420031B30D /* config.xml in Resources */ = {isa = PBXBuildFile; fileRef = 30E1352610E2C1420031B30D /* config.xml */; };
 		30E5649213A7FCAF007403D8 /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 30E5649113A7FCAF007403D8 /* CoreMedia.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		3D377AE616F789320088A6CF /* AssetsLibrary.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3D377AE516F789320088A6CF /* AssetsLibrary.framework */; };
+		3D6B5F8E175511AD006A450F /* icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3DB7578C162E34570050685D /* icon@2x.png */; };
 		3DA016F416417F7A003995BC /* icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 3DB7578A162E344F0050685D /* icon.png */; };
 		3DB48CF2162E3728006FD9D1 /* IdleTimer.m in Sources */ = {isa = PBXBuildFile; fileRef = 3DB48CF0162E3728006FD9D1 /* IdleTimer.m */; };
 		3DB48CF4162E38D3006FD9D1 /* App in Resources */ = {isa = PBXBuildFile; fileRef = 3DB48CF3162E38D3006FD9D1 /* App */; };
@@ -360,6 +361,7 @@
 				3DB75793162E34700050685D /* Default-568h@2x.png in Resources */,
 				3DB48CF4162E38D3006FD9D1 /* App in Resources */,
 				3DA016F416417F7A003995BC /* icon.png in Resources */,
+				3D6B5F8E175511AD006A450F /* icon@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
