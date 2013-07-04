@@ -86,7 +86,7 @@ var navigate = function(fn) {
   if (formURLs.test(History.getPath()) && navigator.notification) {
     navigator.notification.confirm(cancelText, function(button) {
       if (button == 1) fn();
-    }, 'Hey, wait a second!', 'Navigate,Stay');
+    }, 'Hey, wait a second!', ['Navigate', 'Stay']);
   } else {
     fn();
   }
