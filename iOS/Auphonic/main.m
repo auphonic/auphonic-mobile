@@ -16,20 +16,14 @@
  specific language governing permissions and limitations
  under the License.
  */
-//
-//  main.m
-//  Auphonic
-//
-//  Created by Christoph Pojer on 7/13/12.
-//  Copyright Christoph Pojer 2012. All rights reserved.
-//
 
 #import <UIKit/UIKit.h>
 
-int main(int argc, char *argv[]) {
-    
+#import "AppDelegate.h"
+
+int main(int argc, char* argv[])
+{
     @autoreleasepool {
-	int retVal = UIApplicationMain(argc, argv, nil, @"AppDelegate");
-	return retVal;
+        return UIApplicationMain(argc, argv, nil, NSStringFromClass([AppDelegate class]));
     }
 }

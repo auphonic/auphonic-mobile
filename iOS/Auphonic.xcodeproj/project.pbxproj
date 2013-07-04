@@ -33,6 +33,8 @@
 		30E5649213A7FCAF007403D8 /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 30E5649113A7FCAF007403D8 /* CoreMedia.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		3D377AE616F789320088A6CF /* AssetsLibrary.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3D377AE516F789320088A6CF /* AssetsLibrary.framework */; };
 		3D6B5F8E175511AD006A450F /* icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3DB7578C162E34570050685D /* icon@2x.png */; };
+		3D94F3FB1784F0CA007F014B /* OpenAL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3D94F3FA1784F0CA007F014B /* OpenAL.framework */; };
+		3D94F3FD1784F0D0007F014B /* ImageIO.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3D94F3FC1784F0D0007F014B /* ImageIO.framework */; };
 		3DA016F416417F7A003995BC /* icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 3DB7578A162E344F0050685D /* icon.png */; };
 		3DB48CF2162E3728006FD9D1 /* IdleTimer.m in Sources */ = {isa = PBXBuildFile; fileRef = 3DB48CF0162E3728006FD9D1 /* IdleTimer.m */; };
 		3DB48CF4162E38D3006FD9D1 /* App in Resources */ = {isa = PBXBuildFile; fileRef = 3DB48CF3162E38D3006FD9D1 /* App */; };
@@ -91,6 +93,8 @@
 		30E5649113A7FCAF007403D8 /* CoreMedia.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMedia.framework; path = System/Library/Frameworks/CoreMedia.framework; sourceTree = SDKROOT; };
 		32CA4F630368D1EE00C91783 /* Auphonic-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Auphonic-Prefix.pch"; sourceTree = "<group>"; };
 		3D377AE516F789320088A6CF /* AssetsLibrary.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AssetsLibrary.framework; path = System/Library/Frameworks/AssetsLibrary.framework; sourceTree = SDKROOT; };
+		3D94F3FA1784F0CA007F014B /* OpenAL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenAL.framework; path = System/Library/Frameworks/OpenAL.framework; sourceTree = SDKROOT; };
+		3D94F3FC1784F0D0007F014B /* ImageIO.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ImageIO.framework; path = System/Library/Frameworks/ImageIO.framework; sourceTree = SDKROOT; };
 		3DB48CEF162E3728006FD9D1 /* IdleTimer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IdleTimer.h; sourceTree = "<group>"; };
 		3DB48CF0162E3728006FD9D1 /* IdleTimer.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = IdleTimer.m; sourceTree = "<group>"; };
 		3DB48CF3162E38D3006FD9D1 /* App */ = {isa = PBXFileReference; lastKnownFileType = folder; name = App; path = ../App; sourceTree = "<group>"; };
@@ -107,6 +111,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3D94F3FD1784F0D0007F014B /* ImageIO.framework in Frameworks */,
+				3D94F3FB1784F0CA007F014B /* OpenAL.framework in Frameworks */,
 				3D377AE616F789320088A6CF /* AssetsLibrary.framework in Frameworks */,
 				301BF552109A68D80062928A /* libCordova.a in Frameworks */,
 				1D60589F0D05DD5A006BFB54 /* Foundation.framework in Frameworks */,
@@ -169,6 +175,8 @@
 		29B97314FDCFA39411CA2CEA /* CustomTemplate */ = {
 			isa = PBXGroup;
 			children = (
+				3D94F3FC1784F0D0007F014B /* ImageIO.framework */,
+				3D94F3FA1784F0CA007F014B /* OpenAL.framework */,
 				3D377AE516F789320088A6CF /* AssetsLibrary.framework */,
 				3DB48CF3162E38D3006FD9D1 /* App */,
 				3DB75792162E34700050685D /* Default-568h@2x.png */,

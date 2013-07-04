@@ -20,7 +20,7 @@
 #
 
 #
-# compile and launch a Cordova/iOS project to the simulator
+# Clean a Cordova/iOS project
 #
 
 set -e
@@ -40,12 +40,5 @@ PROJECT_NAME=$(basename "$XCODEPROJ" .xcodeproj)
 
 cd "$PROJECT_PATH"
 
-APP=build/$PROJECT_NAME.app
-SDK=`xcodebuild -showsdks | grep Sim | tail -1 | awk '{print $6}'`
-
-xcodebuild -project $PROJECT_NAME.xcodeproj -arch i386 -target $PROJECT_NAME -configuration Release -sdk $SDK clean build VALID_ARCHS="i386" CONFIGURATION_BUILD_DIR="$PROJECT_PATH/build"
-
-
-
-
-
+xcodebuild -project $PROJECT_NAME.xcodeproj -configuration Debug -alltargets clean
+xcodebuild -project $PROJECT_NAME.xcodeproj -configuration Release -alltargets clean

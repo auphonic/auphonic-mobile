@@ -17,13 +17,6 @@
  under the License.
  */
 
-//
-//  MainViewController.h
-//  Auphonic
-//
-//  Created by Christoph Pojer on 7/13/12.
-//  Copyright Christoph Pojer 2012. All rights reserved.
-//
 
 #import <Cordova/CDVViewController.h>
 #import <Cordova/CDVCommandDelegateImpl.h>
