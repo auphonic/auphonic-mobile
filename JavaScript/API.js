@@ -9,6 +9,8 @@ var IdleTimer = require('Cordova/IdleTimer');
 var User = require('Store/User');
 var Platform = require('Platform');
 
+var API = module.exports = {};
+
 var APIURL = '';
 var urls = {};
 var cache = {};
@@ -32,23 +34,6 @@ var getCache = function(type) {
   }
 
   return c.data;
-};
-
-var API = module.exports = {
-
-  on: function(url, options) {
-    var object = urls[url];
-    if (!object) {
-      object = urls[url] = {};
-      object.call = API.call.bind(API, url);
-      object.getLifetime = function() {
-        return object.options && object.options.lifetime;
-      };
-    }
-    if (options) object.options = options;
-    return object;
-  }
-
 };
 
 var createListeners = function() {
@@ -81,6 +66,19 @@ var createEvent = function() {
       return preventDefault;
     }
   };
+};
+
+API.on = function(url, options) {
+  var object = urls[url];
+  if (!object) {
+    object = urls[url] = {};
+    object.call = API.call.bind(API, url);
+    object.getLifetime = function() {
+      return object.options && object.options.lifetime;
+    };
+  }
+  if (options) object.options = options;
+  return object;
 };
 
 API.call = function(url, method, requestData, requestOptions) {
