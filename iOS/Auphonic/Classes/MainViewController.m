@@ -106,11 +106,6 @@
     // Black base color for background matches the native apps
     theWebView.backgroundColor = [UIColor blackColor];
 
-    // This fixes *any* problem you'll ever have with -webkit-overflow-scrolling: touch
-    UIScrollView *scrollView = (UIScrollView *)[[theWebView subviews] objectAtIndex:0];
-    scrollView.scrollsToTop = NO;
-    scrollView.scrollEnabled = NO;
-
     return [super webViewDidFinishLoad:theWebView];
 }
 
