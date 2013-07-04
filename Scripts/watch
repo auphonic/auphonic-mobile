@@ -70,7 +70,7 @@ var writeVersion = function(hash) {
 var previousHash;
 
 var compileTemplates = function() {
-  run('node_modules/.bin/handlebars "' + config.Templates + '" -f "' + config.TemplatesFile + '" -o -c "Handlebars"', function() {
+  run('node_modules/.bin/handlebars "' + config.Templates + '" -f "' + config.TemplatesFile + '" -c "Handlebars"', function() {
     console.log("  \033[90mcompiled\033[0m " + config.TemplatesFile);
   });
 };
