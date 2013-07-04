@@ -612,10 +612,10 @@ window.__BOOTAPP = function() {
     if (Platform.isIOS()) iOS.fixRecordingPaths();
   });
 
-  Controller.define('/about', function() {
+  Controller.define('/app/info', function() {
     View.getMain().push(new View.Object({
       title: 'Auphonic Mobile',
-      content: renderTemplate('about', {
+      content: renderTemplate('app-info', {
         user: User.get(),
         version: Auphonic.Version,
         repository: Auphonic.RepositoryURL,
@@ -625,10 +625,10 @@ window.__BOOTAPP = function() {
     }));
   });
 
-  Controller.define('/team', function() {
+  Controller.define('/app/about', function() {
     View.getMain().push(new View.Object({
       title: 'About Auphonic',
-      content: renderTemplate('team', {
+      content: renderTemplate('app-about', {
         image: Auphonic.TeamImage,
         twitter: Auphonic.TwitterURL,
         facebook: Auphonic.FacebookURL,
