@@ -190,6 +190,7 @@ module.exports = new Class({
     (function() {
       this.status.removeClass('out');
     }).delay(UI.getTransitionDelay(), this);
+    UI.disableGestures();
     if (Platform.isIOS()) this.footer.addClass('out');
     document.addEventListener('pause', this.bound('pause'), false);
     this.hasStarted = true;
@@ -222,6 +223,7 @@ module.exports = new Class({
         this.saveButton.removeClass('fade');
       }).delay(UI.getTransitionDelay(), this);
     }
+    UI.enableGestures();
     this.fireEvent('pause');
     document.removeEventListener('pause', this.bound('pause'), false);
   },

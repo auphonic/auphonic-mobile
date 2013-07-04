@@ -12,6 +12,7 @@ UI.Title = require('./Elements/Title');
 
 var isVisible = false;
 var isDisabled = false;
+var gesturesAreDisabled = false;
 var transitionDelay = 1;
 
 var preventDefault = function(event) {
@@ -103,6 +104,18 @@ Object.append(UI, {
 
   isDisabled: function() {
     return isDisabled;
+  },
+
+  disableGestures: function() {
+    gesturesAreDisabled = true;
+  },
+
+  enableGestures: function() {
+    gesturesAreDisabled = false;
+  },
+
+  gesturesAreDisabled: function() {
+    return gesturesAreDisabled;
   },
 
   showChrome: function(options) {

@@ -270,9 +270,9 @@ window.__BOOTAPP = function() {
     var isSwipe = false;
     var startY = 0;
     window.addEventListener('touchstart', function(event) {
-      if (UI.isDisabled()) return;
+      if (UI.isDisabled() || UI.gesturesAreDisabled()) return;
 
-      if (event.touches[0].clientX <= 10) isSwipe = true;
+      if (event.touches[0].clientX <= 25) isSwipe = true;
       startY = event.touches[0].clientY;
     }, false);
     window.addEventListener('touchmove', function(event) {
@@ -287,9 +287,7 @@ window.__BOOTAPP = function() {
       var width = document.body.offsetWidth;
       if (offset / width > 0.15) {
         isSwipe = false;
-
-        var recordingURL = /^\/?production\/recording\/new-audio/i;
-        if (!recordingURL.test(History.getPath())) navigate(function() {
+        navigate(function() {
           View.getMain().pop();
         });
       }
