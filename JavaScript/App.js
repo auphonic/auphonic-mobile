@@ -179,7 +179,7 @@ var playChapter = function(event) {
   event.preventDefault();
 
   View.getMain().getCurrentObject().fireEvent('seekToChapterElement', [this]);
-}
+};
 
 // Make the info API call and show the UI on success, or else provide a reload button
 var spinner;
@@ -260,6 +260,37 @@ window.__BOOTAPP = function() {
       });
     }, false);
   }
+
+  // Allow swiping from the left to go back.
+  (function() {
+    var isSwipe = false;
+    var startY = 0;
+    window.addEventListener('touchstart', function(event) {
+      if (UI.isDisabled()) return;
+
+      if (event.touches[0].clientX <= 10) isSwipe = true;
+      startY = event.touches[0].clientY;
+    }, false);
+    window.addEventListener('touchmove', function(event) {
+      if (!isSwipe) return;
+
+      if (Math.abs(event.touches[0].clientY - startY) > 20) {
+        isSwipe = false;
+        return;
+      }
+
+      var offset = event.touches[0].clientX;
+      var width = document.body.offsetWidth;
+      if (offset / width > 0.15) {
+        isSwipe = false;
+
+        var recordingURL = /^\/?production\/recording\/new-audio/i;
+        if (!recordingURL.test(History.getPath())) navigate(function() {
+          View.getMain().pop();
+        });
+      }
+    }, false);
+  })();
 
   document.body.adopt(Element.from(renderTemplate('ui')));
 
