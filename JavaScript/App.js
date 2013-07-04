@@ -278,6 +278,7 @@ window.__BOOTAPP = function() {
     window.addEventListener('touchmove', function(event) {
       if (!isSwipe) return;
 
+      event.preventDefault();
       if (Math.abs(event.touches[0].clientY - startY) > 20) {
         isSwipe = false;
         return;
