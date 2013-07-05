@@ -225,7 +225,7 @@ module.exports = new Class({
 
   seekToChapterElement: function(element) {
     var time = parseTime(element.get('data-start'));
-    if (time > 0) {
+    if (time >= 0) {
       this.position = time * 1000 + 0.1;
       this.pause();
       this.seek(time);
