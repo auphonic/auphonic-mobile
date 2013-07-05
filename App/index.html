@@ -11,6 +11,7 @@
       display: none;
     }
   </style>
+  <link rel="stylesheet" media="all" type="text/css" href="App.css">
   <script type="text/javascript">
     // Set up globals
     (function() {
@@ -30,89 +31,8 @@
       }
       // END REMOVE WHEN DEPLOYING
     })();
-
-    // define __loadResource
-    (function() {
-      var loadJS = function(url, success, error) {
-        var script = document.createElement('script');
-        if (success) script.addEventListener('load', success, false);
-        if (error) script.addEventListener('error', error, false);
-        script.setAttribute('src', url);
-        document.querySelector('head').appendChild(script);
-      };
-
-      var links = [];
-      var timer = null;
-      var loadCSS = function(url, success, error) {
-        // Prevent success from being called twice through polling
-        var called = false;
-        var listener = function() {
-          if (called) return;
-          called = true;
-          link.removeEventListener('load', listener, false);
-          link.onreadystatechange = null;
-          if (success) success.call(this);
-          if (error) link.removeEventListener('error', error, false);
-        };
-
-        var link = document.createElement('link');
-        if (error) link.addEventListener('error', error, false);
-
-        if (success) {
-          link.addEventListener('load', listener, false);
-          link.onreadystatechange = function() {
-              var state = link.readyState;
-              if (state === 'loaded' || state === 'complete') listener.call(this);
-            };
-        }
-
-        link.setAttribute('rel', 'stylesheet');
-        link.setAttribute('media', 'all');
-        link.setAttribute('type', 'text/css');
-        link.setAttribute('href', url);
-        link.setAttribute('data-href', url);
-
-        document.querySelector('head').appendChild(link);
-        links.push({element: link, listener: listener, error: error});
-        if (!timer) timer = setTimeout(poll, 20);
-      };
-
-      // Fallback polling method for browsers that don't support link.onload
-      var poll = function() {
-        var sheets = document.styleSheets;
-        var i = sheets.length;
-
-        // Cross Origin CSS loading
-        // http://yearofmoo.com/2011/03/cross-browser-stylesheet-preloading/
-        while (i--) {
-          var link = sheets[i];
-          var owner = link.ownerNode || link.owningElement;
-          var j = links.length;
-          if (owner) {
-            while (j--) {
-              if (owner == links[j].element) {
-                // error
-                if (link.cssRules && !link.cssRules.length) links[j].error.call(links[j].element);
-                else links[j].listener.call(links[j].element);
-                links.splice(j, 1);
-              }
-            }
-          }
-        }
-
-        if (links.length) setTimeout(poll, 20);
-        else timer = null;
-      };
-
-      this.__loadResource = function(url, success, error) {
-        if (/\.js(\?|$)/.test(url)) loadJS(url, success, error);
-        else loadCSS(url, success, error);
-      };
-
-      this.__loadResource('App.css');
-    }).call(window);
   </script>
-  <script type="text/javascript" src="./Spinner.js"></script>
+  <script type="text/javascript" src="Spinner.js"></script>
 </head>
 <body class="chrome-invisible">
   <div id="splash" class="splash"></div>
@@ -127,92 +47,9 @@
     </div>
   </div>
   <script type="text/javascript">
+    // These need to be blocking
     document.write('\x3Cscript type="text/javascript" src="cordova.' + this.__PLATFORM + '.js">\x3C/script>');
-
-    (function() {
-      document.body.className += ' ' + this.__PLATFORM;
-
-      var timeout = 15000;
-      var timer;
-
-      // We are reusing this instance in App.js once all code has loaded
-      var spinner = this.__NATIVE_SPINNER = new Spinner({
-        lines: 25,
-        length: 0,
-        width: 4,
-        radius: 30,
-        trail: 30,
-        color: this.__PLATFORM == 'ios' ? '#fff' : '#000'
-      });
-
-      var loaded, resources;
-      var hasError = false;
-      var retryElement = document.querySelector('#retry');
-      var noticeElement = document.querySelector('#native-notice');
-
-      var cleanup = function() {
-        hasError = false;
-        noticeElement.style.display = '';
-        retry.className = 'retry hidden';
-        retryElement.querySelector('a.button').removeEventListener('click', retryClick, false);
-      }
-
-      var retryClick = function(event) {
-        if (event) event.preventDefault();
-
-        cleanup();
-        __SERVER_URL = __FALLBACK_SERVER_URL;
-        load();
-      };
-
-      var success = function() {
-        cleanup();
-        clearTimeout(timer);
-        // We are not stopping the spinner because it is being reused
-        if (++loaded >= resources.length && window.__BOOTAPP && !window.__APP_AVAILABLE)
-          window.__BOOTAPP();
-      };
-
-      var error = function() {
-        if (window.__APP_AVAILABLE) {
-          cleanup();
-          return;
-        }
-
-        hasError = true;
-        clearTimeout(timer);
-        spinner.stop();
-
-        noticeElement.style.display = 'block';
-        retryElement.className = 'retry';
-        retryElement.querySelector('a.button').addEventListener('click', retryClick, false);
-      };
-
-      var load = function() {
-        timer = setTimeout(error, timeout);
-        spinner.spin(document.querySelector('#splash'));
-        __loadResource(__SERVER_URL + 'Version.js?' + Date.now(), function() {
-          // __APP_VERSION is now available
-          loaded = 0;
-          resources = ['App-' + __APP_VERSION + '.css', 'App-' + __APP_VERSION + '.js'];
-          resources.forEach(function(resource) {
-            __loadResource(__SERVER_URL + resource + (window.__LOCALHOST__ ? '?' + Date.now() : ''), success, error);
-          });
-        }, error);
-      };
-
-      var onLoad = function() {
-        document.removeEventListener('deviceready', onLoad, false);
-        document.removeEventListener('DOMContentLoaded', onLoad, false);
-        load();
-      };
-
-      document.addEventListener('deviceready', onLoad, false);
-      document.addEventListener('DOMContentLoaded', onLoad, false);
-      document.addEventListener('resume', function() {
-        if (hasError) load();
-      }, false);
-    })();
+    document.write('\x3Cscript type="text/javascript" src="Loader.js">\x3C/script>');
   </script>
 </body>
 </html>
