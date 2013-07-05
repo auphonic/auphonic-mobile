@@ -3,6 +3,8 @@ var Class = Core.Class;
 var Options = Core.Options;
 var Events = Core.Events;
 
+require('Class-Extras');
+
 // Lightweight Request Class based on MooTools from @amadeus.
 var Request = module.exports = new Class({
 
