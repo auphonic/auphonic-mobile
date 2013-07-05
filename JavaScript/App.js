@@ -265,18 +265,25 @@ window.__BOOTAPP = function() {
     }, false);
   }
 
+  document.body.adopt(Element.from(renderTemplate('ui')));
+
   // Allow swiping from the left to go back.
   (function() {
+    var main = document.getElement('#main');
     var isSwipe = false;
     var startY = 0;
-    window.addEventListener('touchstart', function(event) {
+    main.addEventListener('touchstart', function(event) {
       if (UI.isDisabled() || UI.gesturesAreDisabled()) return;
-
       if (event.touches[0].clientX <= 25) isSwipe = true;
       startY = event.touches[0].clientY;
     }, false);
-    window.addEventListener('touchmove', function(event) {
+    main.addEventListener('touchmove', function(event) {
       if (!isSwipe) return;
+
+      if (UI.isDisabled() || UI.gesturesAreDisabled()) {
+        isSwipe = false;
+        return;
+      }
 
       event.preventDefault();
       if (Math.abs(event.touches[0].clientY - startY) > 20) {
@@ -293,9 +300,13 @@ window.__BOOTAPP = function() {
         });
       }
     }, false);
-  })();
 
-  document.body.adopt(Element.from(renderTemplate('ui')));
+    var cancel = function() {
+      isSwipe = false;
+    };
+    main.addEventListener('touchend', cancel, false);
+    main.addEventListener('touchend', cancel, false);
+  })();
 
   UI.register({
 
