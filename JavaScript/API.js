@@ -4,6 +4,7 @@ var Events = Core.Events;
 var Request = require('Request');
 var Queue = require('Queue').Queue;
 var Base64 = require('Utility/Base64');
+var LocalStorage = require('Utility/LocalStorage');
 
 var IdleTimer = require('Cordova/IdleTimer');
 var User = require('Store/User');
@@ -265,9 +266,23 @@ API.invalidate = function(url) {
 };
 
 API.cacheInfo = function(options) {
+  var data = LocalStorage.get('info.json');
+  if (!navigator.onLine && data) {
+    setCache(formatGetURL('info'), data, -1);
+    var listeners = createListeners();
+    (function() {
+      listeners.fireEvent('success', [data]);
+    }).delay(1);
+    return listeners;
+  }
+
   return API.on('info', Object.append({
     lifetime: -1
-  }, options)).call();
+  }, options)).call().on({
+    success: function(data) {
+      LocalStorage.set('info.json', data);
+    }
+  });
 };
 
 API.getInfo = function(type) {
