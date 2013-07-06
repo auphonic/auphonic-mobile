@@ -11,11 +11,11 @@
     "url": "git://github.com/cpojer/auphonic.git"
   },
   "dependencies": {
-    "stylus": ">= 0.14.0",
-    "nib": ">= 0.1.0",
+    "stylus": "~0.33.1",
+    "nib": "~0.9.2",
     "modulr": "git://github.com/cpojer/modulr-node.git",
-    "handlebars": "",
-    "watch": "",
-    "shelljs": ""
+    "handlebars": "~1.0.12",
+    "watch": "~0.8.0",
+    "shelljs": "~0.1.4"
   }
 }
