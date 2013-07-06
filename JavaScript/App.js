@@ -33,6 +33,7 @@ var User = require('Store/User');
 
 // Load Controllers
 var Controller = require('Controller');
+var requiresConnection = require('Controller/requiresConnection');
 require('Controller/Login');
 require('Controller/Preset');
 require('Controller/Production');
@@ -651,7 +652,7 @@ window.__BOOTAPP = function() {
     }));
   });
 
-  Controller.define('/external-services', function() {
+  Controller.define('/external-services', requiresConnection(function() {
     View.getMain().showIndicator();
 
     API.call('services').on({
@@ -665,7 +666,7 @@ window.__BOOTAPP = function() {
         }));
       }
     });
-  });
+  }));
 
   Controller.define('/logout', function() {
     User.reset();

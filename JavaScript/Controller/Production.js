@@ -2,6 +2,7 @@ var History = require('History');
 
 var API = require('API');
 var Controller = require('./');
+var requiresConnection = require('./requiresConnection');
 var View = require('View');
 var renderTemplate = require('UI/renderTemplate');
 var UI = require('UI');
@@ -299,9 +300,9 @@ UI.register({
 
 });
 
-Controller.define('/production', showAll);
+Controller.define('/production', requiresConnection(showAll));
 
-Controller.define('/production/{uuid}', function(req) {
+Controller.define('/production/{uuid}', requiresConnection(function(req) {
   var production = productions[req.uuid];
   if (production) {
     showOne(production);
@@ -315,9 +316,9 @@ Controller.define('/production/{uuid}', function(req) {
       showOne(response.data);
     }
   });
-});
+}));
 
-Controller.define('/production/{uuid}/summary', function(req) {
+Controller.define('/production/{uuid}/summary', requiresConnection(function(req) {
   var production = productions[req.uuid];
 
   View.getMain().pushOn('production', new View.Object({
@@ -327,7 +328,7 @@ Controller.define('/production/{uuid}/summary', function(req) {
       currentEditUUID = production.uuid;
     }
   }));
-});
+}));
 
 var getPresets = function(callback) {
   API.call('presets').on({
@@ -403,7 +404,7 @@ Controller.define('/production/new', {priority: 1, isGreedy: true}, function() {
   });
 });
 
-Controller.define('/production/source', {priority: 1, isGreedy: true}, function() {
+Controller.define('/production/source', {priority: 1, isGreedy: true}, requiresConnection(function() {
   // Store all current information
   if (form && currentEditUUID) {
     var object = View.getMain().getCurrentObject();
@@ -418,16 +419,16 @@ Controller.define('/production/source', {priority: 1, isGreedy: true}, function(
 
   form = createForm(form && currentEditUUID ? {saveURL: 'production/{uuid}'.substitute({uuid: currentEditUUID})} : null);
   form.show('service');
-});
+}));
 
-Controller.define('/production/source/{service}', function(req) {
+Controller.define('/production/source/{service}', requiresConnection(function(req) {
   var service = Source.setData(form, req.service);
   if (!service) return;
 
   form.show('input_file');
-});
+}));
 
-Controller.define('/production/selectFile/{index}', function(req) {
+Controller.define('/production/selectFile/{index}', requiresConnection(function(req) {
   ListFiles.setData(form, req.index);
   if (currentEditUUID) {
     View.getMain().showIndicator();
@@ -447,7 +448,7 @@ Controller.define('/production/selectFile/{index}', function(req) {
   } else {
     History.push('/production/new');
   }
-});
+}));
 
 Controller.define('/production/new/metadata', function() {
   form.show('metadata', {
@@ -580,12 +581,12 @@ var error = function(event) {
   });
 };
 
-Controller.define('/production/recording/upload/{id}', function(req) {
+Controller.define('/production/recording/upload/{id}', requiresConnection(function(req) {
   addPlaceholder();
 
   var recording = Recording.findById(req.id);
   if (recording) upload(recording);
-});
+}));
 
 // Android only
 if (Platform.isAndroid()) {

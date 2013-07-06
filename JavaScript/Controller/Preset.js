@@ -2,6 +2,7 @@ var History = require('History');
 
 var API = require('API');
 var Controller = require('./');
+var requiresConnection = require('./requiresConnection');
 var View = require('View');
 var renderTemplate = require('UI/renderTemplate');
 
@@ -152,19 +153,19 @@ var showOne = function(req, options) {
   });
 };
 
-Controller.define('/preset', showAll);
+Controller.define('/preset', requiresConnection(showAll));
 
-Controller.define('/preset/{uuid}', function(req) {
+Controller.define('/preset/{uuid}', requiresConnection(function(req) {
   showOne(req);
-});
+}));
 
-Controller.define('/preset/{uuid}/summary', function(req) {
+Controller.define('/preset/{uuid}/summary', requiresConnection(function(req) {
   var preset = presets[req.uuid];
   View.getMain().pushOn('preset', new View.Object({
     title: preset.preset_name,
     content: renderTemplate('detail-summary', preset)
   }));
-});
+}));
 
 Controller.define('/preset/new', {priority: 1, isGreedy: true}, function() {
   addPlaceholder();

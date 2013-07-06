@@ -129,7 +129,7 @@ var showOne = function(req) {
   if (recording.media_type == 'audio') recording.isAudio = true;
   else recording.isVideo = true;
 
-  if (recording.productions && recording.productions.length) {
+  if (navigator.onLine && recording.productions && recording.productions.length) {
     var loaded = 0;
     var complete = function() {
       if (++loaded == recording.productions.length) show(recording);
