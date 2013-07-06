@@ -2,11 +2,13 @@ var API = require('API');
 var UI = require('UI');
 var View = require('View');
 
+var User = require('Store/User');
+
 var Auphonic = require('Auphonic');
 
 exports.setup = function() {
   API.setLogHandler(function(data) {
-    if (window.__DEV__) return null;
+    if (!User.isAuthenticated() || window.__DEV__) return null;
 
     // We don't want an error in this block to cause cancel the logging
     // or in the worst case end in an infinite loop because of window.onerror
