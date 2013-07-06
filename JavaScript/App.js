@@ -593,8 +593,8 @@ window.__BOOTAPP = function() {
   }));
 
   Controller.define('/', {isGreedy: true}, function() {
-     // Call this so in case of a login with a failed attempt to load the infos we try to load them again.
-     // It'll also take care of showing the UI.
+    // Call this so in case of a login with a failed attempt to load the infos we try to load them again.
+    // It'll also take care of showing the UI.
     load({requiresLogin: false});
 
     var main = View.getMain();

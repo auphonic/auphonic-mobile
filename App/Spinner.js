@@ -215,7 +215,7 @@ merge(Spinner.prototype, {
   }
 });
 
-useCssAnimations = vendor(document.createElement('div'), 'animation');
+useCssAnimations = false; //vendor(document.createElement('div'), 'animation');
 
 window.Spinner = Spinner;
 
