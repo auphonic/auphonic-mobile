@@ -78,6 +78,12 @@ module.exports = new Class({
     });
   },
 
+  reset: function() {
+    this.recorder = null;
+    this.time = 0;
+    this.onUpdate();
+  },
+
   toggle: function() {
     if (this.isRecording) this.pause();
     else this.start();
@@ -184,9 +190,7 @@ module.exports = new Class({
 
     this.fireEvent('start');
     this.status.show();
-    if (this.hasStarted) this.saveButton.addClass('fade').transition(function() {
-      this.removeClass('paused');
-    });
+    if (this.hasStarted) this.saveButton.addClass('fade').addEvent('transitionComplete:once', this.bound('hideSaveButton'));
     (function() {
       this.status.removeClass('out');
     }).delay(UI.getTransitionDelay(), this);
@@ -199,11 +203,6 @@ module.exports = new Class({
   onStop: function() {
     this.hasStarted = false;
     this.isRecording = false;
-    this.button.removeClass('pulse').set('text', 'Start');
-    this.status.removeClass('paused').removeClass('hasChapters');
-    this.saveButton.removeClass('paused').addClass('fade');
-    this.status.addClass('out').addEvent('transitionComplete:once', this.bound('hideStatus'));
-    if (Platform.isIOS()) this.footer.removeClass('out');
     document.removeEventListener('pause', this.bound('pause'), false);
   },
 
@@ -244,15 +243,18 @@ module.exports = new Class({
   },
 
   onShow: function() {
+    this.reset();
     this.status.inject(document.id('main'));
     this.button.removeClass('fade');
   },
 
   onHide: function() {
-    this.status.dispose();
-    this.status.removeEvent('transitionComplete:once', this.bound('hideStatus'));
-    if (Platform.isIOS()) this.footer.transition({immediate: true}).removeClass('out');
+    this.button.removeClass('pulse').set('text', 'Start');
+    this.status.removeClass('paused').removeClass('hasChapters').addClass('out').transition(this.bound('hideStatus'));
+    this.saveButton.removeEvent('transitionComplete:once', this.bound('hideSaveButton'));
+    this.saveButton.transition({immediate: true}).removeClass('paused').addClass('fade');
     this.chapterElement.addClass('fade');
+    if (Platform.isIOS()) this.footer.transition({immediate: true}).removeClass('out');
   },
 
   onHideOnce: function() {
@@ -307,8 +309,12 @@ module.exports = new Class({
     this.chapters[this.chapters.length - 1].title = value;
   },
 
+  hideSaveButton: function() {
+    this.saveButton.removeClass('paused');
+  },
+
   hideStatus: function() {
-    this.status.hide();
+    this.status.hide().dispose();
   },
 
   preventDefault: function(event) {
