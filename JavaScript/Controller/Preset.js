@@ -3,6 +3,7 @@ var History = require('History');
 var API = require('API');
 var Controller = require('./');
 var requiresConnection = require('./requiresConnection');
+var requiresAuthentication = require('./requiresAuthentication');
 var View = require('View');
 var renderTemplate = require('UI/renderTemplate');
 
@@ -153,40 +154,40 @@ var showOne = function(req, options) {
   });
 };
 
-Controller.define('/preset', requiresConnection(showAll));
+Controller.define('/preset', requiresConnection(requiresAuthentication(showAll)));
 
-Controller.define('/preset/{uuid}', requiresConnection(function(req) {
+Controller.define('/preset/{uuid}', requiresConnection(requiresAuthentication(function(req) {
   showOne(req);
-}));
+})));
 
-Controller.define('/preset/{uuid}/summary', requiresConnection(function(req) {
+Controller.define('/preset/{uuid}/summary', requiresConnection(requiresAuthentication(function(req) {
   var preset = presets[req.uuid];
   View.getMain().pushOn('preset', new View.Object({
     title: preset.preset_name,
     content: renderTemplate('detail-summary', preset)
   }));
-}));
+})));
 
-Controller.define('/preset/new', {priority: 1, isGreedy: true}, function() {
+Controller.define('/preset/new', {priority: 1, isGreedy: true}, requiresAuthentication(function() {
   addPlaceholder();
   form = createForm();
   form.show('main');
-});
+}));
 
-Controller.define('/preset/edit/{uuid}', {priority: 1, isGreedy: true}, function(req) {
+Controller.define('/preset/edit/{uuid}', {priority: 1, isGreedy: true}, requiresAuthentication(function(req) {
   var preset = presets[req.uuid];
   form = createForm(preset ? {saveURL: 'preset/{uuid}'.substitute(preset)} : null);
   form.show('main', preset);
-});
+}));
 
-Controller.define('/preset/new/metadata', function() {
+Controller.define('/preset/new/metadata', requiresAuthentication(function() {
   form.show('metadata');
-});
+}));
 
-Controller.define('/preset/new/output_file/:id:', function(req) {
+Controller.define('/preset/new/output_file/:id:', requiresAuthentication(function(req) {
   form.show('output_files', req.id);
-});
+}));
 
-Controller.define('/preset/new/outgoing_services', function() {
+Controller.define('/preset/new/outgoing_services', requiresAuthentication(function() {
   form.show('outgoing_services');
-});
+}));

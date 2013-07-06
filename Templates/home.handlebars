@@ -2,13 +2,15 @@
 
 <ul>
   <li><a href="/production/recording/new-audio" class="arrow"><span></span>Start a new Audio Recording</a></li>
-  <li><a href="/production/source" class="arrow"><span></span>Create a new Production</a></li>
-  <li><a href="/external-services" class="arrow"><span></span>External Services</a></li>
+  {{#authenticated}}
+    <li><a href="/production/source" class="arrow"><span></span>Create a new Production</a></li>
+    <li><a href="/external-services" class="arrow"><span></span>External Services</a></li>
+  {{/authenticated}}
   <li><a href="/app/about" class="arrow"><span></span>About Auphonic</a></li>
   <li><a href="/app/info" class="arrow"><span></span>App Info</a></li>
   <li><a href="{{feedback}}" class="share"><span></span>Feedback</a></li>
 </ul>
 
 {{#platform "ios"}}
-  <a href="/logout" class="button red expand">Logout</a>
+  <a href="/logout" class="button red expand">{{#authenticated}}Logout{{else}}Login{{/authenticated}}</a>
 {{/platform}}

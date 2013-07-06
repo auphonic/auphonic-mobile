@@ -13,17 +13,18 @@ var getAttribute = function(attribute) {
   return user && user[attribute];
 };
 
-exports.isLoggedIn = function() {
+exports.isAuthenticated = function() {
   return !!get();
 };
 
 exports.reset = function() {
-  LocalStorage.set('previousUsername', getAttribute('name'));
+  var name = getAttribute('name');
+  if (name) LocalStorage.set('previousUsername', name);
   set(null);
 };
 
 exports.getId = function() {
-  return getAttribute('user_id');
+  return getAttribute('user_id') || '';
 };
 
 exports.getPreviousUsername = function() {

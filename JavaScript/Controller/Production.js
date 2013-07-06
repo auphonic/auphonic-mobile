@@ -3,6 +3,7 @@ var History = require('History');
 var API = require('API');
 var Controller = require('./');
 var requiresConnection = require('./requiresConnection');
+var requiresAuthentication = require('./requiresAuthentication');
 var View = require('View');
 var renderTemplate = require('UI/renderTemplate');
 var UI = require('UI');
@@ -300,9 +301,9 @@ UI.register({
 
 });
 
-Controller.define('/production', requiresConnection(showAll));
+Controller.define('/production', requiresConnection(requiresAuthentication(showAll)));
 
-Controller.define('/production/{uuid}', requiresConnection(function(req) {
+Controller.define('/production/{uuid}', requiresConnection(requiresAuthentication(function(req) {
   var production = productions[req.uuid];
   if (production) {
     showOne(production);
@@ -316,9 +317,9 @@ Controller.define('/production/{uuid}', requiresConnection(function(req) {
       showOne(response.data);
     }
   });
-}));
+})));
 
-Controller.define('/production/{uuid}/summary', requiresConnection(function(req) {
+Controller.define('/production/{uuid}/summary', requiresConnection(requiresAuthentication(function(req) {
   var production = productions[req.uuid];
 
   View.getMain().pushOn('production', new View.Object({
@@ -328,7 +329,7 @@ Controller.define('/production/{uuid}/summary', requiresConnection(function(req)
       currentEditUUID = production.uuid;
     }
   }));
-}));
+})));
 
 var getPresets = function(callback) {
   API.call('presets').on({
@@ -378,7 +379,7 @@ var edit = function(production) {
   else show();
 };
 
-Controller.define('/production/edit/{uuid}', function(req) {
+Controller.define('/production/edit/{uuid}', requiresAuthentication(function(req) {
   var production = productions[req.uuid];
   if (production) {
     edit(production);
@@ -394,17 +395,17 @@ Controller.define('/production/edit/{uuid}', function(req) {
       edit(response.data);
     }
   });
-});
+}));
 
-Controller.define('/production/new', {priority: 1, isGreedy: true}, function() {
+Controller.define('/production/new', {priority: 1, isGreedy: true}, requiresAuthentication(function() {
   addPlaceholder();
   resetEditUUID();
   getPresets(function(presets) {
     form.show('main', null, presets);
   });
-});
+}));
 
-Controller.define('/production/source', {priority: 1, isGreedy: true}, requiresConnection(function() {
+Controller.define('/production/source', {priority: 1, isGreedy: true}, requiresConnection(requiresAuthentication(function() {
   // Store all current information
   if (form && currentEditUUID) {
     var object = View.getMain().getCurrentObject();
@@ -419,16 +420,16 @@ Controller.define('/production/source', {priority: 1, isGreedy: true}, requiresC
 
   form = createForm(form && currentEditUUID ? {saveURL: 'production/{uuid}'.substitute({uuid: currentEditUUID})} : null);
   form.show('service');
-}));
+})));
 
-Controller.define('/production/source/{service}', requiresConnection(function(req) {
+Controller.define('/production/source/{service}', requiresConnection(requiresAuthentication(function(req) {
   var service = Source.setData(form, req.service);
   if (!service) return;
 
   form.show('input_file');
-}));
+})));
 
-Controller.define('/production/selectFile/{index}', requiresConnection(function(req) {
+Controller.define('/production/selectFile/{index}', requiresConnection(requiresAuthentication(function(req) {
   ListFiles.setData(form, req.index);
   if (currentEditUUID) {
     View.getMain().showIndicator();
@@ -448,25 +449,25 @@ Controller.define('/production/selectFile/{index}', requiresConnection(function(
   } else {
     History.push('/production/new');
   }
-}));
+})));
 
-Controller.define('/production/new/metadata', function() {
+Controller.define('/production/new/metadata', requiresAuthentication(function() {
   form.show('metadata', {
     withLocation: true
   });
-});
+}));
 
-Controller.define('/production/new/output_file/:id:', function(req) {
+Controller.define('/production/new/output_file/:id:', requiresAuthentication(function(req) {
   form.show('output_files', req.id);
-});
+}));
 
-Controller.define('/production/new/chapter/:id:', function(req) {
+Controller.define('/production/new/chapter/:id:', requiresAuthentication(function(req) {
   form.show('chapters', req.id);
-});
+}));
 
-Controller.define('/production/new/outgoing_services', function() {
+Controller.define('/production/new/outgoing_services', requiresAuthentication(function() {
   form.show('outgoing_services');
-});
+}));
 
 // Recording
 var upload = function(recording, isRecording) {
@@ -581,12 +582,12 @@ var error = function(event) {
   });
 };
 
-Controller.define('/production/recording/upload/{id}', requiresConnection(function(req) {
+Controller.define('/production/recording/upload/{id}', requiresConnection(requiresAuthentication(function(req) {
   addPlaceholder();
 
   var recording = Recording.findById(req.id);
   if (recording) upload(recording);
-}));
+})));
 
 // Android only
 if (Platform.isAndroid()) {

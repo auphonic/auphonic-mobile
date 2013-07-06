@@ -185,11 +185,10 @@ var playChapter = function(event) {
 
 // Make the info API call and show the UI on success, or else provide a reload button
 var spinner;
-var isLoggedIn = User.isLoggedIn();
-var load = function(event) {
-  if (event) event.preventDefault();
-
-  isLoggedIn = User.isLoggedIn();
+var isAuthenticated = User.isAuthenticated();
+var load = function(options) {
+  var requiresLogin = (options && 'requiresLogin' in options) ? options.requiresLogin : true;
+  isAuthenticated = User.isAuthenticated();
 
   var retry = document.id('retry');
   retry.hide();
@@ -200,16 +199,17 @@ var load = function(event) {
     else spinner = new Spinner(Auphonic.SpinnerOptions);
   }
 
-  if (isLoggedIn) spinner.spin(document.id('splash'));
+  if (isAuthenticated) spinner.spin(document.id('splash'));
   else spinner.stop();
 
   API.cacheInfo({
-    silent: !isLoggedIn,
+    silent: !isAuthenticated,
     formatter: Data.formatInfos
   }).on({
     success: function() {
+      window.__APP_IS_LOADED = true;
       Notice.closeAll();
-      if (!isLoggedIn) return;
+      if (requiresLogin && !isAuthenticated) return;
 
       spinner.stop();
       UI.showChrome();
@@ -218,7 +218,10 @@ var load = function(event) {
     error: function() {
       spinner.stop();
       var retry = document.id('retry').show();
-      retry.getElement('a').addEvent('click', load);
+      retry.getElement('a').addEvent('click', function(event) {
+        event.preventDefault();
+        load();
+      });
     }
   });
 };
@@ -592,7 +595,7 @@ window.__BOOTAPP = function() {
   Controller.define('/', {isGreedy: true}, function() {
      // Call this so in case of a login with a failed attempt to load the infos we try to load them again.
      // It'll also take care of showing the UI.
-    load();
+    load({requiresLogin: false});
 
     var main = View.getMain();
     var object = new View.Object({
@@ -675,7 +678,7 @@ window.__BOOTAPP = function() {
     History.push('/login');
   });
 
-  if (!isLoggedIn) History.push('/login');
+  if (!isAuthenticated) History.push('/login');
 
   delete window.__BOOTAPP; // bye!
   window.__APP_AVAILABLE = true;

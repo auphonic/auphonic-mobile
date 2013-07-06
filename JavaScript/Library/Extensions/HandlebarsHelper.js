@@ -21,3 +21,7 @@ Handlebars.registerHelper('image', function(url) {
 Handlebars.registerHelper('platform', function(platform, options) {
   return Platform.get() == platform ? options.fn(this) : options.inverse(this);
 });
+
+Handlebars.registerHelper('authenticated', function(options) {
+  return User.isAuthenticated() ? options.fn(this) : options.inverse(this);
+});

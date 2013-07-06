@@ -4,22 +4,42 @@ var User = require('Store/User');
 
 var Auphonic = require('Auphonic');
 
+// u == un-authenticated
 var key = function(key) {
   return User.getId() + '-recordings' + (key ? '-' + key : '');
 };
 
+var ukey = function(key) {
+  return '-recordings' + (key ? '-' + key : '');
+};
+
 var get = function() {
-  return LocalStorage.get(key()) || {};
+  var recordings = LocalStorage.get(key()) || {};
+  // Append all un-authenticated recordings to the recordings of the current user.
+  Object.append(recordings, uget());
+  set(recordings);
+  return recordings;
 };
 
 var set = function(recordings) {
   LocalStorage.set(key(), recordings);
 };
 
+var uget = function() {
+  return LocalStorage.get(ukey()) || {};
+};
+
+var uset = function(recordings) {
+  LocalStorage.set(ukey(), recordings);
+};
+
 var removeRecording = function(recording) {
   var recordings = get();
+  var uRecordings = uget();
   delete recordings[recording.id];
+  delete uRecordings[recording.id];
   set(recordings);
+  uset(uRecordings);
 };
 
 var error = function() {};

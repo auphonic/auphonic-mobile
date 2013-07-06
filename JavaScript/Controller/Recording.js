@@ -8,6 +8,7 @@ var Data = require('App/Data');
 var Form = require('App/Form');
 
 var Recording = require('Store/Recording');
+var User = require('Store/User');
 
 var months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 var sizes = ['b', 'KB', 'MB', 'GB', 'TB'];
@@ -129,7 +130,7 @@ var showOne = function(req) {
   if (recording.media_type == 'audio') recording.isAudio = true;
   else recording.isVideo = true;
 
-  if (navigator.onLine && recording.productions && recording.productions.length) {
+  if (User.isAuthenticated() && navigator.onLine && recording.productions && recording.productions.length) {
     var loaded = 0;
     var complete = function() {
       if (++loaded == recording.productions.length) show(recording);

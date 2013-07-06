@@ -16,8 +16,8 @@ var Platform = require('Platform');
 var notice;
 var spinner;
 
-Controller.define('/login', function() {
-  if (User.isLoggedIn()) {
+Controller.define('/login/:path*:', function(req) {
+  if (User.isAuthenticated()) {
     History.push('/');
     return;
   }
@@ -78,7 +78,8 @@ Controller.define('/login', function() {
             spinner.stop();
             login.empty();
             User.set(Object.append(user, {name: response.data.username}, response.data));
-            History.push('/');
+            if (window.__APP_IS_LOADED) UI.showChrome();
+            History.push(req[0] || '/');
           },
 
           error: error
@@ -91,6 +92,12 @@ Controller.define('/login', function() {
 
   login.getElement('input[type=submit]').addEvent('click', function(event) {
     submit(event);
+  });
+
+  login.getElement('a.no-login').addEvent('click', function(event) {
+    event.preventDefault();
+
+    History.push('/');
   });
 
   var splash = document.id('splash');
