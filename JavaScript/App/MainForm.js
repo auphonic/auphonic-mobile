@@ -34,6 +34,7 @@ module.exports = new Class({
       return '';
     },
     onSave: function(object) {},
+    onStart: function(object) {},
     onUploadSuccess: function(object) {}
   },
 
@@ -81,6 +82,8 @@ module.exports = new Class({
     this.store.erase();
     this.isRendered = false;
     this.isEditMode = false;
+    this.saveAndStartProduction = false;
+    this.startAfterCoverPhotoUpload = false;
     this.object = null;
     this.presets = null;
     this.uploadFile = null;
@@ -190,7 +193,7 @@ module.exports = new Class({
 
     object.addEvent('show:once', (function() {
       var saveButton = object.toElement().getElement('.saveButton');
-      if (saveButton) saveButton.addEvent('click', this.bound('onActionClick'));
+      if (saveButton) saveButton.addEvent('click', this.bound('onSaveButtonClick'));
 
       if (hasUpload) {
         var label = object.toElement().getElement('.input_file_label');
@@ -228,6 +231,15 @@ module.exports = new Class({
   upload: function(file) {
     return API.upload(this.getSaveURL() + '/upload', file, 'image').on({
       success: this.bound('onUploadSuccess')
+    });
+  },
+
+  startProduction: function() {
+    console.log('start production!');
+    API.call('/production/{uuid}/start'.substitute({uuid: this.uuid}), 'post', 'null').on({
+      success: (function(response) {
+        this.options.onStart.call(this, response.data);
+      }).bind(this)
     });
   },
 
@@ -287,13 +299,19 @@ module.exports = new Class({
     });
   },
 
+  onSaveButtonClick: function(event) {
+    this.saveAndStartProduction = true;
+    this.onActionClick(event);
+  },
+
   onSave: function(response) {
+    this.uuid = response.data.uuid;
     var baseURL = this.getBaseURL();
     var stack = View.getMain().getStack();
     var baseObject = stack.getByURL(baseURL);
     if (baseObject) baseObject.invalidate();
     if (this.isEditMode) {
-      var object = stack.getByURL(baseURL + response.data.uuid);
+      var object = stack.getByURL(baseURL + this.uuid);
       if (object) object.invalidate();
     }
 
@@ -302,14 +320,22 @@ module.exports = new Class({
     });
 
     // If the production is new and a cover photo is selected we need to upload it now.
+    var isUploadingCoverPhoto = false;
     if (this.uploadFile) {
       if (!this.isEditMode) {
         this.setSaveURL((this.getBaseURL() + '{uuid}').substitute(response.data));
-        this.uuid = response.data.uuid;
       }
 
       this.upload(this.uploadFile);
       this.uploadFile = null;
+      isUploadingCoverPhoto = true;
+    }
+
+    if (this.saveAndStartProduction) {
+      var upload = CurrentUpload.get(this.uuid);
+      if (upload) upload.transfer.on({success: this.bound('startProduction')});
+      else if (isUploadingCoverPhoto) this.startAfterCoverPhotoUpload = true;
+      else this.startProduction.delay(1, this);
     }
 
     this.options.onSave.call(this, response.data);
@@ -331,6 +357,7 @@ module.exports = new Class({
   onUploadSuccess: function(response) {
     new Notice('The Cover Photo was successfully uploaded.');
     this.options.onUploadSuccess.call(this, response.data);
+    if (this.startAfterCoverPhotoUpload) this.startProduction();
   },
 
   onCancel: function() {

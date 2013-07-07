@@ -56,6 +56,13 @@ var createForm = function(options) {
           productions[object.uuid] = object;
           History.push('/production/' + object.uuid);
         },
+        onStart: function(object) {
+          console.log('onStart');
+          productions[object.uuid] = object;
+          (function() {
+            View.getMain().getStack().notifyAll('checkProductionStatus');
+          }).delay(100);
+        },
         onUploadSuccess: function(object) {
           View.getMain().getCurrentObject().fireEvent('refresh', [object]);
         }
@@ -191,6 +198,12 @@ var showOne = function(req, options) {
     addPlaceholder();
 
     var productionStatus;
+    var updateProcessingUI = function(element) {
+      element.hide();
+      var processing = element.getNext('div.processing').show();
+      processing.getNext('a.stopProduction').show();
+    };
+
     var object = new View.Object({
       title: production.metadata.title || 'Untitled',
       content: renderTemplate('detail', production),
@@ -203,14 +216,7 @@ var showOne = function(req, options) {
       onShow: function() {
         resetEditUUID();
 
-        var production = productions[req.uuid];
-        // Production is being processed
-        if (!production.change_allowed) {
-          var processing = object.toElement().getElement('.processing');
-          if (productionStatus) productionStatus.stop();
-          productionStatus = new ProductionStatus(processing, statusOptions);
-          productionStatus.check(production);
-        }
+        this.fireEvent('checkProductionStatus');
       },
 
       onHide: function() {
@@ -226,11 +232,27 @@ var showOne = function(req, options) {
         }
       },
 
-      onStartProduction: function(element) {
-        element.hide();
-        var processing = element.getNext('div.processing').show();
-        processing.getNext('a.stopProduction').show();
+      onCheckProductionStatus: function() {
+        var production = productions[req.uuid];
+        // Production is being processed
+        if (!production.change_allowed) {
+          // If the startProduction element is still visible the production
+          // was started through the main form and we need to transform the view
+          // to show the processing status.
+          var startProduction = object.toElement().getElement('div.detailView a.startProduction');
+          if (startProduction) updateProcessingUI(startProduction);
 
+          var processing = object.toElement().getElement('.processing');
+          if (productionStatus) productionStatus.stop();
+          productionStatus = new ProductionStatus(processing, statusOptions);
+          productionStatus.check(production);
+        }
+      },
+
+      onStartProduction: function(element) {
+        updateProcessingUI(element);
+
+        var processing = element.getNext('div.processing');
         if (productionStatus) productionStatus.stop();
         productionStatus = new ProductionStatus(processing, statusOptions);
 
