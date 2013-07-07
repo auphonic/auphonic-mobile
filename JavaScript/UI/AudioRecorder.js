@@ -196,14 +196,12 @@ module.exports = new Class({
     }).delay(UI.getTransitionDelay(), this);
     UI.disableGestures();
     if (Platform.isIOS()) this.footer.addClass('out');
-    document.addEventListener('pause', this.bound('pause'), false);
     this.hasStarted = true;
   },
 
   onStop: function() {
     this.hasStarted = false;
     this.isRecording = false;
-    document.removeEventListener('pause', this.bound('pause'), false);
   },
 
   onPause: function() {
@@ -224,7 +222,6 @@ module.exports = new Class({
     }
     UI.enableGestures();
     this.fireEvent('pause');
-    document.removeEventListener('pause', this.bound('pause'), false);
   },
 
   onUpdate: function() {
