@@ -17,6 +17,7 @@ var Chapter = require('App/Chapter');
 var CoverPhoto = require('App/CoverPhoto');
 var Data = require('App/Data');
 var Form = require('App/Form');
+var HTTPUpload = require('App/HTTPUpload');
 var ListFiles = require('App/ListFiles');
 var Location = require('App/Location');
 var MainForm = require('App/MainForm');
@@ -57,7 +58,6 @@ var createForm = function(options) {
           History.push('/production/' + object.uuid);
         },
         onStart: function(object) {
-          console.log('onStart');
           productions[object.uuid] = object;
           (function() {
             View.getMain().getStack().notifyAll('checkProductionStatus');
@@ -73,6 +73,7 @@ var createForm = function(options) {
       Source,
       OutgoingService,
       ListFiles,
+      HTTPUpload,
       OutputFiles,
       CoverPhoto,
       Location
@@ -422,6 +423,8 @@ Controller.define('/production/edit/{uuid}', requiresAuthentication(function(req
 Controller.define('/production/new', {priority: 1, isGreedy: true}, requiresAuthentication(function() {
   addPlaceholder();
   resetEditUUID();
+  var httpUpload = HTTPUpload.getData(form);
+  if (httpUpload) form.set('input_file', httpUpload.input_file);
   getPresets(function(presets) {
     form.show('main', null, presets);
   });
@@ -472,6 +475,10 @@ Controller.define('/production/selectFile/{index}', requiresConnection(requiresA
     History.push('/production/new');
   }
 })));
+
+Controller.define('/production/new/http-upload', requiresAuthentication(function() {
+  form.show('http_upload');
+}));
 
 Controller.define('/production/new/metadata', requiresAuthentication(function() {
   form.show('metadata', {
