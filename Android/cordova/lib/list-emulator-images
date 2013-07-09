@@ -1,3 +1,4 @@
+#!/bin/bash
 # Licensed to the Apache Software Foundation (ASF) under one
 # or more contributor license agreements.  See the NOTICE file
 # distributed with this work for additional information
@@ -15,10 +16,17 @@
 # specific language governing permissions and limitations
 # under the License.
 
-#!/bin/bash
-
-set -e
-
-CORDOVA_PATH=$( cd "$( dirname "$0" )" && pwd )
-
-bash "$CORDOVA_PATH"/cordova release
+emulator_images=`android list avds | grep "Name:" | cut -f 2 -d ":"`
+emulator_list=($emulator_images)
+if [[ ${#emulator_list[@]} > 0 ]] ; then
+    for i in ${emulator_list[@]}
+    do
+        echo $i
+    done
+    exit 0
+else
+    echo "No emulators found, if you would like to create an emulator follow the instructions"
+    echo " provided here : http://developer.android.com/tools/devices/index.html"
+    echo " Or run 'android create avd --name <name> --target <targetID>' in on the command line."
+    exit 2
+fi

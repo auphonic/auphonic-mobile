@@ -16,24 +16,17 @@
 # specific language governing permissions and limitations
 # under the License.
 
-DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
-PROJECT_PATH=$( cd "$DIR/.." && pwd )
-
-if [[ "$#" -eq 1 ]] ; then
-    if [[ $1 == "--debug" ]] ; then
-        $DIR/clean
-        ant debug -f "$PROJECT_PATH"/build.xml
-    elif [[ $1 == "--release" ]] ; then
-        $DIR/clean
-        ant release -f "$PROJECT_PATH"/build.xml
-    elif [[ $1 == "--nobuild" ]] ; then
-        echo "Skipping build..."
-    else
-        echo "Error : Build command '$1' not recognized."
-        exit 2
-    fi
+devices=`adb devices | awk '/List of devices attached/ { while(getline > 0) { print  $1;}}' | grep 'emulator' | grep -v 'offline'`
+read -ra emulator_list <<< "$devices"
+if [[ ${#emulator_list[@]} > 0 ]] ; then
+    for i in ${emulator_list[@]}
+    do
+        # remove space and 'device'
+        echo $i 
+    done
+    exit 0
 else
-    echo "Warning : [ --debug | --release | --nobuild ] not specified, defaulting to --debug"
-    $DIR/clean
-    ant debug -f "$PROJECT_PATH"/build.xml
+    echo "No started emulators found (it may still be booting up), you can start an emulator by using the command"
+    echo " 'cordova/lib/start-emulator'"
+    exit 2
 fi
