@@ -30,15 +30,6 @@ exports.DefaultVideoOutputFile = {
   format: 'video'
 };
 
-exports.SpinnerOptions = {
-  lines: 25,
-  length: 0,
-  width: 4,
-  radius: 30,
-  trail: 30,
-  color: Platform.isIOS() ? '#fff' : '#000'
-};
-
 exports.ViewSpinnerOptions = {
   lines: 25,
   length: 0,
@@ -47,6 +38,17 @@ exports.ViewSpinnerOptions = {
   trail: 30,
   color: '#000'
 };
+
+exports.WhiteViewSpinnerOptions = {
+  lines: 25,
+  length: 0,
+  width: 4,
+  radius: 30,
+  trail: 30,
+  color: '#fff'
+};
+
+exports.SpinnerOptions = Platform.isIOS() ? exports.WhiteViewSpinnerOptions : exports.ViewSpinnerOptions;
 
 exports.ViewSpinnerOptionsSmall = {
   lines: 9,
