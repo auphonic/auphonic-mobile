@@ -9,6 +9,7 @@ var URLDelegate = module.exports = new Class({
   Implements: Class.Binds,
 
   initialize: function() {
+    this.currentURL = '';
     this.id = String.uniqueID();
     this.router = new Router({
       normalizeFn: function(req, vals) {
@@ -27,6 +28,7 @@ var URLDelegate = module.exports = new Class({
   },
 
   route: function(url) {
+    this.currentURL = url;
     // Phonegap likes to add file:///
     this.router.parse('/' + url.replace(/^\/|^file\:\/\/\//, ''));
     return this;
@@ -40,6 +42,10 @@ var URLDelegate = module.exports = new Class({
 
   getId: function() {
     return this.id;
+  },
+
+  getCurrentURL: function() {
+    return this.currentURL;
   }
 
 });

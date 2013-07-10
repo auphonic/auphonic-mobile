@@ -21,6 +21,7 @@ module.exports = new Class({
     contentSelector: null,
     scrollableSelector: null,
 
+    delegate: null,
     back: null,
     title: null,
     action: null,
@@ -40,9 +41,11 @@ module.exports = new Class({
 
   initialize: function(element, options) {
     if (!options) options = {};
+    this.delegate = options.delegate;
     this.back = options.back;
     this.title = options.title;
     this.action = options.action;
+    delete options.delegate;
     delete options.back;
     delete options.title;
     delete options.action;
@@ -83,7 +86,8 @@ module.exports = new Class({
       this.rotate(stack);
     }
 
-    if (!object.getURL()) object.setURL(History.getPath());
+    if (!object.getURL())
+      object.setURL(this.delegate ? this.delegate.getCurrentURL() : History.getPath());
 
     var current = this._stack;
     var isImmediate = (_options && _options.immediate) || rotated;
@@ -145,7 +149,10 @@ module.exports = new Class({
 
   pop: function() {
     var previous = this._stack && this._stack.getPrevious();
-    if (previous) History.push(previous.getURL());
+    if (previous) {
+      if (this.delegate) this.delegate.route(previous.getURL());
+      else History.push(previous.getURL());
+    }
 
     return this;
   },
