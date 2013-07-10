@@ -25,7 +25,7 @@ exports.createView = function(store, options) {
       className: 'done',
       url: '/production/new',
       onClick: function() {
-        exports.setData(store, View.getMain().getCurrentObject().serialize());
+        exports.setData(store, object.serialize());
       }
     }
   });

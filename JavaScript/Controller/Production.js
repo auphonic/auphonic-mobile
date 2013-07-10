@@ -415,9 +415,7 @@ Controller.define('/production/source', {priority: 1, isGreedy: true}, requiresC
 
 Controller.define('/production/source/{service}', requiresConnection(requiresAuthentication(function(req) {
   var service = Source.setData(form, req.service);
-  if (!service) return;
-
-  form.show('input_file');
+  if (service) form.show('input_file');
 })));
 
 Controller.define('/production/selectFile/{index}', requiresConnection(requiresAuthentication(function(req) {

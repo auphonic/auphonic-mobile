@@ -235,7 +235,6 @@ module.exports = new Class({
   },
 
   startProduction: function() {
-    console.log('start production!');
     API.call('/production/{uuid}/start'.substitute({uuid: this.uuid}), 'post', 'null').on({
       success: (function(response) {
         this.options.onStart.call(this, response.data);
