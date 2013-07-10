@@ -420,7 +420,7 @@ Controller.define('/production/source/{service}', requiresConnection(requiresAut
 })));
 
 Controller.define('/production/selectFile/{index}', requiresConnection(requiresAuthentication(function(req) {
-  ListFiles.setData(form, req.index);
+  ListFiles.setData(form, Source.getData(form).service, req.index);
   History.push('/production/new');
 })));
 

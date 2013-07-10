@@ -31,10 +31,10 @@ exports.getData = function(store) {
   };
 };
 
-exports.setData = function(store, index) {
-  if (!files[index]) return;
+exports.setData = function(store, service, index) {
+  if (!files[service] || !files[service][index]) return;
 
-  return setFile(store, files[index]);
+  return setFile(store, files[service][index]);
 };
 
 var notice;
@@ -54,8 +54,8 @@ exports.createView = function(store) {
         return;
       }
 
-      files = response.data;
-      var list = files.map(function(file, index) {
+      files[service] = response.data;
+      var list = files[service].map(function(file, index) {
         return {
           index: index,
           display_name: file
