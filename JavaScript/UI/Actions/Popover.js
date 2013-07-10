@@ -20,6 +20,7 @@ module.exports = new Class({
     positionProperty: 'data-position',
     openEventProperty: 'data-popover-open-event',
     closeEventProperty: 'data-popover-close-event',
+    closeOnTapProperty: 'data-close-on-tap',
     highlightTextProperty: 'data-highlight-text',
     openDelay: 'data-popover-open-delay',
     animationClass: 'fade',
@@ -43,6 +44,8 @@ module.exports = new Class({
     this.pos = popover.get(options.positionProperty);
     this.openEvent = element.get(options.openEventProperty) || 'click';
     this.closeEvent = element.get(options.closeEventProperty);
+    var closeOnTap = parseInt(popover.get(options.closeOnTapProperty), 10);
+    this.closeOnTap = isNaN(closeOnTap) ? true : !!closeOnTap;
     this.openDelay = parseInt(element.get(options.openDelay), 10) || '0';
     this.shouldHighlightText = popover.get(options.highlightTextProperty);
 
@@ -52,13 +55,13 @@ module.exports = new Class({
   attach: function() {
     this.element.addEvent(this.openEvent, this.bound('onClick'));
     if (this.closeEvent) this.element.addEvent(this.closeEvent, this.bound('onClose'));
-    this.popover.addEvent('click', this.bound('onClose'));
+    if (this.closeOnTap) this.popover.addEvent('click', this.bound('onClose'));
   },
 
   detach: function() {
     this.element.removeEvent(this.openEvent, this.bound('onClick'));
     if (this.closeEvent) this.element.removeEvent(this.closeEvent, this.bound('onClose'));
-    this.popover.removeEvent('click', this.bound('onClose'));
+    if (this.closeOnTap) this.popover.removeEvent('click', this.bound('onClose'));
   },
 
   onClick: function(event) {

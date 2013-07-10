@@ -343,6 +343,7 @@ window.__BOOTAPP = function() {
       positionProperty: 'data-position',
       eventProperty: 'data-popover-open-event',
       closeEventProperty: 'data-popover-close-event',
+      closeOnTapProperty: 'data-close-on-tap',
       highlightTextProperty: 'data-highlight-text',
       openDelay: 'data-popover-open-delay',
       animationClass: 'fade',
