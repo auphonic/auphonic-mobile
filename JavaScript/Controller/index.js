@@ -1,22 +1,17 @@
-var History = require('History');
-var Router = require('Router');
+var Core = require('Core');
+var Class = Core.Class;
 
+var History = require('History');
+
+var URLDelegate = require('./URLDelegate');
 var View = require('../View');
 
-var router = new Router({
-  normalizeFn: function(req, vals) {
-    return [vals];
-  }
-});
+var MainController = new Class({
 
-module.exports = {
+  Extends: URLDelegate,
 
-  define: function(key, options, fn) {
-    if (!fn) {
-      fn = options;
-      options = null;
-    }
-    router.add(key, function() {
+  decorate: function(fn) {
+    return function() {
       var main = View.getMain();
       var stack = main.getStack();
       var object = stack && stack.getByURL(History.getPath());
@@ -28,12 +23,10 @@ module.exports = {
       } else {
         fn.apply(null, arguments);
       }
-    }, options && options.priority).setGreedy(options && options.isGreedy);
+    };
   }
 
-};
-
-History.addEvent('change', function(url) {
-  // Phonegap likes to add file:///
-  router.parse('/' + url.replace(/^\/|^file\:\/\/\//, ''));
 });
+
+var Controller = module.exports = new MainController;
+History.addEvent('change', Controller.bound('route'));
