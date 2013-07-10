@@ -240,9 +240,9 @@ exports.prepare = function(object, type, callback) {
       }
     };
 
-    if (object.service) setSourceInfo(sources[object.service]);
+    if (object.service) setSourceInfo(object, sources[object.service]);
     if (object.multi_input_files) Array.forEach(object.multi_input_files, function(file) {
-      setSourceInfo(sources[file.service]);
+      setSourceInfo(object, sources[file.service]);
     });
 
     callback(object);
