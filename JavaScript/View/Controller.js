@@ -57,7 +57,14 @@ module.exports = new Class({
   },
 
   push: function(object) {
-    return this.pushOn(this.getStack().getName(), object);
+    var stack = this.getStack();
+    var options;
+    // If there is no stack yet, create an unknown one
+    if (!stack) {
+      this.rotate('unknown');
+      options = {immediate: true};
+    }
+    return this.pushOn(this.getStack().getName(), object, options);
   },
 
   pushOn: function(stack, object, _options) {
