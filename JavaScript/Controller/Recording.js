@@ -100,6 +100,7 @@ var show = function(recording) {
   });
 
   form = new Form({
+    viewController: View.getMain(),
     use: [Chapter]
   });
 

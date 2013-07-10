@@ -49,6 +49,7 @@ var renderTemplate = require('UI/renderTemplate');
 var UI = require('UI');
 var View = require('View');
 var Controller = require('Controller');
+var URLDelegate = require('Controller/URLDelegate');
 var SwipeAble = require('UI/Actions/SwipeAble');
 var Popover = require('UI/Actions/Popover');
 var Notice = require('UI/Notice');
@@ -95,6 +96,8 @@ var navigate = function(fn) {
 };
 
 var popoverSelector = 'div.popover';
+var delegateSelector = '[data-delegate-to]';
+var delegateProperty = 'data-delegate-to';
 var click = function(event) {
   event.preventDefault();
   var href = this.get('href');
@@ -121,6 +124,12 @@ var click = function(event) {
 
     if (!this.getParent(popoverSelector))
       UI.highlight(this);
+
+    var delegate = this.getParent(delegateSelector);
+    if (delegate) {
+      URLDelegate.get(delegate.get(delegateProperty)).route(href);
+      return;
+    }
 
     History.push(href);
   };

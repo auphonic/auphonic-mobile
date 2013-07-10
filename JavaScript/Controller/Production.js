@@ -41,6 +41,7 @@ var productions = {};
 
 var createForm = function(options) {
   return new Form({
+    viewController: View.getMain(),
     use: [
       new MainForm(Object.append({
         displayName: 'Production',

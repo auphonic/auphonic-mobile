@@ -9,6 +9,8 @@ module.exports = new Class({
   initialize: function(options) {
     this.data = {};
     this.views = {};
+    this.viewController = options.viewController;
+    this.delegate = options.delegate;
 
     options.use.each(function(view) {
       this.views[view.getType()] = view;
@@ -48,6 +50,14 @@ module.exports = new Class({
       if (view.getData) Object.append(object, view.getData(this, viewObject));
     }, this);
     return Object.expand(object);
+  },
+
+  getViewController: function() {
+    return this.viewController;
+  },
+
+  getDelegate: function() {
+    return this.delegate;
   }
 
 });
