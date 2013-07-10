@@ -38,8 +38,6 @@ var Platform = require('Platform');
 
 var form;
 var productions = {};
-var currentEditUUID = null;
-var serializedData = null;
 
 var createForm = function(options) {
   return new Form({
@@ -79,11 +77,6 @@ var createForm = function(options) {
       Location
     ]
   });
-};
-
-var resetEditUUID = function() {
-  currentEditUUID = null;
-  serializedData = null;
 };
 
 var addPlaceholder = function() {
@@ -151,7 +144,6 @@ var showAll = function() {
       },
       itemContainer: '.production_container',
       templateId: 'production',
-      onShow: resetEditUUID,
       onInvalidate: function() {
         API.invalidate('productions');
       }
@@ -215,8 +207,6 @@ var showOne = function(req, options) {
       },
 
       onShow: function() {
-        resetEditUUID();
-
         this.fireEvent('checkProductionStatus');
       },
 
@@ -347,10 +337,7 @@ Controller.define('/production/{uuid}/summary', requiresConnection(requiresAuthe
 
   View.getMain().pushOn('production', new View.Object({
     title: production.metadata.title,
-    content: renderTemplate('detail-summary', production),
-    onShow: function() {
-      currentEditUUID = production.uuid;
-    }
+    content: renderTemplate('detail-summary', production)
   }));
 })));
 
@@ -367,18 +354,9 @@ var getPresets = function(callback) {
 };
 
 var edit = function(production) {
-  // If we have changed the source, we'll reuse the data in the form
-  var reuse = form && (currentEditUUID == production.uuid);
-
-  currentEditUUID = production.uuid;
-
   var show = function() {
     var data = Object.clone(production);
-    // Update data from previous editing
-    if (reuse) Object.append(data, serializedData);
-    else form = createForm(data ? {saveURL: 'production/{uuid}'.substitute(data)} : null);
-    serializedData = null;
-
+    form = createForm(data ? {saveURL: 'production/{uuid}'.substitute(data)} : null);
     if (data.service) Source.setData(form, data.service);
 
     // Check if we are currently uploading
@@ -422,7 +400,6 @@ Controller.define('/production/edit/{uuid}', requiresAuthentication(function(req
 
 Controller.define('/production/new', {priority: 1, isGreedy: true}, requiresAuthentication(function() {
   addPlaceholder();
-  resetEditUUID();
   var httpUpload = HTTPUpload.getData(form);
   if (httpUpload) form.set('input_file', httpUpload.input_file);
   getPresets(function(presets) {
@@ -431,19 +408,7 @@ Controller.define('/production/new', {priority: 1, isGreedy: true}, requiresAuth
 }));
 
 Controller.define('/production/source', {priority: 1, isGreedy: true}, requiresConnection(requiresAuthentication(function() {
-  // Store all current information
-  if (form && currentEditUUID) {
-    var object = View.getMain().getCurrentObject();
-    serializedData = form.serialize(object);
-    Object.append(serializedData, Object.expand(object.serialize()));
-    serializedData.metadata.title = serializedData.title;
-    if (serializedData.reset_cover_image) serializedData['cover-photo'] = {reset_cover_image: true};
-
-    delete serializedData.service;
-    delete serializedData.input_file;
-  }
-
-  form = createForm(form && currentEditUUID ? {saveURL: 'production/{uuid}'.substitute({uuid: currentEditUUID})} : null);
+  form = createForm();
   form.show('service');
 })));
 
@@ -456,24 +421,7 @@ Controller.define('/production/source/{service}', requiresConnection(requiresAut
 
 Controller.define('/production/selectFile/{index}', requiresConnection(requiresAuthentication(function(req) {
   ListFiles.setData(form, req.index);
-  if (currentEditUUID) {
-    View.getMain().showIndicator();
-
-    API.call('production/{uuid}'.substitute({uuid: currentEditUUID}), 'post', JSON.stringify(Object.append({},
-      Source.getData(form),
-      ListFiles.getData(form)
-    ))).on({
-      success: function(response) {
-        productions[response.data.uuid] = response.data;
-        var url = '/production/edit/{uuid}'.substitute({uuid: currentEditUUID});
-        var object = View.getMain().getStack().getByURL(url);
-        if (object) object.invalidate();
-        History.push(url);
-      }
-    });
-  } else {
-    History.push('/production/new');
-  }
+  History.push('/production/new');
 })));
 
 Controller.define('/production/new/http-upload', requiresAuthentication(function() {
@@ -564,7 +512,6 @@ var upload = function(recording, isRecording) {
 
   // Either create a new production or overwrite the chapters
   var url = 'productions';
-  if (currentEditUUID) url = 'production/{uuid}'.substitute({uuid: currentEditUUID});
 
   var output_files = [Auphonic.DefaultOutputFile];
   if (recording.media_type == 'video') output_files.push(Auphonic.DefaultVideoOutputFile);
@@ -703,12 +650,4 @@ Controller.define('/production/recording/new-audio', function() {
     onError: error,
     onSuccess: showRecording
   });
-});
-
-Controller.define('/', {isGreedy: false}, function() {
-  resetEditUUID();
-});
-
-Controller.define('/recording', {isGreedy: true}, function() {
-  resetEditUUID();
 });
