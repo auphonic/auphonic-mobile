@@ -69,6 +69,7 @@ Handlebars.registerPartial('preset', Handlebars.templates.preset);
 Handlebars.registerPartial('production', Handlebars.templates.production);
 Handlebars.registerPartial('player', Handlebars.templates.player);
 Handlebars.registerPartial('algorithm-popover', Handlebars.templates['algorithm-popover']);
+Handlebars.registerPartial('form-main-input-file', Handlebars.templates['form-main-input-file']);
 
 // Monkey Patch for Cordova which sometimes adds file:///
 var getPath = History.getPath;

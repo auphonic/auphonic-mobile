@@ -1,0 +1,20 @@
+{{#if input_file}}
+  <li class="input_file">
+    <label class="input_file_label{{#if hasPopover}} info{{/if}}">
+      {{#if hasPopover}}<span></span>{{/if}}
+      <span class="light">{{#if service}}{{service}}{{else}}Upload<small class="uploading hidden"></small>{{/if}}</span> <small class="input_file_name{{#if hasUpload}} hidden{{/if}}">{{input_file}}</small>
+      {{#if hasPopover}}
+        <div class="hidden popover bottom justify" data-position="bottom" data-close-on-tap="0">
+          {{#if hasUpload}}<a class="button red expand cancelUpload">Cancel Upload</a>{{/if}}
+          {{#unless isNewProduction}}<a class="button expand changeSource">Change Source</a>{{/unless}}
+        </div>
+      {{/if}}
+    </label>
+    {{#if hasUpload}}<div class="progress-bar hidden"><div></div></div>{{/if}}
+  </li>
+  <li class="change_source hidden"><a href="{{baseURL}}source" class="arrow"><span></span>Choose Source</a></li>
+{{else}}
+  {{#if production}}
+    <li class="change_source"><a href="{{baseURL}}source" class="arrow"><span></span>Choose Source</a></li>
+  {{/if}}
+{{/if}}
