@@ -17,18 +17,31 @@ var setData = exports.setData = function(store, data) {
 };
 
 exports.createView = function(store, options) {
+  var isActive;
+  var view = store.getViewController();
   var object = new View.Object({
     title: 'HTTP Upload',
     content: renderTemplate('form-http-upload'),
-    action: {
-      title: 'Done',
-      className: 'done',
-      url: '/production/new',
-      onClick: function() {
-        exports.setData(store, object.serialize());
-      }
+    onShow: function() {
+      object.toElement().getElement('.http-upload').addEvent('input', function() {
+        var hasValue = this.get('value');
+        if (hasValue && !isActive) {
+          isActive = true;
+          view.updateElement('action', {}, {
+            title: 'Done',
+            className: 'done',
+            url: '/production/new',
+            onClick: function() {
+              exports.setData(store, object.serialize());
+            }
+          });
+        } else if (!hasValue && isActive) {
+          isActive = false;
+          view.updateElement('action');
+        }
+      });
     }
   });
 
-  View.getMain().push(object);
+  view.push(object);
 };
