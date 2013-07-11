@@ -127,14 +127,15 @@ exports.setup = function(store, baseURL, object) {
     setupIndicator(store, object);
   });
 
+  var view = store.getViewController();
   object.addEvent('output_files-createAction', function(id) {
-    View.getMain().updateElement('action', {}, {
+    view.updateElement('action', {}, {
       title: id ? 'Done' : 'Add',
       className: 'done',
       back: true,
       onClick: function() {
         var container = getContainer(object);
-        var content = View.getMain().getCurrentObject().serialize();
+        var content = view.getCurrentObject().serialize();
         var previous = id ? container.getElement('[data-output-file-id=' + id + ']') : null;
         // Preserve outgoing_services which is not settable through the App yet.
         if (previous) content.outgoing_services = previous.retrieve('value').outgoing_services;
@@ -192,7 +193,8 @@ exports.createView = function(store, editId) {
     format.items.sortByKey('display_name');
   });
 
-  var mainObject = View.getMain().getCurrentObject();
+  var view = store.getViewController();
+  var mainObject = view.getCurrentObject();
   var object = new View.Object({
     title: id ? 'Edit Format' : 'Add Format',
     content: renderTemplate('form-output-file', {
@@ -202,7 +204,7 @@ exports.createView = function(store, editId) {
       title: 'Cancel'
     }
   });
-  View.getMain().push(object);
+  view.push(object);
 
   var bitrateContainer = object.toElement().getElement('.bitrates').dispose();
   var selects = object.toElement().getElements('select.empty');

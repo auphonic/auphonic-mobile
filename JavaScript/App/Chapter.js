@@ -71,8 +71,8 @@ var showAction = function(object, id) {
   object.fireEvent('chapters-createAction', [id]);
 };
 
-var hideAction = function() {
-  View.getMain().updateElement('action');
+var hideAction = function(view) {
+  view.updateElement('action');
 };
 
 var getContainer = function(element) {
@@ -105,8 +105,9 @@ exports.setData = function(store, list, baseURL, object, immediate) {
 };
 
 exports.setup = function(store, baseURL, object) {
+  var view = store.getViewController();
   object.addEvent('chapters-createAction', function(id) {
-    View.getMain().updateElement('action', null, {
+    view.updateElement('action', null, {
       title: id ? 'Done' : 'Add',
       className: 'done',
       back: true,
@@ -114,7 +115,7 @@ exports.setup = function(store, baseURL, object) {
         // Fire blur to apply changes
         if (document.activeElement) document.activeElement.fireEvent('blur');
 
-        add(baseURL, store, getContainer(object), View.getMain().getCurrentObject().serialize(), id);
+        add(baseURL, store, getContainer(object), view.getCurrentObject().serialize(), id);
       }
     });
   });
@@ -123,8 +124,8 @@ exports.setup = function(store, baseURL, object) {
 exports.createView = function(store, editId) {
   var chapterData = store.get('chapters', {});
   var id = (editId && chapterData[editId]) ? editId : null;
-
-  var mainObject = View.getMain().getCurrentObject();
+  var view = store.getViewController();
+  var mainObject = view.getCurrentObject();
   var object = new View.Object({
     title: id ? 'Edit Chapter' : 'Add Chapter',
     content: renderTemplate('form-chapter'),
@@ -136,7 +137,7 @@ exports.createView = function(store, editId) {
       this.unserialize(store.get('chapters'));
     }
   });
-  View.getMain().push(object);
+  view.push(object);
 
   var isActive = false;
   var inputs = object.toElement().getElements('input[data-required]');
@@ -156,7 +157,7 @@ exports.createView = function(store, editId) {
       showAction(mainObject, id);
     } else if (!hasValues && isActive) {
       isActive = false;
-      hideAction();
+      hideAction(view);
     }
   });
 

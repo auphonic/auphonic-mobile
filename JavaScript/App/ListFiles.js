@@ -42,7 +42,8 @@ exports.createView = function(store) {
   var service = Source.getData(store).service;
   if (!service) return;
 
-  View.getMain().showIndicator();
+  var view = store.getViewController();
+  view.showIndicator();
   API.on('service/' + service + '/ls', {
     lifetime: 60
   }).call('get', null, {
@@ -73,12 +74,13 @@ exports.createView = function(store) {
           object.invalidate();
         }
       });
-      View.getMain().push(object);
+      view.push(object);
     },
 
     error: function(event) {
       event.preventDefault();
 
+      view.hideIndicator();
       if (notice && notice.isOpen()) return notice.push();
       notice = new Notice('There are no files on this external service. Please try another service or make a recording.');
     }

@@ -52,5 +52,5 @@ exports.createView = function(store, options) {
 
   if (options && options.withLocation) Location.createView(store, object);
 
-  View.getMain().push(object);
+  store.getViewController().push(object);
 };

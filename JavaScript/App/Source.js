@@ -49,15 +49,17 @@ var fetch = exports.fetch = function(callback) {
   });
 };
 
-exports.createView = function() {
-  View.getMain().showIndicator();
-
+exports.createView = function(store, options) {
+  var showOnlyRemote = options && options.showOnlyRemote;
+  var view = store.getViewController();
+  view.showIndicator();
   fetch(function(list) {
-    View.getMain().push(new View.Object({
+    view.push(new View.Object({
       title: 'Input Source',
       backTitle: 'Source',
       content: renderTemplate('service-choose', {
-        source: list
+        source: list,
+        showOnlyRemote: showOnlyRemote
       })
     }));
   });

@@ -64,7 +64,8 @@ var get = exports.get = function(callback) {
 };
 
 exports.createView = function(store) {
-  View.getMain().showIndicator();
+  var view = store.getViewController();
+  view.showIndicator();
 
   get(function(services) {
     var types = API.getInfo('service_types');
@@ -100,7 +101,7 @@ exports.createView = function(store) {
       className: 'done',
       back: true,
       onClick: function() {
-        store.set('outgoing_services', View.getMain().getCurrentObject().serialize());
+        store.set('outgoing_services', view.getCurrentObject().serialize());
       }
     } : null;
 
@@ -164,6 +165,6 @@ exports.createView = function(store) {
       });
     });
 
-    View.getMain().push(object);
+    view.push(object);
   });
 };

@@ -1,6 +1,8 @@
 <ul>
-  <li><a href="/production/recording/new-audio" class="arrow"><span></span>New Audio Recording</a></li>
-  <li><a href="/production/recording/new-video" class="arrow"><span></span>New Video Recording</a></li>
+  {{#unless showOnlyRemote}}
+    <li><a href="/production/recording/new-audio" class="arrow"><span></span>New Audio Recording</a></li>
+    <li><a href="/production/recording/new-video" class="arrow"><span></span>New Video Recording</a></li>
+  {{/unless}}
   {{#platform "android"}}
     <li><a href="/production/recording/file-upload" class="arrow"><span></span>Upload a File from this Device</a></li>
   {{/platform}}
