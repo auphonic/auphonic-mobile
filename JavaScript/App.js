@@ -127,6 +127,7 @@ var click = function(event) {
 
     var delegate = this.getParent(delegateSelector);
     if (delegate) {
+      UI.highlight(this);
       URLDelegate.get(delegate.get(delegateProperty)).route(href);
       return;
     }
@@ -328,7 +329,7 @@ window.__BOOTAPP = function() {
       elements.addEvent('click', clickExternal);
     },
 
-    '#main a:internal, div.popover a:internal': function(elements) {
+    '#main a:internal, div.popover a:internal, div.resource-selector-container a:internal, header a:internal': function(elements) {
       elements.addEvent('click', click);
     },
 

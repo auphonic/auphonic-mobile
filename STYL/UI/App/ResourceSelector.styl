@@ -1,0 +1,30 @@
+@import '../Core/Font'
+
+div.popover.is-full-view
+  padding 0
+  color $color
+  background #efefef
+  box-shadow 0 1px 10px rgba(0, 0, 0, 0.4)
+
+  // Necessary because of CSS specificity
+  div.main & ul
+    font-size 0.9em
+    line-height 16px
+
+div.resource-selector
+  position relative
+  overflow hidden
+
+  header
+    border-top-left-radius 10px
+    border-top-right-radius 10px
+    border-top 0
+
+    h1
+      font-size 16px
+
+  div.resource-selector-main
+    height 350px
+
+  div.resource-selector-container
+    height 306px

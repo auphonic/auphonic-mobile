@@ -1,9 +1,11 @@
 var Core = require('Core');
 var Class = Core.Class;
 var Options = Core.Options;
+var Elements = Core.Elements;
 
 var API = require('API');
 var renderTemplate = require('UI/renderTemplate');
+var UI = require('UI');
 var View = require('View');
 
 var Notice = require('UI/Notice');
@@ -13,6 +15,7 @@ var Chapter = require('./Chapter');
 var ListFiles = require('./ListFiles');
 var Metadata = require('./Metadata');
 var OutputFiles = require('./OutputFiles');
+var ResourceSelector = require('./ResourceSelector');
 var Source = require('./Source');
 
 var CurrentUpload = require('Store/CurrentUpload');
@@ -80,11 +83,14 @@ module.exports = new Class({
 
   reset: function() {
     this.store.erase();
+    this.store = null;
+    this.view = null;
     this.isRendered = false;
     this.isEditMode = false;
     this.saveAndStartProduction = false;
     this.startAfterCoverPhotoUpload = false;
     this.object = null;
+    this.popover = null;
     this.presets = null;
     this.uploadFile = null;
   },
@@ -115,7 +121,7 @@ module.exports = new Class({
   },
 
   updateTitle: function() {
-    if (!this.isProduction) return;
+    if (!this.isProduction || !this.object) return;
     var title = Metadata.getData(this.store)['metadata.title'] ||  'New ' + this.getDisplayName();
     this.object.setTitle(title);
   },
@@ -136,35 +142,21 @@ module.exports = new Class({
     var isProduction = this.isProduction = (this.getDisplayType() == 'production');
     var isEditMode = this.isEditMode = !!data;
     var isNewProduction = this.isNewProduction = (isProduction && !isEditMode) || isNew;
-    var hasPopover = !isNewProduction;
-    var hasUpload = false;
     this.store = store;
+    this.view = store.getViewController();
     this.presets = presets;
-
-    if (isEditMode) {
-      this.uuid = data.uuid;
-      hasUpload = CurrentUpload.has(this.uuid);
-      if (!hasPopover) hasPopover = hasUpload;
-    }
+    if (isEditMode) this.uuid = data.uuid;
 
     var service = Source.getObject(store);
     inputFile = inputBasename = (ListFiles.getObject(store) || '');
     var index = inputFile.lastIndexOf('.');
-
-    var uiData = {
+    var uiData = Object.append(this.getInputFileUIData(), {
       algorithm: API.getInfo('algorithms_array'),
-      baseURL: this.getBaseURL(),
       name: this.getObjectName(data),
       output_basename: isEditMode && data.output_basename,
       presets: presets && Object.values(presets),
-      service: (service ? service.display_type : null),
-      input_file: inputFile,
-      input_file_basename: (index == -1) ? inputBasename : inputBasename.substring(0, index),
-      isNewProduction: isNewProduction,
-      hasPopover: hasPopover,
-      hasUpload: hasUpload
-    };
-    uiData[this.getDisplayType()] = true;
+      input_file_basename: (index == -1) ? inputBasename : inputBasename.substring(0, index)
+    });
 
     var object = this.object = new View.Object({
       title: this.getObjectName(data) ||  'New ' + this.getDisplayName(),
@@ -192,22 +184,18 @@ module.exports = new Class({
     this.update(data);
 
     object.addEvent('show:once', (function() {
-      var saveButton = object.toElement().getElement('.saveButton');
+      var element = object.toElement();
+      var saveButton = element.getElement('.saveButton');
       if (saveButton) saveButton.addEvent('click', this.bound('onSaveButtonClick'));
 
-      if (hasUpload) {
-        var label = object.toElement().getElement('.input_file_label');
-        var popover = label ? label.getInstanceOf(Popover) : null;
-        var cancelButton = popover ? popover.getPopover().getElement('.cancelUpload') : null;
-        if (cancelButton) cancelButton.addEvent('click', this.bound('cancelUpload'));
-      }
+      this.attachInputFileListeners();
 
       if (isNewProduction) {
-        var select = object.toElement().getElement(this.options.presetChooserSelector);
+        var select = element.getElement(this.options.presetChooserSelector);
         if (select) select.addEvent('change', this.bound('onPresetSelect'));
       }
 
-      var presetElement = object.toElement().getElement('.preset_name');
+      var presetElement = element.getElement('.preset_name');
       if (presetElement) presetElement.addEvent('input', (function() {
         object.setTitle(presetElement.get('value') || (isEditMode ? 'Untitled' : 'New ' + this.getDisplayName()));
       }).bind(this));
@@ -215,14 +203,61 @@ module.exports = new Class({
       this.updateAlgorithms(data);
     }).bind(this));
 
-    View.getMain().pushOn(this.getDisplayType(), object);
+    this.view.pushOn(this.getDisplayType(), object);
     this.isRendered = true;
+  },
+
+  getInputFileUIData: function() {
+    var store = this.store;
+    var hasPopover = !this.isNewProduction;
+    var hasUpload = false;
+    if (this.isEditMode) {
+      hasUpload = CurrentUpload.has(this.uuid);
+      if (!hasPopover) hasPopover = hasUpload;
+    }
+
+    var service = Source.getObject(store);
+    var uiData = {
+      baseURL: this.getBaseURL(),
+      service: (service ? service.display_type : null),
+      input_file: (ListFiles.getObject(store) || ''),
+      isNewProduction: this.isNewProduction,
+      hasPopover: hasPopover,
+      hasUpload: hasUpload
+    };
+
+    uiData[this.getDisplayType()] = true;
+    return uiData;
+  },
+
+  attachInputFileListeners: function() {
+    var element = this.object.toElement();
+    var label = element.getElement('.input_file_label');
+    var popover = label ? label.getInstanceOf(Popover) : null;
+    this.popover = popover;
+    var changeSourceButton = popover && popover.getPopover().getElement('.changeSource');
+    if (changeSourceButton) changeSourceButton.addEvent('click', this.bound('onChangeSourceClick'));
+
+    if (CurrentUpload.has(this.uuid) && popover) {
+      var cancelButton = popover.getPopover().getElement('.cancelUpload');
+      if (cancelButton) cancelButton.addEvent('click', this.bound('cancelUpload'));
+    }
+
+    var chooseSourceLabel = element.getElement('.chooseSource');
+    var chooseSourcePopover = chooseSourceLabel.getInstanceOf(Popover);
+    var onSelectResourceFile = this.bound('onSelectResourceFile');
+    chooseSourceLabel.addEvent('click', function() {
+      new ResourceSelector(chooseSourcePopover).addEvents({
+        onSelectFile: onSelectResourceFile
+      }).show();
+    });
   },
 
   // Cancel a recording upload
   cancelUpload: function(event) {
     event.preventDefault();
 
+    this.popover.close();
     var upload = CurrentUpload.remove(this.uuid);
     if (upload) upload.transfer.cancel();
     this.onCancel();
@@ -291,7 +326,7 @@ module.exports = new Class({
     if (data.title && data.title !== '') data['metadata.title'] = data.title;
     delete data.title;
 
-    View.getMain().showIndicator();
+    this.view.showIndicator();
 
     API.call(this.getSaveURL(), 'post', JSON.stringify(Object.expand(data))).on({
       success: this.bound('onSave')
@@ -306,7 +341,8 @@ module.exports = new Class({
   onSave: function(response) {
     this.uuid = response.data.uuid;
     var baseURL = this.getBaseURL();
-    var stack = View.getMain().getStack();
+    var view = this.view;
+    var stack = view.getStack();
     var baseObject = stack.getByURL(baseURL);
     if (baseObject) baseObject.invalidate();
     if (this.isEditMode) {
@@ -315,7 +351,7 @@ module.exports = new Class({
     }
 
     this.object.addEvent('hide:once', function() {
-      View.getMain().getStack().prune();
+      view.getStack().prune();
     });
 
     // If the production is new and a cover photo is selected we need to upload it now.
@@ -362,9 +398,28 @@ module.exports = new Class({
   onCancel: function() {
     var element = this.object.toElement();
     element.getElement('.input_file').dispose();
-    element.getElement('.change_source').show();
+    element.getElement('.choose_source').show();
 
     ListFiles.setFile(this.store, null);
+  },
+
+  onSelectResourceFile: function(service, file) {
+    Source.setData(this.store, service);
+    ListFiles.setFile(this.store, file);
+
+    var element = this.object.toElement();
+    var ul = element.getElement('ul.input-file-container');
+    ul.getElements('.input_file, .choose_source').dispose();
+    Elements.from(renderTemplate('form-main-input-file', this.getInputFileUIData())).inject(ul, 'top');
+    UI.update(element);
+    this.attachInputFileListeners();
+  },
+
+  onChangeSourceClick: function(event) {
+    event.preventDefault();
+    new ResourceSelector(this.popover).addEvents({
+      onSelectFile: this.bound('onSelectResourceFile')
+    }).show();
   },
 
   onUploadProgress: function(data) {
@@ -403,8 +458,8 @@ module.exports = new Class({
     label.getInstanceOf(Popover).detach();
 
     // We need to prune the stack because Change Source is supposed to transition to the right.
-    if (View.getMain().getCurrentObject() == this.object)
-      View.getMain().getStack().prune();
+    if (this.view.getCurrentObject() == this.object)
+      this.view.getStack().prune();
   }
 
 });

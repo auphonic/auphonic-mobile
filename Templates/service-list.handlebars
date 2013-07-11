@@ -1,7 +1,10 @@
 {{#if files}}
   <ul>
     {{#each files}}
-      <li><a href="/production/selectFile/{{index}}" class="arrow"><span></span>{{display_name}}</a></li>
+      <li><a href="/production/selectFile/{{index}}"{{#unless ../hideArrows}}class="arrow"{{/unless}}>
+        {{#unless ../hideArrows}}<span></span>{{/unless}}
+        {{display_name}}
+      </a></li>
     {{/each}}
   </ul>
 {{else}}

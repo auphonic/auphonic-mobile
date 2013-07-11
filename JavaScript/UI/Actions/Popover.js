@@ -1,5 +1,6 @@
 var Core = require('Core');
 var Class = Core.Class;
+var Events = Core.Events;
 var Options = Core.Options;
 var Browser = Core.Browser;
 
@@ -12,7 +13,7 @@ var enabled = true;
 
 module.exports = new Class({
 
-  Implements: [Class.Singleton, Class.Binds, Options],
+  Implements: [Class.Singleton, Class.Binds, Events, Options],
 
   options: {
     selector: 'div.popover',
@@ -91,6 +92,7 @@ module.exports = new Class({
   onComplete: function() {
     this._isOpen = false;
     this.popover.dispose();
+    this.fireEvent('complete');
 
     // Restore previous settings
     if (this.toggledTo) {

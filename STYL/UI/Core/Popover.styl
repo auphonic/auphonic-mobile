@@ -30,7 +30,7 @@
     &:after
       border-bottom-color #fff
 
-  h1
+  h1:not(.header)
     margin 7px 0 7px 0
     margin-left 0
     margin-right 0
@@ -107,7 +107,7 @@
     left 90.5%
 
   // Necessary because of CSS specificity
-  div.main & ul
+  div.main &:not(.is-full-view) ul
     margin 0
 
     font-size 0.9em

@@ -38,7 +38,8 @@ exports.setData = function(store, service, index) {
 };
 
 var notice;
-exports.createView = function(store) {
+exports.createView = function(store, options) {
+  var hideArrows = options && options.hideArrows;
   var service = Source.getData(store).service;
   if (!service) return;
 
@@ -68,7 +69,8 @@ exports.createView = function(store) {
         title: serviceObject.display_type + ' ' + serviceObject.display_name,
         backTitle: serviceObject.display_type,
         content: renderTemplate('service-list', {
-          files: list
+          files: list,
+          hideArrows: hideArrows
         }),
         onHide: function() {
           object.invalidate();

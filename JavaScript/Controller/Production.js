@@ -362,7 +362,7 @@ var edit = function(production) {
 
     // Check if we are currently uploading
     var currentUpload = CurrentUpload.get(data.uuid);
-    var isNew = currentUpload && !reuse;
+    var isNew = !!currentUpload;
     if (currentUpload) {
       data.input_file = currentUpload.file.name;
       // Remove an eventual service uuid.
@@ -511,6 +511,8 @@ var upload = function(recording, isRecording) {
 
   // Either create a new production or overwrite the chapters
   var url = 'productions';
+  // TODO
+  //if (currentEditUUID) url = 'production/{uuid}'.substitute({uuid: currentEditUUID});
 
   var output_files = [Auphonic.DefaultOutputFile];
   if (recording.media_type == 'video') output_files.push(Auphonic.DefaultVideoOutputFile);

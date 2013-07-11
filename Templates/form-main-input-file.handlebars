@@ -12,9 +12,13 @@
     </label>
     {{#if hasUpload}}<div class="progress-bar hidden"><div></div></div>{{/if}}
   </li>
-  <li class="change_source hidden"><a href="{{baseURL}}source" class="arrow"><span></span>Choose Source</a></li>
-{{else}}
-  {{#if production}}
-    <li class="change_source"><a href="{{baseURL}}source" class="arrow"><span></span>Choose Source</a></li>
-  {{/if}}
+{{/if}}
+{{#if production}}
+  <li class="choose_source{{#if input_file}} hidden{{/if}}">
+    <label class="chooseSource info">
+      <span></span>
+      Choose Source
+      <div class="hidden popover bottom justify" data-position="bottom" data-close-on-tap="0"></div>
+    </label>
+  </li>
 {{/if}}
