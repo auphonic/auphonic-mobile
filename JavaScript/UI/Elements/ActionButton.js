@@ -40,6 +40,7 @@ module.exports = new Class({
     else (function() {
       element.addClass(className);
     }).delay(UI.getTransitionDelay());
+    UI.update(this.container.parentNode); // Make sure the container is properly updated
 
     return this;
   }
