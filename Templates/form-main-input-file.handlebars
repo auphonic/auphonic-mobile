@@ -6,6 +6,7 @@
       {{#if hasPopover}}
         <div class="hidden popover bottom justify" data-position="bottom" data-close-on-tap="0">
           {{#if hasUpload}}<a class="button red expand cancelUpload">Cancel Upload</a>{{/if}}
+          {{#if isMultiInputFile}}<a class="button red expand removeSource">Remove Source</a>{{/if}}
           {{#unless isNewProduction}}<a class="button expand changeSource">Change Source</a>{{/unless}}
         </div>
       {{/if}}

@@ -192,3 +192,7 @@ Controller.define('/preset/new/output_file/:id:', requiresAuthentication(functio
 Controller.define('/preset/new/outgoing_services', requiresAuthentication(function() {
   form.show('outgoing_services');
 }));
+
+Controller.define('/preset/new/multi_input_files', requiresAuthentication(function() {
+  form.show('multi_input_files');
+}));

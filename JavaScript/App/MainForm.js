@@ -11,6 +11,7 @@ var View = require('View');
 var Notice = require('UI/Notice');
 var Popover = require('UI/Actions/Popover');
 
+var attachChooseSourceListeners = require('./attachChooseSourceListeners');
 var Chapter = require('./Chapter');
 var ListFiles = require('./ListFiles');
 var Metadata = require('./Metadata');
@@ -188,7 +189,7 @@ module.exports = new Class({
       var saveButton = element.getElement('.saveButton');
       if (saveButton) saveButton.addEvent('click', this.bound('onSaveButtonClick'));
 
-      this.attachInputFileListeners();
+      this.attachChooseSourceListeners();
 
       if (isNewProduction) {
         var select = element.getElement(this.options.presetChooserSelector);
@@ -230,27 +231,19 @@ module.exports = new Class({
     return uiData;
   },
 
-  attachInputFileListeners: function() {
+  attachChooseSourceListeners: function() {
     var element = this.object.toElement();
+    attachChooseSourceListeners(element, {
+      onSelectResourceFile: this.bound('onSelectResourceFile')
+    });
+
     var label = element.getElement('.input_file_label');
     var popover = label ? label.getInstanceOf(Popover) : null;
     this.popover = popover;
-    var changeSourceButton = popover && popover.getPopover().getElement('.changeSource');
-    if (changeSourceButton) changeSourceButton.addEvent('click', this.bound('onChangeSourceClick'));
-
-    if (CurrentUpload.has(this.uuid) && popover) {
+    if (popover && CurrentUpload.has(this.uuid)) {
       var cancelButton = popover.getPopover().getElement('.cancelUpload');
       if (cancelButton) cancelButton.addEvent('click', this.bound('cancelUpload'));
     }
-
-    var chooseSourceLabel = element.getElement('.chooseSource');
-    var chooseSourcePopover = chooseSourceLabel.getInstanceOf(Popover);
-    var onSelectResourceFile = this.bound('onSelectResourceFile');
-    chooseSourceLabel.addEvent('click', function() {
-      new ResourceSelector(chooseSourcePopover).addEvents({
-        onSelectFile: onSelectResourceFile
-      }).show();
-    });
   },
 
   // Cancel a recording upload
@@ -412,14 +405,7 @@ module.exports = new Class({
     ul.getElements('.input_file, .choose_source').dispose();
     Elements.from(renderTemplate('form-main-input-file', this.getInputFileUIData())).inject(ul, 'top');
     UI.update(element);
-    this.attachInputFileListeners();
-  },
-
-  onChangeSourceClick: function(event) {
-    event.preventDefault();
-    new ResourceSelector(this.popover).addEvents({
-      onSelectFile: this.bound('onSelectResourceFile')
-    }).show();
+    this.attachChooseSourceListeners();
   },
 
   onUploadProgress: function(data) {

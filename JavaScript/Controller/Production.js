@@ -441,6 +441,10 @@ Controller.define('/production/new/chapter/:id:', requiresAuthentication(functio
   form.show('chapters', req.id);
 }));
 
+Controller.define('/production/new/multi_input_files', requiresAuthentication(function() {
+  form.show('multi_input_files');
+}));
+
 Controller.define('/production/new/outgoing_services', requiresAuthentication(function() {
   form.show('outgoing_services');
 }));
