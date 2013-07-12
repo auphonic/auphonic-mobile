@@ -38,7 +38,17 @@ var format = function(production) {
     if (data) short_info.push(data + ' ' + singular[index] + (data == '1' ? '' : 's'));
   });
 
-  production.short_info = short_info.join(', ');
+  var hasIntro = false;
+  var hasOutro = false;
+  Array.forEach(production.multi_input_files, function(inputFile) {
+    if (inputFile.type == 'intro') hasIntro = true;
+    else if (inputFile.type == 'outro') hasOutro = true;
+  });
+  if (hasIntro) short_info.push('intro');
+  if (hasOutro) short_info.push('outro');
+
+  var last = (short_info.length > 1) ? short_info.pop() : null;
+  production.short_info = short_info.join(', ') + (last ? ' and ' + last : '');
   return production;
 };
 
@@ -242,7 +252,7 @@ exports.prepare = function(object, type, callback) {
 
     if (object.service) setSourceInfo(object, sources[object.service]);
     if (object.multi_input_files) Array.forEach(object.multi_input_files, function(file) {
-      setSourceInfo(object, sources[file.service]);
+      setSourceInfo(file, sources[file.service]);
     });
 
     callback(object);

@@ -22,6 +22,27 @@ var setData = exports.setData = function(store, multi_input_files) {
   store.set('multi_input_files', Object.flatten({multi_input_files: multi_input_files}));
 };
 
+var updateMultiInputFileCounter = function(store, object) {
+  var container = object.toElement().getElement('.multiInputFilesCount');
+  if (!container) return;
+
+  var hasIntro = false;
+  var hasOutro = false;
+  Array.forEach(getData(store).multi_input_files, function(inputFile) {
+    if (inputFile.type == 'intro') hasIntro = true;
+    else if (inputFile.type == 'outro') hasOutro = true;
+  });
+
+  var string = (hasIntro ? (hasOutro ? 'both' : 'intro') : (hasOutro ? 'outro' : ''));
+  container.set('text', string ? string + ' defined' : '');
+};
+
+exports.setup = function(store, baseURL, object) {
+  object.addEvent('show', function() {
+    updateMultiInputFileCounter(store, object);
+  });
+};
+
 exports.createView = function(store) {
   Source.fetch(function(list) {
     var object;
