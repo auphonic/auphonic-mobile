@@ -101,7 +101,7 @@ module.exports = new Class({
     this.URLDelegate.define('/production/source', this.bound('showSources'))
       .define('/production/new/http-upload', this.bound('showHTTPUpload'))
       .define('/production/source/{service}', this.bound('listFiles'))
-      .define('/production/selectFile/{index}', this.bound('selectFile'))
+      .define('/production/select-file/{index}', this.bound('selectFile'))
       .define('/production/new', this.bound('selectHTTPFile'));
     return this;
   },

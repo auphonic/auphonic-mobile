@@ -418,7 +418,7 @@ Controller.define('/production/source/{service}', requiresConnection(requiresAut
   if (service) form.show('input_file');
 })));
 
-Controller.define('/production/selectFile/{index}', requiresConnection(requiresAuthentication(function(req) {
+Controller.define('/production/select-file/{index}', requiresConnection(requiresAuthentication(function(req) {
   ListFiles.setData(form, Source.getData(form).service, req.index);
   History.push('/production/new');
 })));
