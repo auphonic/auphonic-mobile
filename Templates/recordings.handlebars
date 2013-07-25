@@ -1,20 +1,20 @@
 {{#if recordings}}
   <ul class="main-list">
-  {{#each recordings}}
-    <li class="swipeable show-popover" data-popover-open-event="touchhold" data-id="{{id}}" data-fire-event="remove">
-      <span class="right removable hidden">
-        <span><a class="button red small">Delete</a></span>
-      </span>
-      <div class="hidden popover top justify" data-position="top">
-        <a class="button expand red deleteable">Delete</a>
-      </div>
-      <a href="/recording/{{id}}" class="arrow">
-        <span></span>
-        {{display_name}}
-        <small class="light">{{display_date}}</small>
-      </a>
-    </li>
-  {{/each}}
+    {{#each recordings}}
+      <li class="swipeable show-popover" data-popover-open-event="touchhold" data-id="{{id}}" data-fire-event="remove">
+        <span class="right removable hidden">
+          <span><a class="button red small">Delete</a></span>
+        </span>
+        <div class="hidden popover top justify" data-position="top">
+          <a class="button expand red deleteable">Delete</a>
+        </div>
+        <a href="/recording/{{id}}" class="arrow">
+          <span></span>
+          {{display_name}}
+          <small class="light">{{display_date}}</small>
+        </a>
+      </li>
+    {{/each}}
   </ul>
 {{else}}
   <h1 class="null">You have no recent recordings.</h1>
