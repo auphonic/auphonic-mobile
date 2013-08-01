@@ -451,20 +451,8 @@ module.exports = new Class({
   onRefresh: function(data) {
     if (data.uuid != this.uuid) return;
 
-    var element = this.object.toElement();
-    var label = element.getElement('.input_file_label');
-
-    var progressBar = element.getElement('.progress-bar');
-    if (progressBar) progressBar.hide().setStyle('width', '0%');
-
-    var uploading = label.getElement('.uploading');
-    if (uploading) uploading.hide().set('text', '');
-
-    var inputFileName = label.getElement('.input_file_name');
-    if (inputFileName) inputFileName.show();
-
-    label.removeClass('info');
-    label.getInstanceOf(Popover).detach();
+    ListFiles.setFile(this.store, data.input_file);
+    this.refreshInputFileUI();
 
     // We need to prune the stack because Change Source is supposed to transition to the right.
     if (this.view.getCurrentObject() == this.object)
