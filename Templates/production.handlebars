@@ -9,12 +9,13 @@
   <a href="/production/{{uuid}}" class="arrow expanded">
     <span></span>
     <img src="{{{image thumbnail}}}" class="small-logo list-thumbnail" />
-    {{#if metadata.title}}
-      {{metadata.title}}
-    {{else}}
-      Untitled
-    {{/if}}
-    <br />
+    <span class="wrap">
+      {{#if metadata.title}}
+        {{metadata.title}}
+      {{else}}
+        Untitled
+      {{/if}}
+    </span>
     <span class="small bold info-left">
       {{short_status_string}} <span class="light">{{short_info}}</span>
     </span>

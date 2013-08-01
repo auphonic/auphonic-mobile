@@ -9,9 +9,10 @@
   <a href="/preset/{{uuid}}" class="arrow expanded">
     <span></span>
     <img src="{{{image thumbnail}}}" class="small-logo list-thumbnail" />
-    {{preset_name}}
+    <span class="wrap">
+      {{preset_name}}
+    </span>
     {{#if short_info}}
-      <br />
       <span class="light small bold info-left">
         {{short_info}}
       </span>
