@@ -12,6 +12,7 @@ var spinner = this.__NATIVE_SPINNER = new Spinner({
 
 var resources = 0;
 var loaded = 0;
+var retries = 0;
 var hasError = false;
 var retryElement = document.querySelector('#retry');
 var noticeElement = document.querySelector('#native-notice');
@@ -78,8 +79,10 @@ var retryClick = function(event) {
   if (event) event.preventDefault();
 
   cleanup();
+  retries++;
   __SERVER_URL = __FALLBACK_SERVER_URL;
-  loadFromServer();
+  if (retries >= 2) loadFromCache();
+  else loadFromServer();
 };
 
 var success = function() {
