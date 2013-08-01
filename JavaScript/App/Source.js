@@ -1,3 +1,5 @@
+var Recording = require('Store/Recording');
+
 var API = require('API');
 var renderTemplate = require('UI/renderTemplate');
 var View = require('View');
@@ -51,6 +53,8 @@ var fetch = exports.fetch = function(callback) {
 
 exports.createView = function(store, options) {
   var showOnlyRemote = options && options.showOnlyRemote;
+  var showLocalRecordings = options && options.showLocalRecordings;
+
   var view = store.getViewController();
   view.showIndicator();
   fetch(function(list) {
@@ -59,7 +63,8 @@ exports.createView = function(store, options) {
       backTitle: 'Source',
       content: renderTemplate('service-choose', {
         source: list,
-        showOnlyRemote: showOnlyRemote
+        showOnlyRemote: showOnlyRemote,
+        showLocalRecordings: showLocalRecordings && Recording.hasRecordings()
       })
     }));
   });

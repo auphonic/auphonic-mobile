@@ -1,4 +1,5 @@
 var LocalStorage = require('Utility/LocalStorage');
+var formatTimestamp = require('Utility/formatTimestamp');
 
 var User = require('Store/User');
 
@@ -118,3 +119,16 @@ exports.remove = function(id) {
   removeRecording(recording);
   read(id, removeFile, error);
 };
+
+exports.hasRecordings = function() {
+  return !!Object.keys(get()).length;
+};
+
+exports.getListSortedByTime = function() {
+  var recordings = Object.values(get()).sortByKey('timestamp').reverse();
+  recordings.forEach(function(recording) {
+    recording.display_date = formatTimestamp(recording.timestamp);
+  });
+  return recordings;
+};
+

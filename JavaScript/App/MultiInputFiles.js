@@ -28,7 +28,7 @@ var updateMultiInputFileCounter = function(store, object) {
 
   var hasIntro = false;
   var hasOutro = false;
-  Array.forEach(getData(store).multi_input_files, function(inputFile) {
+  Array.forEach(getData(store).multi_input_files || [], function(inputFile) {
     if (inputFile.type == 'intro') hasIntro = true;
     else if (inputFile.type == 'outro') hasOutro = true;
   });
@@ -51,7 +51,7 @@ exports.createView = function(store) {
       sources[source.uuid] = source;
     });
 
-    var originalInputFiles = getData(store).multi_input_files;
+    var originalInputFiles = getData(store).multi_input_files || [];
     var inputFiles = [];
     var intro;
     var outro;
@@ -80,7 +80,7 @@ exports.createView = function(store) {
     var attachListeners = function(type) {
       var ul = object.toElement().getElement('.input-file-' + type);
       attachChooseSourceListeners(ul, {
-        onSelectResourceFile: createCallback(type)
+        onSelectFile: createCallback(type)
       });
       var popover = getPopover(ul);
       if (popover) popover.getPopover().getElement('.removeSource').addEvent('click', removeSourceListener(type));

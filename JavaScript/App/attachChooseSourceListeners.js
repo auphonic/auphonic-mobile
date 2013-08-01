@@ -3,7 +3,8 @@ var Popover = require('UI/Actions/Popover');
 var ResourceSelector = require('./ResourceSelector');
 
 module.exports = function(element, options) {
-  var onSelectResourceFile = options && options.onSelectResourceFile;
+  var onSelectFile = options && options.onSelectFile;
+  var onSelectRecording = options && options.onSelectRecording;
   var allowLocalRecordings = options && options.allowLocalRecordings;
 
   var createResourceSelectorListener = function(popoverElement) {
@@ -12,7 +13,8 @@ module.exports = function(element, options) {
       new ResourceSelector(popoverElement, {
         allowLocalRecordings: allowLocalRecordings
       }).addEvents({
-        onSelectFile: onSelectResourceFile
+        onSelectFile: onSelectFile,
+        onSelectRecording: onSelectRecording
       }).show();
     };
   };

@@ -9,6 +9,7 @@ exports.get = function(uuid) {
 };
 
 exports.remove = function(uuid) {
+  if (!uuid) return null;
   var object = uploads[uuid];
   delete uploads[uuid];
   return object;

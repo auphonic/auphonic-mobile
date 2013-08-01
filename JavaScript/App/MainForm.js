@@ -16,10 +16,11 @@ var Chapter = require('./Chapter');
 var ListFiles = require('./ListFiles');
 var Metadata = require('./Metadata');
 var OutputFiles = require('./OutputFiles');
-var ResourceSelector = require('./ResourceSelector');
 var Source = require('./Source');
+var upload = require('./upload');
 
 var CurrentUpload = require('Store/CurrentUpload');
+var Recording = require('Store/Recording');
 
 var Auphonic = require('Auphonic');
 
@@ -210,23 +211,14 @@ module.exports = new Class({
 
   getInputFileUIData: function() {
     var store = this.store;
-    var hasPopover = !this.isNewProduction;
-    var hasUpload = false;
-    if (this.isEditMode) {
-      hasUpload = CurrentUpload.has(this.uuid);
-      if (!hasPopover) hasPopover = hasUpload;
-    }
-
     var service = Source.getObject(store);
     var uiData = {
       baseURL: this.getBaseURL(),
       service: (service ? service.display_type : null),
       input_file: (ListFiles.getObject(store) || ''),
       isNewProduction: this.isNewProduction,
-      hasPopover: hasPopover,
-      hasUpload: hasUpload
+      hasUpload: this.isEditMode && CurrentUpload.has(this.uuid)
     };
-
     uiData[this.getDisplayType()] = true;
     return uiData;
   },
@@ -234,7 +226,9 @@ module.exports = new Class({
   attachChooseSourceListeners: function() {
     var element = this.object.toElement();
     attachChooseSourceListeners(element, {
-      onSelectResourceFile: this.bound('onSelectResourceFile')
+      onSelectFile: this.bound('onSelectResourceFile'),
+      onSelectRecording: this.bound('onSelectRecording'),
+      allowLocalRecordings: true
     });
 
     var label = element.getElement('.input_file_label');
@@ -244,6 +238,15 @@ module.exports = new Class({
       var cancelButton = popover.getPopover().getElement('.cancelUpload');
       if (cancelButton) cancelButton.addEvent('click', this.bound('cancelUpload'));
     }
+  },
+
+  refreshInputFileUI: function() {
+    var element = this.object.toElement();
+    var ul = element.getElement('ul.input-file-container');
+    ul.getElements('.input_file, .choose_source').dispose();
+    Elements.from(renderTemplate('form-main-input-file', this.getInputFileUIData())).inject(ul, 'top');
+    UI.update(element);
+    this.attachChooseSourceListeners();
   },
 
   // Cancel a recording upload
@@ -350,9 +353,7 @@ module.exports = new Class({
     // If the production is new and a cover photo is selected we need to upload it now.
     var isUploadingCoverPhoto = false;
     if (this.uploadFile) {
-      if (!this.isEditMode) {
-        this.setSaveURL((this.getBaseURL() + '{uuid}').substitute(response.data));
-      }
+      if (!this.isEditMode) this.setSaveURL((this.getBaseURL() + '{uuid}').substitute(response.data));
 
       this.upload(this.uploadFile);
       this.uploadFile = null;
@@ -393,19 +394,41 @@ module.exports = new Class({
     element.getElement('.input_file').dispose();
     element.getElement('.choose_source').show();
 
+    Source.resetData(this.store);
     ListFiles.setFile(this.store, null);
   },
 
   onSelectResourceFile: function(service, file) {
     Source.setData(this.store, service);
     ListFiles.setFile(this.store, file);
+    this.refreshInputFileUI();
+  },
 
-    var element = this.object.toElement();
-    var ul = element.getElement('ul.input-file-container');
-    ul.getElements('.input_file, .choose_source').dispose();
-    Elements.from(renderTemplate('form-main-input-file', this.getInputFileUIData())).inject(ul, 'top');
-    UI.update(element);
-    this.attachChooseSourceListeners();
+  onSelectRecording: function(id) {
+    var recording = Recording.findById(id);
+    if (!recording) return;
+
+    Source.resetData(this.store);
+    ListFiles.setFile(this.store, recording.name);
+
+    var refreshInputFileUI = this.bound('refreshInputFileUI');
+    var startUpload = function(uuid) {
+      var currentUpload = CurrentUpload.remove(uuid);
+      if (currentUpload) currentUpload.transfer.cancel();
+
+      return upload(recording, {
+        isRecording: true,
+        editUUID: uuid,
+        redirect: false
+      }).addEvent('start', refreshInputFileUI);
+    };
+
+    // If the production does not exist yet, create one (this.uuid is empty)
+    var events = startUpload(this.uuid);
+    if (!this.uuid) events.addEvent('start', (function(response) {
+      this.uuid = response.data.uuid;
+      this.setSaveURL((this.getBaseURL() + '{uuid}').substitute(response.data));
+    }).bind(this));
   },
 
   onUploadProgress: function(data) {

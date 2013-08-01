@@ -1,6 +1,7 @@
 var Core = require('Core');
 var Class = Core.Class;
 var Events = Core.Events;
+var Options = Core.Options;
 
 var URLDelegate = require('Controller/URLDelegate');
 var View = require('View');
@@ -10,15 +11,22 @@ var UI = require('UI');
 var Form = require('./Form');
 var HTTPUpload = require('./HTTPUpload');
 var ListFiles = require('./ListFiles');
+var Recordings = require('./Recordings');
 var Source = require('./Source');
 
 var Auphonic = require('Auphonic');
 
 module.exports = new Class({
 
-  Implements: [Events, Class.Binds],
+  options: {
+    allowLocalRecordings: false
+  },
 
-  initialize: function(popover) {
+  Implements: [Events, Options, Class.Binds],
+
+  initialize: function(popover, options) {
+    this.setOptions(options);
+
     this.popover = popover;
     this.element = popover.getPopover();
 
@@ -81,7 +89,8 @@ module.exports = new Class({
       use: [
         Source,
         ListFiles,
-        HTTPUpload
+        HTTPUpload,
+        Recordings
       ]
     });
     return this;
@@ -102,13 +111,16 @@ module.exports = new Class({
       .define('/production/new/http-upload', this.bound('showHTTPUpload'))
       .define('/production/source/{service}', this.bound('listFiles'))
       .define('/production/select-file/{index}', this.bound('selectFile'))
+      .define('/production/show-recordings', this.bound('showRecordings'))
+      .define('/production/select-recording/{id}', this.bound('selectRecording'))
       .define('/production/new', this.bound('selectHTTPFile'));
     return this;
   },
 
   showSources: function() {
     this.form.show('service', {
-      showOnlyRemote: true
+      showOnlyRemote: true,
+      showLocalRecordings: this.options.allowLocalRecordings
     });
   },
 
@@ -130,6 +142,18 @@ module.exports = new Class({
     // Delay to make this interaction seem more fluid.
     (function() {
       this.fireEvent('selectFile', [service, file]);
+      this.restore();
+    }).delay(200, this);
+  },
+
+  showRecordings: function() {
+    this.form.show('recording');
+  },
+
+  selectRecording: function(req) {
+    // Delay to make this interaction seem more fluid.
+    (function() {
+      this.fireEvent('selectRecording', [req.id]);
       this.restore();
     }).delay(200, this);
   },
