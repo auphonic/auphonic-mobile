@@ -493,7 +493,7 @@ var onReceiveFile = function(file) {
     var name = file.substr(file.lastIndexOf('/') + 1);
     upload({
       name: name,
-      display_name: name.substr(0, name.lastIndexOf('.')),
+      display_name: decodeURIComponent(name.substr(0, name.lastIndexOf('.'))),
       fullPath: file
     }, {
       isRecording: false
