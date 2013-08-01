@@ -1,3 +1,5 @@
+var formatTimestamp = require('Utility/formatTimestamp');
+
 var API = require('API');
 var Controller = require('./');
 var renderTemplate = require('UI/renderTemplate');
@@ -10,7 +12,6 @@ var Form = require('App/Form');
 var Recording = require('Store/Recording');
 var User = require('Store/User');
 
-var months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 var sizes = ['b', 'KB', 'MB', 'GB', 'TB'];
 var form = null;
 
@@ -20,17 +21,8 @@ var formatFileSize = function(bytes) {
   return Math.round(Math.pow(1024, base - Math.floor(base)), 0) + ' ' + sizes[Math.floor(base)];
 };
 
-var formatTimestamp = function(timestamp) {
-  var date = new Date(timestamp);
-  return months[date.getMonth()] + ' ' + date.getDate() + ', ' + date.getHours() + ':' + String('00' + date.getMinutes()).slice(-2);
-};
-
 var showAll = function() {
-  var recordings = Object.values(Recording.findAll()).sortByKey('timestamp').reverse();
-
-  recordings.forEach(function(recording) {
-    recording.display_date = formatTimestamp(recording.timestamp);
-  });
+  var recordings = Recording.getListSortedByTime();
 
   var object = new View.Object({
     title: 'Recordings',
