@@ -27,6 +27,7 @@ var OutgoingService = require('App/OutgoingService');
 var OutputFiles = require('App/OutputFiles');
 var ProductionStatus = require('App/ProductionStatus');
 var Source = require('App/Source');
+var upload = require('App/upload');
 
 var CurrentUpload = require('Store/CurrentUpload');
 var Recording = require('Store/Recording');
@@ -292,10 +293,10 @@ var cancelUpload = function(event) {
   event.preventDefault();
 
   var uuid = this.get('data-id');
-  var upload = CurrentUpload.remove(uuid);
-  if (!upload) return;
+  var currentUpload = CurrentUpload.remove(uuid);
+  if (!currentUpload) return;
 
-  upload.transfer.cancel();
+  currentUpload.transfer.cancel();
   showOne(productions[uuid], {refresh: true});
 };
 
@@ -450,92 +451,6 @@ Controller.define('/production/new/outgoing_services', requiresAuthentication(fu
 }));
 
 // Recording
-var upload = function(recording, isRecording) {
-  if (arguments.length == 1) isRecording = true;
-  API.invalidate('productions');
-
-  View.getMain().showIndicator();
-
-  var onCreateSuccess = function(response) {
-    var uuid = response.data.uuid;
-    if (isRecording) Recording.addProduction(recording.id, uuid);
-
-    var transfer = API.upload('production/{uuid}/upload'.substitute(response.data), recording, 'input_file').on({
-
-      success: function(uploadResponse) {
-        new Notice([
-          new Element('span.bold', {text: recording.display_name}),
-          new Element('span', {text: ' was successfully uploaded and attached to your production.'})
-        ]);
-        CurrentUpload.remove(uuid);
-        View.getMain().getStack().notifyAll('refresh', [uploadResponse.data]);
-      },
-
-      error: function() {
-        var element;
-        if (isRecording) element = new Element('span', {text: '. You can find your recording in the "Recordings" tab and you can try uploading it again later.'});
-        else element = new Element('span', {text: '. Please try again later.'});
-
-        new Notice([
-          new Element('span', {text: 'There was an error uploading '}),
-          new Element('span.bold', {text: recording.display_name}),
-          element
-        ]);
-
-        CurrentUpload.remove(uuid);
-
-        View.getMain().getStack().notifyAll('uploadProgress', [{
-          uuid: uuid,
-          hasError: true
-        }]);
-      },
-
-      progress: function(event) {
-        // Bound this between 0 and 100 just to make sure to never have a crazy percentage here :)
-        var percentage = Math.max(0, Math.min(100, Math.round(event.loaded / event.total * 100)));
-
-        View.getMain().getStack().notifyAll('uploadProgress', [{
-          uuid: uuid,
-          percentage: percentage
-        }]);
-      }
-
-    });
-
-    CurrentUpload.add(uuid, {
-      transfer: transfer,
-      file: recording
-    });
-
-    var url = '/production/edit/{uuid}'.substitute(response.data);
-    var object = View.getMain().getStack().getByURL(url);
-    if (object) object.invalidate();
-    History.push(url);
-  };
-
-  // Either create a new production or overwrite the chapters
-  var url = 'productions';
-  // TODO
-  //if (currentEditUUID) url = 'production/{uuid}'.substitute({uuid: currentEditUUID});
-
-  var output_files = [Auphonic.DefaultOutputFile];
-  if (recording.media_type == 'video') output_files.push(Auphonic.DefaultVideoOutputFile);
-
-  // Try to create a meaningfull file basename
-  var basename = recording.display_name.replace(/\s+/g, '-').replace(/[^A-Za-z0-9\-_]/g, '');
-  var data = {
-    metadata: {title: recording.display_name},
-    output_basename: basename,
-    output_files: output_files,
-    algorithms: {denoise: true},
-    chapters: recording.chapters
-  };
-
-  API.call('productions', 'post', JSON.stringify(data)).on({
-    success: onCreateSuccess
-  });
-};
-
 var showRecording = function(file, isSilent) {
   var recording = Recording.add(file);
 
@@ -582,7 +497,9 @@ if (Platform.isAndroid()) {
         name: name,
         display_name: name.substr(0, name.lastIndexOf('.')),
         fullPath: file
-      }, false);
+      }, {
+        isRecording: false
+      });
     }).delay(1);
   };
 
