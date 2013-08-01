@@ -485,24 +485,34 @@ Controller.define('/production/recording/upload/{id}', requiresConnection(requir
   if (recording) upload(recording);
 })));
 
-// Android only
-if (Platform.isAndroid()) {
-  var onReceiveFile = function(file) {
-    if (!file) return;
+var onReceiveFile = function(file) {
+  if (!file) return;
 
-    addPlaceholder();
-    (function() {
-      var name = file.substr(file.lastIndexOf('/') + 1);
-      upload({
-        name: name,
-        display_name: name.substr(0, name.lastIndexOf('.')),
-        fullPath: file
-      }, {
-        isRecording: false
-      });
-    }).delay(1);
+  addPlaceholder();
+  (function() {
+    var name = file.substr(file.lastIndexOf('/') + 1);
+    upload({
+      name: name,
+      display_name: name.substr(0, name.lastIndexOf('.')),
+      fullPath: file
+    }, {
+      isRecording: false
+    });
+  }).delay(1);
+};
+
+// iOS "Open With"
+if (Platform.isIOS()) {
+  var handleFile = function() {
+    onReceiveFile(window.__UPLOAD_FILE);
+    window.__UPLOAD_FILE = null;
   };
+  window.addEvent('appStart', handleFile);
+  handleFile.periodical(300); // Polling because handleOpenURL is not reliable and crashes the app
+}
 
+// Android "Open With"
+if (Platform.isAndroid()) {
   // Check if there is an intent and upload the file.
   if (window.cordova && window.cordova.exec) window.addEvent('appStart', function() {
     WebIntent.getURI(onReceiveFile);

@@ -50,6 +50,12 @@
     // These need to be blocking
     document.write('\x3Cscript type="text/javascript" src="cordova.' + this.__PLATFORM + '.js">\x3C/script>');
     document.write('\x3Cscript type="text/javascript" src="Loader.js">\x3C/script>');
+
+    // On iOS, this method receives a remote file to upload to Auphonic
+    // The global variable will be handled within Controller/Production
+    if (this.__PLATFORM == 'ios') window.handleOpenURL = function(file) {
+      window.__UPLOAD_FILE = file;
+    };
   </script>
 </body>
 </html>
