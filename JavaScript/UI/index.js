@@ -44,7 +44,7 @@ Object.append(UI, {
 
     (function() {
       // Close all notices on immediate transitions
-      if (!isImmediate) Notice.closeAll(oppositeDirection);
+      if (!isImmediate) Notice.closeAll({direction: oppositeDirection});
 
       if (previous) previous.addClass(oppositeDirection);
       if (current) current.removeClass(direction);

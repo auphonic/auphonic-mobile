@@ -219,7 +219,7 @@ var load = function(options) {
   }).on({
     success: function() {
       window.__APP_IS_LOADED = true;
-      Notice.closeAll();
+      Notice.closeAll({except: 'info'});
       if (requiresLogin && !isAuthenticated) return;
 
       spinner.stop();

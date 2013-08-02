@@ -90,8 +90,9 @@ module.exports = new Class({
     return this;
   },
 
-  close: function(direction) {
+  close: function(direction, options) {
     if (!this.opened) return this;
+    if (options && options.except && options.except == this.options.type) return this;
 
     this.element.addEvent('transformComplete:once', this.bound('repositionOnClose'));
     this.detach().setPosition((direction == 'right') ? '100%' : '-100%');
@@ -172,7 +173,7 @@ module.exports.setTemplate = function(element) {
   return this;
 };
 
-module.exports.closeAll = function(direction) {
-  stack.invoke('close', direction);
+module.exports.closeAll = function(options) {
+  stack.invoke('close', options && options.direction, options);
   return this;
 };

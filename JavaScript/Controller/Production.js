@@ -485,9 +485,20 @@ Controller.define('/production/recording/upload/{id}', requiresConnection(requir
   if (recording) upload(recording);
 })));
 
+var authenticatedNoticeShown = false;
 var onReceiveFile = function(file) {
   if (!file) return;
 
+  if (!User.isAuthenticated()) {
+    if (!authenticatedNoticeShown) {
+      new Notice('Please log-in so this file can be sent to the Auphonic servers', {type: 'info', duration: 0});
+      authenticatedNoticeShown = true;
+    }
+    window.__UPLOAD_FILE = file;
+    return;
+  }
+
+  authenticatedNoticeShown = false;
   addPlaceholder();
   (function() {
     var name = file.substr(file.lastIndexOf('/') + 1);
@@ -499,17 +510,17 @@ var onReceiveFile = function(file) {
       isRecording: false
     });
   }).delay(1);
+  window.__UPLOAD_FILE = null;
 };
 
+var handleFile = function() {
+  onReceiveFile(window.__UPLOAD_FILE);
+};
+
+handleFile.periodical(300); // Polling because handleOpenURL is not reliable and crashes the app
+
 // iOS "Open With"
-if (Platform.isIOS()) {
-  var handleFile = function() {
-    onReceiveFile(window.__UPLOAD_FILE);
-    window.__UPLOAD_FILE = null;
-  };
-  window.addEvent('appStart', handleFile);
-  handleFile.periodical(300); // Polling because handleOpenURL is not reliable and crashes the app
-}
+if (Platform.isIOS()) window.addEvent('appStart', handleFile);
 
 // Android "Open With"
 if (Platform.isAndroid()) {
