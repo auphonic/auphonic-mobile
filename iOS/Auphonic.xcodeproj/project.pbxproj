@@ -32,6 +32,8 @@
 		30E1352710E2C1420031B30D /* config.xml in Resources */ = {isa = PBXBuildFile; fileRef = 30E1352610E2C1420031B30D /* config.xml */; };
 		30E5649213A7FCAF007403D8 /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 30E5649113A7FCAF007403D8 /* CoreMedia.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		3D377AE616F789320088A6CF /* AssetsLibrary.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3D377AE516F789320088A6CF /* AssetsLibrary.framework */; };
+		3D3797E217ABAE0D00A3E248 /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3D3797E117ABAE0D00A3E248 /* MessageUI.framework */; };
+		3D3797E517ABB14E00A3E248 /* EmailComposer.m in Sources */ = {isa = PBXBuildFile; fileRef = 3D3797E417ABB14E00A3E248 /* EmailComposer.m */; };
 		3D6B5F8E175511AD006A450F /* icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3DB7578C162E34570050685D /* icon@2x.png */; };
 		3D94F3FB1784F0CA007F014B /* OpenAL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3D94F3FA1784F0CA007F014B /* OpenAL.framework */; };
 		3D94F3FD1784F0D0007F014B /* ImageIO.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3D94F3FC1784F0D0007F014B /* ImageIO.framework */; };
@@ -93,6 +95,9 @@
 		30E5649113A7FCAF007403D8 /* CoreMedia.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMedia.framework; path = System/Library/Frameworks/CoreMedia.framework; sourceTree = SDKROOT; };
 		32CA4F630368D1EE00C91783 /* Auphonic-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Auphonic-Prefix.pch"; sourceTree = "<group>"; };
 		3D377AE516F789320088A6CF /* AssetsLibrary.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AssetsLibrary.framework; path = System/Library/Frameworks/AssetsLibrary.framework; sourceTree = SDKROOT; };
+		3D3797E117ABAE0D00A3E248 /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
+		3D3797E317ABB14E00A3E248 /* EmailComposer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EmailComposer.h; sourceTree = "<group>"; };
+		3D3797E417ABB14E00A3E248 /* EmailComposer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EmailComposer.m; sourceTree = "<group>"; };
 		3D94F3FA1784F0CA007F014B /* OpenAL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenAL.framework; path = System/Library/Frameworks/OpenAL.framework; sourceTree = SDKROOT; };
 		3D94F3FC1784F0D0007F014B /* ImageIO.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ImageIO.framework; path = System/Library/Frameworks/ImageIO.framework; sourceTree = SDKROOT; };
 		3DB48CEF162E3728006FD9D1 /* IdleTimer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IdleTimer.h; sourceTree = "<group>"; };
@@ -111,6 +116,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3D3797E217ABAE0D00A3E248 /* MessageUI.framework in Frameworks */,
 				3D94F3FD1784F0D0007F014B /* ImageIO.framework in Frameworks */,
 				3D94F3FB1784F0CA007F014B /* OpenAL.framework in Frameworks */,
 				3D377AE616F789320088A6CF /* AssetsLibrary.framework in Frameworks */,
@@ -175,6 +181,7 @@
 		29B97314FDCFA39411CA2CEA /* CustomTemplate */ = {
 			isa = PBXGroup;
 			children = (
+				3D3797E117ABAE0D00A3E248 /* MessageUI.framework */,
 				3D94F3FC1784F0D0007F014B /* ImageIO.framework */,
 				3D94F3FA1784F0CA007F014B /* OpenAL.framework */,
 				3D377AE516F789320088A6CF /* AssetsLibrary.framework */,
@@ -253,6 +260,8 @@
 		307C750510C5A3420062BCA9 /* Plugins */ = {
 			isa = PBXGroup;
 			children = (
+				3D3797E317ABB14E00A3E248 /* EmailComposer.h */,
+				3D3797E417ABB14E00A3E248 /* EmailComposer.m */,
 				3DB48CEF162E3728006FD9D1 /* IdleTimer.h */,
 				3DB48CF0162E3728006FD9D1 /* IdleTimer.m */,
 			);
@@ -384,6 +393,7 @@
 				1D60589B0D05DD56006BFB54 /* main.m in Sources */,
 				1D3623260D0F684500981E51 /* AppDelegate.m in Sources */,
 				302D95F114D2391D003F00A1 /* MainViewController.m in Sources */,
+				3D3797E517ABB14E00A3E248 /* EmailComposer.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

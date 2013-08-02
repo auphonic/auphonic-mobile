@@ -58,6 +58,7 @@ var Spinner = require('Spinner');
 var AudioPlayer = require('Player/AudioPlayer');
 var WebAudioService = require('Player/WebAudioService');
 var CordovaAudioService = require('Player/CordovaAudioService');
+var EmailComposer = require('Cordova/EmailComposer');
 var WebIntent = require('Cordova/WebIntent');
 
 var Auphonic = require('Auphonic');
@@ -192,6 +193,17 @@ var playChapter = function(event) {
   event.preventDefault();
 
   View.getMain().getCurrentObject().fireEvent('seekToChapterElement', [this]);
+};
+
+var sendFileViaEmail = function(event) {
+  event.preventDefault();
+
+  UI.unhighlight(this);
+
+  new EmailComposer().show({
+    subject: Auphonic.EmailSubject,
+    attachments: [this.get('data-path')]
+  });
 };
 
 // Make the info API call and show the UI on success, or else provide a reload button
@@ -496,6 +508,10 @@ window.__BOOTAPP = function() {
           }
         }).send();
       });
+    },
+
+    'a.sendEmail': function(elements) {
+      elements.addEvent('click', sendFileViaEmail);
     }
 
   });

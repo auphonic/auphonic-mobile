@@ -19,6 +19,7 @@ exports.DefaultVideoFileName = 'mobile-video-{user}-{uuid}';
 exports.DefaultFileNameFilter = /mobile-(?:video|recording)-(?:.*?)-(\d+)/i;
 exports.FolderName = 'Auphonic';
 exports.GeoLookupService = 'http://maps.googleapis.com/maps/api/geocode/json?latlng={latitude},{longitude}&sensor=true';
+exports.EmailSubject = 'Auphonic Recording';
 
 exports.DefaultAudioFormat = Platform.isIOS() ? 'm4a' : 'ogg';
 exports.DefaultOutputFile = {

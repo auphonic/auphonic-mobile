@@ -78,4 +78,7 @@
   <feature name="IdleTimer">
     <param name="ios-package" value="IdleTimer"/>
   </feature>
+  <feature name="EmailComposer">
+    <param name="ios-package" value="EmailComposer"/>
+  </feature>
 </widget>
