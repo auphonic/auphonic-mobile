@@ -3,7 +3,7 @@
     <label class="input_file_label info">
       <span></span>
       <span class="light">{{#if service}}{{service}}{{else}}Upload<small class="uploading hidden"></small>{{/if}}</span> <small class="input_file_name{{#if hasUpload}} hidden{{/if}}">{{input_file}}</small>
-      <div class="hidden popover bottom justify" data-position="bottom" data-close-on-tap="0">
+      <div class="hidden popover bottom justify" data-position="bottom" data-force-position="1" data-close-on-tap="0">
         {{#if hasUpload}}<a class="button red expand cancelUpload">Cancel Upload</a>{{/if}}
         {{#if isMultiInputFile}}<a class="button red expand removeSource">Remove Source</a>{{/if}}
         <a class="button expand changeSource">Change Source</a>
@@ -17,7 +17,7 @@
     <label class="chooseSource info">
       <span></span>
       Choose Source
-      <div class="hidden popover bottom justify" data-position="bottom" data-close-on-tap="0"></div>
+      <div class="hidden popover bottom justify" data-position="bottom" data-force-position="1" data-close-on-tap="0"></div>
     </label>
   </li>
 {{/if}}

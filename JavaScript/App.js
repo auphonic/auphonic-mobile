@@ -352,6 +352,7 @@ window.__BOOTAPP = function() {
       selector: popoverSelector,
       scrollSelector: 'div.scrollable',
       positionProperty: 'data-position',
+      forcePositionProperty: 'data-force-position',
       eventProperty: 'data-popover-open-event',
       closeEventProperty: 'data-popover-close-event',
       closeOnTapProperty: 'data-close-on-tap',

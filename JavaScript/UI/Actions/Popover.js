@@ -19,6 +19,7 @@ module.exports = new Class({
     selector: 'div.popover',
     scrollSelector: 'div.scrollable',
     positionProperty: 'data-position',
+    forcePositionProperty: 'data-force-position',
     openEventProperty: 'data-popover-open-event',
     closeEventProperty: 'data-popover-close-event',
     closeOnTapProperty: 'data-close-on-tap',
@@ -49,6 +50,8 @@ module.exports = new Class({
     this.closeOnTap = isNaN(closeOnTap) ? true : !!closeOnTap;
     this.openDelay = parseInt(element.get(options.openDelay), 10) || '0';
     this.shouldHighlightText = popover.get(options.highlightTextProperty);
+    var shouldForcePosition = parseInt(popover.get(options.forcePositionProperty), 10);
+    this.shouldForcePosition = isNaN(shouldForcePosition) ? false : !!shouldForcePosition;
 
     this.attach();
   },
@@ -167,15 +170,17 @@ module.exports = new Class({
     var popover = this.popover;
     var top = this.getPosition();
 
-    if (top < 0 || top < element.scrollTop) {
-      this.toggle('bottom');
-      top = this.getPosition();
-    } else if (top + popover.offsetHeight + this.options.arrowHeight > element.scrollHeight) {
-      this.toggle('top');
-      top = this.getPosition();
+    if (!this.shouldForcePosition) {
+      if (top < 0 || top < element.scrollTop) {
+        this.toggle('bottom');
+        top = this.getPosition();
+      } else if (top + popover.offsetHeight + this.options.arrowHeight > element.scrollHeight) {
+        this.toggle('top');
+        top = this.getPosition();
+      }
     }
 
-    this.popover.setStyle('top', top);
+    popover.setStyle('top', top);
   },
 
   toggle: function(position) {
