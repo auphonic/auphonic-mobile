@@ -150,13 +150,26 @@ var clickEmail = function(event) {
   var extras = {};
   // This is not a URL parser :)
   var email = this.href.substr(7).split('?subject=');
-  extras[WebIntent.EXTRA_EMAIL] = email[0];
-  extras[WebIntent.EXTRA_SUBJECT] = decodeURIComponent(email[1]);
-  WebIntent.startActivity({
-    action: WebIntent.ACTION_SEND,
-    type: 'message/rfc822',
-    extras: extras
-  });
+  var address = email[0];
+  var subject = decodeURIComponent(email[1]);
+
+  if (Platform.isAndroid()) {
+    extras[WebIntent.EXTRA_EMAIL] = address;
+    extras[WebIntent.EXTRA_SUBJECT] = subject;
+    WebIntent.startActivity({
+      action: WebIntent.ACTION_SEND,
+      type: 'message/rfc822',
+      extras: extras
+    });
+  } else if (Platform.isIOS()) {
+    event.preventDefault();
+
+    UI.unhighlight(this);
+    new EmailComposer().show({
+      to: [address],
+      subject: subject
+    });
+  }
 };
 
 var onLabelClick = function(event) {
@@ -346,7 +359,7 @@ window.__BOOTAPP = function() {
     },
 
     'a:email': function(elements) {
-      elements.addEvent('click', Platform.isAndroid() ? clickEmail : clickExternal);
+      elements.addEvent('click', clickEmail);
     },
 
     'footer a:internal': function(elements) {
