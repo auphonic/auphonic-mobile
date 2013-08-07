@@ -52,7 +52,7 @@ exports.createView = function(store, object) {
   var onError = function() {
     reset();
 
-    new Notice('There was an error calculating your current location. If this problem persists, please make sure you are running the latest version of the application and enable location services on your phone.', {type: 'error'});
+    new Notice('There was an error calculating your current location. If this problem persists, please make sure location services are enabled for this app.', {type: 'error'});
   };
 
   var addLocation = function() {
