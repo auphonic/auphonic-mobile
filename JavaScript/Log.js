@@ -5,6 +5,7 @@ var View = require('View');
 var User = require('Store/User');
 
 var Auphonic = require('Auphonic');
+var Platform = require('Platform');
 
 exports.setup = function() {
   API.setLogHandler(function(data) {
@@ -88,5 +89,4 @@ exports.setup = function() {
 
   API.setTimeoutHandler(errorHandler);
   API.setErrorHandler(errorHandler);
-
 };
