@@ -84,6 +84,14 @@ module.exports = new Class({
     this.onUpdate();
   },
 
+  resetUI: function() {
+    this.button.removeClass('pulse').set('text', 'Start');
+    this.status.removeClass('paused').removeClass('hasChapters').addClass('out').transition(this.bound('hideStatus'));
+    this.saveButton.removeEvent('transitionComplete:once', this.bound('hideSaveButton'));
+    this.saveButton.transition({immediate: true}).removeClass('paused').addClass('fade');
+    this.chapterElement.addClass('fade');
+  },
+
   toggle: function() {
     if (this.isRecording) this.pause();
     else this.start();
@@ -235,8 +243,11 @@ module.exports = new Class({
   },
 
   onError: function(event) {
-    new Notice('There was an error with your recording. Please try again.');
+    if (this.notice) this.notice.push();
+    else this.notice = new Notice('There was an error with your recording. Please try again.');
     this.fireEvent('error', event);
+    this.fireEvent('pause');
+    this.resetUI();
   },
 
   onShow: function() {
@@ -246,11 +257,7 @@ module.exports = new Class({
   },
 
   onHide: function() {
-    this.button.removeClass('pulse').set('text', 'Start');
-    this.status.removeClass('paused').removeClass('hasChapters').addClass('out').transition(this.bound('hideStatus'));
-    this.saveButton.removeEvent('transitionComplete:once', this.bound('hideSaveButton'));
-    this.saveButton.transition({immediate: true}).removeClass('paused').addClass('fade');
-    this.chapterElement.addClass('fade');
+    this.resetUI();
     if (Platform.isIOS()) this.footer.transition({immediate: true}).removeClass('out');
   },
 
