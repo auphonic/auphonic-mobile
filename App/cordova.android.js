@@ -4227,13 +4227,13 @@ define("cordova/plugin/android/promptbasednativeapi", function(require, exports,
 
 module.exports = {
     exec: function(service, action, callbackId, argsJson) {
-        return prompt(argsJson, 'gap:'+JSON.stringify([service, action, callbackId]));
+        //return prompt(argsJson, 'gap:'+JSON.stringify([service, action, callbackId]));
     },
     setNativeToJsBridgeMode: function(value) {
-        prompt(value, 'gap_bridge_mode:');
+        //prompt(value, 'gap_bridge_mode:');
     },
     retrieveJsMessages: function() {
-        return prompt('', 'gap_poll:');
+        //return prompt('', 'gap_poll:');
     }
 };
 
