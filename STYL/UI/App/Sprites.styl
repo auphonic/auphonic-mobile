@@ -74,9 +74,10 @@ footer ul > li > a
   &.record > span:first-child
     background-image url(../Images/Tabbar/Microphone.png)
 
-  &.home > span:first-child
-    background-size 36px 32px
-    background-image url(../Images/Tabbar/Home.png)
+  &.home, &.requires-authentication, &.requires-connection
+    > span:first-child
+      background-size 36px 32px
+      background-image url(../Images/Tabbar/Home.png)
 
 .android header h1
   & > a span:nth-child(1)
@@ -95,9 +96,10 @@ footer ul > li > a
   &.record > a span:nth-child(2)
     background-image url(../Images/Title/Microphone.png)
 
-  &.home > a span:nth-child(2)
-    background-size 36px 32px
-    background-image url(../Images/Title/Home.png)
+  &.home, &.requires-authentication, &.requires-connection
+    > a span:nth-child(2)
+      background-size 36px 32px
+      background-image url(../Images/Title/Home.png)
 
 .android header a.button-right span
   & > span:first-child
