@@ -33,7 +33,7 @@ var loadResource = function(url, success, error) {
   }, false);
   xhr.open('GET', url, true);
   xhr.send();
-  return this;
+  return xhr;
 };
 
 var insertJS = (function() {
@@ -121,22 +121,29 @@ var loadFromServer = function() {
   timer = setTimeout(error, timeout);
   spinner.spin(document.querySelector('#splash'));
   loadResource(__SERVER_URL + 'Version.js?' + Date.now(), function(versionJS) {
-    store('version', versionJS);
     insertJS(versionJS);
 
+    // On Android, if the user is offline, __APP_VERSION will be undefined
+    if (!window.__APP_VERSION) {
+      console.log('app_version is undefined');
+      loadFromCache({fallback: false});
+      return this;
+    }
+
+    store('version', versionJS);
     var getURL = function(url) {
       return __SERVER_URL + url + (window.__LOCALHOST__ ? '?' + Date.now() : '');
     };
 
     loaded = 0;
     resources = 2;
-    // __APP_VERSION is now available
-    loadResource(getURL('App-' + __APP_VERSION + '.css'), function(css) {
+    // __APP_VERSION is available
+    loadResource(getURL('App-' + window.__APP_VERSION + '.css'), function(css) {
       store('css', css);
       insertCSS(css);
       success();
     }, error);
-    loadResource(getURL('App-' + __APP_VERSION + '.js'), function(js) {
+    loadResource(getURL('App-' + window.__APP_VERSION + '.js'), function(js) {
       store('js', js);
       insertJS(js);
       success();
@@ -144,12 +151,13 @@ var loadFromServer = function() {
   }, error);
 };
 
-var loadFromCache = function() {
+var loadFromCache = function(options) {
   var versionJS = localStorage.getItem(cacheKey + 'version');
   var js = localStorage.getItem(cacheKey + 'js');
   var css = localStorage.getItem(cacheKey + 'css');
   if (!versionJS || !js || !css) {
-    loadFromServer();
+    if (options && options.fallback === false) error();
+    else loadFromServer();
     return;
   }
 
