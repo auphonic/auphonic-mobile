@@ -28,26 +28,34 @@ div.popover.is-full-view
       border-radius 0
       background #444
 
+    > a.button-left
+      width 60px
+      display block
+
+      .android &
+        margin-top -2px
+        margin-left 2px
+
+        &.active, &.selected
+          background-color transparent
+
+          > span
+            background-color #df5d5d
+
+      span
+        width 40px
+
     h1
       font-size 16px
+      left 75px
+      right 75px
 
-      > a.button-left
-        width 60px
-        display block
+      a
+        display none
 
-        span
-          width 40px
-
-      h1
-        left 75px
-        right 75px
-
-        a
-          display none
-
-        span
-          left 0
-          right 0
+      span
+        left 0
+        right 0
 
   // Necessary because of CSS specificity
   div.main & ul
@@ -64,3 +72,6 @@ div.resource-selector
   div.resource-selector-container
     height 306px
     top 0
+
+    .android &
+      top 42px
