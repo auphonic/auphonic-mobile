@@ -1,6 +1,7 @@
 var API = require('API');
 var UI = require('UI');
 var View = require('View');
+var Notice = require('UI/Notice');
 
 var User = require('Store/User');
 
