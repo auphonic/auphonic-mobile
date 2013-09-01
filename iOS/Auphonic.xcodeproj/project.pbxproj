@@ -27,22 +27,16 @@
 		302D95F214D2391D003F00A1 /* MainViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 302D95F014D2391D003F00A1 /* MainViewController.xib */; };
 		305D5FD1115AB8F900A74A75 /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 305D5FD0115AB8F900A74A75 /* MobileCoreServices.framework */; };
 		3072F99713A8081B00425683 /* Capture.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 3072F99613A8081B00425683 /* Capture.bundle */; };
-		308D05381370CCF300D202BF /* icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 308D052F1370CCF300D202BF /* icon.png */; };
-		308D05391370CCF300D202BF /* icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 308D05301370CCF300D202BF /* icon@2x.png */; };
 		30E1352710E2C1420031B30D /* config.xml in Resources */ = {isa = PBXBuildFile; fileRef = 30E1352610E2C1420031B30D /* config.xml */; };
 		30E5649213A7FCAF007403D8 /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 30E5649113A7FCAF007403D8 /* CoreMedia.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		3D377AE616F789320088A6CF /* AssetsLibrary.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3D377AE516F789320088A6CF /* AssetsLibrary.framework */; };
 		3D3797E217ABAE0D00A3E248 /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3D3797E117ABAE0D00A3E248 /* MessageUI.framework */; };
 		3D3797E517ABB14E00A3E248 /* EmailComposer.m in Sources */ = {isa = PBXBuildFile; fileRef = 3D3797E417ABB14E00A3E248 /* EmailComposer.m */; };
-		3D6B5F8E175511AD006A450F /* icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3DB7578C162E34570050685D /* icon@2x.png */; };
 		3D94F3FB1784F0CA007F014B /* OpenAL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3D94F3FA1784F0CA007F014B /* OpenAL.framework */; };
 		3D94F3FD1784F0D0007F014B /* ImageIO.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3D94F3FC1784F0D0007F014B /* ImageIO.framework */; };
-		3DA016F416417F7A003995BC /* icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 3DB7578A162E344F0050685D /* icon.png */; };
 		3DB48CF2162E3728006FD9D1 /* IdleTimer.m in Sources */ = {isa = PBXBuildFile; fileRef = 3DB48CF0162E3728006FD9D1 /* IdleTimer.m */; };
 		3DB48CF4162E38D3006FD9D1 /* App in Resources */ = {isa = PBXBuildFile; fileRef = 3DB48CF3162E38D3006FD9D1 /* App */; };
-		3DB7578F162E34620050685D /* Default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3DB7578E162E34620050685D /* Default@2x.png */; };
-		3DB75791162E346A0050685D /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = 3DB75790162E346A0050685D /* Default.png */; };
-		3DB75793162E34700050685D /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 3DB75792162E34700050685D /* Default-568h@2x.png */; };
+		3DDF6FC017D3BF9100BD309C /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3DDF6FBF17D3BF9100BD309C /* Images.xcassets */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -87,8 +81,6 @@
 		302D95F014D2391D003F00A1 /* MainViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MainViewController.xib; sourceTree = "<group>"; };
 		305D5FD0115AB8F900A74A75 /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
 		3072F99613A8081B00425683 /* Capture.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Capture.bundle; sourceTree = "<group>"; };
-		308D052F1370CCF300D202BF /* icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon.png; sourceTree = "<group>"; };
-		308D05301370CCF300D202BF /* icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon@2x.png"; sourceTree = "<group>"; };
 		30A0434414DC770100060A13 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = Localizable.strings; sourceTree = "<group>"; };
 		30A0434714DC770100060A13 /* se */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = se; path = Localizable.strings; sourceTree = "<group>"; };
 		30E1352610E2C1420031B30D /* config.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; name = config.xml; path = ../config.xml; sourceTree = "<group>"; };
@@ -103,11 +95,7 @@
 		3DB48CEF162E3728006FD9D1 /* IdleTimer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IdleTimer.h; sourceTree = "<group>"; };
 		3DB48CF0162E3728006FD9D1 /* IdleTimer.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = IdleTimer.m; sourceTree = "<group>"; };
 		3DB48CF3162E38D3006FD9D1 /* App */ = {isa = PBXFileReference; lastKnownFileType = folder; name = App; path = ../App; sourceTree = "<group>"; };
-		3DB7578A162E344F0050685D /* icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon.png; sourceTree = "<group>"; };
-		3DB7578C162E34570050685D /* icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon@2x.png"; sourceTree = "<group>"; };
-		3DB7578E162E34620050685D /* Default@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default@2x.png"; sourceTree = "<group>"; };
-		3DB75790162E346A0050685D /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Default.png; sourceTree = "<group>"; };
-		3DB75792162E34700050685D /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
+		3DDF6FBF17D3BF9100BD309C /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = Auphonic/Images.xcassets; sourceTree = SOURCE_ROOT; };
 		8D1107310486CEB800E47090 /* Auphonic-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "Auphonic-Info.plist"; path = "../Auphonic-Info.plist"; plistStructureDefinitionIdentifier = "com.apple.xcode.plist.structure-definition.iphone.info-plist"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -186,11 +174,6 @@
 				3D94F3FA1784F0CA007F014B /* OpenAL.framework */,
 				3D377AE516F789320088A6CF /* AssetsLibrary.framework */,
 				3DB48CF3162E38D3006FD9D1 /* App */,
-				3DB75792162E34700050685D /* Default-568h@2x.png */,
-				3DB75790162E346A0050685D /* Default.png */,
-				3DB7578E162E34620050685D /* Default@2x.png */,
-				3DB7578C162E34570050685D /* icon@2x.png */,
-				3DB7578A162E344F0050685D /* icon.png */,
 				301BF52D109A57CC0062928A /* CordovaLib.xcodeproj */,
 				080E96DDFE201D6D7F000001 /* Classes */,
 				307C750510C5A3420062BCA9 /* Plugins */,
@@ -215,12 +198,12 @@
 		29B97317FDCFA39411CA2CEA /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				3DDF6FBF17D3BF9100BD309C /* Images.xcassets */,
 				30A0434214DC770100060A13 /* de.lproj */,
 				30A0434514DC770100060A13 /* se.lproj */,
 				1F766FDB13BBADB100FB74C0 /* en.lproj */,
 				1F766FDE13BBADB100FB74C0 /* es.lproj */,
 				3072F99613A8081B00425683 /* Capture.bundle */,
-				308D052D1370CCF300D202BF /* icons */,
 				30E1352610E2C1420031B30D /* config.xml */,
 				8D1107310486CEB800E47090 /* Auphonic-Info.plist */,
 			);
@@ -268,15 +251,6 @@
 			name = Plugins;
 			path = Auphonic/Plugins;
 			sourceTree = SOURCE_ROOT;
-		};
-		308D052D1370CCF300D202BF /* icons */ = {
-			isa = PBXGroup;
-			children = (
-				308D052F1370CCF300D202BF /* icon.png */,
-				308D05301370CCF300D202BF /* icon@2x.png */,
-			);
-			path = icons;
-			sourceTree = "<group>";
 		};
 		30A0434214DC770100060A13 /* de.lproj */ = {
 			isa = PBXGroup;
@@ -368,17 +342,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				30E1352710E2C1420031B30D /* config.xml in Resources */,
-				308D05381370CCF300D202BF /* icon.png in Resources */,
-				308D05391370CCF300D202BF /* icon@2x.png in Resources */,
+				3DDF6FC017D3BF9100BD309C /* Images.xcassets in Resources */,
 				3072F99713A8081B00425683 /* Capture.bundle in Resources */,
 				1F766FE113BBADB100FB74C0 /* Localizable.strings in Resources */,
 				302D95F214D2391D003F00A1 /* MainViewController.xib in Resources */,
-				3DB7578F162E34620050685D /* Default@2x.png in Resources */,
-				3DB75791162E346A0050685D /* Default.png in Resources */,
-				3DB75793162E34700050685D /* Default-568h@2x.png in Resources */,
 				3DB48CF4162E38D3006FD9D1 /* App in Resources */,
-				3DA016F416417F7A003995BC /* icon.png in Resources */,
-				3D6B5F8E175511AD006A450F /* icon@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -447,6 +415,8 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CLANG_ENABLE_OBJC_ARC = NO;
 				COPY_PHASE_STRIP = NO;
 				GCC_DYNAMIC_NO_PIC = NO;
@@ -456,7 +426,7 @@
 				GCC_THUMB_SUPPORT = NO;
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				INFOPLIST_FILE = "Auphonic/Auphonic-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				PRODUCT_NAME = Auphonic;
 				TARGETED_DEVICE_FAMILY = 1;
 			};
@@ -466,6 +436,8 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CLANG_ENABLE_OBJC_ARC = NO;
 				COPY_PHASE_STRIP = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
@@ -473,7 +445,7 @@
 				GCC_THUMB_SUPPORT = NO;
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
 				INFOPLIST_FILE = "Auphonic/Auphonic-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				PRODUCT_NAME = Auphonic;
 				TARGETED_DEVICE_FAMILY = 1;
 			};
