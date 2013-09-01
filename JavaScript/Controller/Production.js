@@ -88,10 +88,7 @@ var addPlaceholder = function() {
 
   var object = new View.Object({
     url: '/production',
-    title: 'Productions',
-    backOptions: {
-      className: 'small'
-    }
+    title: 'Productions'
   }).invalidate();
 
   View.getMain().pushOn('production', object);
@@ -133,10 +130,6 @@ var showAll = function() {
         className: 'new',
         url: '/production/source'
       },
-      backOptions: {
-        className: 'small'
-      },
-      type: response.data.length && 'white',
       loadMoreFunction: load,
       loadMoreOptions: options,
       loadedItems: response.data.length,
@@ -565,8 +558,7 @@ Controller.define('/production/recording/new-video', function() {
 Controller.define('/production/recording/new-audio', function() {
   var recorder;
   var object = new View.Object({
-    title: 'Audio Recording',
-    backTitle: 'Recorder',
+    title: 'Recorder',
     content: renderTemplate('audio-recorder')
   });
 

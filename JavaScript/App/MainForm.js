@@ -165,7 +165,6 @@ module.exports = new Class({
       content: renderTemplate('form-main', uiData),
       back: (isEditMode ? {title: 'Cancel'} : null),
       backTitle: this.getPluralDisplayName(),
-      backOptions: isProduction ? {className: 'small'} : null,
       action: {
         title: 'Save',
         className: 'done',

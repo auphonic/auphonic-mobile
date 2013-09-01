@@ -569,7 +569,7 @@ window.__BOOTAPP = function() {
     disable: Popover.disable
   });
 
-  var header = document.getElement('header');
+  var header = document.getElement('header div');
   var back = new UI.BackButton(header, new Element('a'));
   var action = new UI.ActionButton(header, new Element('a'), {
     onClick: click
@@ -584,7 +584,7 @@ window.__BOOTAPP = function() {
     back: back,
     title: title,
     action: action,
-    indicatorOptions: Auphonic.ViewSpinnerOptions,
+    indicatorOptions: Auphonic.SpinnerOptions,
     smallIndicatorOptions: Auphonic.ViewSpinnerOptionsSmall,
     indicatorDelay: 500,
 
@@ -593,32 +593,27 @@ window.__BOOTAPP = function() {
     onChange: function(options) {
       var stack = this.getStack();
       var stackName = stack.getName();
+      var back = document.getElement('header div.back-button');
       var footer = document.getElement('footer');
-      var title = this.getTitle();
-      var element = title.toElement();
 
       UI.highlight(footer.getElement('.' + stackName));
-      element.addClass(stackName);
+
+      (function() {
+        if (stack.getLength() == 1) back.transition(options).addClass('fade');
+        else back.transition(options).removeClass('fade');
+      }).delay(1);
 
       if (Platform.isAndroid()) {
         footer.transition(options);
         (function() {
           var currentElement = this.getCurrentObject().getScrollableElement();
-          var back = element.getElement('span.back');
           if (stack.getLength() == 1) {
             currentElement.removeClass('big');
             footer.removeClass('left');
 
-            back.setStyle('visibility', 'hidden');
           } else {
             currentElement.addClass('big');
             footer.addClass('left');
-            back.setStyle('visibility', 'visible');
-            back.getParent('a').addClass('selectable').addEvent('click', function(event) {
-              navigate(function() {
-                title.back(event);
-              });
-            });
           }
         }).delay(1, this);
       }
@@ -643,21 +638,18 @@ window.__BOOTAPP = function() {
     var object = new View.Object({
       title: Platform.isIOS() ? '' : 'Home',
       backTitle: 'Home',
-      action: Platform.isAndroid() ? {
-        className: 'overflow'
-      } : null,
+      action: {
+        className: 'overflow',
+      },
       content: renderTemplate('home', {
         feedback: Auphonic.FeedbackURL
       }),
       onShow: function() {
-        // On Android, Add a Popover for Logging-Out
-        if (Platform.isAndroid()) {
-          var element = main.getAction().toElement();
-          var popover = element.getInstanceOf(Popover);
-          if (!popover) {
-            element.addClass('show-popover').adopt(Element.from(renderTemplate('logout-popover')));
-            UI.update(element);
-          }
+        var element = main.getAction().toElement();
+        var popover = element.getInstanceOf(Popover);
+        if (!popover) {
+          element.addClass('show-popover').adopt(Element.from(renderTemplate('logout-popover')));
+          UI.update(element);
         }
       }
     });

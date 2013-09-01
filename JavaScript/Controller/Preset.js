@@ -90,7 +90,6 @@ var showAll = function() {
         className: 'new',
         url: '/preset/new'
       },
-      type: response.data.length && 'white',
       loadMoreFunction: load,
       loadMoreOptions: options,
       loadedItems: response.data.length,

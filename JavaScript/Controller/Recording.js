@@ -80,8 +80,7 @@ var show = function(recording) {
     content: renderTemplate('recording', recording),
     action: {
       title: 'Upload',
-      url: recording.uploadURL,
-      className: 'upload'
+      url: recording.uploadURL
     },
     onShow: function() {
       this.toElement().getElement('input[name="display_name"]').addEvents({

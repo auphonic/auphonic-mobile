@@ -68,7 +68,7 @@ module.exports = new Class({
       back: back,
       title: title,
       action: action,
-      indicatorOptions: Auphonic.ViewSpinnerOptions,
+      indicatorOptions: Auphonic.SpinnerOptions,
       smallIndicatorOptions: Auphonic.ViewSpinnerOptionsSmall,
       indicatorDelay: 500,
       iOSScrollFlashFix: false,

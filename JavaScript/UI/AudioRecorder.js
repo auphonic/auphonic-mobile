@@ -47,7 +47,7 @@ module.exports = new Class({
     this.markerHighlight = this.chapterMarkElement.getElement('span');
     this.levelElement = element.getElement('.audio-level .peak-meter');
     this.averageLevelElement = element.getElement('.audio-level .average-meter');
-    this.footer = document.getElements('footer, div.footerBackground');
+    this.footer = document.getElement('footer');
 
     this.button.addEvent('click', this.bound('onClick'));
     this.saveButton.addEvent('click', this.bound('onSaveButtonClick'));
