@@ -7,7 +7,7 @@ var spinner = this.__NATIVE_SPINNER = new Spinner({
   width: 4,
   radius: 30,
   trail: 30,
-  color: this.__PLATFORM == 'ios' ? '#fff' : '#000'
+  color: '#000'
 });
 
 var resources = 0;

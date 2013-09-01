@@ -29,8 +29,7 @@ module.exports = function(recording, options) {
 
       success: function(uploadResponse) {
         new Notice([
-          new Element('span.bold', {text: recording.display_name}),
-          new Element('span', {text: ' was successfully uploaded and attached to your production.'})
+          new Element('span', {text: recording.display_name + ' was successfully uploaded and attached to your production.'})
         ]);
         CurrentUpload.remove(uuid);
         View.getMain().getStack().notifyAll('refresh', [uploadResponse.data]);
@@ -42,8 +41,7 @@ module.exports = function(recording, options) {
         else element = new Element('span', {text: '. Please try again later.'});
 
         new Notice([
-          new Element('span', {text: 'There was an error uploading '}),
-          new Element('span.bold', {text: recording.display_name}),
+          new Element('span', {text: 'There was an error uploading ' + recording.display_name}),
           element
         ]);
 
