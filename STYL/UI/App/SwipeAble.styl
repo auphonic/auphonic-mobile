@@ -7,7 +7,7 @@ div.main ul li.swipeable
 
     &.out
       height 0
-      transition-duration 400ms
+      transition-duration 350ms
 
       > *
         opacity 0
@@ -18,12 +18,7 @@ div.main ul li.swipeable
     z-index 101
     right 0
     left auto
-    padding-top 6px
-    padding-bottom 6px
-
-    &.expanded
-      padding-top 16px
-      padding-bottom 16px
+    padding 0
 
     > span
       display block
@@ -36,10 +31,17 @@ div.main ul li.swipeable
       padding 0
 
       &.visible
-        width 69px
+        width 70px
 
       .button
         float right
         color #fff
-        padding-top 0
-        padding-bottom 0
+        padding 0
+
+        width 70px
+        height 40px
+        line-height 40px
+
+    &.expanded > span .button
+      height 60px
+      line-height 60px

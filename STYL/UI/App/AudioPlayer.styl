@@ -14,13 +14,12 @@ div.player
     margin-right 10px
     margin-bottom 10px
 
-    border 1px solid #DDD
+    border 1px solid #d7d7d7
     background #fff
     box-shadow none
 
     .ios &
       border-radius 50%
-      background -webkit-radial-gradient(40% 40%, #fff, #ddd)
 
     a
       position absolute
@@ -35,7 +34,6 @@ div.player
 
   div.waveform
     position relative
-    cursor pointer
     height 37px
     margin-bottom 10px
 
@@ -51,7 +49,6 @@ div.player
     img
       width 100%
       height 37px
-      border-radius 3px
 
     div.position
       position absolute
@@ -60,7 +57,6 @@ div.player
       bottom 0
       width 0
 
-      border-radius 3px
       background rgba(0, 0, 0, 0.15)
 
   div.player-details
@@ -87,17 +83,17 @@ div.player
 
       transition-property opacity, -webkit-transform
       transition-timing-function cubic-bezier(.2, .14, .25, .81), ease-in-out
-      transition-duration 400ms
+      transition-duration 350ms
       opacity 1
       transform translate3d(0, 0, 0)
 
       &.right
         opacity 0
-        transform translate3d(100%, 0, 0)
+        transform translate3d(50%, 0, 0)
 
       &.left
         opacity 0
-        transform translate3d(-100%, 0, 0)
+        transform translate3d(-50%, 0, 0)
 
       &.fade
         opacity 0
