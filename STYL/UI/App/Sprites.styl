@@ -1,6 +1,3 @@
-body.ios
-  background-image url(../Images/Background.jpg)
-
 .small-logo
   background-image url(../Images/SmallLogo.png)
   background-size 100%
@@ -34,91 +31,76 @@ label, a
       background-size 16px
       background-image url(../Images/Lists/Arrow.png)
 
-    &.active > span:first-child, &.selected > span:first-child
-      background-image url(../Images/Lists/ArrowWhite.png)
-
   &.plus
     > span:first-child
       background-size 16px
       background-image url(../Images/Lists/Plus.png)
-
-    &.active > span:first-child, &.selected > span:first-child
-      background-image url(../Images/Lists/PlusWhite.png)
 
   &.share
     > span:first-child
       background-size 16px
       background-image url(../Images/Lists/Share.png)
 
-    &.active > span:first-child, &.selected > span:first-child
-      background-image url(../Images/Lists/ShareWhite.png)
-
   &.info
     > span:first-child
       background-size 16px
       background-image url(../Images/Lists/Info.png)
 
-    &.active > span:first-child, &.selected > span:first-child
-      background-image url(../Images/Lists/InfoWhite.png)
-
 footer ul > li > a
   & > span:first-child
     background-size 32px
 
-  &.production > span:first-child
-    background-image url(../Images/Tabbar/Production.png)
+  &.production
+    > span:first-child
+      background-image url(../Images/Tabbar/Production.png)
 
-  &.preset > span:first-child
-    background-image url(../Images/Tabbar/Preset.png)
+    &.selected > span:first-child
+      background-image url(../Images/Tabbar/ProductionSelected.png)
 
-  &.record > span:first-child
-    background-image url(../Images/Tabbar/Microphone.png)
+  &.preset
+    > span:first-child
+      background-image url(../Images/Tabbar/Preset.png)
+
+    &.selected > span:first-child
+      background-image url(../Images/Tabbar/PresetSelected.png)
+
+  &.record
+    > span:first-child
+      background-image url(../Images/Tabbar/Microphone.png)
+
+    &.selected > span:first-child
+      background-image url(../Images/Tabbar/MicrophoneSelected.png)
 
   &.home, &.requires-authentication, &.requires-connection
     > span:first-child
       background-size 36px 32px
       background-image url(../Images/Tabbar/Home.png)
 
-.android header h1
-  & > a span:nth-child(1)
-    background-size 16px
-    background-image url(../Images/Android/Back.png)
+    &.selected > span:first-child
+      background-image url(../Images/Tabbar/HomeSelected.png)
 
-  & > a span:nth-child(2)
-    background-size 32px
+header div.back-button
+  background-size 21px 20px
+  background-image url(../Images/Back.png)
 
-  &.production > a span:nth-child(2)
-    background-image url(../Images/Title/Production.png)
-
-  &.preset > a span:nth-child(2)
-    background-image url(../Images/Title/Preset.png)
-
-  &.record > a span:nth-child(2)
-    background-image url(../Images/Title/Microphone.png)
-
-  &.home, &.requires-authentication, &.requires-connection
-    > a span:nth-child(2)
-      background-size 36px 32px
-      background-image url(../Images/Title/Home.png)
-
-.android header a.button-right span
+header a.button-right span
   & > span:first-child
     background-size 24px
 
   &.new > span:first-child
-    background-image url(../Images/Android/New.png)
+    background-image url(../Images/Action/New.png)
 
   &.done > span:first-child
-    background-image url(../Images/Android/Done.png)
+    background-image url(../Images/Action/Done.png)
 
   &.edit > span:first-child
-    background-image url(../Images/Android/Edit.png)
+    background-image url(../Images/Action/Edit.png)
 
   &.upload > span:first-child
-    background-image url(../Images/Android/Upload.png)
+    background-image url(../Images/Action/Upload.png)
 
   &.overflow > span:first-child
-    background-image url(../Images/Android/Overflow.png)
+    background-image url(../Images/Action/Overflow.png)
 
 .ios .checkbox > div
   -webkit-mask-image url(../Images/CheckBoxMask.png)
