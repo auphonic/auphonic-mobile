@@ -4,25 +4,13 @@
 
 div.main ul
   padding 0
-  font-size 1.2em
+  font-size 16px
 
-  .android &
-    font-size 16px
+  border-top 1px solid #d9d9d9
+  border-bottom 1px solid #d9d9d9
 
-    border-top 1px solid #eee
-    border-bottom 1px solid #eee
-
-  .ios &:not(.expand) > :last-child
+  > li:last-child
     border-bottom 0
-
-    > a
-      border-bottom-right-radius 10px
-      border-bottom-left-radius 10px
-
-  .ios &:not(.expand) > :first-child
-    > a
-      border-top-right-radius 10px
-      border-top-left-radius 10px
 
   li
     position relative
@@ -31,18 +19,13 @@ div.main ul
 
     list-style-type none
 
-    border-bottom 1px solid #eee
+    border-bottom 1px solid #d9d9d9
 
     a, label, .right
       ellipsis()
       text-decoration none
       display block
       padding 12px 10px
-      font-weight bold
-      .android &
-        font-weight 500
-
-      cursor pointer
 
       .info-left
         display block
@@ -65,12 +48,7 @@ div.main ul
         transform translate3d(0, 0, 0)
 
       &.active, &.selected
-        color #fff
-        background-color #df5d5d
-
-        .ios &
-          background-image linear-gradient(top, #df5d5d 0%, #9c2e2e 100%)
-          text-shadow 0 1px 0 rgba(0, 0, 0, 1)
+        background-color #d9d9d9
 
     a, label
       &.arrow, &.plus, &.share, &.info
@@ -132,7 +110,7 @@ div.main ul
       height 35px
       margin 0 10px 0 0
 
-      border-radius 2px
+      border-radius 50%
 
     &.transition-able
       overflow hidden

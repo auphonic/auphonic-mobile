@@ -3,18 +3,15 @@
   position fixed
   left 0
   right 0
-  top 44px
-
-  .android &
-    top 43px
+  top 0
 
   padding 10px
-  color #fff
+  color #000
   font-size 1.1em
   line-height 1.5em
 
-  background #333
-  border-bottom 1px solid #222
+  background #ccc
+  border-bottom 1px solid #aaa
 
   transition-property opacity, -webkit-transform, background
   transition-timing-function ease-in-out
@@ -27,16 +24,13 @@
     opacity 1
     transform translate3d(0, 0, 0)
 
-  .chrome-invisible &
-    top 0
-
   &.highlight
     background #555
 
   h1
     margin-left 0
     margin-right -26px // This is nasty but if there is a headline we can assume the close button is below the headline
-    color #fff
+    color #000
     text-align center
     text-shadow none
 
