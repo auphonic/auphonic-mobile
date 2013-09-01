@@ -6,9 +6,10 @@ div.container
   position absolute
   left 0
   right 0
+  background-color #efeff4
 
   .ios &
-    top $header-height
+    top $header-height + $status-bar-height - 1px
     bottom $footer-height
 
   .android &
@@ -16,24 +17,18 @@ div.container
     bottom 0
 
     &.big
-      top $header-height - 2px // Account for missing header top border
+      top $header-height + $status-bar-height - 2px // Account for missing header top border
 
   div.scroll-content
-    padding 10px
-
-    .android &
-      padding 0
+    padding 0
 
   transition-property -webkit-transform, opacity
   transition-timing-function ease-in-out
-  transition-duration 400ms
+  transition-duration 350ms
   .ios &
     transform translate3d(0, 0, 0)
   .android &
     transform translate(0, 0)
-
-  &.white
-    background #fff
 
   &.right
     .ios &
