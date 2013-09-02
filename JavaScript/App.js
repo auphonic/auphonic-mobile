@@ -709,6 +709,7 @@ window.__BOOTAPP = function() {
   Controller.define('/logout', function() {
     User.reset();
     View.getMain().resetStack();
+    document.id('splash').getElement('.logo').addClass('fade');
 
     History.push('/login');
   });
