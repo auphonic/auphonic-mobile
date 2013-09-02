@@ -9,7 +9,7 @@ div.container
   background-color #efeff4
 
   .ios &
-    top $header-height + $status-bar-height - 1px
+    top $header-height - 1px
     bottom $footer-height
 
   .android &
@@ -43,3 +43,18 @@ div.container
       transform translate3d(-40%, 0, 0)
     .android &
       transform translate(-40%, 0)
+
+// On iOS 7 the status bar is included in the app, this offsets the content by the status bar height
+@media screen and (min-height: 568px) {
+  .ios header {
+    height $header-height + $status-bar-height
+  }
+
+  .ios header > div {
+      top $status-bar-height
+  }
+
+  .ios div.container {
+    top $header-height + $status-bar-height - 1px
+  }
+}
