@@ -620,9 +620,6 @@ window.__BOOTAPP = function() {
     },
 
     onTransitionEnd: function() {
-      if (Platform.isAndroid())
-        this.getBack().toElement().getSiblings('.button-left').dispose();
-
       var stack = this.getStack();
       var previous = stack && stack.getPrevious();
       if (previous && previous.isRendered()) previous.toElement().getElements('ul li a.selected').removeClass('selected');
