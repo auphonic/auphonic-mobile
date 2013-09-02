@@ -24,7 +24,7 @@ module.exports = new Class({
       }
     }
 
-    object.setStack(this);
+    object.setStack(this).setIndex(stack.length);
     this.current = object;
     stack.push(this.current);
 
@@ -57,6 +57,7 @@ module.exports = new Class({
   rewind: function(index, object) {
     this.stack[index] = object;
     this.stack = this.stack.slice(0, index + 1);
+    object.setIndex(index);
 
     return this;
   },

@@ -22,11 +22,13 @@ div.container
   div.scroll-content
     padding 0
 
-  transition-property -webkit-transform, opacity
-  transition-timing-function ease-in-out
+  transition-property -webkit-transform
+  transition-timing-function ease-out
   transition-duration 350ms
   .ios &
     transform translate3d(0, 0, 0)
+    box-shadow -5px 0 10px rgba(0, 0, 0, 0.1)
+
   .android &
     transform translate(0, 0)
 
@@ -38,6 +40,6 @@ div.container
 
   &.left
     .ios &
-      transform translate3d(-100%, 0, 0)
+      transform translate3d(-40%, 0, 0)
     .android &
-      transform translate(-100%, 0)
+      transform translate(-40%, 0)

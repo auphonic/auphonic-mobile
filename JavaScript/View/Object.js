@@ -32,6 +32,7 @@ module.exports = new Class({
     backOptions: null,
 
     scrollTop: 0,
+    index: 0,
     plugins: null
 
     /* Virtual Properties
@@ -96,6 +97,7 @@ module.exports = new Class({
 
     this.setElement(element);
     element.getElement(selector).set('html', this.getContent());
+    element.setStyle('z-index', '' + this.index);
     return element;
   },
 
