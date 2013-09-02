@@ -42,6 +42,11 @@ module.exports = new Class({
     UI.transition(this.container, this.toElement(), next && next.toElement(), options);
 
     return next || this;
+  },
+
+  getTextSize: function() {
+    var element = this.element.getElement('span > span');
+    return element ? element.getClientRects()[0] : {width: 0, height: 0};
   }
 
 });

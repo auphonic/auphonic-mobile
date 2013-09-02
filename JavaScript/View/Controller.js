@@ -110,9 +110,15 @@ module.exports = new Class({
       direction: direction
     };
 
-    this.updateElement('back', options, object.getBackTemplate())
-      .updateElement('title', options, object.getTitleTemplate())
-      .updateElement('action', options, object.getActionTemplate());
+    // New and old instances should be able to reason about the
+    // current state and their current siblings.
+    var back = this.updateElement('back', options, object.getBackTemplate());
+    var title = this.updateElement('title', options, object.getTitleTemplate());
+    var action = this.updateElement('action', options, object.getActionTemplate());
+
+    this.back = back;
+    this.title = title;
+    this.action = action;
 
     this.fireEvent('change', options);
     UI.disable();
@@ -198,8 +204,7 @@ module.exports = new Class({
   },
 
   updateElement: function(type, options, template) {
-    this[type] = this[type].update(options, template);
-    return this;
+    return this[type].update(options, template);
   },
 
   showIndicator: function(options) {
