@@ -1,7 +1,7 @@
 {{#if service}}
   <ul class="formcontent">
     {{#each service}}
-      <li class="wide">
+      <li class="wide-checkbox">
         <input type="hidden" name="outgoing_services.{{uuid}}.uuid" value="{{uuid}}" />
         <label class="left">
           <div class="right">
@@ -25,7 +25,7 @@
         <ul>
           {{#each parameters}}
             {{#if checkbox}}
-              <li class="wide">
+              <li class="wide-checkbox">
                 <label class="left">
                   <div class="right">
                     <div class="checkbox">

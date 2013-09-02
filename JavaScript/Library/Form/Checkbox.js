@@ -15,7 +15,7 @@ module.exports = new Class({
     thumbSelector: '.thumb',
     leftSelector: '.left',
     className: 'checked',
-    max: 49
+    max: 32
   },
 
   initialize: function(container, options) {
