@@ -21,7 +21,8 @@ div.login
     margin 15px 0
 
   > form > div.formcontent
-    margin 0
+    margin 0 10px
+    border-radius 4px
 
     > label
       display block
@@ -38,25 +39,13 @@ div.login
     border-bottom 1px solid #eee
 
   input[type=submit], a.register
-    width 47%
+    width 42%
     height 39px
     line-height 39px
+    margin 0 10px
 
   input[type=submit]
     float right
-    .android &
-      border-radius 0
-
-  // submit buttons and anchors have a few weird style differences
-  a.register
-    width 46%
-    padding 0
-    .ios &
-      height 37px
-      line-height 37px
-    .android &
-      height 39px
-      line-height 39px
 
   a.no-login.button.expand
     margin-top 35px

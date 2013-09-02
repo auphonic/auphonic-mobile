@@ -9,15 +9,17 @@ input, textarea, select
 
   font-size 1em
   color $color
+  font-family $font-ios
   outline none
 
   -webkit-appearance none
   border 0
 
   .ios &
-    border-radius 10px // Needed so first/last elements don't overlay the container
+    border-radius 4px // Needed so first/last elements don't overlay the container
 
   .android &
+    font-family $font-android
     -webkit-user-modify read-write-plaintext-only
 
   div.main ul li &.right.clearable-visible

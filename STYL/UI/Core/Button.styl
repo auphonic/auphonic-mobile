@@ -2,6 +2,7 @@
 
 // Buttons
 .button, input[type=submit]
+  box-sizing border-box
   display inline-block
   width auto
 
@@ -21,8 +22,8 @@
     line-height 35px
     height 35px
 
-    .ios &
-      margin 15px 0
+    margin 15px 10px
+
     .android &
       margin 10px
 
@@ -38,7 +39,7 @@
 
   &.red
     color #fff
-    border-width 0
+    border-radius 4px
     background-color $color-link
 
   .popover &
