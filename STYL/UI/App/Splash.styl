@@ -8,6 +8,31 @@ div.splash
   background-repeat no-repeat
   background-color #efeff4
 
+  .logo
+    position absolute
+    top 50%
+    left 0
+    right 0
+    width auto
+    margin -62px 0 0
+
+    background-repeat no-repeat
+    background-position center
+
+    transition-property opacity, transform
+    transition-timing-function ease-in-out
+    transition-delay 0, 150ms
+    transition-duration 150ms, 400ms
+
+    opacity 1
+    transform translate3d(0, 0, 0)
+
+    &.fade
+      transform translate3d(0, -120%, 0)
+
+    &.hide
+      opacity 0
+
   .ios &
     transition-property transform
     transition-duration 350ms
@@ -17,10 +42,6 @@ div.splash
       transform translate3d(0, -100%, 0)
 
   .android &
-    background-size 80% auto
-    background-position center 10%
-    background-image url(./Splash.png)
-
     transition-property transform
     transition-duration 10ms
     transform translate3d(0, 0, 0)

@@ -235,7 +235,8 @@ var load = function(options) {
     else spinner = new Spinner(Auphonic.SpinnerOptions);
   }
 
-  if (isAuthenticated) spinner.spin(document.id('splash'));
+  var splash = document.id('splash');
+  if (isAuthenticated) spinner.spin(splash);
   else spinner.stop();
 
   API.cacheInfo({
@@ -245,7 +246,10 @@ var load = function(options) {
     success: function() {
       window.__APP_IS_LOADED = true;
       Notice.closeAll({except: 'info'});
-      if (requiresLogin && !isAuthenticated) return;
+      if (requiresLogin && !isAuthenticated) {
+        splash.getElement('.logo').addClass('fade');
+        return;
+      }
 
       spinner.stop();
       UI.showChrome();

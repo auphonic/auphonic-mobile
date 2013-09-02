@@ -11,7 +11,6 @@ var User = require('Store/User');
 
 var APIKeys = require('APIKeys');
 var Auphonic = require('Auphonic');
-var Platform = require('Platform');
 
 var notice;
 var spinner;
@@ -100,28 +99,26 @@ Controller.define('/login/:path*:', function(req) {
     History.push('/');
   });
 
-  var splash = document.id('splash');
+  var logo = document.id('splash').getElement('.logo');
   var height = window.innerHeight;
   var timer;
   var blurTimer;
   login.getElements('input[type=text], input[type=password]').addEvents({
 
     focus: function() {
-      if (!Platform.isAndroid()) return;
       clearTimeout(timer);
       clearTimeout(blurTimer);
       timer = (function() {
-        if (window.innerHeight < height) splash.addClass('hide');
-        else splash.removeClass('hide');
-      }).periodical(200);
+        if (window.innerHeight < height) logo.addClass('hide');
+        else logo.removeClass('hide');
+      }).periodical(50);
     },
 
     blur: function() {
-      if (!Platform.isAndroid()) return;
       blurTimer = (function() {
         clearTimeout(timer);
-        splash.removeClass('hide');
-      }).delay(200);
+        logo.removeClass('hide');
+      }).delay(100);
     },
 
     keyup: function(event) {
@@ -132,5 +129,7 @@ Controller.define('/login/:path*:', function(req) {
   });
 
   login.show();
-
+  (function() {
+    login.addClass('show');
+  }).delay(1);
 });

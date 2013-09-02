@@ -5,6 +5,16 @@ div.login
   z-index 21
   expand()
 
+  transition-property opacity, transform
+  transition-timing-function ease-in-out
+  transition-delay 750ms
+  transition-duration 250ms
+
+  opacity 0
+
+  &.show
+    opacity 1
+
   > form
     position absolute
     width 100%
@@ -52,8 +62,6 @@ div.login
     opacity 0.4
 
   .ios &
-    transition-property -webkit-transform
-    transition-duration 500ms
     transform translate3d(0, 0, 0)
 
   .ios &.fade
