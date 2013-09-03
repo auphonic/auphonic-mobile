@@ -597,15 +597,9 @@ window.__BOOTAPP = function() {
     onChange: function(options) {
       var stack = this.getStack();
       var stackName = stack.getName();
-      var back = document.getElement('header div.back-button');
       var footer = document.getElement('footer');
 
       UI.highlight(footer.getElement('.' + stackName));
-
-      (function() {
-        if (stack.getLength() == 1) back.transition(options).addClass('fade');
-        else back.transition(options).removeClass('fade');
-      }).delay(1);
 
       if (Platform.isAndroid()) {
         footer.transition(options);

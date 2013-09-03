@@ -112,9 +112,9 @@ module.exports = new Class({
 
     // New and old instances should be able to reason about the
     // current state and their current siblings.
-    var back = this.updateElement('back', options, object.getBackTemplate());
-    var title = this.updateElement('title', options, object.getTitleTemplate());
-    var action = this.updateElement('action', options, object.getActionTemplate());
+    var back = this.createElement('back', options, object.getBackTemplate());
+    var title = this.createElement('title', options, object.getTitleTemplate());
+    var action = this.createElement('action', options, object.getActionTemplate());
 
     this.back = back;
     this.title = title;
@@ -203,8 +203,13 @@ module.exports = new Class({
     return this.options[name] || null;
   },
 
-  updateElement: function(type, options, template) {
+  createElement: function(type, options, template) {
     return this[type].update(options, template);
+  },
+
+  updateElement: function(type, options, template) {
+    this[type] = this[type].update(options, template);
+    return this;
   },
 
   showIndicator: function(options) {

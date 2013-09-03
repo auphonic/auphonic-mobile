@@ -11,7 +11,8 @@ module.exports = new Class({
   template: 'ui-back',
 
   options: {
-    className: 'fade'
+    className: 'fade',
+    arrowSelector: 'div.back-button'
   },
 
   initialize: function(container, element, options) {
@@ -22,9 +23,15 @@ module.exports = new Class({
 
   update: function(options, data) {
     var next;
+    var arrow = this.container.getElement(this.options.arrowSelector);
 
     if (data && this.getView().getStack().getLength() > 1)
       next = this.create(data);
+
+    if (arrow) {
+      if (next) arrow.transition(options).removeClass('fade');
+      else arrow.transition(options).addClass('fade');
+    }
 
     if (options && options.fade) {
       if (next) {
@@ -32,6 +39,7 @@ module.exports = new Class({
         (function() {
           next.toElement().removeClass('fade');
         }).delay(UI.getTransitionDelay());
+
       }
       this.toElement().transition(function() {
         this.dispose();
