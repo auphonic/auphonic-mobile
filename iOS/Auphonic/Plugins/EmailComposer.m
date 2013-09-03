@@ -91,9 +91,8 @@
     NSLog(@"EmailComposer - Cannot set attachments; error: %@", exception);
   }
 
-  if (mailComposer != nil) [self.viewController presentModalViewController:mailComposer animated:YES];
+    if (mailComposer != nil) [self.viewController presentViewController:mailComposer animated:YES completion:nil];
   else [self executeCallback:RETURN_CODE_EMAIL_NOTSENT];
-  [mailComposer release];
 }
 
 
@@ -117,7 +116,7 @@
       break;
   }
 
-  [controller dismissModalViewControllerAnimated:YES];
+  [controller dismissViewControllerAnimated:YES completion:nil];
   [self executeCallback:code];
 }
 
@@ -129,9 +128,9 @@
 - (NSString *) getMimeTypeFromFileExtension:(NSString *)extension {
   if (!extension) return nil;
   CFStringRef pathExtension, type;
-  pathExtension = (CFStringRef)extension;
+  pathExtension = (CFStringRef)CFBridgingRetain(extension);
   type = UTTypeCreatePreferredIdentifierForTag(kUTTagClassFilenameExtension, pathExtension, NULL);
-  return (NSString *)UTTypeCopyPreferredTagWithClass(type, kUTTagClassMIMEType);
+  return (NSString *)CFBridgingRelease(UTTypeCopyPreferredTagWithClass(type, kUTTagClassMIMEType));
 }
 
 @end

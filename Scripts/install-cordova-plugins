@@ -1,0 +1,34 @@
+npm install -g plugman
+
+plugman install --platform ios --project ../iOS --www ../App --plugin https://git-wip-us.apache.org/repos/asf/cordova-plugin-battery-status.git
+plugman install --platform ios --project ../iOS --www ../App --plugin https://git-wip-us.apache.org/repos/asf/cordova-plugin-camera.git
+plugman install --platform ios --project ../iOS --www ../App --plugin https://git-wip-us.apache.org/repos/asf/cordova-plugin-device.git
+plugman install --platform ios --project ../iOS --www ../App --plugin https://git-wip-us.apache.org/repos/asf/cordova-plugin-device-motion.git
+plugman install --platform ios --project ../iOS --www ../App --plugin https://git-wip-us.apache.org/repos/asf/cordova-plugin-device-orientation.git
+plugman install --platform ios --project ../iOS --www ../App --plugin https://git-wip-us.apache.org/repos/asf/cordova-plugin-dialogs.git
+plugman install --platform ios --project ../iOS --www ../App --plugin https://git-wip-us.apache.org/repos/asf/cordova-plugin-file.git
+plugman install --platform ios --project ../iOS --www ../App --plugin https://git-wip-us.apache.org/repos/asf/cordova-plugin-file-transfer.git
+plugman install --platform ios --project ../iOS --www ../App --plugin https://git-wip-us.apache.org/repos/asf/cordova-plugin-geolocation.git
+plugman install --platform ios --project ../iOS --www ../App --plugin https://git-wip-us.apache.org/repos/asf/cordova-plugin-globalization.git
+plugman install --platform ios --project ../iOS --www ../App --plugin https://git-wip-us.apache.org/repos/asf/cordova-plugin-inappbrowser.git
+plugman install --platform ios --project ../iOS --www ../App --plugin https://git-wip-us.apache.org/repos/asf/cordova-plugin-media-capture.git
+plugman install --platform ios --project ../iOS --www ../App --plugin https://git-wip-us.apache.org/repos/asf/cordova-plugin-network-information.git
+plugman install --platform ios --project ../iOS --www ../App --plugin https://git-wip-us.apache.org/repos/asf/cordova-plugin-splashscreen.git
+
+plugman install --platform ios --project ../iOS --www ../App --plugin https://github.com/cpojer/cordova-plugin-media
+
+#plugman install --platform android --project ../Android --www ../App --plugin https://git-wip-us.apache.org/repos/asf/cordova-plugin-camera.git
+#plugman install --platform android --project ../Android --www ../App --plugin https://git-wip-us.apache.org/repos/asf/cordova-plugin-device.git
+#plugman install --platform android --project ../Android --www ../App --plugin https://git-wip-us.apache.org/repos/asf/cordova-plugin-device-motion.git
+#plugman install --platform android --project ../Android --www ../App --plugin https://git-wip-us.apache.org/repos/asf/cordova-plugin-device-orientation.git
+#plugman install --platform android --project ../Android --www ../App --plugin https://git-wip-us.apache.org/repos/asf/cordova-plugin-dialogs.git
+#plugman install --platform android --project ../Android --www ../App --plugin https://git-wip-us.apache.org/repos/asf/cordova-plugin-file.git
+#plugman install --platform android --project ../Android --www ../App --plugin https://git-wip-us.apache.org/repos/asf/cordova-plugin-file-transfer.git
+#plugman install --platform android --project ../Android --www ../App --plugin https://git-wip-us.apache.org/repos/asf/cordova-plugin-geolocation.git
+#plugman install --platform android --project ../Android --www ../App --plugin https://git-wip-us.apache.org/repos/asf/cordova-plugin-globalization.git
+#plugman install --platform android --project ../Android --www ../App --plugin https://git-wip-us.apache.org/repos/asf/cordova-plugin-inappbrowser.git
+#plugman install --platform android --project ../Android --www ../App --plugin https://git-wip-us.apache.org/repos/asf/cordova-plugin-media-capture.git
+#plugman install --platform android --project ../Android --www ../App --plugin https://git-wip-us.apache.org/repos/asf/cordova-plugin-network-information.git
+#plugman install --platform android --project ../Android --www ../App --plugin https://git-wip-us.apache.org/repos/asf/cordova-plugin-splashscreen.git
+
+#plugman install --platform android --project ../Android --www ../App --plugin https://github.com/cpojer/cordova-plugin-media
