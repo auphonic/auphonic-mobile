@@ -18,7 +18,7 @@ exports.StylusOptions = {
   limit: false
 };
 
-exports.Cordova = '2.9.0';
+exports.Cordova = '3.0.0';
 exports.Server = path.resolve(resolve('Server/'), exports.Cordova);
 exports.VersionFile = path.resolve(exports.Server, 'Version.js');
 exports.ServerCSSFile = 'App-{hash}.css';
