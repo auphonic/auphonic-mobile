@@ -12,7 +12,7 @@ This application was initially developed by [@cpojer](http://cpojer.net) as bach
 Install
 -------
 
-* Install [Cordova (PhoneGap)](http://phonegap.com/). Note that for iOS a fork of Cordova is currently being used: https://github.com/cpojer/incubator-cordova-ios
+* Install [Cordova (PhoneGap)](http://phonegap.com/). Note that for iOS a fork of Cordova is currently being used: https://github.com/cpojer/cordova-ios
 * Install NodeJS and npm (`brew install node npm` on OS X using [Homebrew](http://mxcl.github.com/homebrew/), `apt-get install npm` on Debian-based systems)
 * *Note*: on Linux NodeJS is sometimes called `nodejs` and not `node`
 * `npm install` in the root folder
@@ -22,6 +22,7 @@ Install
 * Android: Download and Install the Android SDK
  * Set a symlink from App/ to Android/assets: `ln -s App Android/assets/`
 * (optional) Download and install [Roboto](http://developer.android.com/design/style/typography.html)
+* If you need to update the Cordova plugins, run `./install-cordova-plugins` in the `Scripts` path.
 
 Run
 ---
