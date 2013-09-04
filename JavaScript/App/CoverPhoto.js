@@ -33,6 +33,7 @@ exports.createView = function(store, object) {
         var container = object.toElement();
         container.getElement('img.thumbnail').set('src', file.fullPath).removeClass('hidden');
         container.getElement('.remove_thumbnail').removeClass('hidden');
+        container.getElement('.upload-cover-photo-list').removeClass('no-border');
 
         store.fireEvent('upload', [file]);
         store.set('thumbnail', file.fullPath);
@@ -71,6 +72,7 @@ exports.createView = function(store, object) {
     var container = object.toElement();
     container.getElement('img.thumbnail').addClass('hidden');
     container.getElement('.remove_thumbnail').addClass('hidden');
+    container.getElement('.upload-cover-photo-list').addClass('no-border');
 
     // This is nasty but prevents ghost clicks on iOS properly
     UI.disable(container);

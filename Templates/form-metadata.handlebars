@@ -16,7 +16,7 @@
 <h1>Cover Photo</h1>
 <img src="{{{image thumbnail}}}" class="thumbnail{{#unless thumbnail}} hidden{{/unless}}" />
 <ul>
-  <li>
+  <li class="upload-cover-photo-list{{#unless thumbnail}} no-border{{/unless}}">
     <label class="upload-cover-photo show-popover plus">
       <span></span>
       Upload
@@ -32,7 +32,7 @@
 </ul>
 
 {{#if withLocation}}
-  <h1>Location</h1>
+  <h1 class="clear">Location</h1>
   <ul class="location-add{{#if location.longitude}} hidden{{/if}}">
     <li>
       <label class="plus">
