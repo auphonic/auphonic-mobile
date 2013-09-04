@@ -16,6 +16,8 @@ module.exports = new Class({
 
   push: function(object) {
     var stack = this.stack;
+    object.setIndex(stack.length);
+
     // Check if the URL is already part of the stack and rewind if necessary
     for (var index = 0; index < stack.length; index++) {
       if (stack[index].getURL() == object.getURL()) {
@@ -24,7 +26,7 @@ module.exports = new Class({
       }
     }
 
-    object.setStack(this).setIndex(stack.length);
+    object.setStack(this);
     this.current = object;
     stack.push(this.current);
 
