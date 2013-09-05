@@ -45,7 +45,8 @@ div.container
       transform translate(-40%, 0)
 
 // On iOS 7 the status bar is included in the app, this offsets the content by the status bar height
-@media screen and (min-height: 568px) {
+// 308px is the height when the keyboard is opened.
+@media screen and (min-height: 568px), screen and (min-height: 308px) and (max-height: 308px) {
   .ios header {
     height $header-height + $status-bar-height
   }
@@ -56,5 +57,15 @@ div.container
 
   .ios div.container {
     top $header-height + $status-bar-height - 1px
+  }
+}
+
+@media screen and (min-height: 308px) and (max-height: 308px) {
+  .ios div.container {
+    bottom 0
+  }
+
+  .ios footer {
+    display none
   }
 }
