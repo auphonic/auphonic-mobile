@@ -5,7 +5,6 @@
 	};
 	objectVersion = 46;
 	objects = {
-
 /* Begin PBXBuildFile section */
 		0F1D2F284CAB4195AFC1683F /* CDVConnection.m in Sources */ = {isa = PBXBuildFile; fileRef = AC4ACCFBBBE5456C95DACCF0 /* CDVConnection.m */; };
 		1B40F2FA37624A148424F2A7 /* CDVCamera.m in Sources */ = {isa = PBXBuildFile; fileRef = 887CDFB979C44E69B694DD56 /* CDVCamera.m */; };
@@ -22,7 +21,6 @@
 		305D5FD1115AB8F900A74A75 /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 305D5FD0115AB8F900A74A75 /* MobileCoreServices.framework */; };
 		30A0434814DC770100060A13 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 30A0434314DC770100060A13 /* Localizable.strings */; };
 		30A0434914DC770100060A13 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 30A0434614DC770100060A13 /* Localizable.strings */; };
-		3D10B04F17D5649800148AA0 /* CDVSound.m in Sources */ = {isa = PBXBuildFile; fileRef = 3D10B04E17D5649800148AA0 /* CDVSound.m */; };
 		3D3797E217ABAE0D00A3E248 /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3D3797E117ABAE0D00A3E248 /* MessageUI.framework */; };
 		3D3797E517ABB14E00A3E248 /* EmailComposer.m in Sources */ = {isa = PBXBuildFile; fileRef = 3D3797E417ABB14E00A3E248 /* EmailComposer.m */; };
 		3DB48CF2162E3728006FD9D1 /* IdleTimer.m in Sources */ = {isa = PBXBuildFile; fileRef = 3DB48CF0162E3728006FD9D1 /* IdleTimer.m */; };
@@ -430,7 +428,6 @@
 				BA152F1741E444C88F2A2465 /* CDVDevice.m in Sources */,
 				8104B7C614A54907A0D37781 /* CDVAccelerometer.m in Sources */,
 				EB3B46507AE748E4857E1043 /* CDVCompass.m in Sources */,
-				3D10B04F17D5649800148AA0 /* CDVSound.m in Sources */,
 				C56A5A6E03A4495CA1404783 /* CDVNotification.m in Sources */,
 				3FB5CB2FF7864B54ACFB7C0D /* CDVFile.m in Sources */,
 				736BA332B101484889F28575 /* CDVFileTransfer.m in Sources */,

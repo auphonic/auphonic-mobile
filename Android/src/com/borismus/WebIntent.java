@@ -13,17 +13,18 @@ import android.net.Uri;
 import android.util.Log;
 import android.text.Html;
 
-import org.apache.cordova.api.Plugin;
-import org.apache.cordova.api.PluginResult;
-import org.apache.cordova.api.PluginResult.Status;
+import org.apache.cordova.CordovaPlugin;
+import org.apache.cordova.CallbackContext;
+import org.apache.cordova.PluginResult;
+import org.apache.cordova.PluginResult.Status;
 
 /**
  * @originalAuthor boris@borismus.com
  * @modifiedBy christoph.pojer@gmail.com
  */
-public class WebIntent extends Plugin {
+public class WebIntent extends CordovaPlugin {
 
-  private String onNewIntentCallback = null;
+  private CallbackContext onNewIntentCallback = null;
 
   private Map<String, String>getExtras(JSONObject extras) {
     Map<String, String> map = new HashMap<String, String>();
@@ -38,7 +39,7 @@ public class WebIntent extends Plugin {
     return map;
   }
 
-  public PluginResult execute(String action, JSONArray args, String callbackId) {
+  public boolean execute(String action, JSONArray args, CallbackContext callbackContext) {
     try {
       if (action.equals("startActivity") && args.length() == 1) {
         JSONObject obj = args.getJSONObject(0);
@@ -48,44 +49,53 @@ public class WebIntent extends Plugin {
           obj.has("type") ? obj.getString("type") : null,
           getExtras(obj.has("extras") ? obj.getJSONObject("extras") : null)
         );
-        return new PluginResult(Status.OK);
+        callbackContext.sendPluginResult(new PluginResult(Status.OK));
+        return true;
       } else if (action.equals("hasExtra") && args.length() == 1) {
         Intent i = this.cordova.getActivity().getIntent();
-        return new PluginResult(Status.OK, i.hasExtra(args.getString(0)));
+        callbackContext.sendPluginResult(new PluginResult(Status.OK, i.hasExtra(args.getString(0))));
+        return true;
       } else if (action.equals("getExtra") && args.length() == 1) {
         Intent i = this.cordova.getActivity().getIntent();
         String extraName = args.getString(0);
-        if (i.hasExtra(extraName)) return new PluginResult(Status.OK, i.getStringExtra(extraName));
-        else return new PluginResult(Status.ERROR);
+        if (i.hasExtra(extraName)) {
+          callbackContext.sendPluginResult(new PluginResult(Status.OK, i.getStringExtra(extraName)));
+          return true;
+        } else {
+          callbackContext.sendPluginResult(new PluginResult(Status.ERROR));
+          return false;
+        }
       } else if (action.equals("getURI") && args.length() == 0) {
         Intent i = this.cordova.getActivity().getIntent();
-        return new PluginResult(Status.OK, i.getDataString());
+        callbackContext.sendPluginResult(new PluginResult(Status.OK, i.getDataString()));
+        return true;
       } else if (action.equals("onNewIntent") && args.length() == 0) {
-        this.onNewIntentCallback = callbackId;
+        this.onNewIntentCallback = callbackContext;
         PluginResult result = new PluginResult(Status.NO_RESULT);
         result.setKeepCallback(true);
-        return result;
+        callbackContext.sendPluginResult(result);
+        return true;
       } else if (action.equals("sendBroadcast") && args.length() == 1) {
         JSONObject obj = args.getJSONObject(0);
         sendBroadcast(obj.getString("action"), getExtras(obj.has("extras") ? obj.getJSONObject("extras") : null));
-        return new PluginResult(Status.OK);
+        callbackContext.sendPluginResult(new PluginResult(Status.OK));
+        return true;
       }
-      return new PluginResult(Status.INVALID_ACTION);
+
+      callbackContext.sendPluginResult(new PluginResult(Status.INVALID_ACTION));
+      return false;
     } catch (JSONException e) {
-      return new PluginResult(Status.JSON_EXCEPTION);
+      callbackContext.sendPluginResult(new PluginResult(Status.JSON_EXCEPTION));
+      return false;
     }
   }
 
   @Override
   public void onNewIntent(Intent intent) {
-    if (this.onNewIntentCallback != null) {
-      PluginResult result = new PluginResult(Status.OK, intent.getDataString());
-      result.setKeepCallback(true);
-      this.success(result, this.onNewIntentCallback);
-    }
+    if (this.onNewIntentCallback != null) this.onNewIntentCallback.success(intent.getDataString());
   }
 
-  void startActivity(String action, Uri uri, String type, Map<String, String> extras) {
+  public void startActivity(String action, Uri uri, String type, Map<String, String> extras) {
     Intent i = (uri != null ? new Intent(action, uri) : new Intent(action));
 
     if (type != null) {
@@ -107,7 +117,7 @@ public class WebIntent extends Plugin {
     this.cordova.getActivity().startActivity(i);
   }
 
-  void sendBroadcast(String action, Map<String, String> extras) {
+  public void sendBroadcast(String action, Map<String, String> extras) {
     Intent intent = new Intent();
     intent.setAction(action);
     for (String key : extras.keySet())
