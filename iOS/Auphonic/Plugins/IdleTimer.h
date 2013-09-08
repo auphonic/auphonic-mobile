@@ -2,7 +2,7 @@
 
 @interface IdleTimer : CDVPlugin
 
-- (void) enable:(NSMutableArray*)arguments withDict:(NSMutableDictionary*)options;
-- (void) disable:(NSMutableArray*)arguments withDict:(NSMutableDictionary*)options;
+- (void) enable:(CDVInvokedUrlCommand*)command;
+- (void) disable:(CDVInvokedUrlCommand*)command;
 
 @end

@@ -2,11 +2,11 @@
 
 @implementation IdleTimer
 
-- (void)enable:(NSMutableArray*)arguments withDict:(NSMutableDictionary*)options {
+- (void)enable:(CDVInvokedUrlCommand*)command {
   [[UIApplication sharedApplication] setIdleTimerDisabled:NO];
 }
 
-- (void)disable:(NSMutableArray*)arguments withDict:(NSMutableDictionary*)options {
+- (void)disable:(CDVInvokedUrlCommand*)command {
   [[UIApplication sharedApplication] setIdleTimerDisabled:YES];
 }
 
