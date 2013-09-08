@@ -131,4 +131,3 @@ exports.getListSortedByTime = function() {
   });
   return recordings;
 };
-

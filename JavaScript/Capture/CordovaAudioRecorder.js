@@ -16,6 +16,11 @@ module.exports = new Class({
   errorIsDisabled: false,
   hasPlaybackError: false,
 
+  options: {
+    type: null,
+    quality: null
+  },
+
   initialize: function(filename, options) {
     this.setOptions(options);
 
@@ -37,7 +42,10 @@ module.exports = new Class({
     if (!this.media) this.createMediaObject();
     IdleTimer.disable();
     this.fireEvent('start');
-    this.media.startRecord();
+    this.media.startRecord({
+      type: this.options.type,
+      quality: this.options.quality
+    });
     this.timer = this.update.periodical(1000, this);
   },
 
@@ -80,6 +88,8 @@ module.exports = new Class({
       // Access the "File" Object
       this.file.file((function(file) {
         this.file.size = file.size;
+        this.file.recording_type = this.options.type;
+        this.file.recording_quality = (this.options.type == 'wav') ? 'high' : this.options.quality;
         this.fireEvent('success', [this.file]);
         // We are getting rid of the media object so it will be recreated on the next call to start().
         this.media.release();
@@ -191,7 +201,8 @@ module.exports = new Class({
   },
 
   getFileName: function() {
-    return this.filename + '.' + this.extension;
+    var extension = (this.options.type == 'wav') ? 'wav' : this.extension;
+    return this.filename + '.' + extension;
   }
 
 });

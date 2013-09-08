@@ -8,6 +8,8 @@ var View = require('View');
 var renderTemplate = require('UI/renderTemplate');
 var UI = require('UI');
 var Notice = require('UI/Notice');
+var Popover = require('UI/Actions/Popover');
+var TabBar = require('UI/Actions/TabBar');
 
 var AudioRecorder = require('UI/AudioRecorder');
 var CordovaAudioRecorder = require('Capture/CordovaAudioRecorder');
@@ -32,6 +34,7 @@ var upload = require('App/upload');
 var CurrentUpload = require('Store/CurrentUpload');
 var Recording = require('Store/Recording');
 var User = require('Store/User');
+var Settings = require('Store/Settings');
 var WebIntent = require('Cordova/WebIntent');
 
 var Auphonic = require('Auphonic');
@@ -275,7 +278,6 @@ var stopProduction = function(event) {
   event.preventDefault();
 
   this.hide();
-  var uuid = this.get('data-id');
   var url = this.get('data-api-url');
   if (url) API.call(url, this.get('data-method'), 'null');
   // The view will be automatically refreshed through the ProductionStatus instance once the
@@ -559,10 +561,45 @@ Controller.define('/production/recording/new-audio', function() {
   var recorder;
   var object = new View.Object({
     title: 'Recorder',
-    content: renderTemplate('audio-recorder')
+    content: renderTemplate('audio-recorder'),
+    action: {
+      title: 'wav',
+      left: Auphonic.DefaultAudioFormatName,
+      className: 'tab-bar'
+    },
+    onShow: function() {
+      var actionElement = View.getMain().getAction().toElement();
+      var element = actionElement.getElement('.button > span:first-child');
+
+      if (Settings.get('recording-type') == 'wav') actionElement.getElement('.button > span:last-child').addClass('selected');
+      else element.addClass('selected');
+
+      var popover = element.getInstanceOf(Popover);
+      if (!popover) {
+        element.addClass('show-popover').adopt(Element.from(renderTemplate('settings-popover')));
+        UI.update(element);
+      }
+
+      popover = element.getInstanceOf(Popover);
+      var tabBar = popover.getPopover().getElement('div.tab-bar.recording-quality').getInstanceOf(TabBar);
+      if (tabBar) {
+        tabBar.setValue(Settings.get('recording-quality') || Auphonic.DefaultRecordingQuality);
+        tabBar.addEvent('change', function(value) {
+          Settings.set('recording-quality', value);
+        });
+      }
+
+      actionElement.getElements('.button > span').addEvent('click', function() {
+        actionElement.getElements('.button > span').forEach(UI.unhighlight.bind(UI));
+        UI.highlight(this);
+        if (element == this) Settings.set('recording-type', Auphonic.DefaultAudioFormatName);
+        else Settings.set('recording-type', 'wav');
+      });
+    }
   });
 
   View.getMain().push(object);
+
   recorder = new AudioRecorder(CordovaAudioRecorder, object, {
     generateFileName: function() {
       return Auphonic.DefaultFileName.substitute({

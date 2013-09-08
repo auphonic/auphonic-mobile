@@ -22,6 +22,9 @@ exports.GeoLookupService = 'http://maps.googleapis.com/maps/api/geocode/json?lat
 exports.EmailSubject = 'Auphonic Recording';
 
 exports.DefaultAudioFormat = Platform.isIOS() ? 'm4a' : 'ogg';
+exports.DefaultAudioFormatName = Platform.isIOS() ? 'aac' : 'ogg';
+exports.DefaultRecordingQuality = 'high';
+
 exports.DefaultOutputFile = {
   format: 'mp3',
   bitrate: '112'

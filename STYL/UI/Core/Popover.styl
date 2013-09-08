@@ -88,11 +88,14 @@
     left 30%
     right 1px
 
-  &.right:before
+  &.right:before, &.right:after
     left 90.5%
 
-  &.right:after
-    left 90.5%
+  &.settings
+    margin-top 20px
+
+  &.settings:before, &.settings:after
+    left 84%
 
   // Necessary because of CSS specificity
   div.main &:not(.is-full-view) ul

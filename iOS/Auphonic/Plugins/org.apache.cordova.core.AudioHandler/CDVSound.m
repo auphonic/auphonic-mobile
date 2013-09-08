@@ -25,7 +25,6 @@
 #define DOCUMENTS_SCHEME_PREFIX @"documents://"
 #define HTTP_SCHEME_PREFIX @"http://"
 #define HTTPS_SCHEME_PREFIX @"https://"
-#define RECORDING_WAV @"m4a"
 
 @implementation CDVSound
 
@@ -78,11 +77,7 @@
     NSString* filePath = nil;
     NSString* docsPath = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES)[0];
 
-    // first check for correct extension
-    if ([[resourcePath pathExtension] caseInsensitiveCompare:RECORDING_WAV] != NSOrderedSame) {
-        resourceURL = nil;
-        NSLog(@"Resource for recording must have %@ extension", RECORDING_WAV);
-    } else if ([resourcePath hasPrefix:DOCUMENTS_SCHEME_PREFIX]) {
+    if ([resourcePath hasPrefix:DOCUMENTS_SCHEME_PREFIX]) {
         // try to find Documents:// resources
         filePath = [resourcePath stringByReplacingOccurrencesOfString:DOCUMENTS_SCHEME_PREFIX withString:[NSString stringWithFormat:@"%@/", docsPath]];
         NSLog(@"Will use resource '%@' from the documents folder with path = %@", resourcePath, filePath);
@@ -521,6 +516,8 @@
     CDVAudioFile* audioFile = [self audioFileForResource:[command.arguments objectAtIndex:1] withId:mediaId doValidation:YES forRecording:YES];
     NSString* jsString = nil;
     NSString* errorMsg = @"";
+    NSString* recordingType = [command.arguments objectAtIndex:2];
+    NSString* recordingQuality = [command.arguments objectAtIndex:3];
 
     if ((audioFile != nil) && (audioFile.resourceURL != nil)) {
         NSError* __autoreleasing error = nil;
@@ -541,14 +538,23 @@
         // reuse the recorder if possible and resume recording
         if (audioFile.recorder == nil) {
             UInt32 channels;
+            UInt32 audioFormat;
+            Float32 sampleRate = 44100.0;
             UInt32 size = sizeof(channels);
             AudioSessionGetProperty(kAudioSessionProperty_CurrentHardwareInputNumberChannels, &size, &channels);
 
-            // Thank You Dear Sir
+            if (recordingType != nil && [recordingType isEqualToString:@"wav"]) audioFormat = kAudioFormatLinearPCM;
+            else audioFormat = kAudioFormatMPEG4AAC;
+
+            if (audioFormat == kAudioFormatMPEG4AAC && recordingQuality != nil) {
+                if ([recordingQuality isEqualToString:@"low"]) sampleRate = 11025.0;
+                else if ([recordingQuality isEqualToString:@"average"]) sampleRate = 22050.0;
+            }
+
             // http://stackoverflow.com/questions/11347760/avaudiorecorder-proper-mpeg4-aac-recording-settings
             NSDictionary *settings = [NSDictionary dictionaryWithObjectsAndKeys:
-                                      [NSNumber numberWithInt:kAudioFormatMPEG4AAC], AVFormatIDKey,
-                                      [NSNumber numberWithFloat:44100.0], AVSampleRateKey,
+                                      [NSNumber numberWithInt:audioFormat], AVFormatIDKey,
+                                      [NSNumber numberWithFloat:sampleRate], AVSampleRateKey,
                                       [NSNumber numberWithInt:channels], AVNumberOfChannelsKey,
                                       [NSNumber numberWithInt:AVAudioQualityMax], AVSampleRateConverterAudioQualityKey,
                                       [NSNumber numberWithInt:160000], AVEncoderBitRateKey,

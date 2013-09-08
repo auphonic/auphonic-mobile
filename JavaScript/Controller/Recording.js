@@ -12,6 +12,8 @@ var Form = require('App/Form');
 var Recording = require('Store/Recording');
 var User = require('Store/User');
 
+var Auphonic = require('Auphonic');
+
 var sizes = ['b', 'KB', 'MB', 'GB', 'TB'];
 var form = null;
 
@@ -110,6 +112,12 @@ var show = function(recording) {
   View.getMain().push(object);
 };
 
+var qualities = {
+  'low': 'LQ',
+  'average': 'MQ',
+  'high': 'HQ'
+};
+
 var showOne = function(req) {
   var recording = Recording.findById(req.id);
   recording.media_files = JSON.stringify([recording.fullPath]);
@@ -117,6 +125,7 @@ var showOne = function(req) {
   recording.display_date = formatTimestamp(recording.timestamp);
   recording.display_size = formatFileSize(recording.size);
   recording.duration_string = Data.formatDuration(recording.duration, ' ');
+  recording.type = ((recording.media_type == 'video') ? 'Video' : (recording.recording_type || Auphonic.DefaultAudioFormatName).toUpperCase()) + ' ' + (qualities[recording.recording_quality] || 'HQ');
   recording.isLocal = true;
 
   if (recording.media_type == 'audio') recording.isAudio = true;

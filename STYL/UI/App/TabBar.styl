@@ -1,0 +1,25 @@
+div.tab-bar
+  height 30px
+  line-height 30px
+
+  border 1px solid #ff3b30
+  border-radius 4px
+
+  display -webkit-box
+
+  > div
+    display block
+    flex 1
+
+    color #ff3b30
+    text-align center
+
+    background none
+    border-right 1px solid #ff3b30
+
+    &:last-child
+      border-right none
+
+    &.selected
+      color #fff
+      background #ff3b30

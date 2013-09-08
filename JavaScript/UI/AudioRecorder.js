@@ -8,6 +8,8 @@ var Data = require('App/Data');
 var UI = require('UI');
 var Notice = require('UI/Notice');
 
+var Settings = require('Store/Settings');
+
 var Platform = require('Platform');
 
 module.exports = new Class({
@@ -65,7 +67,10 @@ module.exports = new Class({
     if (this.recorder) return;
 
     this.object.addEvent('hide:once', this.bound('onHideOnce'));
-    this.recorder = new this.recorderClass(this.options.generateFileName.call(this));
+    this.recorder = new this.recorderClass(this.options.generateFileName.call(this), {
+      type: Settings.get('recording-type'),
+      quality: Settings.get('recording-quality')
+    });
     this.recorder.addEvents({
       start: this.bound('onStart'),
       stop: this.bound('onStop'),

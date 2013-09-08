@@ -52,6 +52,7 @@ var Controller = require('Controller');
 var URLDelegate = require('Controller/URLDelegate');
 var SwipeAble = require('UI/Actions/SwipeAble');
 var Popover = require('UI/Actions/Popover');
+var TabBar = require('UI/Actions/TabBar');
 var Notice = require('UI/Notice');
 var Spinner = require('Spinner');
 
@@ -377,19 +378,7 @@ window.__BOOTAPP = function() {
       elements.addEvent('click', onDeleteClick);
     },
 
-    'label.info, .show-popover': Class.Instantiate(Popover, {
-      selector: popoverSelector,
-      scrollSelector: 'div.scrollable',
-      positionProperty: 'data-position',
-      forcePositionProperty: 'data-force-position',
-      eventProperty: 'data-popover-open-event',
-      closeEventProperty: 'data-popover-close-event',
-      closeOnTapProperty: 'data-close-on-tap',
-      highlightTextProperty: 'data-highlight-text',
-      openDelay: 'data-popover-open-delay',
-      animationClass: 'fade',
-      arrowHeight: 14
-    }),
+    'div.tab-bar': Class.Instantiate(TabBar),
 
     'input[data-clearable]': Class.Instantiate(Form.Clearable, {
       className: 'clearable-visible'
@@ -532,6 +521,21 @@ window.__BOOTAPP = function() {
     }
 
   });
+
+  // Add Popover as last UI modifier so it doesn't interfere with previous ones
+  UI.register('label.info, .show-popover', Class.Instantiate(Popover, {
+    selector: popoverSelector,
+    scrollSelector: 'div.scrollable',
+    positionProperty: 'data-position',
+    forcePositionProperty: 'data-force-position',
+    eventProperty: 'data-popover-open-event',
+    closeEventProperty: 'data-popover-close-event',
+    closeOnTapProperty: 'data-close-on-tap',
+    highlightTextProperty: 'data-highlight-text',
+    openDelay: 'data-popover-open-delay',
+    animationClass: 'fade',
+    arrowHeight: 14
+  }));
 
   if (Platform.isIOS()) UI.register('.swipeable', Class.Instantiate(SwipeAble, {
     selector: '.removable > span',
