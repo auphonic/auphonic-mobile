@@ -110,7 +110,7 @@ textarea.autogrow
       .ios &
         border-radius 50%
       .android &
-        border-radius 6px
+        border-radius 0
 
       &:before
         content attr(data-on)
@@ -123,6 +123,7 @@ textarea.autogrow
         text-align center
 
         .android &
+          top 8px
           left -60px
 
       &::after
@@ -136,7 +137,8 @@ textarea.autogrow
         text-align center
 
         .android &
-          left 23px
+          top 8px
+          left 32px
 
     &:hover > .thumb
       background-image none

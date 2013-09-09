@@ -19,7 +19,7 @@ footer
     top $header-height - 2px // Account for missing header border-top style
 
   transition-property -webkit-transform, opacity, height
-  transition-timing-function ease-in-out
+  transition-timing-function ease-out
   transition-duration 350ms
 
   .ios &
@@ -40,8 +40,13 @@ footer
 
   z-index 10
   overflow hidden
-  border-top #d7d7d7 1px solid
   background-color #f7f7f7
+
+  .ios &
+    border-top #d7d7d7 1px solid
+
+  .android &
+    border-bottom #d7d7d7 1px solid
 
   ul
     margin 0
@@ -57,53 +62,28 @@ footer
       > a
         position relative
         display block
+        height $footer-height
 
         text-decoration none
 
-        .ios &
+        > span:first-child
+          display block
           height $footer-height
+          background-position center 4px
+          background-repeat no-repeat
+          opacity 0.95
 
-          > span:first-child
-            display block
-            height $footer-height
-            background-position center 4px
-            background-repeat no-repeat
-            .ios &
-              opacity 0.95
+        > span:last-child
+          position absolute
+          left 0
+          right 0
+          bottom 4px
 
-          > span:last-child
-            position absolute
-            left 0
-            right 0
-            bottom 4px
+          color #929292
+          font-family $font-ios
+          text-align center
+          font-weight 500
+          font-size 10px
 
-            color #929292
-            font-family $font-ios
-            text-align center
-            font-weight 500
-            font-size 10px
-
-          &.selected > span:last-child
-            color $color-link
-
-        .android &
-          padding 0
-          height $footer-height - 2px
-          border-bottom 2px solid #df5d5d
-
-          &.selected
-            height $footer-height - 5px
-            border-bottom 5px solid #df5d5d
-            background-color #222
-
-          > span:first-child
-            display none
-
-          > span:last-child
-            display block
-            text-align center
-            color #eee
-            font-size 11px
-            font-weight 500
-
-            line-height $footer-height
+        &.selected > span:last-child
+          color $color-link

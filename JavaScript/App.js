@@ -601,6 +601,7 @@ window.__BOOTAPP = function() {
     onChange: function(options) {
       var stack = this.getStack();
       var stackName = stack.getName();
+      var header = document.getElement('header');
       var footer = document.getElement('footer');
 
       UI.highlight(footer.getElement('.' + stackName));
@@ -611,10 +612,11 @@ window.__BOOTAPP = function() {
           var currentElement = this.getCurrentObject().getScrollableElement();
           if (stack.getLength() == 1) {
             currentElement.removeClass('big');
+            header.removeClass('with-border');
             footer.removeClass('left');
-
           } else {
             currentElement.addClass('big');
+            header.addClass('with-border');
             footer.addClass('left');
           }
         }).delay(1, this);
