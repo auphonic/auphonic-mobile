@@ -10,6 +10,7 @@ var Notice = require('UI/Notice');
 
 var Settings = require('Store/Settings');
 
+var Auphonic = require('Auphonic');
 var Platform = require('Platform');
 
 module.exports = new Class({
@@ -68,8 +69,8 @@ module.exports = new Class({
 
     this.object.addEvent('hide:once', this.bound('onHideOnce'));
     this.recorder = new this.recorderClass(this.options.generateFileName.call(this), {
-      type: Settings.get('recording-type'),
-      quality: Settings.get('recording-quality')
+      type: Settings.get('recording-type') || Auphonic.DefaultAudioFormatName,
+      quality: Settings.get('recording-quality') || 'high'
     });
     this.recorder.addEvents({
       start: this.bound('onStart'),
