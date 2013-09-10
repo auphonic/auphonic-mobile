@@ -3,10 +3,10 @@
     <name>Auphonic</name>
     <description>
       Auphonic Audio Recorder
-  </description>
+    </description>
     <author email="mobile@auphonic.com" href="http://auphonic.com">
       Auphonic Team
-  </author>
+    </author>
     <access origin="https://10.0.0.4" />
     <access origin="http://auphonic.com" />
     <access origin="https://auphonic.com" />
@@ -25,7 +25,7 @@
         <param name="android-package" value="com.borismus.webintent.WebIntent" />
     </feature>
     <feature name="IdleTimer">
-        <param name="android-package" value="com.borismus.webintent.IdleTimer" />
+        <param name="android-package" value="com.auphonic.plugins.IdleTimer" />
     </feature>
     <feature name="Camera">
         <param name="android-package" value="org.apache.cordova.camera.CameraLauncher" />
