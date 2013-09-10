@@ -114,7 +114,7 @@ var store = function(name, data) {
   else localStorage.setItem(cacheKey + name, data);
 };
 var retrieve = function(name) {
-  return localStorage.getItem(cacheyKey + name);
+  return localStorage.getItem(cacheKey + name);
 };
 
 var loadFromServer = function() {
@@ -152,9 +152,9 @@ var loadFromServer = function() {
 };
 
 var loadFromCache = function(options) {
-  var versionJS = localStorage.getItem(cacheKey + 'version');
-  var js = localStorage.getItem(cacheKey + 'js');
-  var css = localStorage.getItem(cacheKey + 'css');
+  var versionJS = retrieve('version');
+  var js = retrieve('js');
+  var css = retrieve('css');
   if (!versionJS || !js || !css) {
     if (options && options.fallback === false) error();
     else loadFromServer();

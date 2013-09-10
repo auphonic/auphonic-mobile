@@ -17,7 +17,7 @@
  under the License.
  */
 
-package com.auphonic.app;
+package com.auphonic.www;
 
 import android.view.WindowManager.LayoutParams;
 import android.os.Bundle;
