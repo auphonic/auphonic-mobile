@@ -16,7 +16,7 @@ plugman install --platform ios --project ../iOS --www ../App --plugin https://gi
 plugman install --platform ios --project ../iOS --www ../App --plugin https://git-wip-us.apache.org/repos/asf/cordova-plugin-splashscreen.git
 
 plugman uninstall --platform ios --project ../iOS --plugin org.apache.cordova.core.AudioHandler
-plugman install --platform ios --project ../iOS --www ../App --plugin https://github.com/cpojer/cordova-plugin-media
+plugman install --platform ios --project ../iOS --www ../App --plugin https://github.com/auphonic/cordova-plugin-media
 
 plugman install --platform android --project ../Android --www ../App --plugin https://git-wip-us.apache.org/repos/asf/cordova-plugin-camera.git
 plugman install --platform android --project ../Android --www ../App --plugin https://git-wip-us.apache.org/repos/asf/cordova-plugin-device.git
@@ -33,4 +33,4 @@ plugman install --platform android --project ../Android --www ../App --plugin ht
 plugman install --platform android --project ../Android --www ../App --plugin https://git-wip-us.apache.org/repos/asf/cordova-plugin-splashscreen.git
 
 plugman uninstall --platform android --project ../Android --plugin org.apache.cordova.core.AudioHandler
-plugman install --platform android --project ../Android --www ../App --plugin https://github.com/cpojer/cordova-plugin-media
+plugman install --platform android --project ../Android --www ../App --plugin https://github.com/auphonic/cordova-plugin-media
