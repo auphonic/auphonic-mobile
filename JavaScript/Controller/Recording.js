@@ -82,6 +82,7 @@ var show = function(recording) {
     content: renderTemplate('recording', recording),
     action: {
       title: 'Upload',
+      className: 'upload',
       url: recording.uploadURL
     },
     onShow: function() {
