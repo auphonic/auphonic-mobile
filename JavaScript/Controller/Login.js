@@ -95,6 +95,7 @@ Controller.define('/login/:path*:', function(req) {
 
   login.getElement('a.no-login').addEvent('click', function(event) {
     event.preventDefault();
+    login.empty();
 
     History.push('/');
   });
