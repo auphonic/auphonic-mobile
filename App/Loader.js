@@ -125,7 +125,6 @@ var loadFromServer = function() {
 
     // On Android, if the user is offline, __APP_VERSION will be undefined
     if (!window.__APP_VERSION) {
-      console.log('app_version is undefined');
       loadFromCache({fallback: false});
       return this;
     }
