@@ -539,7 +539,7 @@
         if (audioFile.recorder == nil) {
             UInt32 channels;
             UInt32 audioFormat;
-            Float32 sampleRate = 44100.0;
+            UInt32 bitRate = 160000;
             UInt32 size = sizeof(channels);
             AudioSessionGetProperty(kAudioSessionProperty_CurrentHardwareInputNumberChannels, &size, &channels);
 
@@ -547,17 +547,17 @@
             else audioFormat = kAudioFormatMPEG4AAC;
 
             if (audioFormat == kAudioFormatMPEG4AAC && recordingQuality != nil) {
-                if ([recordingQuality isEqualToString:@"low"]) sampleRate = 11025.0;
-                else if ([recordingQuality isEqualToString:@"average"]) sampleRate = 22050.0;
+                if ([recordingQuality isEqualToString:@"low"]) bitRate = 64000;
+                else if ([recordingQuality isEqualToString:@"average"]) bitRate = 128000;
             }
 
             // http://stackoverflow.com/questions/11347760/avaudiorecorder-proper-mpeg4-aac-recording-settings
             NSDictionary *settings = [NSDictionary dictionaryWithObjectsAndKeys:
                                       [NSNumber numberWithInt:audioFormat], AVFormatIDKey,
-                                      [NSNumber numberWithFloat:sampleRate], AVSampleRateKey,
+                                      [NSNumber numberWithFloat:44100.0], AVSampleRateKey,
                                       [NSNumber numberWithInt:channels], AVNumberOfChannelsKey,
                                       [NSNumber numberWithInt:AVAudioQualityMax], AVSampleRateConverterAudioQualityKey,
-                                      [NSNumber numberWithInt:160000], AVEncoderBitRateKey,
+                                      [NSNumber numberWithInt:bitRate], AVEncoderBitRateKey,
                                       [NSNumber numberWithInt:16], AVEncoderBitDepthHintKey,
                                       nil];
 
