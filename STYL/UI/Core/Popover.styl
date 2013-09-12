@@ -90,8 +90,14 @@
   .ios &.settings
     margin-top 30px
 
+  .android &.settings
+    margin-top 10px
+
   &.settings:before, &.settings:after
     left 84%
+
+  .android &.settings:before, .android &.settings:after
+    left 87%
 
   // Necessary because of CSS specificity
   div.main &:not(.is-full-view) ul
