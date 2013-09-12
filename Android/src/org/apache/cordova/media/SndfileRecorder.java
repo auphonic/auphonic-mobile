@@ -132,6 +132,12 @@ public class SndfileRecorder extends Thread
   // File path for the output file.
   private String                  mPath;
 
+  // Recording type
+  private String                  mType;
+
+  // Recording quality
+  private String                  mQuality;
+
   // Handler to notify at the above report interval
   private Handler                 mHandler;
 
@@ -141,10 +147,12 @@ public class SndfileRecorder extends Thread
   /***************************************************************************
    * Implementation
    **/
-  public SndfileRecorder(String path, Handler handler)
+  public SndfileRecorder(String path, Handler handler, String type, String quality)
   {
     mPath = path;
     mHandler = handler;
+    mType = type;
+    mQuality = quality;
     Log.d(LTAG, "New SndfileRecorder, path: " + mPath);
 
   }
@@ -293,9 +301,18 @@ public class SndfileRecorder extends Thread
       int mapped_channels = mapChannelConfig(channel_config);
       int bytesPerSecond = sample_rate * (mapped_format / 8) * mapped_channels;
 
+      int recording_type = 0; // ogg
+      double recording_quality = 0.95; // between 0 - 1
+      if (mType.equals("wav")) recording_type = 1;
+
+      if (recording_type == 0) {
+        if (mQuality.equals("low")) recording_quality = 0.38;
+        else if (mQuality.equals("average")) recording_quality = 0.75;
+      }
+
       // Set up encoder. Create path for the file if it doesn't yet exist.
-      Log.d(LTAG, "Setting up encoder " + mPath + " rate: " + sample_rate + " channels: " + mapped_channels + " format " + mapped_format);
-      mEncoder = new SndfileEncoder(mPath, sample_rate, mapped_channels, mapped_format);
+      Log.d(LTAG, "Setting up encoder " + mPath + " rate: " + sample_rate + " channels: " + mapped_channels + " format " + mapped_format + " type " + mType + " quality " + mQuality);
+      mEncoder = new SndfileEncoder(mPath, sample_rate, mapped_channels, mapped_format, recording_type, recording_quality);
       Log.d(LTAG, "Encoder setup complete.");
       // Start recording loop
       mDuration = 0.0;
