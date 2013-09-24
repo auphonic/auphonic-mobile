@@ -36,9 +36,9 @@ public class SndfileEncoder
    * bits_per_sample must be either 8 or 16
    **/
   public SndfileEncoder(String outfile, int sample_rate, int channels,
-      int bits_per_sample)
+      int bits_per_sample, int recording_type, double recording_quality)
   {
-    init(outfile, sample_rate, channels, bits_per_sample);
+    init(outfile, sample_rate, channels, bits_per_sample, recording_type, recording_quality);
   }
 
 
@@ -51,10 +51,10 @@ public class SndfileEncoder
 
 
   public void reset(String outfile, int sample_rate, int channels,
-      int bits_per_sample)
+      int bits_per_sample, int recording_type, double recording_quality)
   {
     deinit();
-    init(outfile, sample_rate, channels, bits_per_sample);
+    init(outfile, sample_rate, channels, bits_per_sample, recording_type, recording_quality);
   }
 
 
@@ -81,7 +81,7 @@ public class SndfileEncoder
    * Constructor equivalent
    **/
   native private void init(String outfile, int sample_rate, int channels,
-      int bits_per_sample);
+      int bits_per_sample, int recording_type, double recording_quality);
 
   /**
    * Destructor equivalent, but can be called multiple times.

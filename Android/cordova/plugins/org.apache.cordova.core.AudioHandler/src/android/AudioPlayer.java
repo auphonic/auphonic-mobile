@@ -175,7 +175,7 @@ public class AudioPlayer implements OnCompletionListener, OnPreparedListener, On
      *
      * @param file              The name of the file
      */
-    public void startRecording(String file) {
+    public void startRecording(String file, String type, String quality) {
         switch (this.mode) {
         case PLAY:
             Log.d(LOG_TAG, "AudioPlayer Error: Can't record in play mode.");
@@ -184,7 +184,7 @@ public class AudioPlayer implements OnCompletionListener, OnPreparedListener, On
         case NONE:
             if (this.recorder == null) {
                 this.audioFile = Environment.getExternalStorageDirectory().getAbsolutePath() + "/" + file;
-                this.recorder = new SndfileRecorder(this.audioFile, mInternalHandler);
+                this.recorder = new SndfileRecorder(this.audioFile, mInternalHandler, type, quality);
                 this.recorder.start();
             }
 

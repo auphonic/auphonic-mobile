@@ -27,7 +27,8 @@ enum CDVMediaError {
     MEDIA_ERR_ABORTED = 1,
     MEDIA_ERR_NETWORK = 2,
     MEDIA_ERR_DECODE = 3,
-    MEDIA_ERR_NONE_SUPPORTED = 4
+    MEDIA_ERR_NONE_SUPPORTED = 4,
+    MEDIA_ERR_PERMISSION = 5
 };
 typedef NSUInteger CDVMediaError;
 

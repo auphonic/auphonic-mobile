@@ -508,96 +508,104 @@
 
 - (void)startRecordingAudio:(CDVInvokedUrlCommand*)command
 {
-    NSString* callbackId = command.callbackId;
+    [[AVAudioSession sharedInstance] requestRecordPermission:^(BOOL granted) {
+        NSString* callbackId = command.callbackId;
 
 #pragma unused(callbackId)
 
-    NSString* mediaId = [command.arguments objectAtIndex:0];
-    CDVAudioFile* audioFile = [self audioFileForResource:[command.arguments objectAtIndex:1] withId:mediaId doValidation:YES forRecording:YES];
-    NSString* jsString = nil;
-    NSString* errorMsg = @"";
-    NSString* recordingType = [command.arguments objectAtIndex:2];
-    NSString* recordingQuality = [command.arguments objectAtIndex:3];
+        NSString* mediaId = [command.arguments objectAtIndex:0];
+        CDVAudioFile* audioFile = [self audioFileForResource:[command.arguments objectAtIndex:1] withId:mediaId doValidation:YES forRecording:YES];
+        NSString* jsString = nil;
+        NSString* errorMsg = @"";
+        NSString* recordingType = [command.arguments objectAtIndex:2];
+        NSString* recordingQuality = [command.arguments objectAtIndex:3];
+        
+        if (granted) {
+            if ((audioFile != nil) && (audioFile.resourceURL != nil)) {
+                NSError* __autoreleasing error = nil;
 
-    if ((audioFile != nil) && (audioFile.resourceURL != nil)) {
-        NSError* __autoreleasing error = nil;
+                // get the audioSession and set the category to allow recording when device is locked or ring/silent switch engaged
+                if ([self hasAudioSession]) {
+                    [self.avSession setCategory:AVAudioSessionCategoryRecord error:nil];
+                    if (![self.avSession setActive:YES error:&error]) {
+                        // other audio with higher priority that does not allow mixing could cause this to fail
+                        errorMsg = [NSString stringWithFormat:@"Unable to record audio: %@", [error localizedFailureReason]];
+                        // jsString = [NSString stringWithFormat: @"%@(\"%@\",%d,%d);", @"cordova.require('org.apache.cordova.core.AudioHandler.Media').onStatus", mediaId, MEDIA_ERROR, MEDIA_ERR_ABORTED];
+                        jsString = [NSString stringWithFormat:@"%@(\"%@\",%d,%@);", @"cordova.require('org.apache.cordova.core.AudioHandler.Media').onStatus", mediaId, MEDIA_ERROR, [self createMediaErrorWithCode:MEDIA_ERR_ABORTED message:errorMsg]];
+                        [self.commandDelegate evalJs:jsString];
+                        return;
+                    }
+                }
 
-        // get the audioSession and set the category to allow recording when device is locked or ring/silent switch engaged
-        if ([self hasAudioSession]) {
-            [self.avSession setCategory:AVAudioSessionCategoryRecord error:nil];
-            if (![self.avSession setActive:YES error:&error]) {
-                // other audio with higher priority that does not allow mixing could cause this to fail
-                errorMsg = [NSString stringWithFormat:@"Unable to record audio: %@", [error localizedFailureReason]];
-                // jsString = [NSString stringWithFormat: @"%@(\"%@\",%d,%d);", @"cordova.require('org.apache.cordova.core.AudioHandler.Media').onStatus", mediaId, MEDIA_ERROR, MEDIA_ERR_ABORTED];
-                jsString = [NSString stringWithFormat:@"%@(\"%@\",%d,%@);", @"cordova.require('org.apache.cordova.core.AudioHandler.Media').onStatus", mediaId, MEDIA_ERROR, [self createMediaErrorWithCode:MEDIA_ERR_ABORTED message:errorMsg]];
-                [self.commandDelegate evalJs:jsString];
-                return;
-            }
-        }
+                // reuse the recorder if possible and resume recording
+                if (audioFile.recorder == nil) {
+                    UInt32 channels;
+                    UInt32 audioFormat;
+                    UInt32 bitRate = 160000;
+                    UInt32 size = sizeof(channels);
+                    AudioSessionGetProperty(kAudioSessionProperty_CurrentHardwareInputNumberChannels, &size, &channels);
 
-        // reuse the recorder if possible and resume recording
-        if (audioFile.recorder == nil) {
-            UInt32 channels;
-            UInt32 audioFormat;
-            UInt32 bitRate = 160000;
-            UInt32 size = sizeof(channels);
-            AudioSessionGetProperty(kAudioSessionProperty_CurrentHardwareInputNumberChannels, &size, &channels);
+                    if (recordingType != nil && [recordingType isEqualToString:@"wav"]) audioFormat = kAudioFormatLinearPCM;
+                    else audioFormat = kAudioFormatMPEG4AAC;
 
-            if (recordingType != nil && [recordingType isEqualToString:@"wav"]) audioFormat = kAudioFormatLinearPCM;
-            else audioFormat = kAudioFormatMPEG4AAC;
+                    if (audioFormat == kAudioFormatMPEG4AAC && recordingQuality != nil) {
+                        if ([recordingQuality isEqualToString:@"low"]) bitRate = 64000;
+                        else if ([recordingQuality isEqualToString:@"average"]) bitRate = 128000;
+                    }
 
-            if (audioFormat == kAudioFormatMPEG4AAC && recordingQuality != nil) {
-                if ([recordingQuality isEqualToString:@"low"]) bitRate = 64000;
-                else if ([recordingQuality isEqualToString:@"average"]) bitRate = 128000;
-            }
+                    // http://stackoverflow.com/questions/11347760/avaudiorecorder-proper-mpeg4-aac-recording-settings
+                    NSDictionary *settings = [NSDictionary dictionaryWithObjectsAndKeys:
+                                              [NSNumber numberWithInt:audioFormat], AVFormatIDKey,
+                                              [NSNumber numberWithFloat:44100.0], AVSampleRateKey,
+                                              [NSNumber numberWithInt:channels], AVNumberOfChannelsKey,
+                                              [NSNumber numberWithInt:AVAudioQualityMax], AVSampleRateConverterAudioQualityKey,
+                                              [NSNumber numberWithInt:bitRate], AVEncoderBitRateKey,
+                                              [NSNumber numberWithInt:16], AVEncoderBitDepthHintKey,
+                                              nil];
 
-            // http://stackoverflow.com/questions/11347760/avaudiorecorder-proper-mpeg4-aac-recording-settings
-            NSDictionary *settings = [NSDictionary dictionaryWithObjectsAndKeys:
-                                      [NSNumber numberWithInt:audioFormat], AVFormatIDKey,
-                                      [NSNumber numberWithFloat:44100.0], AVSampleRateKey,
-                                      [NSNumber numberWithInt:channels], AVNumberOfChannelsKey,
-                                      [NSNumber numberWithInt:AVAudioQualityMax], AVSampleRateConverterAudioQualityKey,
-                                      [NSNumber numberWithInt:bitRate], AVEncoderBitRateKey,
-                                      [NSNumber numberWithInt:16], AVEncoderBitDepthHintKey,
-                                      nil];
+                    audioFile.recorder = [[CDVAudioRecorder alloc] initWithURL:audioFile.resourceURL settings:settings error:&error];
+                }
 
-            audioFile.recorder = [[CDVAudioRecorder alloc] initWithURL:audioFile.resourceURL settings:settings error:&error];
-        }
+                bool recordingSuccess = NO;
+                if (error == nil) {
+                    audioFile.recorder.delegate = self;
+                    audioFile.recorder.mediaId = mediaId;
+                    recordingSuccess = [audioFile.recorder record];
+                    if (recordingSuccess) {
+                        audioFile.recorder.meteringEnabled = YES;
+                        levelTimer = [NSTimer scheduledTimerWithTimeInterval: 0.05 target: self selector: @selector(levelTimerCallback:) userInfo: mediaId repeats: YES];
 
-        bool recordingSuccess = NO;
-        if (error == nil) {
-            audioFile.recorder.delegate = self;
-            audioFile.recorder.mediaId = mediaId;
-            recordingSuccess = [audioFile.recorder record];
-            if (recordingSuccess) {
-                audioFile.recorder.meteringEnabled = YES;
-                levelTimer = [NSTimer scheduledTimerWithTimeInterval: 0.05 target: self selector: @selector(levelTimerCallback:) userInfo: mediaId repeats: YES];
+                        NSLog(@"Started recording audio sample '%@'", audioFile.resourcePath);
+                        jsString = [NSString stringWithFormat:@"%@(\"%@\",%d,%d);", @"cordova.require('org.apache.cordova.core.AudioHandler.Media').onStatus", mediaId, MEDIA_STATE, MEDIA_RUNNING];
+                    }
+                }
 
-                NSLog(@"Started recording audio sample '%@'", audioFile.resourcePath);
-                jsString = [NSString stringWithFormat:@"%@(\"%@\",%d,%d);", @"cordova.require('org.apache.cordova.core.AudioHandler.Media').onStatus", mediaId, MEDIA_STATE, MEDIA_RUNNING];
-            }
-        }
-
-        if ((error != nil) || (recordingSuccess == NO)) {
-            if (error != nil) {
-                errorMsg = [NSString stringWithFormat:@"Failed to initialize AVAudioRecorder: %@\n", [error localizedFailureReason]];
+                if ((error != nil) || (recordingSuccess == NO)) {
+                    if (error != nil) {
+                        errorMsg = [NSString stringWithFormat:@"Failed to initialize AVAudioRecorder: %@\n", [error localizedFailureReason]];
+                    } else {
+                        errorMsg = @"Failed to start recording using AVAudioRecorder";
+                    }
+                    audioFile.recorder = nil;
+                    if (self.avSession) {
+                        [self.avSession setActive:NO error:nil];
+                    }
+                    jsString = [NSString stringWithFormat:@"%@(\"%@\",%d,%@);", @"cordova.require('org.apache.cordova.core.AudioHandler.Media').onStatus", mediaId, MEDIA_ERROR, [self createMediaErrorWithCode:MEDIA_ERR_ABORTED message:errorMsg]];
+                }
             } else {
-                errorMsg = @"Failed to start recording using AVAudioRecorder";
+                // file did not validate
+                NSString* errorMsg = [NSString stringWithFormat:@"Could not record audio at '%@'", audioFile.resourcePath];
+                jsString = [NSString stringWithFormat:@"%@(\"%@\",%d,%@);", @"cordova.require('org.apache.cordova.core.AudioHandler.Media').onStatus", mediaId, MEDIA_ERROR, [self createMediaErrorWithCode:MEDIA_ERR_ABORTED message:errorMsg]];
             }
-            audioFile.recorder = nil;
-            if (self.avSession) {
-                [self.avSession setActive:NO error:nil];
-            }
-            jsString = [NSString stringWithFormat:@"%@(\"%@\",%d,%@);", @"cordova.require('org.apache.cordova.core.AudioHandler.Media').onStatus", mediaId, MEDIA_ERROR, [self createMediaErrorWithCode:MEDIA_ERR_ABORTED message:errorMsg]];
+        } else {
+            errorMsg = @"Permission to access microphone not granted.";
+            jsString = [NSString stringWithFormat:@"%@(\"%@\",%d,%@);", @"cordova.require('org.apache.cordova.core.AudioHandler.Media').onStatus", mediaId, MEDIA_ERROR, [self createMediaErrorWithCode:MEDIA_ERR_PERMISSION message:errorMsg]];
         }
-    } else {
-        // file did not validate
-        NSString* errorMsg = [NSString stringWithFormat:@"Could not record audio at '%@'", audioFile.resourcePath];
-        jsString = [NSString stringWithFormat:@"%@(\"%@\",%d,%@);", @"cordova.require('org.apache.cordova.core.AudioHandler.Media').onStatus", mediaId, MEDIA_ERROR, [self createMediaErrorWithCode:MEDIA_ERR_ABORTED message:errorMsg]];
-    }
-    if (jsString) {
-        [self.commandDelegate evalJs:jsString];
-    }
+
+        if (jsString) {
+            [self.commandDelegate evalJs:jsString];
+        }
+    }];
     return;
 }
 

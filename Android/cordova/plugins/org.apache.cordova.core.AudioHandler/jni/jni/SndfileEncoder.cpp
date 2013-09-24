@@ -135,11 +135,13 @@ public:
    * Takes ownership of the outfile.
    **/
   SndfileEncoder(char * outfile, int sample_rate, int channels,
-      int bits_per_sample)
+      int bits_per_sample, int recording_type, double recording_quality)
     : m_outfile(outfile)
     , m_sample_rate(sample_rate)
     , m_channels(channels)
     , m_bits_per_sample(bits_per_sample)
+    , m_recording_type(recording_type)
+    , m_recording_quality(recording_quality)
     , m_sfoutfile(NULL)
     , m_max_amplitude(0)
     , m_average_sum(0)
@@ -170,8 +172,13 @@ public:
 
     // set audio file format
     // TODO: this is hardcoded to vorbis ATM!
-    // m_sfinfo.format = SF_FORMAT_WAV | SF_FORMAT_PCM_16;  // 16bit WAV
-    m_sfinfo.format = SF_FORMAT_OGG | SF_FORMAT_VORBIS;
+    if (m_recording_type == 1) { // WAV
+      if (m_bits_per_sample == 8) m_sfinfo.format = SF_FORMAT_WAV | SF_FORMAT_PCM_S8;  // 8bit signed WAV
+      else m_sfinfo.format = SF_FORMAT_WAV | SF_FORMAT_PCM_16;  // 16bit WAV
+    } else { // OGG
+      m_sfinfo.format = SF_FORMAT_OGG | SF_FORMAT_VORBIS;
+
+    }
 
     // NOTE about vorbis:
     // - see below for bitrate settings!
@@ -201,9 +208,10 @@ public:
     //   0.85 = 150k
     //   0.9 = 160k
     //   -> the bitrate seems to be fixed, so I don't know if this is VBR !?
-    // TODO: don't hardcode this !!!
-    double quality = 0.85;
-    sf_command(m_sfoutfile, SFC_SET_VBR_ENCODING_QUALITY, &quality, sizeof (quality)) ;
+    if (m_recording_type == 0) {
+      double quality = m_recording_quality;
+      sf_command(m_sfoutfile, SFC_SET_VBR_ENCODING_QUALITY, &quality, sizeof (quality)) ;
+    }
 
     // Allocate write buffer. Based on observations noted down in issue #106, we'll
     // choose this to be 32k in size. Actual allocation happens lazily.
@@ -552,6 +560,8 @@ private:
   int     m_sample_rate;
   int     m_channels;
   int     m_bits_per_sample;
+  int     m_recording_type;
+  double  m_recording_quality;
 
   // variables for libsndfile
   SNDFILE *m_sfoutfile;
@@ -630,13 +640,13 @@ extern "C" {
 
 void
 Java_com_auphonic_jni_SndfileEncoder_init(JNIEnv * env, jobject obj,
-    jstring outfile, jint sample_rate, jint channels, jint bits_per_sample)
+    jstring outfile, jint sample_rate, jint channels, jint bits_per_sample, jint recording_type, jdouble recording_quality)
 {
   assert(sizeof(jlong) >= sizeof(SndfileEncoder *));
 
   SndfileEncoder * encoder = new SndfileEncoder(
       aj::convert_jstring_path(env, outfile), sample_rate, channels,
-      bits_per_sample);
+      bits_per_sample, recording_type, recording_quality);
 
   char const * const error = encoder->init();
   if (NULL != error) {

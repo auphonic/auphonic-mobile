@@ -65,6 +65,10 @@ Media.MEDIA_RUNNING = 2;
 Media.MEDIA_PAUSED = 3;
 Media.MEDIA_STOPPED = 4;
 Media.MEDIA_INTERRUPTED = 5;
+
+// Errors
+Media.MEDIA_PERMISSION_ERROR = 5;
+
 Media.MEDIA_MSG = ["None", "Starting", "Running", "Paused", "Stopped"];
 
 // "static" function to return existing objs.
