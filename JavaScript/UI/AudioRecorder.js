@@ -249,11 +249,22 @@ module.exports = new Class({
   },
 
   onError: function(event) {
-    if (this.notice) this.notice.push();
-    else this.notice = new Notice('There was an error with your recording. Please try again.');
+    var text = 'There was an error with your recording. Please try again.';
+    if (event.code == window.Media.MEDIA_PERMISSION_ERROR)
+      text = 'Permission to use the microphone was not granted. Please go to Settings → Privacy → Microphone and allow Auphonic to use the microphone.';
+
+    if (this.notice && this.noticeText == text) {
+      this.notice.push();
+    } else {
+      this.notice = new Notice(text);
+      this.noticeText = text;
+    }
     this.fireEvent('error', event);
     this.fireEvent('pause');
-    this.resetUI();
+    (function() {
+      this.resetUI();
+    }).delay(300, this);
+    if (Platform.isIOS()) this.footer.transition({immediate: true}).removeClass('out');
   },
 
   onShow: function() {
