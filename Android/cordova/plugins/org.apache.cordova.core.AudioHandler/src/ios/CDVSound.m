@@ -519,7 +519,7 @@
         NSString* errorMsg = @"";
         NSString* recordingType = [command.arguments objectAtIndex:2];
         NSString* recordingQuality = [command.arguments objectAtIndex:3];
-        
+
         if (granted) {
             if ((audioFile != nil) && (audioFile.resourceURL != nil)) {
                 NSError* __autoreleasing error = nil;
@@ -535,6 +535,9 @@
                         [self.commandDelegate evalJs:jsString];
                         return;
                     }
+
+                    NSError* __autoreleasing audioSessionError = nil;
+                    [self.avSession setMode:AVAudioSessionModeMeasurement error:&audioSessionError];
                 }
 
                 // reuse the recorder if possible and resume recording

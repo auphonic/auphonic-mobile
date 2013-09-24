@@ -316,8 +316,13 @@ module.exports = new Class({
     }
 
     if (!this.freezeLevel) {
-      peakWidth = (-Math.max(-50, peak)) / 0.5;
-      averageWidth = 100 - (-Math.max(-50, average)) / 0.5;
+      if (Platform.isIOS()) {
+        peakWidth = (-Math.max(-65, peak)) / 65 * 100;
+        averageWidth = 100 - (-Math.max(-65, average)) / 65 * 100;
+      } else {
+        peakWidth = (-Math.max(-50, peak)) / 0.5;
+        averageWidth = 100 - (-Math.max(-50, average)) / 0.5;
+      }
     }
 
     this.levelElement.setStyle('width', peakWidth + '%');
