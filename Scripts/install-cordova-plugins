@@ -1,5 +1,3 @@
-npm install -g plugman
-
 plugman install --platform ios --project ../iOS --www ../App --plugin https://git-wip-us.apache.org/repos/asf/cordova-plugin-battery-status.git
 plugman install --platform ios --project ../iOS --www ../App --plugin https://git-wip-us.apache.org/repos/asf/cordova-plugin-camera.git
 plugman install --platform ios --project ../iOS --www ../App --plugin https://git-wip-us.apache.org/repos/asf/cordova-plugin-device.git

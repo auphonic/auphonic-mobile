@@ -7,7 +7,7 @@
     <author email="mobile@auphonic.com" href="http://auphonic.com">
       Auphonic Team
     </author>
-    <access origin="https://10.0.0.4" />
+    <access origin="http://192.168.178.109" />
     <access origin="http://auphonic.com" />
     <access origin="https://auphonic.com" />
     <access origin="maps.googleapis.com" />

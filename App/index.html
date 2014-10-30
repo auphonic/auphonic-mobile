@@ -14,15 +14,16 @@
   <script type="text/javascript">
     // Set up globals
     (function() {
-      this.__PLATFORM = 'ios';
+      this.__PLATFORM = 'ios';  // 'ios' or 'android'
       this.__CORDOVA_VERSION = '3.0.0';
       this.__SERVER_URL = this.__FALLBACK_SERVER_URL = 'https://auphonic.com/mobile/' + this.__CORDOVA_VERSION + '/';
 
       // REMOVE WHEN DEPLOYING
       // Update this if you are testing the application locally.
-      var DEVbaseURL = '/Auphonic/App/';
+      var LOCAL_IP = '192.168.178.109';  // change this to your local IP address!
+      var DEVbaseURL = '/App/';
       // Local test URL for the Server scripts. Remove this when deploying.
-      this.__SERVER_URL = 'http://10.0.0.4' + DEVbaseURL + '../Server/' + this.__CORDOVA_VERSION + '/';
+      this.__SERVER_URL = 'http://' + LOCAL_IP + DEVbaseURL + '../Server/' + this.__CORDOVA_VERSION + '/';
       if (new RegExp('^' + DEVbaseURL).test(location.pathname)) {
         this.__LOCALHOST__ = true;
         this.__baseURL = DEVbaseURL;

@@ -1,6 +1,6 @@
 <?xml version='1.0' encoding='utf-8'?>
 <widget>
-    <access origin="10.0.0.4" />
+    <access origin="192.168.178.109" />
     <access origin="auphonic.com" />
     <access origin="maps.googleapis.com" />
     <content src="index.html" />
